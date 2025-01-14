@@ -1,4 +1,4 @@
-##NAT ( Network Address Translation, 네트워크 주소 변환 )
+## NAT ( Network Address Translation, 네트워크 주소 변환 )
 - 네트워크 세계에서 자신을 구별하기위한 식별자가 IP
 - private IP는 다른 네트워크에서 통용되지 않는다.
 - 그래서 다른 네트워크와 통신을 하기 위해서는 public IP가 필요하다.
@@ -21,16 +21,16 @@
 네트워크 통신 중재자, 교환원
 
 
-##STUN( Session Traversal Utilities for NAT )
+## STUN( Session Traversal Utilities for NAT )
 - 쉽게말해서 공인 IP주소를 발견하도록 돕는 기술
 
-###STUN의 동작
+### STUN의 동작
 1. 클라이언트가 STUN서버에 요청을 보냄
 2. NAT가 이 요청을 변환하여 공인 IP와 포트를 할당
 3. STUN서버에서 자신이 받은 요청의 출발지(공인IP)를 확인
 4. 이 정보를 클라이언트에게 응답으로 전송
 
-###STUN의 한계
+### STUN의 한계
 - Symmetric NAT 환경에서는 신뢰할 수 없다.
 - NAT바인딩이 변경되면 다시 요청 필요
 - 일부 방화벽에서 막힐 수 있다.
@@ -38,29 +38,29 @@
 이러한 한계점 때문에 TURN 서버가 필요하다.
 
 
-##TURN
+## TURN
 - NAT보안정책이 너무 엄격하거나, NAT 바인딩을 성공적으로 생성할 수 없을때 TURN을 사용한다.
 - 중계서버를 통해 우회통신을 제공한다.
 
-###TURN의 동작
+### TURN의 동작
 1. 클라이언트에서 TURN서버에 자원 할당을 요청
 2. 서버에서 클라이언트를 위한 임시 주소를 할당
 3. 클라이언트에서 임시주소를 통해 다른 클라이언트와 통신
 
-###TURN을 통한 데이터 전송
+### TURN을 통한 데이터 전송
 1. 클라이언트에서 데이터를 TURN서버에 전달
 2. TURN 서버에서 데이터를 업로드
 3. 다른 클라이언트에서 TURN서버를 통해 데이터를 다운로드 
 
 TURN은 가장 확실하게 연결할 수 있는 방식이지만 높은 리소스 사용으로 ICE 프로토콜에서 가장 후순위로 배정된다.
 
-##ICE( Interactive Connectivity Establishment )
+## ICE( Interactive Connectivity Establishment )
 - 최적의 경로를 찾아서 두 Peer를 연결해 주는 역할
 - TURN, STUN을 사용해서 최적의 경로를 찾을 수 있도록 도와주는 프레임워크이다.
 - 모든 단말(네트워크)는 환경이 달라서 Peer to Peer 연결에서 항상 동일하게 연결되지 않는다. 예를 들면 방화벽이 있는 환경에서는 방화벽을 통과해야하고, 대부분의 기기들은 사설 네트워크 안에 있어서 서로 연결이 불가능하다.
 - 가능한 모든 연결 경로를 시도하고, 그중 가장 최적의 경로를 찾아 자동으로 선택
 
-###ICE의 동작
+### ICE의 동작
 - 후보군 수집
 1. HOST Candidate
   - 장치의 실제 로컬 IP주소와 포트
