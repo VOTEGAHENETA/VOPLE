@@ -1,7 +1,7 @@
 spring:
-#  config:
-#    activate:
-#      on-profile: dev
+  config:
+    activate:
+      on-profile: dev
 
   datasource:
     url: jdbc:h2:tcp://localhost/~/server
