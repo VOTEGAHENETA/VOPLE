@@ -19,9 +19,8 @@
 ### 전체
 ```
 ├── 📁 client
-│   ├── 📁 Client project (업로드 예정)
-│   ├── HLSClientExample.html (HLS 스트리밍 client 예시파일, 설명 있음)
-│   ├── Dockerfile (docker compose 실행 시 함께 실행됨)
+│   ├── 📁 Client project
+│   ├── Dockerfile
 ├── 📁 db
 │   ├── init.sql (DDL 정의 - schema, table)
 ├── 📁 hls (폴더 이하 내용은 방송 시작 시 생성, 종료 시 삭제됨)
