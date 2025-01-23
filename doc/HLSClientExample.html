@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HLS Test Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+    <video id="video" controls></video>
+    <script>
+        if (Hls.isSupported()) {
+            const video = document.getElementById('video');
+            const hls = new Hls();
+            hls.loadSource('http://localhost:8050/hls/test.m3u8');
+            /*
+                url은 임의로 때려박은거고 서버에서 보내줄거임
+                단, url에서 test = key인데 <- 이게 방송 시작할 때 발급하는 방식이라서
+                key를 후보자의 pk로 지정해주고 방송을 시작해야 함
+                방송 시작할 때 key: streamkey로 하면 해당 url로 방송 받기 가능
+                만약 key: vote1면 url이 'http://localhost:8050/hls/vote1.m3u8' 이 되는거임
+            */
+            hls.attachMedia(video);
+        }
+    </script>
+</body>
+</html>
