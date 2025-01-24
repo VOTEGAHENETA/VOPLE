@@ -1,1 +1,4 @@
 doc/System*
+aws/
+jenkins/*
+.env
