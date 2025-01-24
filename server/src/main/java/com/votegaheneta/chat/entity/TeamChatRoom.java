@@ -1,5 +1,7 @@
-package com.votegaheneta.entity;
+package com.votegaheneta.chat.entity;
 
+import com.votegaheneta.vote.entity.VoteTeam;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,8 +18,8 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "session_chat_room")
-public class SessionChatRoom {
+@Table(name = "team_chating_room")
+public class TeamChatRoom {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,18 +27,26 @@ public class SessionChatRoom {
   private Long id;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "session_id")
-  private ElectionSession electionSession;
+  @JoinColumn(name = "vote_team_id")
+  private VoteTeam voteTeam;
 
-  @OneToMany(mappedBy = "sessionChatRoom")
-  private List<SessionChat> sessionChats = new ArrayList<>();
+  @OneToMany(mappedBy = "teamChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TeamChat> teamChats = new ArrayList<>();
+
+  public int getUserCnt() {
+    return teamChats.size();
+  }
+
+  public void addTeamChat(TeamChat teamChat) {
+    teamChats.add(teamChat);
+    teamChat.setTeamChatingRoom(this);
+  }
 
   public void setId(Long id) {
     this.id = id;
   }
 
-  public void setElectionSession(ElectionSession electionSession) {
-    this.electionSession = electionSession;
-    electionSession.setSessionChatRoom(this);
+  public void setVoteTeam(VoteTeam voteTeam) {
+    this.voteTeam = voteTeam;
   }
 }

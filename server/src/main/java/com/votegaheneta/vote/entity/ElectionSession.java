@@ -1,5 +1,8 @@
-package com.votegaheneta.entity;
+package com.votegaheneta.vote.entity;
 
+import com.votegaheneta.chat.entity.SessionChatRoom;
+import com.votegaheneta.user.entity.Users;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,11 +15,14 @@ import jakarta.persistence.Table;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "election_session")
+@NoArgsConstructor
 public class ElectionSession {
 
   @Id @GeneratedValue
@@ -26,24 +32,44 @@ public class ElectionSession {
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "electionSession")
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Vote> votes;
 
   @OneToOne(mappedBy = "electionSession")
   private SessionChatRoom sessionChatRoom;
 
+  @Builder
+  public ElectionSession(Users hostUser, String sessionName,
+      int wholeVoter, String entranceQuestion, String entranceAnswer, LocalDateTime voteStartTime,
+      LocalDateTime voteEndTime) {
+    this.setHostUser(hostUser);
+    this.sessionName = sessionName;
+    this.wholeVoter = wholeVoter;
+    this.entranceQuestion = entranceQuestion;
+    this.entranceAnswer = entranceAnswer;
+    this.voteStartTime = voteStartTime;
+    this.voteEndTime = voteEndTime;
+  }
+
   private File qrCode;
   private String sessionName;
   private int wholeVoter;
   private int votedVoter;
-  private String entraceQuestion;
+  private String entranceQuestion;
   private String entranceAnswer;
-  private LocalDateTime sessionStartTime;
+  private LocalDateTime sessionStartTime = LocalDateTime.now();
   private LocalDateTime voteStartTime;
   private LocalDateTime voteEndTime;
+  private boolean isActive;
+
+  public void addVote(Vote vote) {
+    votes.add(vote);
+    vote.setElectionSession(this);
+  }
 
   public void setSessionChatRoom(SessionChatRoom sessionChatRoom) {
     this.sessionChatRoom = sessionChatRoom;
+    sessionChatRoom.setElectionSession(this);
   }
 
   public void setId(Long id) {
@@ -70,8 +96,8 @@ public class ElectionSession {
     this.votedVoter = votedVoter;
   }
 
-  public void setEntraceQuestion(String entraceQuestion) {
-    this.entraceQuestion = entraceQuestion;
+  public void setEntracneQuestion(String entranceQuestion) {
+    this.entranceQuestion = entranceQuestion;
   }
 
   public void setEntranceAnswer(String entranceAnswer) {

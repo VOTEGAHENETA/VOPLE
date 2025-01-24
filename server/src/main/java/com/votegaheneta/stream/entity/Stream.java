@@ -1,5 +1,6 @@
-package com.votegaheneta.entity;
+package com.votegaheneta.stream.entity;
 
+import com.votegaheneta.vote.entity.VoteTeam;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +28,10 @@ public class Stream {
 
   private String streamingUrl;
   private boolean isStreaming;
+
+  public Stream(String streamingUrl) {
+    this.streamingUrl = streamingUrl;
+  }
 
   public void setId(Long id) {
     this.id = id;

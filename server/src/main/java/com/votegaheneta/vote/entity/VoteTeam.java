@@ -1,5 +1,8 @@
-package com.votegaheneta.entity;
+package com.votegaheneta.vote.entity;
 
+import com.votegaheneta.chat.entity.TeamChatRoom;
+import com.votegaheneta.stream.entity.Stream;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,11 +15,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "vote_team")
 public class VoteTeam {
 
@@ -29,11 +36,11 @@ public class VoteTeam {
   @JoinColumn(name = "vote_id")
   private Vote vote;
 
-  @OneToMany(mappedBy = "voteTeam")
-  private List<Pledge> pledges;
+  @OneToMany(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Pledge> pledges = new ArrayList<>();
 
   @OneToMany(mappedBy = "voteTeam")
-  private List<Candidate> candidates;
+  private List<Candidate> candidates = new ArrayList<>();
 
   @OneToOne(mappedBy = "voteTeam")
   private TeamChatRoom teamChatRoom;
@@ -46,8 +53,14 @@ public class VoteTeam {
   private String prefix;
   private String candidateStatement;
 
-  public void setTeamChatingRoom(TeamChatRoom teamChatRoom) {
-    this.teamChatRoom = teamChatRoom;
+  @Builder
+  public VoteTeam(TeamChatRoom teamChatRoom, Stream stream, File poster, String prefix,
+      String candidateStatement) {
+    this.setTeamChatRoom(teamChatRoom);
+    this.setStream(stream);
+    this.poster = poster;
+    this.prefix = prefix;
+    this.candidateStatement = candidateStatement;
   }
 
   public void setId(Long id) {
@@ -56,7 +69,26 @@ public class VoteTeam {
 
   public void setVote(Vote vote) {
     this.vote = vote;
-    vote.getVoteTeams().add(this);
+  }
+
+  public void addPledge(Pledge pledge) {
+    pledges.add(pledge);
+    pledge.setVoteTeam(this);
+  }
+
+  public void addCandidate(Candidate candidate) {
+    candidates.add(candidate);
+    candidate.setVoteTeam(this);
+  }
+
+  public void setTeamChatRoom(TeamChatRoom teamChatRoom) {
+    this.teamChatRoom = teamChatRoom;
+    teamChatRoom.setVoteTeam(this);
+  }
+
+  public void setStream(Stream stream) {
+    this.stream = stream;
+    stream.setVoteTeam(this);
   }
 
   public void setPollCnt(int pollCnt) {

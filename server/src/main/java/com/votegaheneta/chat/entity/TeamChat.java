@@ -1,5 +1,6 @@
-package com.votegaheneta.entity;
+package com.votegaheneta.chat.entity;
 
+import com.votegaheneta.user.entity.Users;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,9 +12,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalTime;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "team_chat")
 public class TeamChat {
 
@@ -31,7 +34,16 @@ public class TeamChat {
   private TeamChatRoom teamChatRoom;
 
   private String text;
-  private LocalTime createdTime;
+  private LocalTime createdTime = LocalTime.now();
+
+  public TeamChat(Users user, String text) {
+    this.user = user;
+    this.text = text;
+  }
+
+  public TeamChat(String text) {
+    this.text = text;
+  }
 
   public void setId(Long id) {
     this.id = id;
@@ -39,14 +51,13 @@ public class TeamChat {
 
   public void setTeamChatingRoom(TeamChatRoom teamChatingRoom) {
     this.teamChatRoom = teamChatingRoom;
-    teamChatingRoom.getTeamChats().add(this);
   }
 
   public void setText(String text) {
     this.text = text;
   }
 
-  public void setCreatedTime(LocalTime createdTime) {
-    this.createdTime = createdTime;
+  public void setUser(Users user) {
+    this.user = user;
   }
 }
