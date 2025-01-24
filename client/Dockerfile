@@ -1,12 +1,17 @@
-FROM node:18 as build
+FROM node:20.18.1-alpine AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+
+# RUN nvm install 20.18.1
+# RUN nvm use 20.18.1
+# RUN npm install -g yarn
+
+# 소스 복사 및 빌드
 COPY . .
-RUN npm run build
+RUN yarn install
+RUN yarn build
 
 FROM nginx:alpine
-  COPY --from=build /app/build /usr/share/nginx/html
-  COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-  EXPOSE 80
-  CMD ["nginx", "-g", "daemon off;"]
+COPY --from=build /app/dist /var/www/client
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
