@@ -31,7 +31,7 @@
     "@storybook/react-vite": "8.4.7",
     "@storybook/test": "8.4.7",
     "@tanstack/eslint-plugin-query": "^5.62.16",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.10",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
@@ -46,10 +46,12 @@
     "eslint-plugin-storybook": "^0.11.2",
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
+    "sass": "^1.83.4",
     "storybook": "8.4.7",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.19.1",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "packageManager": "yarn@4.6.0",
   "eslintConfig": {
