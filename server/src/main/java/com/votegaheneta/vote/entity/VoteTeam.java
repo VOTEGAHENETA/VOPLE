@@ -42,10 +42,10 @@ public class VoteTeam {
   @OneToMany(mappedBy = "voteTeam")
   private List<Candidate> candidates = new ArrayList<>();
 
-  @OneToOne(mappedBy = "voteTeam")
+  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
   private TeamChatRoom teamChatRoom;
 
-  @OneToOne(mappedBy = "voteTeam")
+  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
   private Stream stream;
 
   private int pollCnt;

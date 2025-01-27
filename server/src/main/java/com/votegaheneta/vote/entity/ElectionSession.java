@@ -35,7 +35,7 @@ public class ElectionSession {
   @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Vote> votes;
 
-  @OneToOne(mappedBy = "electionSession")
+  @OneToOne(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
   private SessionChatRoom sessionChatRoom;
 
   @Builder
