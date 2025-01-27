@@ -23,6 +23,9 @@ spring:
     init:
       mode: always
 
+paging:
+    default-page-size: 10
+    default-page-number: 0
 
 logging.level:
   org.hibernate.SQL: DEBUG
