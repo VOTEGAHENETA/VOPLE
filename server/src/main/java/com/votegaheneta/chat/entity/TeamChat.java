@@ -34,30 +34,17 @@ public class TeamChat {
   private TeamChatRoom teamChatRoom;
 
   private String text;
-  private LocalTime createdTime = LocalTime.now();
+  private LocalTime createdTime;
 
-  public TeamChat(Users user, String text) {
+  public static TeamChat createTeamChat(Users user, TeamChatRoom teamChatRoom, String text) {
+    TeamChat teamChat = new TeamChat(user, teamChatRoom, text);
+    teamChatRoom.addTeamChat(teamChat);
+    return teamChat;
+  }
+  private TeamChat(Users user, TeamChatRoom teamChatRoom, String text) {
     this.user = user;
+    this.teamChatRoom = teamChatRoom;
     this.text = text;
-  }
-
-  public TeamChat(String text) {
-    this.text = text;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public void setTeamChatingRoom(TeamChatRoom teamChatingRoom) {
-    this.teamChatRoom = teamChatingRoom;
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  public void setUser(Users user) {
-    this.user = user;
+    this.createdTime = LocalTime.now();
   }
 }

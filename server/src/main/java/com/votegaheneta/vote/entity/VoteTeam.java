@@ -17,7 +17,6 @@ import jakarta.persistence.Table;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -53,16 +52,6 @@ public class VoteTeam {
   private String prefix;
   private String candidateStatement;
 
-  @Builder
-  public VoteTeam(TeamChatRoom teamChatRoom, Stream stream, File poster, String prefix,
-      String candidateStatement) {
-    this.setTeamChatRoom(teamChatRoom);
-    this.setStream(stream);
-    this.poster = poster;
-    this.prefix = prefix;
-    this.candidateStatement = candidateStatement;
-  }
-
   public void setId(Long id) {
     this.id = id;
   }
@@ -83,7 +72,6 @@ public class VoteTeam {
 
   public void setTeamChatRoom(TeamChatRoom teamChatRoom) {
     this.teamChatRoom = teamChatRoom;
-    teamChatRoom.setVoteTeam(this);
   }
 
   public void setStream(Stream stream) {

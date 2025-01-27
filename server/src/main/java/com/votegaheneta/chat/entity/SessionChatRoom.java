@@ -13,9 +13,11 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "session_chat_room")
 public class SessionChatRoom {
 
@@ -30,20 +32,16 @@ public class SessionChatRoom {
   @OneToMany(mappedBy = "sessionChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SessionChat> sessionChats = new ArrayList<>();
 
+  public SessionChatRoom(ElectionSession electionSession) {
+    electionSession.setSessionChatRoom(this);
+    this.electionSession = electionSession;
+  }
+
   public int getUserCnt() {
     return sessionChats.size();
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public void addSessionChat(SessionChat sessionChat) {
     sessionChats.add(sessionChat);
-    sessionChat.setSessionChatRoom(this);
-  }
-
-  public void setElectionSession(ElectionSession electionSession) {
-    this.electionSession = electionSession;
   }
 }

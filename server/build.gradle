@@ -24,9 +24,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 	// thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.webjars:stomp-websocket:2.3.4'
 	implementation 'org.webjars:sockjs-client:1.5.1'

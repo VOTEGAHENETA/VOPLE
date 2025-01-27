@@ -12,12 +12,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.File;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @Entity
@@ -51,7 +52,7 @@ public class ElectionSession {
     this.voteEndTime = voteEndTime;
   }
 
-  private File qrCode;
+  private String qrCode;
   private String sessionName;
   private int wholeVoter;
   private int votedVoter;
@@ -60,6 +61,7 @@ public class ElectionSession {
   private LocalDateTime sessionStartTime = LocalDateTime.now();
   private LocalDateTime voteStartTime;
   private LocalDateTime voteEndTime;
+  @Transient
   private boolean isActive;
 
   public void addVote(Vote vote) {
@@ -69,7 +71,6 @@ public class ElectionSession {
 
   public void setSessionChatRoom(SessionChatRoom sessionChatRoom) {
     this.sessionChatRoom = sessionChatRoom;
-    sessionChatRoom.setElectionSession(this);
   }
 
   public void setId(Long id) {
@@ -80,7 +81,8 @@ public class ElectionSession {
     this.hostUser = hostUser;
     hostUser.getElectionSessions().add(this);
   }
-  public void setQrCode(File qrCode) {
+
+  public void setQrCode(String qrCode) {
     this.qrCode = qrCode;
   }
 

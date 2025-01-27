@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class SessionChat {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Column(name = "id", nullable = false)
   private Long id;
 
@@ -34,30 +34,22 @@ public class SessionChat {
   private Users user;
 
   private String text;
-  private LocalTime createdTime = LocalTime.now();
+  private LocalTime createdTime;
 
-  public SessionChat(Users user, String text) {
+  public SessionChat(SessionChatRoom sessionChatRoom, Users user, String text) {
+    this.sessionChatRoom = sessionChatRoom;
     this.user = user;
     this.text = text;
+    this.createdTime = LocalTime.now();
   }
 
-  public SessionChat(String text) {
-    this.text = text;
+  public static SessionChat createSessionChat(SessionChatRoom sessionChatRoom, Users user, String text) {
+    SessionChat sessionChat = new SessionChat(sessionChatRoom, user, text);
+    sessionChatRoom.addSessionChat(sessionChat);
+    return sessionChat;
   }
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public void setSessionChatRoom(SessionChatRoom sessionChatRoom) {
-    this.sessionChatRoom = sessionChatRoom;
-  }
-
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  public void setUser(Users user) {
-    this.user = user;
   }
 }

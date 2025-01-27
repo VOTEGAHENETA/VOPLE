@@ -13,9 +13,11 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "team_chating_room")
 public class TeamChatRoom {
   @Id
@@ -29,20 +31,16 @@ public class TeamChatRoom {
   @OneToMany(mappedBy = "teamChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TeamChat> teamChats = new ArrayList<>();
 
+  public TeamChatRoom(VoteTeam voteTeam) {
+    voteTeam.setTeamChatRoom(this);
+    this.voteTeam = voteTeam;
+  }
+
   public int getUserCnt() {
     return teamChats.size();
   }
 
   public void addTeamChat(TeamChat teamChat) {
     teamChats.add(teamChat);
-    teamChat.setTeamChatingRoom(this);
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public void setVoteTeam(VoteTeam voteTeam) {
-    this.voteTeam = voteTeam;
   }
 }
