@@ -1,8 +1,11 @@
 package com.votegaheneta.chat.repository;
 
 import com.votegaheneta.chat.entity.TeamChatRoom;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 
-public interface TeamChatRoomRepository extends JpaRepository<TeamChatRoom, Long> {
-
+public interface TeamChatRoomRepository extends BaseChatRoomRepository<TeamChatRoom, Long> {
+  @Override
+  @EntityGraph(attributePaths = {"voteTeam"})
+  Optional<TeamChatRoom> findById(Long id);
 }

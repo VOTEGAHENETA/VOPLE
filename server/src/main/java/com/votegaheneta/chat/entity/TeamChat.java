@@ -36,7 +36,7 @@ public class TeamChat {
   private String text;
   private LocalTime createdTime;
 
-  public static TeamChat createTeamChat(Users user, TeamChatRoom teamChatRoom, String text) {
+  public static TeamChat createTeamChat(TeamChatRoom teamChatRoom,  Users user, String text) {
     TeamChat teamChat = new TeamChat(user, teamChatRoom, text);
     teamChatRoom.addTeamChat(teamChat);
     return teamChat;

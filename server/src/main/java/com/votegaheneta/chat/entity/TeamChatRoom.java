@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "team_chating_room")
+@Table(name = "team_chat_room")
 public class TeamChatRoom {
   @Id
   private Long id;

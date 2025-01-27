@@ -14,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -48,7 +47,7 @@ public class VoteTeam {
   private Stream stream;
 
   private int pollCnt;
-  private File poster;
+  private String poster;
   private String prefix;
   private String candidateStatement;
 
@@ -83,7 +82,7 @@ public class VoteTeam {
     this.pollCnt = pollCnt;
   }
 
-  public void setPoster(File poster) {
+  public void setPoster(String poster) {
     this.poster = poster;
   }
 

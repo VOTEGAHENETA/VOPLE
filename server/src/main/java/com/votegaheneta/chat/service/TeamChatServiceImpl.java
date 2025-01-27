@@ -2,10 +2,10 @@ package com.votegaheneta.chat.service;
 
 import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.UserChatDto;
-import com.votegaheneta.chat.entity.SessionChat;
-import com.votegaheneta.chat.entity.SessionChatRoom;
-import com.votegaheneta.chat.repository.SessionChatRepository;
-import com.votegaheneta.chat.repository.SessionChatRoomRepository;
+import com.votegaheneta.chat.entity.TeamChat;
+import com.votegaheneta.chat.entity.TeamChatRoom;
+import com.votegaheneta.chat.repository.TeamChatRepository;
+import com.votegaheneta.chat.repository.TeamChatRoomRepository;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
 import java.util.List;
@@ -22,10 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SessionChatServiceImpl implements ChatService {
+public class TeamChatServiceImpl implements ChatService {
 
-  private final SessionChatRoomRepository sessionChatRoomRepository;
-  private final SessionChatRepository sessionChatRepository;
+  private final TeamChatRoomRepository teamChatRoomRepository;
+  private final TeamChatRepository teamChatRepository;
   private final UsersRepository usersRepository;
 
   @Value("${paging.default-page-size}")
@@ -36,17 +36,17 @@ public class SessionChatServiceImpl implements ChatService {
 
 
   public ChatDto saveChat(Long roomId, ChatDto ChatDto, UserChatDto userChatDto) {
-    SessionChatRoom sessionChatRoom = sessionChatRoomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Invalid room id"));
+    TeamChatRoom teamChatRoom = teamChatRoomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Invalid room id"));
     Users user = usersRepository.findById(userChatDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
-    SessionChat sessionChat = SessionChat.createSessionChat(sessionChatRoom, user, ChatDto.getText());
-    sessionChatRepository.save(sessionChat);
-    return new ChatDto(sessionChat);
+    TeamChat teamChat = TeamChat.createTeamChat(teamChatRoom, user, ChatDto.getText());
+    teamChatRepository.save(teamChat);
+    return new ChatDto(teamChat);
   }
 
   @Override
   public List<ChatDto> getChatList(Long roomId) {
-    List<SessionChat> sessionChats = sessionChatRepository.findChatsByRoomId(roomId);
-    return sessionChats.stream().map(ChatDto::new).toList();
+    List<TeamChat> teamChats = teamChatRepository.findChatsByRoomId(roomId);
+    return teamChats.stream().map(ChatDto::new).toList();
   }
 
   @Override
@@ -54,8 +54,8 @@ public class SessionChatServiceImpl implements ChatService {
     int page = Integer.parseInt(pageMap.getOrDefault("page", DEFALUT_PAGE_NUMBER));
     int size = Integer.parseInt(pageMap.getOrDefault("size", DEFAULT_PAGE_SIZE));
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-    Page<SessionChat> sessionChats = sessionChatRepository.findChatsPageByRoomId(roomId, pageRequest);
-    return sessionChats.map(ChatDto::new);
+    Page<TeamChat> teamChats = teamChatRepository.findChatsPageByRoomId(roomId, pageRequest);
+    return teamChats.map(ChatDto::new);
   }
 
   @Override
@@ -63,7 +63,7 @@ public class SessionChatServiceImpl implements ChatService {
     int page = Integer.parseInt(pageMap.getOrDefault("page", DEFALUT_PAGE_NUMBER));
     int size = Integer.parseInt(pageMap.getOrDefault("size", DEFAULT_PAGE_SIZE));
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-    Slice<SessionChat> sessionChats = sessionChatRepository.findChatsSliceByRoomId(roomId, pageRequest);
-    return sessionChats.map(ChatDto::new);
+    Slice<TeamChat> teamChats = teamChatRepository.findChatsSliceByRoomId(roomId, pageRequest);
+    return teamChats.map(ChatDto::new);
   }
 }
