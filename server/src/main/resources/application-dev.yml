@@ -23,6 +23,11 @@ spring:
     init:
       mode: always
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 paging:
     default-page-size: 10
     default-page-number: 0

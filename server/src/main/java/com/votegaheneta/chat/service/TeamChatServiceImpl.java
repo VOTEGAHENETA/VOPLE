@@ -34,13 +34,17 @@ public class TeamChatServiceImpl implements ChatService {
   @Value("${paging.default-page-number}")
   private String DEFALUT_PAGE_NUMBER;
 
-
   public ChatDto saveChat(Long roomId, ChatDto ChatDto, UserChatDto userChatDto) {
     TeamChatRoom teamChatRoom = teamChatRoomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Invalid room id"));
     Users user = usersRepository.findById(userChatDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
     TeamChat teamChat = TeamChat.createTeamChat(teamChatRoom, user, ChatDto.getText());
     teamChatRepository.save(teamChat);
     return new ChatDto(teamChat);
+  }
+
+  @Override
+  public ChatDto saveChat(String type, Long roomId, ChatDto ChatDto, UserChatDto userChatDto) {
+    return null;
   }
 
   @Override

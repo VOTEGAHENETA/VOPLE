@@ -4,21 +4,24 @@ import com.votegaheneta.chat.entity.SessionChat;
 import com.votegaheneta.chat.entity.TeamChat;
 import java.io.Serializable;
 import java.time.LocalTime;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * DTO for {@link com.votegaheneta.chat.entity.SessionChat}
  */
-@Getter
-@ToString
-@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ChatDto implements Serializable {
 
   private String nickname;
   private String text;
+//  @JsonFormat(pattern = "HH:mm:ss")
   private LocalTime createdTime;
+
+  public ChatDto() {
+    this.createdTime = LocalTime.now();
+  }
 
   public ChatDto(SessionChat sessionChat) {
     this.nickname = sessionChat.getUser().getNickname();

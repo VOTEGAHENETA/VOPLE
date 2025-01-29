@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 
 public interface ChatService {
-  ChatDto saveChat(Long roomId, ChatDto ChatDto, UserChatDto userChatDto);
+
+  ChatDto saveChat(String type, Long roomId, ChatDto ChatDto, UserChatDto userChatDto);
+//  List<ChatDto> getChatList(Map<String, String> info);
   List<ChatDto> getChatList(Long roomId);
   Page<ChatDto> getChatListByPage(Long roomId, Map<String, String> page);
   Slice<ChatDto> getChatListBySlice(Long roomId, Map<String, String> page);

@@ -3,10 +3,10 @@ package com.votegaheneta.chat.repository;
 import com.votegaheneta.chat.entity.SessionChatRoom;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SessionChatRoomRepository extends BaseChatRoomRepository<SessionChatRoom, Long> {
+public interface SessionChatRoomRepository extends JpaRepository<SessionChatRoom, Long> {
 
-  @Override
   @EntityGraph(attributePaths = {"electionSession"})
   Optional<SessionChatRoom> findById(Long id);
 }

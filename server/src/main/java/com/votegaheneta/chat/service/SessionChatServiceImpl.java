@@ -4,6 +4,7 @@ import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.UserChatDto;
 import com.votegaheneta.chat.entity.SessionChat;
 import com.votegaheneta.chat.entity.SessionChatRoom;
+import com.votegaheneta.chat.repository.RedisChatRepository;
 import com.votegaheneta.chat.repository.SessionChatRepository;
 import com.votegaheneta.chat.repository.SessionChatRoomRepository;
 import com.votegaheneta.user.entity.Users;
@@ -27,6 +28,7 @@ public class SessionChatServiceImpl implements ChatService {
   private final SessionChatRoomRepository sessionChatRoomRepository;
   private final SessionChatRepository sessionChatRepository;
   private final UsersRepository usersRepository;
+  private final RedisChatRepository redisChatRepository;
 
   @Value("${paging.default-page-size}")
   private String DEFAULT_PAGE_SIZE;
@@ -35,11 +37,13 @@ public class SessionChatServiceImpl implements ChatService {
   private String DEFALUT_PAGE_NUMBER;
 
 
-  public ChatDto saveChat(Long roomId, ChatDto ChatDto, UserChatDto userChatDto) {
-    SessionChatRoom sessionChatRoom = sessionChatRoomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Invalid room id"));
+  public ChatDto saveChat(String type, Long roomId, ChatDto ChatDto, UserChatDto userChatDto) {
+    SessionChatRoom sessionChatRoom = sessionChatRoomRepository.findById(roomId)
+        .orElseThrow(() -> new IllegalArgumentException("Invalid room id"));
     Users user = usersRepository.findById(userChatDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
     SessionChat sessionChat = SessionChat.createSessionChat(sessionChatRoom, user, ChatDto.getText());
-    sessionChatRepository.save(sessionChat);
+//    redisChatRepository.saveChat(type, roomId, ChatDto);
+//    sessionChatRepository.save(sessionChat);
     return new ChatDto(sessionChat);
   }
 
