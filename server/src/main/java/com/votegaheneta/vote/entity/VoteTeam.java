@@ -20,6 +20,7 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Entity
@@ -40,16 +41,17 @@ public class VoteTeam {
   private List<Pledge> pledges = new ArrayList<>();
 
   @OneToMany(mappedBy = "voteTeam")
+  @BatchSize(size = 100)
   private List<Candidate> candidates = new ArrayList<>();
 
-  @OneToOne(mappedBy = "voteTeam")
+  @OneToOne(mappedBy = "voteTeam", fetch = FetchType.LAZY)
   private TeamChatRoom teamChatRoom;
 
-  @OneToOne(mappedBy = "voteTeam")
+  @OneToOne(mappedBy = "voteTeam", fetch = FetchType.LAZY)
   private Stream stream;
 
   private int pollCnt;
-  private File poster;
+//  private File poster;
   private String prefix;
   private String candidateStatement;
 
@@ -58,7 +60,7 @@ public class VoteTeam {
       String candidateStatement) {
     this.setTeamChatRoom(teamChatRoom);
     this.setStream(stream);
-    this.poster = poster;
+//    this.poster = poster;
     this.prefix = prefix;
     this.candidateStatement = candidateStatement;
   }
@@ -95,9 +97,9 @@ public class VoteTeam {
     this.pollCnt = pollCnt;
   }
 
-  public void setPoster(File poster) {
-    this.poster = poster;
-  }
+//  public void setPoster(File poster) {
+//    this.poster = poster;
+//  }
 
   public void setPrefix(String prefix) {
     this.prefix = prefix;
