@@ -1,14 +1,23 @@
-package com.votegaheneta.vote.dto.request;
+package com.votegaheneta.vote.controller.request;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public class VoteCastRequest {
   private Long userId;
-  private Long voteId;
-  private Long voteTeamId;
+  private List<VoteSelection> voteSelections;
+
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class VoteSelection {
+    private Long voteId;
+    private Long voteTeamId;
+  }
+
 }

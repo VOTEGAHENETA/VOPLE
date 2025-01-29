@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
+  @Query("select v from Vote v where v.electionSession.id = :sessionId")
+  List<Vote> findVoteBySessionId(@Param("sessionId") Long sessionId);
+
   @Query("select vt from VoteTeam vt join fetch vt.candidates c join fetch c.user u where vt.vote.id = :voteId")
   List<VoteTeam> findVoteTeamWithCandidateByVoteId(@Param("voteId") Long voteId);
 

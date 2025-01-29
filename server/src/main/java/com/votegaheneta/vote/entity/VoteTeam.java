@@ -38,6 +38,7 @@ public class VoteTeam {
   private Vote vote;
 
   @OneToMany(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
+  @BatchSize(size = 100)
   private List<Pledge> pledges = new ArrayList<>();
 
   @OneToMany(mappedBy = "voteTeam")
@@ -93,8 +94,8 @@ public class VoteTeam {
     stream.setVoteTeam(this);
   }
 
-  public void setPollCnt(int pollCnt) {
-    this.pollCnt = pollCnt;
+  public void incrementPollCnt() {
+    this.pollCnt++;
   }
 
 //  public void setPoster(File poster) {
