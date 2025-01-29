@@ -45,10 +45,10 @@ public class VoteTeam {
   @BatchSize(size = 100)
   private List<Candidate> candidates = new ArrayList<>();
 
-  @OneToOne(mappedBy = "voteTeam", fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
   private TeamChatRoom teamChatRoom;
 
-  @OneToOne(mappedBy = "voteTeam", fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
   private Stream stream;
 
   private int pollCnt;

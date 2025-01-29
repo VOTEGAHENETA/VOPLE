@@ -1,13 +1,11 @@
 package com.votegaheneta.stream.entity;
 
 import com.votegaheneta.vote.entity.VoteTeam;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -15,17 +13,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "stream")
 @NoArgsConstructor
 public class Stream {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
   private Long id;
 
+  @MapsId
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "vote_team_id")
+  @JoinColumn(name = "id")
   private VoteTeam voteTeam;
 
   private String streamingUrl;
