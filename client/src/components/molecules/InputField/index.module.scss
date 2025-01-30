@@ -1,0 +1,50 @@
+@use "../../../assets/styles/variable" as *;
+
+.inputfield {
+  position: relative;
+  
+  &__label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  &__wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  &__helper {
+    margin-top: 4px;
+    font-size: 12px;
+    color: $color-error;
+
+    &--error {
+      color: $color-error;
+    }
+  }
+  
+
+
+}
+
+
+.search__button{
+  padding : 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  border: none;
+  background-color: #fff;
+}
+
+
+.search__icon{
+  width: 18px;
+  height: 18px;
+}
