@@ -15,7 +15,7 @@ interface Props {
   onClick?: () => void;
 }
 
-/** 버튼 기본 UI */
+/** 버튼 기본 UI 제공 */
 const BaseButton = ({
   type = 'button',
   children,

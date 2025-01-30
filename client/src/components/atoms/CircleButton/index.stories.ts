@@ -28,6 +28,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/** 원형 버튼 */
 export const Primary: Story = {
   args: {
     type: 'button',
