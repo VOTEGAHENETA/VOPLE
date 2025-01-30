@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "stream")
-@NoArgsConstructor
 public class Stream {
 
   @Id

@@ -16,4 +16,5 @@ public interface VoteTeamRepository extends JpaRepository<VoteTeam, Long> {
       "where vt.vote.id in :voteIds")
   List<VoteTeam> findByVote_IdIn(@Param("voteIds")List<Long> voteIds);
 
+  List<VoteTeam> findByVoteId(Long voteId);
 }

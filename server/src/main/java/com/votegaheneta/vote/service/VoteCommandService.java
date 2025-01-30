@@ -40,6 +40,7 @@ public class VoteCommandService {
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();
+      voteTeam.getVote().getElectionSession().incrementVotedVoter();
     }
   }
 }

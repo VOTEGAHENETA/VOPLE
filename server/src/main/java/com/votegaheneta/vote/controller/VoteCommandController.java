@@ -21,7 +21,6 @@ public class VoteCommandController {
   // WebSocket 사용해서 다른사람들 투표에도 반영되도록 해야할듯
   @PostMapping("{voteId}/castvote")
   public ResponseEntity<Void> castVote(@RequestBody VoteCastRequest voteCastRequest) {
-    // 이미 투표 진행한 사람은 조회를 먼저해서 있는지 확인해 봐야할듯
     voteCommandService.castVote(voteCastRequest);
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }

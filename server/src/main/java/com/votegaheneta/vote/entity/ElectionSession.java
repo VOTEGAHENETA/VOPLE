@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -51,7 +50,7 @@ public class ElectionSession {
     this.voteEndTime = voteEndTime;
   }
 
-  private File qrCode;
+//  private File qrCode;
   private String sessionName;
   private int wholeVoter;
   private int votedVoter;
@@ -80,9 +79,9 @@ public class ElectionSession {
     this.hostUser = hostUser;
     hostUser.getElectionSessions().add(this);
   }
-  public void setQrCode(File qrCode) {
-    this.qrCode = qrCode;
-  }
+//  public void setQrCode(File qrCode) {
+//    this.qrCode = qrCode;
+//  }
 
   public void setSessionName(String sessionName) {
     this.sessionName = sessionName;
@@ -92,8 +91,8 @@ public class ElectionSession {
     this.wholeVoter = wholeVoter;
   }
 
-  public void setVotedVoter(int votedVoter) {
-    this.votedVoter = votedVoter;
+  public void incrementVotedVoter() {
+    this.votedVoter++;
   }
 
   public void setEntracneQuestion(String entranceQuestion) {
