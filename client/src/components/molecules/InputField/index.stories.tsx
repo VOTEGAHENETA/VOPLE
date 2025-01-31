@@ -1,6 +1,6 @@
 // src/components/molecules/input-field/InputField.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { InputField } from './index';
+import InputField from './index';
 // import { InputField } from '@components/molecules/input-field/InputField';
 
 const meta = {

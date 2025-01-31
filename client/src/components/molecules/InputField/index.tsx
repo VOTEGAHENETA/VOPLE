@@ -3,6 +3,7 @@ import styles from './index.module.scss';
 import { Input, BaseInputProps } from '@/components/atoms/Input/index.tsx';
 import Icon from '@/components/atoms/Icon/index.tsx';
 import { ICON_NAME } from '@/constants/ui.constants.ts';
+import Text from '@/components/atoms/Text/index.tsx';
 
 /** 컴포넌트 사용 예시 및 props 설명
  * @component InputField
@@ -153,7 +154,7 @@ export interface InputFieldProps extends BaseInputProps {
   };
 }
 
-export function InputField({
+export default function InputField({
   onChange,
   type = INPUT_TYPES.TEXT,
   variant = INPUT_VARIANTS.DEFAULT,
@@ -214,7 +215,13 @@ export function InputField({
   return (
     <div className='inputfield'>
       {/* label */}
-      {label && <label className={styles.inputfield__label}>{label}</label>}
+      {label && (
+        <label className={styles.inputfield__label}>
+          <Text size='sm' weight='normal'>
+            {label}
+          </Text>
+        </label>
+      )}
 
       {/* inputfield */}
       <div className={styles.inputfield__wrapper}>
