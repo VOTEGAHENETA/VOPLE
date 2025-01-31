@@ -1,42 +1,43 @@
 pipeline {
     agent any
-    
+
     environment {
-        DB_CREDENTIALS = credentials('db-credentials')
         DB_HOST = credentials('db-host')
-        SPRING_DATASOURCE_URL = "jdbc:mysql://${DB_CREDENTIALS_USR}:3306/vople?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
-        WEBHOOK_URL = "https://discord.com/api/webhooks/1334115054273957990/3Kr6TYIF1Bj_C1_syWRz6LabxzMrUGL6ZNAPUTPV2DZ_LvYrF8YxRGWuNUiG3Xg9yRqd"
+        SPRING_PROFILES_ACTIVE = 'prod'
+        WEBHOOK_URL = credentials('discord-webhook')
     }
-    
+
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        
+
         stage('Setup Environment') {
             steps {
                 script {
-                    // docker-compose.yml env
-                    writeFile file: '.env', text: """
-                        DB_HOST=${DB_HOST}
-                        DB_PORT=3306
-                        DB_NAME=vople
-                        DB_USER=${DB_CREDENTIALS_USR}
-                        DB_PASSWORD=${DB_CREDENTIALS_PSW}
-                        SPRING_PROFILES_ACTIVE=prod
-                        SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-                    """
-                    
-                    // Spring application-prod.yml env
-                    writeFile file: 'server/src/main/resources/application-prod.yml', text: """
-                        spring:
-                        datasource:
-                            url: ${SPRING_DATASOURCE_URL}
-                            username: ${DB_CREDENTIALS_USR}
-                            password: ${DB_CREDENTIALS_PSW}
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_CREDENTIALS_USR', passwordVariable: 'DB_CREDENTIALS_PSW')]) {
+                        // docker-compose.yml env
+                        writeFile file: '.env', text: """
+                            DB_HOST=${DB_HOST}
+                            DB_PORT=3306
+                            DB_NAME=vople
+                            DB_USER=${DB_CREDENTIALS_USR}
+                            DB_PASSWORD=${DB_CREDENTIALS_PSW}
+                            SPRING_PROFILES_ACTIVE=prod
+                            SPRING_DATASOURCE_URL=jdbc:mysql://${DB_HOST}:3306/vople?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+                        """
+
+                        // Spring application-prod.yml env
+                        writeFile file: 'server/src/main/resources/application-prod.yml', text: """
+                            spring:
+                            datasource:
+                                url: jdbc:mysql://${DB_HOST}:3306/vople?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+                                username: ${DB_CREDENTIALS_USR}
+                                password: ${DB_CREDENTIALS_PSW}
+                        """
+                    }
                 }
             }
         }
@@ -49,24 +50,24 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
             cleanWs()
+	    sh 'rm -f .env'
         }
-        
+
         success {
-            title: "VOPLE Jenkins",
             discordSend description: "Jenkins Build Alert",
-            footer: "Build success.",
-            webhookURL: "${WEBHOOK_URL}"
+                        footer: "Build success.",
+                        webhookURL: "${WEBHOOK_URL}"
         }
 
         failure {
-            title: "VOPLE Jenkins",
             discordSend description: "Jenkins Build Alert",
-            footer: "Build failed.",
-            webhookURL: "${WEBHOOK_URL}"
+                        footer: "Build failed.",
+                        webhookURL: "${WEBHOOK_URL}"
         }
     }
 }
+
