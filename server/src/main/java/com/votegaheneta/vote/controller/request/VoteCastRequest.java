@@ -19,5 +19,4 @@ public class VoteCastRequest {
     private Long voteId;
     private Long voteTeamId;
   }
-
 }

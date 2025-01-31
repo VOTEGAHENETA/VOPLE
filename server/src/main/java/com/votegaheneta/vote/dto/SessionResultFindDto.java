@@ -21,7 +21,6 @@ public class SessionResultFindDto {
   public static class VoteResult {
     private final Long voteId;
     private final String voteName;
-    private final Float totalVotePercent;
     private final List<TeamResult> voteTeamResultDtos;
 
     @Getter

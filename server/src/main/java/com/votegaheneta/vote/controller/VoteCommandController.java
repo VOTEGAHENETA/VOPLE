@@ -22,6 +22,6 @@ public class VoteCommandController {
   @PostMapping("{voteId}/castvote")
   public ResponseEntity<Void> castVote(@RequestBody VoteCastRequest voteCastRequest) {
     voteCommandService.castVote(voteCastRequest);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
