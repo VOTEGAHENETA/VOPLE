@@ -1,5 +1,8 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
@@ -44,13 +47,13 @@ public class VoteFindService {
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
     LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-    if(now.isBefore(voteStartTime)) {
+    if (now.isBefore(voteStartTime)) {
       voteStatus = VOTE_STATUSES[0];
-    } else if(now.isEqual(voteStartTime)) {
+    } else if (now.isEqual(voteStartTime)) {
       voteStatus = VOTE_STATUSES[1];
-    } else if(now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
+    } else if (now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
       voteStatus = VOTE_STATUSES[1];
-    } else if(now.isAfter(voteEndTime)) {
+    } else if (now.isAfter(voteEndTime)) {
       voteStatus = VOTE_STATUSES[2];
     }
     List<VoteFindDto> voteFindDtos = votes.stream().map(vote -> {
@@ -82,11 +85,52 @@ public class VoteFindService {
     );
   }
 
+  public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
+    ElectionSession electionSession = electionSessionRepository.findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
+    float wholeVoterPercent = electionSession.getVotedVoter() > 0
+        ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
+    List<VoteResult> voteResults = calculateVoteResult(sessionId);
+    List<Elected> electedList = new ArrayList<>();
+//    투표를 stream하고 투표팀을 stream해서 MAX팀 구하고 electedList에 추가
+    int max = -1;
+    // max팀이 여러개 라면?
+    for (VoteResult voteResult : voteResults) {
+      List<TeamResult> maxTeamResultList = new ArrayList<>();
+      for (TeamResult teamResult : voteResult.getTeamResults()) {
+        if (teamResult.getPollCnt() == max) {
+          maxTeamResultList.add(teamResult);
+        } else if (teamResult.getPollCnt() > max) {
+          max = teamResult.getPollCnt();
+          maxTeamResultList.clear();
+          maxTeamResultList.add(teamResult);
+        }
+      }
+      electedList.addAll(maxTeamResultList.stream().map(
+          teamResult -> {
+            return new Elected(
+                voteResult.getVoteId(),
+                voteResult.getVoteName(),
+                teamResult.getTeamId(),
+                teamResult.getPoster(),
+                teamResult.getVoteCandidateDtos()
+            );
+          }).toList());
+    }
+
+    return new SessionFinalResultFindDto(
+        ElectionSessionDto.from(electionSession),
+        wholeVoterPercent,
+        voteResults,
+        electedList
+    );
+  }
+
   /**
-   * 투표 결과 집계 로직
-   * JPA 성능이슈가 있어서 로직 조금 수정 필요
+   * 투표 결과 집계 로직 JPA 성능이슈가 있어서 로직 조금 수정 필요
+   *
    * @param sessionId
-   * @return
+   * @return List<VoteResult>
    */
   public List<VoteResult> calculateVoteResult(Long sessionId) {
     // 결과값 빼려면 wholeVoterPercent, VoteResults 이거 2개를 빼야하니까
@@ -101,7 +145,9 @@ public class VoteFindService {
 
         return new TeamResult(
             voteTeam.getId(),
+            voteTeam.getPoster(),
             Math.round(teamVotePercent * 10) / 10f,
+            voteTeam.getPollCnt(),
             voteTeam.getCandidates().stream().map(CandidateResult::from).toList()
         );
       }).toList();
@@ -111,28 +157,28 @@ public class VoteFindService {
       for (TeamResult teamResult : teamResults) {
         totalPercent += teamResult.getTeamVotePercent();
       }
-      if(Math.abs(totalPercent - 100f) > 0.01f) {
+      if (Math.abs(totalPercent - 100f) > 0.01f) {
         TeamResult maxTeamResult = null;
         float maxTeamVotePercent = 0.0f;
         for (TeamResult teamResult : teamResults) {
-          if(teamResult.getTeamVotePercent() > maxTeamVotePercent) {
+          if (teamResult.getTeamVotePercent() > maxTeamVotePercent) {
             maxTeamVotePercent = teamResult.getTeamVotePercent();
             maxTeamResult = teamResult;
           }
         }
         // 최종 조정치 계산
-        if(maxTeamResult != null) {
+        if (maxTeamResult != null) {
           float adjustment = 100f - totalPercent;
           maxTeamResult.adjustVoteTeamPercent(adjustment);
         }
       }
 
-      VoteResult voteResultFindDto = new VoteResult(
+      VoteResult voteResult = new VoteResult(
           vote.getId(),
           vote.getVoteName(),
           teamResults
       );
-      voteResults.add(voteResultFindDto);
+      voteResults.add(voteResult);
     }
     return voteResults;
   }

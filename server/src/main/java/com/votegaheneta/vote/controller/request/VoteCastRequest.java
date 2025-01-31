@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteCastRequest {
+
   private Long userId;
   private List<VoteSelection> voteSelections;
 
@@ -16,6 +17,7 @@ public class VoteCastRequest {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class VoteSelection {
+
     private Long voteId;
     private Long voteTeamId;
   }

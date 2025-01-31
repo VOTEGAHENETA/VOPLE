@@ -29,13 +29,13 @@ public class SessionFindDto {
     public static class VoteTeamFindDto {
 
       private final Long voteTeamId;
-      //    private final File poster;
+      private final String poster;
       private final List<VoteCandidateFindDto> candidates;
 
       public static VoteTeamFindDto from(VoteTeam voteTeam) {
         return new VoteTeamFindDto(
             voteTeam.getId(),
-//          voteTeam.getPoster(),
+            voteTeam.getPoster(),
             voteTeam.getCandidates().stream()
                 .map(VoteCandidateFindDto::from).toList()
         );

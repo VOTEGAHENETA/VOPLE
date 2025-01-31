@@ -23,8 +23,8 @@ public class VoteCommandService {
   public void castVote(VoteCastRequest voteCastRequest) {
     Long userId = voteCastRequest.getUserId();
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
-          Long voteId = voteSelection.getVoteId();
-          Long voteTeamId = voteSelection.getVoteTeamId();
+      Long voteId = voteSelection.getVoteId();
+      Long voteTeamId = voteSelection.getVoteTeamId();
       if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId)) {
         // AlreadyVotedException 클래스로 재구현 해야할듯
         // ERROR_CODE = 400 | 잘못된 요청
