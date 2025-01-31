@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 type PosterSize = 'xs' | 's' | 'm' | 'lg';
 
 interface PosterProps {
-  size?: PosterSize;
+  size: PosterSize;
   className?: string;
   children: React.ReactNode;
   src?: string;
