@@ -17,8 +17,7 @@ export const ICON_NAME = {
   BIGGER: 'bigger',
   ORANGEBIGGER: 'orangebigger',
   DOTS: 'dots',
-  LEFT: 'left'
+  LEFT: 'left',
 } as const;
-  
-export type IconName = 
-  (typeof ICON_NAME)[keyof typeof ICON_NAME];
+
+export type IconName = (typeof ICON_NAME)[keyof typeof ICON_NAME];

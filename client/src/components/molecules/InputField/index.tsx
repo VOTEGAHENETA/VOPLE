@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { Input, BaseInputProps } from '@/components/atoms/Input/index.tsx';
-import searchIcon from '@/assets/images/Icons/search-icon.svg';
+import Icon from '@/components/atoms/Icon/index.tsx';
+import { ICON_NAME } from '@/constants/ui.constants.ts';
 
 /** 컴포넌트 사용 예시 및 props 설명
  * @component InputField
@@ -206,6 +207,10 @@ export function InputField({
   const showError = variant === 'error' && Boolean(errorMessage);
   const showHelper = Boolean(helperText) && !showError;
 
+  const handleSearch = () => {
+    // 검색 로직 구현
+  };
+
   return (
     <div className='inputfield'>
       {/* label */}
@@ -225,12 +230,11 @@ export function InputField({
         {/* serach-btn */}
         {variant === 'search' && (
           <button type='button' className={styles.search__button}>
-            <img
+            <Icon
               className={styles.search__icon}
-              src={searchIcon}
-              alt='search icon'
+              name={ICON_NAME.ORANGEBIGGER}
+              onClick={handleSearch}
             />
-            {/* <Icon name='search' size={18} /> */}
           </button>
         )}
       </div>
