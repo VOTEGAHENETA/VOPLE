@@ -1,6 +1,6 @@
 package com.votegaheneta.chat.dto;
 
-import com.votegaheneta.user.entity.Users;
+import com.votegaheneta.user.dto.UserDto;
 import java.io.Serializable;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
@@ -27,8 +27,8 @@ public class ChatDto implements Serializable {
     this.createdTime = LocalTime.now();
   }
 
-  public void setUserInfo(Users user) {
-    this.userId = user.getId();
-    this.nickname = user.getNickname();
+  public void setUserInfo(UserDto userDto) {
+    this.userId = userDto.getUserId();
+    this.nickname = userDto.getNickname();
   }
 }
