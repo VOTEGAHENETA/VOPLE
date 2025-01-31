@@ -45,7 +45,7 @@ pipeline {
         stage('Update Containers') {
             steps {
                 script {
-                    sh 'docker-compose up -d --build server client'
+                    sh 'docker compose up -d --build server client'
                 }
             }
         }
