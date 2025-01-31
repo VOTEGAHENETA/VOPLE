@@ -5,11 +5,8 @@ import Poster from './components/atoms/Poster';
 import Icon from './components/atoms/Icon';
 
 function App() {
-
-
   return (
     <>
-  
       <Text size='xl' weight='bold' color='#999999'>
         테스트
       </Text>
