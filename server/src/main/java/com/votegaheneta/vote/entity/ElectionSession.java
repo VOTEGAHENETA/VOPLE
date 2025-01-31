@@ -84,8 +84,8 @@ public class ElectionSession {
     this.wholeVoter = wholeVoter;
   }
 
-  public void setVotedVoter(int votedVoter) {
-    this.votedVoter = votedVoter;
+  public void incrementVotedVoter() {
+    this.votedVoter++;
   }
 
   public void setEntracneQuestion(String entranceQuestion) {

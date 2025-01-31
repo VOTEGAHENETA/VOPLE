@@ -4,6 +4,8 @@ import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +38,8 @@ public class VoteInfo {
 
   private String selectCandidate;
   private boolean hasSelect;
+
+  @Enumerated(EnumType.STRING)
   private USER_TYPE userType = USER_TYPE.VOTER;
 
   @Builder
@@ -74,4 +78,11 @@ public class VoteInfo {
   public void setUserType(USER_TYPE userType) {
     this.userType = userType;
   }
+
+  // 투표했을 때 update
+  public void updateVoteInfo(Boolean hasSelect, String selectCandidate) {
+    this.hasSelect = hasSelect;
+    this.selectCandidate = selectCandidate;
+  }
+
 }

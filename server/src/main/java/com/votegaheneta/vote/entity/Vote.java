@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Entity
@@ -33,6 +34,7 @@ public class Vote {
   private List<VoteInfo> voteInfos = new ArrayList<>();
 
   @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL, orphanRemoval = true)
+  @BatchSize(size = 100)
   private List<VoteTeam> voteTeams = new ArrayList<>();
 
   private String voteName;
