@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { Input, BaseInputProps } from '@/components/atoms/Input/index.tsx';
-import Icon from '@/components/atoms/Icon/index.tsx';
 import Text from '@/components/atoms/Text/index.tsx';
+import IconButton from '@/components/atoms/IconButton/index.tsx';
 import {
   ICON_NAME,
   INPUT_TYPES,
@@ -101,7 +101,7 @@ export default function InputField({
         {/* serach-btn */}
         {variant === 'search' && (
           <button type='button' className={styles.search__button}>
-            <Icon
+            <IconButton
               className={styles.search__icon}
               name={ICON_NAME.ORANGEBIGGER}
               onClick={handleSearch}
