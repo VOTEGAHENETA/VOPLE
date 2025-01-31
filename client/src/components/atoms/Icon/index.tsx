@@ -14,7 +14,7 @@ import left from '../../../assets/icons/left.svg';
 
 type IconName =
   | 'mypage'
-  | 'doodle_back'
+  | 'doodleback'
   | 'home'
   | 'heart'
   | 'send'
