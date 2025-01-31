@@ -1,12 +1,18 @@
+import Text from './components/atoms/Text';
+import Image from './assets/sample/lg.png';
 import './App.css';
-import LoginForm from './components/organisms/LoginForm';
-import SearchForm from './components/organisms/SearchForm';
+import Poster from './components/atoms/Poster';
+import Icon from './components/atoms/Icon';
 
 function App() {
   return (
     <>
-      <LoginForm />
-      <SearchForm />
+      <Text size='xl' weight='bold' color='#999999'>
+        테스트
+      </Text>
+      <Poster size='m' src={Image}></Poster>
+      <Icon name='mypage'></Icon>
+      <Icon name='doodleback'></Icon>
     </>
   );
 }
