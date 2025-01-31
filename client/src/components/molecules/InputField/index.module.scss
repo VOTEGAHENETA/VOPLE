@@ -1,5 +1,3 @@
-@use "../../../assets/styles/variable" as *;
-
 .inputfield {
   position: relative;
   
@@ -17,14 +15,12 @@
   &__helper {
     margin-top: 4px;
     font-size: 12px;
-    color: $color-error;
+    color: var(--color-error);
 
     &--error {
-      color: $color-error;
+      color: var(--color-error);
     }
   }
-  
-
 
 }
 
@@ -40,7 +36,7 @@
   transform: translateY(-50%);
   z-index: 1;
   border: none;
-  background-color: #fff;
+  background-color: var(--color-white);
 }
 
 
