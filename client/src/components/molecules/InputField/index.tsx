@@ -4,6 +4,12 @@ import { Input, BaseInputProps } from '@/components/atoms/Input/index.tsx';
 import Icon from '@/components/atoms/Icon/index.tsx';
 import { ICON_NAME } from '@/constants/ui.constants.ts';
 import Text from '@/components/atoms/Text/index.tsx';
+import {
+  InputType,
+  InputVariant,
+  INPUT_TYPES,
+  INPUT_VARIANTS,
+} from '@/constants/ui.constants.ts';
 
 /** 컴포넌트 사용 예시 및 props 설명
  * @component InputField
@@ -114,10 +120,6 @@ import Text from '@/components/atoms/Text/index.tsx';
  * @props {string} [validationMessage.number] - 숫자 타입 입력값 검증 메시지
  * @props {string} [validationMessage.tel] - 전화번호 타입 입력값 검증 메시지
  */
-
-// 타입 추출
-type InputType = (typeof INPUT_TYPES)[keyof typeof INPUT_TYPES];
-type InputVariant = (typeof INPUT_VARIANTS)[keyof typeof INPUT_VARIANTS];
 
 export interface InputFieldProps extends BaseInputProps {
   id: string;
