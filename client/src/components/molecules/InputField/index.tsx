@@ -115,25 +115,6 @@ import Text from '@/components/atoms/Text/index.tsx';
  * @props {string} [validationMessage.tel] - 전화번호 타입 입력값 검증 메시지
  */
 
-// 상수 정의
-const INPUT_TYPES = {
-  TEXT: 'text',
-  NUMBER: 'number',
-  TEL: 'tel',
-  EMAIL: 'email',
-  PASSWORD: 'password',
-  SEARCH: 'search',
-} as const;
-
-const INPUT_VARIANTS = {
-  DEFAULT: 'default',
-  SEARCH: 'search',
-  ERROR: 'error',
-  WARNING: 'warning',
-} as const;
-
-export { INPUT_TYPES, INPUT_VARIANTS };
-
 // 타입 추출
 type InputType = (typeof INPUT_TYPES)[keyof typeof INPUT_TYPES];
 type InputVariant = (typeof INPUT_VARIANTS)[keyof typeof INPUT_VARIANTS];

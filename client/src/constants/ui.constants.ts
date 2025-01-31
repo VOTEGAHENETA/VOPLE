@@ -21,3 +21,24 @@ export const ICON_NAME = {
 } as const;
 
 export type IconName = (typeof ICON_NAME)[keyof typeof ICON_NAME];
+
+// 상수 정의
+const INPUT_TYPES = {
+  TEXT: 'text',
+  NUMBER: 'number',
+  TEL: 'tel',
+  EMAIL: 'email',
+  PASSWORD: 'password',
+  SEARCH: 'search',
+} as const;
+
+const INPUT_VARIANTS = {
+  DEFAULT: 'default',
+  SEARCH: 'search',
+  ERROR: 'error',
+  WARNING: 'warning',
+} as const;
+
+export type InputTypes = (typeof INPUT_TYPES)[keyof typeof INPUT_TYPES];
+export type InputVariants =
+  (typeof INPUT_VARIANTS)[keyof typeof INPUT_VARIANTS];
