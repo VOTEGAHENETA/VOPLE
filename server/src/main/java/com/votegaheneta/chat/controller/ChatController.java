@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class ChatController {
 
-//  private final ChatServiceFactory chatServiceFactory;
   private final ChatService chatService;
 
   @MessageMapping("/{type}/{roomId}")
