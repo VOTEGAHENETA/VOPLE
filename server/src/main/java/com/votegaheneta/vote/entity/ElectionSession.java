@@ -1,6 +1,5 @@
 package com.votegaheneta.vote.entity;
 
-import com.votegaheneta.chat.entity.SessionChatRoom;
 import com.votegaheneta.user.entity.Users;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,9 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.io.File;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -35,9 +33,6 @@ public class ElectionSession {
   @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Vote> votes;
 
-  @OneToOne(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
-  private SessionChatRoom sessionChatRoom;
-
   @Builder
   public ElectionSession(Users hostUser, String sessionName,
       int wholeVoter, String entranceQuestion, String entranceAnswer, LocalDateTime voteStartTime,
@@ -51,7 +46,7 @@ public class ElectionSession {
     this.voteEndTime = voteEndTime;
   }
 
-  private File qrCode;
+  private String qrCode;
   private String sessionName;
   private int wholeVoter;
   private int votedVoter;
@@ -60,16 +55,12 @@ public class ElectionSession {
   private LocalDateTime sessionStartTime = LocalDateTime.now();
   private LocalDateTime voteStartTime;
   private LocalDateTime voteEndTime;
+  @Transient
   private boolean isActive;
 
   public void addVote(Vote vote) {
     votes.add(vote);
     vote.setElectionSession(this);
-  }
-
-  public void setSessionChatRoom(SessionChatRoom sessionChatRoom) {
-    this.sessionChatRoom = sessionChatRoom;
-    sessionChatRoom.setElectionSession(this);
   }
 
   public void setId(Long id) {
@@ -80,7 +71,8 @@ public class ElectionSession {
     this.hostUser = hostUser;
     hostUser.getElectionSessions().add(this);
   }
-  public void setQrCode(File qrCode) {
+
+  public void setQrCode(String qrCode) {
     this.qrCode = qrCode;
   }
 
