@@ -1,16 +1,16 @@
 import React from 'react';
 import styles from './index.module.scss';
 
-import mypage from '../../../assets/icons/mypage.svg';
-import doodleback from '../../../assets/icons/doodleback.svg';
-import home from '../../../assets/icons/home.svg';
-import heart from '../../../assets/icons/heart.svg';
-import send from '../../../assets/icons/send.svg';
-import back from '../../../assets/icons/back.svg';
-import bigger from '../../../assets/icons/bigger.svg';
-import orangebigger from '../../../assets/icons/orangebigger.svg';
-import dots from '../../../assets/icons/dots.svg';
-import left from '../../../assets/icons/left.svg';
+import mypage from '@/assets/icons/mypage.svg';
+import doodleback from '@/assets/icons/doodleback.svg';
+import home from '@/assets/icons/home.svg';
+import heart from '@/assets/icons/heart.svg';
+import send from '@/assets/icons/send.svg';
+import back from '@/assets/icons/back.svg';
+import bigger from '@/assets/icons/bigger.svg';
+import orangebigger from '@/assets/icons/orangebigger.svg';
+import dots from '@/assets/icons/dots.svg';
+import left from '@/assets/icons/left.svg';
 
 type IconName =
   | 'mypage'
@@ -44,7 +44,7 @@ interface IconProps {
   onClick?: () => void;
 }
 
-const Icon: React.FC<IconProps> = ({
+const IconButton: React.FC<IconProps> = ({
   name,
   className = '',
   children,
@@ -64,4 +64,4 @@ const Icon: React.FC<IconProps> = ({
   );
 };
 
-export default Icon;
+export default IconButton;
