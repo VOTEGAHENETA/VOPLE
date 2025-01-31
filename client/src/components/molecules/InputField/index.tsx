@@ -12,9 +12,6 @@ import {
 } from '@/constants/ui.constants.ts';
 
 export interface InputFieldProps extends BaseInputProps {
-  id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: InputType;
   variant?: InputVariant;
   label?: string;
