@@ -1,6 +1,5 @@
 package com.votegaheneta.vote.entity;
 
-import com.votegaheneta.chat.entity.TeamChatRoom;
 import com.votegaheneta.stream.entity.Stream;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,9 +40,6 @@ public class VoteTeam {
   private List<Candidate> candidates = new ArrayList<>();
 
   @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
-  private TeamChatRoom teamChatRoom;
-
-  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
   private Stream stream;
 
   private int pollCnt;
@@ -67,10 +63,6 @@ public class VoteTeam {
   public void addCandidate(Candidate candidate) {
     candidates.add(candidate);
     candidate.setVoteTeam(this);
-  }
-
-  public void setTeamChatRoom(TeamChatRoom teamChatRoom) {
-    this.teamChatRoom = teamChatRoom;
   }
 
   public void setStream(Stream stream) {

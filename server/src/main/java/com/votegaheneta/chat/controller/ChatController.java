@@ -2,7 +2,7 @@ package com.votegaheneta.chat.controller;
 
 import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.ChatRoomDto;
-import com.votegaheneta.chat.service.ChatService2;
+import com.votegaheneta.chat.service.ChatService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ChatController {
 
 //  private final ChatServiceFactory chatServiceFactory;
-  private final ChatService2 chatService2;
+  private final ChatService chatService;
 
   @MessageMapping("/{type}/{roomId}")
   @SendTo("/api/room/{type}/{roomId}")
   public ChatDto SessionChat(@DestinationVariable String type,
                              @DestinationVariable Long roomId,
                              ChatDto chatDto) {
-    chatService2.saveChat(new ChatRoomDto(roomId, type), chatDto);
+    chatService.saveChat(new ChatRoomDto(roomId, type), chatDto);
     return chatDto;
   }
 
@@ -33,7 +33,7 @@ public class ChatController {
   @GetMapping("/api/room/{type}/{roomId}")
   @ResponseBody
   public List<ChatDto> getChatList(@PathVariable String type, @PathVariable Long roomId) {
-    return chatService2.getChatList(new ChatRoomDto(roomId, type));
+    return chatService.getChatList(new ChatRoomDto(roomId, type));
   }
 
   // 성능 테스트 1000개 채팅 -> 20ms 정도
@@ -46,26 +46,7 @@ public class ChatController {
 //      chatDto.setText("test" + i);
 //      chatDto.setNickname("test" + i);
 //      chatService2.saveChat(chatRoomDto, chatDto);
-//      chatService2.saveChat(chatRoomDto, chatDto);
 //    }
 //    return ResponseEntity.ok().build();
-//  }
-
-//  // Total Count 날라가는 쿼리
-//  @GetMapping("/api/v2/room/{type}/{roomId}")
-//  @ResponseBody
-//  public Page<ChatDto> getChatListByPage(@PathVariable String type, @PathVariable Long roomId,
-//                                         @RequestParam Map<String, String> page) {
-//    ChatService chatService = chatServiceFactory.getChatService(type);
-//    return chatService.getChatListByPage(roomId, page);
-//  }
-//
-//  // 무한 스크롤 할때 쓰는 쿼리
-//  @GetMapping("/api/v3/room/{type}/{roomId}")
-//  @ResponseBody
-//  public Slice<ChatDto> getChatListBySlice(@PathVariable String type, @PathVariable Long roomId,
-//                                           @RequestParam Map<String, String> page) {
-//    ChatService chatService = chatServiceFactory.getChatService(type);
-//    return chatService.getChatListBySlice(roomId, page);
 //  }
 }

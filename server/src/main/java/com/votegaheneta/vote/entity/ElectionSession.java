@@ -1,6 +1,5 @@
 package com.votegaheneta.vote.entity;
 
-import com.votegaheneta.chat.entity.SessionChatRoom;
 import com.votegaheneta.user.entity.Users;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
@@ -18,7 +16,6 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Entity
@@ -35,9 +32,6 @@ public class ElectionSession {
 
   @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Vote> votes;
-
-  @OneToOne(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
-  private SessionChatRoom sessionChatRoom;
 
   @Builder
   public ElectionSession(Users hostUser, String sessionName,
@@ -67,10 +61,6 @@ public class ElectionSession {
   public void addVote(Vote vote) {
     votes.add(vote);
     vote.setElectionSession(this);
-  }
-
-  public void setSessionChatRoom(SessionChatRoom sessionChatRoom) {
-    this.sessionChatRoom = sessionChatRoom;
   }
 
   public void setId(Long id) {

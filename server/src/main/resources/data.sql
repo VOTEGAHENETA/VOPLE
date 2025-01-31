@@ -27,16 +27,16 @@ insert into Vote_team (id, vote_id, poll_cnt, candidate_statement, poster, prefi
 values (1, 1, 0, 'statement', 'poster', 'prefix');
 
 -- team_chat_room table
-insert into team_chat_room (id)
-values (1);
+-- insert into team_chat_room (id)
+-- values (1);
 
 -- team_chat table
 
 
 -- Session_chat_room table
-INSERT INTO Session_chat_room (id)
-VALUES (1),
-       (2);
+-- INSERT INTO Session_chat_room (id)
+-- VALUES (1),
+--        (2);
 
 -- Session_chat table
 -- INSERT INTO Session_chat (id, session_chat_room_id, text, user_id, created_time)

@@ -1,17 +1,11 @@
 package com.votegaheneta.chat.service;
 
 import com.votegaheneta.chat.dto.ChatDto;
-import com.votegaheneta.chat.dto.UserChatDto;
+import com.votegaheneta.chat.dto.ChatRoomDto;
 import java.util.List;
-import java.util.Map;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 
 public interface ChatService {
-
-  ChatDto saveChat(String type, Long roomId, ChatDto ChatDto, UserChatDto userChatDto);
-//  List<ChatDto> getChatList(Map<String, String> info);
-  List<ChatDto> getChatList(Long roomId);
-  Page<ChatDto> getChatListByPage(Long roomId, Map<String, String> page);
-  Slice<ChatDto> getChatListBySlice(Long roomId, Map<String, String> page);
+  void saveChat(ChatRoomDto chatRoomDto, ChatDto ChatDto);
+  List<ChatDto> getChatList(ChatRoomDto chatRoomDto);
+  boolean deleteChatRoom(ChatRoomDto chatRoomDto);
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService2{
+public class ChatServiceImpl implements ChatService{
 
   private final RedisChatRepository redisChatRepository;
 
