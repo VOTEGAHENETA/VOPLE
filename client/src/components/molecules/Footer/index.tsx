@@ -2,23 +2,26 @@ import styles from './index.module.scss';
 import IconButton from '@/components/atoms/IconButton';
 import { ICON_NAME } from '@/constants/ui.constants';
 import CircleButton from '@/components/atoms/CircleButton';
-import { ReactNode } from 'react';
-
-interface Props {
-  /** 투표 시간과 역할에 따라 표시되는 내용이 달라진다. */
-  children: ReactNode;
-}
+import { useNavigate } from 'react-router-dom';
 
 /** 메인 화면에서 보여질 Footer */
-function Footer({ children }: Props) {
+function Footer() {
+  const navigate = useNavigate();
+
+  function handleHome() {
+    navigate('/elections');
+  }
+
+  function handleMyPage() {
+    navigate('/mypage');
+  }
+
   return (
     <nav id={styles.footer}>
-      <IconButton name={ICON_NAME.HOME} />
-      <IconButton name={ICON_NAME.MYPAGE} />
+      <IconButton name={ICON_NAME.HOME} onClick={handleHome} />
+      <IconButton name={ICON_NAME.MYPAGE} onClick={handleMyPage} />
       <div className={styles['circle-section']}>
-        <CircleButton status={false} type='button'>
-          {children}
-        </CircleButton>
+        <CircleButton status={false} type='button' />
       </div>
     </nav>
   );
