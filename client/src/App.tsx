@@ -1,21 +1,30 @@
-import Text from './components/atoms/Text';
-import Image from './assets/sample/lg.png';
-import './App.css';
-import Poster from './components/atoms/Poster';
-import Icon from './components/atoms/Icon';
+import { Outlet, useLocation } from 'react-router-dom';
+import './App.scss';
+import Header from '@/components/molecules/Header';
 
 function App() {
+  const location = useLocation();
 
+  // 헤더가 사용되지 않는 곳
+  const nonHeaderLocation = [
+    '/login',
+    '/elections/:election_id/cadindates/:candidate_id',
+  ];
+
+  // [/elections//candidates/] => id값을 빼고 나온 path를 기준으로 header 유무 판단
+  const showHeader = !nonHeaderLocation.some((path) =>
+    location.pathname.startsWith(
+      path.replace(':election_id', '').replace(':candidate_id', '')
+    )
+  );
 
   return (
     <>
-  
-      <Text size='xl' weight='bold' color='#999999'>
-        테스트
-      </Text>
-      <Poster size='m' src={Image}></Poster>
-      <Icon name='mypage'></Icon>
-      <Icon name='doodleback'></Icon>
+      {showHeader && <Header />}
+      <main id='main-container' className={showHeader ? 'show-header' : ''}>
+        app page
+        <Outlet />
+      </main>
     </>
   );
 }
