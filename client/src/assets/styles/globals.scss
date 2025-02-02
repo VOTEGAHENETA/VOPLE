@@ -1,2 +1,16 @@
 @import url('./variable.css');
 @import './reset.scss';
+@import './fonts.scss';
+
+body {
+    font-family: 'Pretendard', sans-serif;
+    color:var(--color-black);
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;  
+  color: inherit;
+}

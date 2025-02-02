@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Input, BaseInputProps } from '@/components/atoms/Input/index.tsx';
+import Input from '@/components/atoms/Input/index.tsx';
 import Text from '@/components/atoms/Text/index.tsx';
 import IconButton from '@/components/atoms/IconButton/index.tsx';
 import {
@@ -11,7 +11,10 @@ import {
   InputVariant,
 } from '@/constants/ui.constants.ts';
 
-export interface InputFieldProps extends BaseInputProps {
+export interface InputFieldProps {
+  id: string; // input의 필수값
+  value: string; // input의 필수값
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // input의 필수값
   type?: InputType;
   variant?: InputVariant;
   label?: string;
@@ -26,6 +29,7 @@ export interface InputFieldProps extends BaseInputProps {
 }
 
 export default function InputField({
+  value,
   onChange,
   type = INPUT_TYPES.TEXT,
   variant = INPUT_VARIANTS.DEFAULT,
@@ -88,6 +92,7 @@ export default function InputField({
       <div className={styles.inputfield__wrapper}>
         {/* input */}
         <Input
+          value={value}
           variant={variant}
           placeholder={placeholder}
           disabled={disabled}

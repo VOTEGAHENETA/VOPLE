@@ -9,9 +9,14 @@ export interface BaseInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export interface InputProps extends BaseInputProps {
+export interface InputProps {
+  id: string; // 필수 값
+  value: string; // 필수 값
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 값
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   variant?: 'default' | 'search' | 'error' | 'warning';
   placeholder?: string;
+  filled?: boolean;
   disabled?: boolean; // disabled 속성 추가
 }
 
@@ -24,16 +29,30 @@ export interface InputProps extends BaseInputProps {
 - disabled : 비활성화 상태 입력
 */
 
-export function Input({
+export default function Input({
+  value = '',
+  onChange,
+  onKeyPress,
   variant = 'default',
   disabled = false,
+  filled = false,
   ...props
 }: InputProps) {
   const inputClassName = `
     ${styles.input}
     ${variant !== 'default' ? styles[`input--${variant}`] : ''}
     ${disabled ? styles['input--disabled'] : ''}
+    ${filled ? styles['input--filled'] : ''}
   `.trim();
 
-  return <input className={inputClassName} disabled={disabled} {...props} />;
+  return (
+    <input
+      onKeyPress={onKeyPress}
+      value={value}
+      className={inputClassName}
+      disabled={disabled}
+      onChange={onChange}
+      {...props}
+    />
+  );
 }

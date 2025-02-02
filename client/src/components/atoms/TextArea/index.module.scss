@@ -1,0 +1,26 @@
+// TextArea.module.scss
+.textarea {
+    display: flex;
+    flex-direction: column;
+    resize: none;
+    width: inherit;
+    height: calc(1.5em * 8);
+    // min-height: calc(1.5em * 8); 
+    line-height: 1.5;
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+    border: 1px solid var(--border-gray);
+    border-radius: 10px;
+
+    
+    &:focus {
+      outline: none;
+      border-color: var(--color-main-orange);
+    }
+
+    &:disabled {
+      background-color: var(--disabled-gray);
+      cursor: not-allowed;
+    }
+
+  }

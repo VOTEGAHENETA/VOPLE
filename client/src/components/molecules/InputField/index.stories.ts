@@ -17,19 +17,19 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: '이메일 입력',
-    placeholder: '이메일을 입력하세요',
+    label: '칭호',
+    placeholder: '칭호를 입력해주세요.',
     id: 'default-field',
   },
 };
 
 export const WithError: Story = {
   args: {
-    label: '이메일 입력',
-    placeholder: '이메일을 입력하세요',
+    label: '답변 입력',
+    placeholder: '답변을 입력해주세요.',
     id: 'error-field',
     variant: 'error',
-    errorMessage: '올바른 이메일 형식이 아닙니다.',
+    errorMessage: '땡!!! 틀렸습니다.',
   },
 };
 
