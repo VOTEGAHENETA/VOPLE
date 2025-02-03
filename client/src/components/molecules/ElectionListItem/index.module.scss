@@ -1,0 +1,87 @@
+// ElectionListItem.module.scss
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  margin-bottom: 8px;
+  background-color: #fff;
+  border: 1px solid var(--border-gray);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+
+  // Menu
+  ul {
+    right: 34px; 
+    top : 0;
+  }
+}
+
+.leftContent {
+  min-width: 0;
+  max-width: 250px;
+  width: inherit;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title__wrap{
+  width: inherit;
+  display: flex;
+  gap: 0px;
+}
+
+.title {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  flex: 1;
+  max-width: calc(100% - 20px);
+  // min-width: 0; // flex 아이템의 너비가 내용에 맞춰 늘어나는 것을 방지
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.closedBadge {
+  display: inline-block;
+  width: 34px;
+  flex-shrink: 0; // 배지의 크기는 고정
+  margin-right: 4px;
+}
+
+.period {
+  font-size: 14px;
+  color: var(--color-gray-light);
+}
+
+.resultButton {
+  height: 34px;
+  padding: 6px 12px;
+  color: var(--color-black);
+  border: 1px solid var(--border-gray);
+  border-radius: 17px;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.menuButton {
+  display: flex;
+  align-items: start;
+  background: none;
+  border: none;
+  height: 100%;
+  cursor: pointer;
+  color: #666;
+
+}
+
+.rotate {
+  opacity: 0.5;
+  transform: rotate(180deg);
+}

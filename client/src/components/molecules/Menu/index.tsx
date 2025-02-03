@@ -1,5 +1,5 @@
 import styles from './index.module.scss';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface item {
   /** 메뉴의 고유 id */
@@ -16,9 +16,9 @@ interface Props {
 }
 
 function Menu({ items, isOpen }: Props) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   function handleRoute(path: string) {
-    navigate(path);
+    // navigate(path);
   }
 
   const popupClasses = [styles.popup, styles[`is-open-${isOpen}`]].join(' ');
