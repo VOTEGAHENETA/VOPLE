@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 
 /**
- *
- * @param {number} time : 포매팅할 시간
- * @returns HH:MM:SS 형식으로 포매팅
+ * @param {number} time : 포매팅할 시간(초)
+ * @returns HH:MM:SS 형식의 문자열 반환
  */
 function formatTime(time: number): string {
   const hours = Math.floor(time / 3600);
@@ -14,40 +13,33 @@ function formatTime(time: number): string {
 }
 
 /**
- *
- * @param {Date} targetTime : 남은 시간
- * @returns 남은 시간은 현재 시간과 계산하여 '밀리초(ms)'를 '초(seconds)'로 반환
+ * @param {Date} targetTime : 목표 시각
+ * @returns 현재 시각과의 차이를 초단위로 반환(음수일 경우 0을 반환)
  */
 function getLeftTime(targetTime: Date): number {
   const now = new Date();
-  // Math.max를 이용해 값이 음수로 가지 않음
   return Math.max(Math.floor((targetTime.getTime() - now.getTime()) / 1000), 0);
 }
 
 /**
- *
- * @param {Date} targetTime : 남은 시간
- * @returns 1초마다 남은 시간을 표시
+ * @param {Date} targetTime : 타이머 종료 목표 시각
+ * @returns targetTime까지 남은 시간을 HH:MM:SS 형식으로 반환하며,
+ *          targetTime이 바뀌면 새로운 타이머를 생성합니다.
  */
 function useTimer(targetTime: Date) {
-  const [left, setLeft] = useState<string>(formatTime(getLeftTime(targetTime)));
+  const [left, setLeft] = useState<number>(getLeftTime(targetTime));
 
   useEffect(() => {
-    function updateTime() {
-      const remaining = getLeftTime(targetTime);
-      setLeft(formatTime(remaining));
+    // deadline이 바뀌면 초기 남은 시간을 새로 계산합니다.
+    setLeft(getLeftTime(targetTime));
+    const timer = setInterval(() => {
+      setLeft(getLeftTime(targetTime));
+    }, 1000);
 
-      if (remaining <= 0) {
-        clearInterval(timer);
-      }
-    }
-
-    const timer = setInterval(updateTime, 1000); // 1000ms(1초) 마다 갱신
-
-    return () => clearInterval(timer); // 컴포넌트가 언마운트(unmount)될 때 마다 정리
+    return () => clearInterval(timer);
   }, [targetTime]);
 
-  return left;
+  return formatTime(left);
 }
 
 export default useTimer;

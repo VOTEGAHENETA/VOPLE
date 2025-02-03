@@ -19,11 +19,11 @@
   font-size: 1rem;
 
   &-status {
-    &-able {
+    &-true {
       background-color: var(--color-main-orange);
     }
 
-    &-disable {
+    &-false {
       background-color: var(--color-gray-light);
     }
   }
