@@ -63,7 +63,7 @@ public class ChatServiceImpl implements ChatService {
           .orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 세션입니다."));
       case "TEAM" -> voteTeamRepository.findById(roomId)
           .orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 팀입니다."));
-
+      default -> throw new InvalidChatRoomException("잘못된 입력입니다");
     }
 
     // 레디스에 채팅방 정보 저장
@@ -96,12 +96,14 @@ public class ChatServiceImpl implements ChatService {
 
   @Override
   public List<ChatDto> getChatList(ChatRoomDto chatRoomDto) throws InvalidChatRoomException {
+    validateChatRoomKey(chatRoomDto);
     String key = generateChatKey(chatRoomDto);
     return redisRepository.getList(key);
   }
 
   @Override
   public boolean deleteChatRoom(ChatRoomDto chatRoomDto) throws InvalidChatRoomException {
+    validateChatRoomKey(chatRoomDto);
     String key = generateChatKey(chatRoomDto);
     return redisRepository.delete(key);
   }
