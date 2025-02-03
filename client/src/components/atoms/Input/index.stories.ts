@@ -1,6 +1,5 @@
-// src/components/atoms/input/Input.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { Input } from './index';
+import Input from './index';
 
 const meta = {
   title: 'Atoms/Input',
@@ -9,11 +8,13 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  excludeStories: /.*Data$/, // "Data"로 끝나는 export들은 스토리가 아닙니다.
   args: {
     id: 'input',
+    value: '기본 입력값',
     placeholder: 'Input',
     variant: 'default',
+    filled: false,
+    onChange: () => {},
   },
 } satisfies Meta<typeof Input>;
 
@@ -50,5 +51,14 @@ export const SearchInput: Story = {
     id: 'search-input',
     placeholder: '검색어를 입력하세요',
     variant: 'search',
+  },
+};
+
+export const FilledInput: Story = {
+  args: {
+    id: 'search-input',
+    placeholder: '검색어를 입력하세요',
+    variant: 'search',
+    filled: true,
   },
 };

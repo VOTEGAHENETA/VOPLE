@@ -1,0 +1,47 @@
+.candidate {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  height: 213px;
+
+  &-all {
+    display: flex;
+    border-radius: 10px;
+    background-color: white;
+    overflow: hidden;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: fit-content;
+    gap: 12px;
+    padding: 0 16px;
+  }
+  &-none-intro {
+    height: 100px;
+    text-align: center;
+    align-items: center;
+  }
+
+  &-poster {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.information {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  &-perfix {
+    margin-right: 5px;
+  }
+}
+
+.introduction {
+  height: 100px;
+  line-height: 20px;
+  white-space: pre-line;
+}

@@ -1,4 +1,5 @@
 .text {
+  display: flex;
   // 사이즈 변형
   &-size {
     &-xs {
@@ -6,6 +7,9 @@
     }
     &-s {
       font-size: 14px;
+    }
+    &-sm {
+      font-size: 16px;
     }
     &-m {
       font-size: 18px;
