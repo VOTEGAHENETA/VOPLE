@@ -11,9 +11,11 @@ const meta = {
   tags: ['autodocs'],
   args: {
     id: 'input',
+    value: '기본 입력값',
     placeholder: 'Input',
     variant: 'default',
     filled: false,
+    onChange: () => {},
   },
 } satisfies Meta<typeof Input>;
 
