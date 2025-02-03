@@ -1,8 +1,9 @@
 import styles from './index.module.scss';
 import IconVoteHand from '@/assets/icons/IconVoteHand';
 import useTimer from '@/hooks/useTimer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Text from '@/components/atoms/Text';
+import clsx from 'clsx';
 
 type VoteButtonLabel = '투표하기' | '투표시작전' | '선·관·위';
 
@@ -35,38 +36,36 @@ function CircleButton({ type = 'button', onClick }: Props) {
   //   queryFn: () => getElection(sessionId),
   // });
 
-  useEffect(() => {
-    const now = new Date();
-    const startTime = new Date(electionData.voteStartTime);
-    const endTime = new Date(electionData.voteEndTime);
+  const now = new Date();
+  const startTime = new Date(electionData.voteStartTime);
+  const endTime = new Date(electionData.voteEndTime);
 
-    if (electionData.hostId === currentUserId) {
-      if (buttonLabel !== '선·관·위') setButtonLabel('선·관·위');
-      return;
-    }
+  if (electionData.hostId === currentUserId) {
+    if (buttonLabel !== '선·관·위') setButtonLabel('선·관·위');
+    return;
+  }
 
-    if (timeLeft === '00:00:00') {
-      if (now <= endTime) {
-        setButtonLabel('투표하기');
-        setDeadline(endTime);
-        setStatus(true);
-      }
+  if (timeLeft === '00:00:00') {
+    if (now <= endTime) {
+      setButtonLabel('투표하기');
+      setDeadline(endTime);
+      setStatus(true);
     }
+  }
 
-    if (now < startTime) {
-      if (buttonLabel !== '투표시작전') {
-        setButtonLabel('투표시작전');
-        setDeadline(startTime);
-        setStatus(false);
-      }
-    } else if (now >= startTime && now <= endTime) {
-      if (buttonLabel !== '투표하기') {
-        setButtonLabel('투표하기');
-        setDeadline(endTime);
-        setStatus(true);
-      }
+  if (now < startTime) {
+    if (buttonLabel !== '투표시작전') {
+      setButtonLabel('투표시작전');
+      setDeadline(startTime);
+      setStatus(false);
     }
-  }, [timeLeft]);
+  } else if (now >= startTime && now <= endTime) {
+    if (buttonLabel !== '투표하기') {
+      setButtonLabel('투표하기');
+      setDeadline(endTime);
+      setStatus(true);
+    }
+  }
 
   const btnClasses = [styles.btn, styles[`btn-status-${status}`]].join(' ');
 
@@ -77,7 +76,7 @@ function CircleButton({ type = 'button', onClick }: Props) {
         <Text weight='normal' size='s'>
           {buttonLabel}
         </Text>
-        <div>
+        <div className={clsx(styles.ab, styles.bc)}>
           <IconVoteHand />
         </div>
       </button>
