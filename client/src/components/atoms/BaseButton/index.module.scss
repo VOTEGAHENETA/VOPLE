@@ -1,0 +1,51 @@
+.btn {
+  text-align: center;
+  border: none;
+  color: var(--color-white);
+  cursor: pointer;
+
+  &-base {
+    padding: 0 25px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  &-chip {
+    padding: 0 12px;
+    height: 26px;
+    border-radius: 13px;
+  }
+
+  &-status {
+    &-fill {
+      background-color: var(--color-main-orange);
+    }
+
+    &-outline {
+      border: 1px solid var(--color-main-orange);
+      background-color: var(--color-white);
+      color: var(--color-main-orange);
+    }
+
+    &-disable {
+      background-color: var(--color-gray-background);
+      color: var(--color-gray-light);
+    }
+
+  }
+
+  &-mini-chip {
+    padding: 0 12px;
+    height: 26px;
+    border-radius: 13px;
+    border-color: var(--border-gray);
+    color: var(--color-black);
+    background-color: #fff;
+
+    &.btn-status-fill {
+      background-color: rgba(255,255,255,0.5);
+      color: #fff;
+    }
+  }
+
+}
