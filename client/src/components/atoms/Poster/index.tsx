@@ -7,7 +7,6 @@ type PosterSize = 'xs' | 's' | 'm' | 'lg';
 interface PosterProps {
   size: PosterSize;
   className?: string;
-  children: React.ReactNode;
   src?: string;
 }
 
@@ -25,7 +24,8 @@ const Poster: React.FC<PosterProps> = ({ size = 'm', className = '', src }) => {
         <img src={src} className={PosterClasses} />
       ) : (
         <Text size='xs' weight='normal' color='#999999'>
-          아직 포스터가 <br/>없어요.
+          아직 포스터가 <br />
+          없어요.
         </Text>
       )}
     </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './index.module.scss';
 import Poster from '@/components/atoms/Poster';
 import Text from '@/components/atoms/Text';

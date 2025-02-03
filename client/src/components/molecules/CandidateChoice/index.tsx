@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './index.module.scss';
 import Poster from '@/components/atoms/Poster';
 import Text from '@/components/atoms/Text';
@@ -16,9 +16,9 @@ function CandidateChoice() {
     <div className={styles.choice}>
       <div className={styles['choice-poster']} onClick={chooseCandidate}>
         <Poster size='s' src={mockCandidate.poster} />
-        {choice ? (
+        {choice && (
           <img src={check} alt='' className={styles['choice-check']} />
-        ) : null}
+        )}
       </div>
       <Text size='s' weight='bold' color='#000000'>
         김미리

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
 import { mockCandidate } from './mockData';
