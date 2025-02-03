@@ -9,10 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableTransactionManagement
 public class RedisConfig {
 
   @Value("${spring.data.redis.host}")
@@ -20,6 +23,13 @@ public class RedisConfig {
 
   @Value("${spring.data.redis.port}")
   private int redisPort;
+
+  @Bean
+  public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    StringRedisTemplate stringRedisTemplate = new StringRedisTemplate(redisConnectionFactory);
+    stringRedisTemplate.setEnableTransactionSupport(true);
+    return stringRedisTemplate;
+  }
 
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {

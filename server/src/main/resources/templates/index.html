@@ -59,8 +59,8 @@
     if (message && stompClient) {
       stompClient.send('/api/send/' + select.value + '/1', {
       }, JSON.stringify({
-        userId : 1,
-        nickname : 'nickname1',
+        userId : 2,
+        // nickname : 'nickname1',
         text : message
       })); // 메시지 전송
       messageInput.value = ''; // 입력 필드 초기화
