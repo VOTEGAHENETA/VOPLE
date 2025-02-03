@@ -50,6 +50,7 @@ export const Default: Story = {
   args: {
     id: 'default',
     value: '',
+    label: '기본라벨',
     placeholder: '자신을 자유롭게 소개해보세요!',
     onChange: (e) => console.log('Changed:', e.target.value),
   },
@@ -59,6 +60,7 @@ export const Disabled: Story = {
   args: {
     id: 'disabled',
     value: '비활성화된 텍스트 영역입니다.',
+    label: '기본라벨',
     disabled: true,
     onChange: (e) => console.log('Changed:', e.target.value),
   },

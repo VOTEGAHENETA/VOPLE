@@ -24,6 +24,9 @@ const meta = {
     disabled: {
       description: '비활성화 여부',
     },
+    onChange: {
+      description: 'value값 변경 함수',
+    },
   },
 } satisfies Meta<typeof TextArea>;
 
@@ -35,6 +38,7 @@ export const Default: Story = {
     id: 'default',
     placeholder: '자신을 자유롭게 소개해보세요!',
     value: '',
+    onChange: (e) => console.log('Changed:', e.target.value),
   },
 };
 
@@ -44,6 +48,7 @@ export const WithMaxLength: Story = {
     placeholder: '최대 100자까지 입력 가능합니다',
     maxLength: 100,
     value: '',
+    onChange: (e) => console.log('Changed:', e.target.value),
   },
 };
 
@@ -53,5 +58,6 @@ export const Disabled: Story = {
     placeholder: '비활성화된 상태',
     disabled: true,
     value: '',
+    onChange: (e) => console.log('Changed:', e.target.value),
   },
 };
