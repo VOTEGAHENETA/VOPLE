@@ -19,14 +19,22 @@
     gap: 12px;
     padding: 0 16px;
   }
+  &-none-intro {
+    height: 100px;
+    text-align: center;
+    align-items: center;
+  }
 
-    &-poster {
-      justify-content: center;
-      align-items: center;
-    }
+  &-poster {
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .information {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   &-perfix {
     margin-right: 5px;
   }

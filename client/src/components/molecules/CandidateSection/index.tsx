@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import Poster from '@/components/atoms/Poster';
+import Text from '@/components/atoms/Text';
 import Information from './Information';
 import Introduction from './Introduction';
 import { mockCandidate } from './mockData';
@@ -18,7 +19,20 @@ function CandidateSection() {
         />
         <div className={styles['candidate-content']}>
           <Information />
-          <Introduction />
+          {mockCandidate.candidate_statement ? (
+            <Introduction />
+          ) : (
+            <Text
+              size='xs'
+              weight='normal'
+              color='#999999'
+              className={styles['candidate-none-intro']}
+            >
+              아직 소개를 안 넣었어요
+            </Text>
+          )}
+          {/* <Introduction /> */}
+
           <BaseButton
             kind='chip'
             status={BASE_BUTTON_STATUS.OUTLINE}

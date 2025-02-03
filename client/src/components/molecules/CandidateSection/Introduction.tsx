@@ -6,7 +6,7 @@ import { mockCandidate } from './mockData';
 function Introduction() {
   return (
     <div className={styles.introduction}>
-      <Text size='s' weight='normal' color='#000000'>
+      <Text size='xs' weight='normal' color='#000000'>
         {mockCandidate.candidate_statement}
       </Text>
     </div>
