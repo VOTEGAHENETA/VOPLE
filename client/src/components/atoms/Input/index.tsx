@@ -29,7 +29,7 @@ export interface InputProps {
 - disabled : 비활성화 상태 입력
 */
 
-export default function Input({
+function Input({
   value = '',
   onChange,
   onKeyPress,
@@ -56,3 +56,4 @@ export default function Input({
     />
   );
 }
+export default Input;

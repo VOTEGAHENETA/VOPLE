@@ -1,6 +1,6 @@
 // src/components/atoms/input/Input.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { Input } from './index';
+import Input from './index';
 
 const meta = {
   title: 'Atoms/Input',
