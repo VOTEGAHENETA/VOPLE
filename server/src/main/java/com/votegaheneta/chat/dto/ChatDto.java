@@ -27,6 +27,10 @@ public class ChatDto implements Serializable {
     this.createdTime = LocalTime.now();
   }
 
+  public void setText(String text) {
+    this.text = text;
+  }
+
   public void setUserInfo(UserDto userDto) {
     this.userId = userDto.getUserId();
     this.nickname = userDto.getNickname();

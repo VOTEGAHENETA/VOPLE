@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -14,10 +15,18 @@ public class RedisUserRepositoryImpl implements RedisUserRepository {
 
   private final RedisTemplate<String, UserDto> redisTemplate;
 
+  private static final int EXPIRATION_TIME = 30;
+
+  @Transactional
   @Override
   public void saveUser(String key, UserDto user) {
     redisTemplate.opsForValue().set(key, user);
-    redisTemplate.expire(key, 10, SECONDS);
+    this.setExpire(key, EXPIRATION_TIME);
+  }
+
+  @Override
+  public void setExpire(String key, long timeout) {
+    redisTemplate.expire(key, timeout, SECONDS);
   }
 
   @Override

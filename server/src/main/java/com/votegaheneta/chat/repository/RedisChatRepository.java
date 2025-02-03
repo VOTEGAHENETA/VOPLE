@@ -7,5 +7,7 @@ public interface RedisChatRepository {
 
   void saveChat(String key, ChatDto chat);
   List<ChatDto> getChatList(String key);
+//  void saveChatRoom(ChatRoomDto chatRoomDto);
+//  boolean containsChatRoom(ChatRoomDto chatRoomDto);
   boolean deleteChatRoom(String key);
 }
