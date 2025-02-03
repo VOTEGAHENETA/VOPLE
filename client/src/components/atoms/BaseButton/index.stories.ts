@@ -53,3 +53,29 @@ export const Chip: Story = {
     children: '태그',
   },
 };
+
+/** 미니 버튼 - 검정배경 */
+export const MiniChipFill: Story = {
+  args: {
+    type: 'button',
+    status: BASE_BUTTON_STATUS.FILL,
+    kind: 'mini-chip',
+    children: '태그',
+  },
+  parameters: {
+    backgrounds: {
+      default: 'black',
+      values: [{ name: 'black', value: '#000000' }],
+    },
+  },
+};
+
+/** 미니 버튼 */
+export const MiniChip: Story = {
+  args: {
+    type: 'button',
+    status: BASE_BUTTON_STATUS.OUTLINE,
+    kind: 'mini-chip',
+    children: '태그',
+  },
+};

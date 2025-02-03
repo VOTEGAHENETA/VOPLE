@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 
-type TextSize = 'xs' | 's' | 'm' | 'lg' | 'xl';
+type TextSize = 'xs' | 's' | 'sm' | 'm' | 'lg' | 'xl';
 type TextWeight = 'normal' | 'bold';
 
 interface TextProps {

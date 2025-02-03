@@ -7,8 +7,8 @@ interface Props {
   type: 'button' | 'submit' | 'reset';
   /** 버튼의 내용 입력 */
   children: ReactNode;
-  /** 버튼의 종류 (base: radius-10px, chip: radius - 50%) */
-  kind: 'base' | 'chip';
+  /** 버튼의 종류 (base: radius-10px, chip: radius - 50%, gray-chip: border-gray, text-black ),  */
+  kind: 'base' | 'chip' | 'mini-chip';
   /** 버튼의 활성 상태 (fill, outline, disable) */
   status: BaseButtonStatus;
   /** 버튼에 이벤트 지정 */
