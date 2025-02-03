@@ -1,0 +1,25 @@
+package com.votegaheneta.user.dto;
+
+import com.votegaheneta.user.entity.Users;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Getter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDto {
+  private Long userId;
+  private String nickname;
+  private String username;
+
+  public UserDto(Users user) {
+    this.userId = user.getId();
+    this.nickname = user.getNickname();
+    this.username = user.getUsername();
+  }
+}
