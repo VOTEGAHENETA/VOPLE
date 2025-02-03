@@ -1,11 +1,12 @@
 import styles from './index.module.scss';
 import IconVoteHand from '@/assets/icons/IconVoteHand';
 import useTimer from '@/hooks/useTimer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Text from '@/components/atoms/Text';
+import IconRefresh from '@/assets/icons/IconRefresh';
 import clsx from 'clsx';
 
-type VoteButtonLabel = '투표하기' | '투표시작전' | '선·관·위';
+type VoteButtonLabel = '투표하기' | '투표시작전' | '선·관·위' | null;
 
 interface Props {
   /** 버튼 타입 지정 (button, submit, reset) */
@@ -16,68 +17,89 @@ interface Props {
 
 // API 연동을 시작하면 바꿀 예정
 // const sessionId = '123';
-const currentUserId = 456789;
+const currentUserId = 123444;
 const electionData = {
   sessionId: '456',
   hostId: 1234,
-  voteStartTime: '2025-02-03T15:55:50',
-  voteEndTime: '2025-02-03T18:00:00',
+  voteStartTime: '2025-02-03T22:31:10',
+  voteEndTime: '2025-02-04T18:00:00',
 };
 
 /** 메인화면 footer에 적용될 Router 버튼 입니다. */
 function CircleButton({ type = 'button', onClick }: Props) {
-  const [status, setStatus] = useState<boolean>();
-  const [buttonLabel, setButtonLabel] = useState<VoteButtonLabel>('투표시작전');
-  const [deadLine, setDeadline] = useState<Date>(new Date());
-  const timeLeft = useTimer(deadLine);
+  const isHost = currentUserId === electionData.hostId;
+  const [state, setState] = useState({
+    status: true,
+    buttonLabel: '선·관·위' as VoteButtonLabel,
+    deadLine: new Date(),
+    onlyRefresh: false,
+    isLoading: false,
+  });
 
-  // const { data: electionData } = useQuery<ElectionContents>({
-  //   queryKey: ['election', sessionId],
-  //   queryFn: () => getElection(sessionId),
-  // });
+  useEffect(() => {
+    updateButtonState();
+  }, []);
 
-  const now = new Date();
-  const startTime = new Date(electionData.voteStartTime);
-  const endTime = new Date(electionData.voteEndTime);
+  function updateButtonState() {
+    if (isHost) return; // 선거 호스트인 경우 로직 작동 불필요
 
-  if (electionData.hostId === currentUserId) {
-    if (buttonLabel !== '선·관·위') setButtonLabel('선·관·위');
-    return;
-  }
+    if (currentUserId !== electionData.hostId) {
+      const now = new Date();
+      const startTime = new Date(electionData.voteStartTime);
+      const endTime = new Date(electionData.voteEndTime);
+      const newStatus = startTime <= now && now <= endTime;
 
-  if (timeLeft === '00:00:00') {
-    if (now <= endTime) {
-      setButtonLabel('투표하기');
-      setDeadline(endTime);
-      setStatus(true);
+      setState((prev) => ({
+        ...prev,
+        status: newStatus,
+        buttonLabel: newStatus ? '투표하기' : '투표시작전',
+        deadLine: newStatus ? endTime : startTime,
+        onlyRefresh: false,
+        isLoading: false,
+      }));
     }
   }
 
-  if (now < startTime) {
-    if (buttonLabel !== '투표시작전') {
-      setButtonLabel('투표시작전');
-      setDeadline(startTime);
-      setStatus(false);
-    }
-  } else if (now >= startTime && now <= endTime) {
-    if (buttonLabel !== '투표하기') {
-      setButtonLabel('투표하기');
-      setDeadline(endTime);
-      setStatus(true);
+  function handleButtonClick() {
+    if (state.onlyRefresh) {
+      setState((prev) => ({
+        ...prev,
+        isLoading: true,
+      }));
+      setTimeout(() => {
+        updateButtonState();
+      }, 1000);
+    } else if (state.status && onClick) {
+      onClick();
     }
   }
 
-  const btnClasses = [styles.btn, styles[`btn-status-${status}`]].join(' ');
+  const timeLeft = isHost ? null : useTimer(state.deadLine);
+  useEffect(() => {
+    if (!isHost && !state.status && timeLeft === '00:00:00') {
+      setState((prev) => ({
+        ...prev,
+        buttonLabel: null,
+        onlyRefresh: true,
+      }));
+    }
+  }, [timeLeft]);
 
   return (
     <div className={styles['btn-container']}>
-      <div>{timeLeft}</div>
-      <button type={type} className={btnClasses} onClick={onClick}>
-        <Text weight='normal' size='s'>
-          {buttonLabel}
+      <Text size='sm' color={state.status ? '#F58420' : '#333333'}>
+        {state.onlyRefresh ? '새로고침!!' : timeLeft}
+      </Text>
+      <button
+        type={type}
+        className={clsx(styles.btn, styles[`btn-status-${state.status}`])}
+        onClick={handleButtonClick}
+      >
+        <Text weight='normal' size='sm'>
+          {state.buttonLabel}
         </Text>
-        <div className={clsx(styles.ab, styles.bc)}>
-          <IconVoteHand />
+        <div className={styles[`spin-${state.isLoading}`]}>
+          {state.onlyRefresh ? <IconRefresh /> : <IconVoteHand />}
         </div>
       </button>
     </div>

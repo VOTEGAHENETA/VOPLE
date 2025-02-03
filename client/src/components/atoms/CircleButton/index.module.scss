@@ -1,3 +1,13 @@
+/* 회전 애니메이션 */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .btn-container {
   width: fit-content;
   display: flex;
@@ -17,14 +27,15 @@
   padding-top: 20px;
   color: var(--color-white);
   font-size: 1rem;
+  background-color: var(--color-gray-light);
 
   &-status {
     &-true {
       background-color: var(--color-main-orange);
     }
-
-    &-false {
-      background-color: var(--color-gray-light);
-    }
   }
+}
+
+.spin-true {
+  animation: spin 1s linear infinite;
 }
