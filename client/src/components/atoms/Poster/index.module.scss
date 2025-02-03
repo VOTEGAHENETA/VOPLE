@@ -1,0 +1,29 @@
+.poster {
+  &.poster-size {
+    &-xs {
+      width: auto;
+      height: 213px;
+    }
+    &-s {
+      width: auto;
+      height: 250px;
+    }
+    &-m {
+      width: auto;
+      height: 375px;
+    }
+    &-lg {
+      width: auto;
+      height: 500px;
+    }
+  }
+}
+
+
+.none { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: pre-wrap;
+  min-width: 150px;
+}
