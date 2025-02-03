@@ -1,12 +1,13 @@
 package com.votegaheneta.chat.service;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.ChatRoomDto;
 import com.votegaheneta.chat.exception.InvalidChatRoomException;
-import com.votegaheneta.chat.repository.RedisChatRepository;
+import com.votegaheneta.common.repository.RedisRepository;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
-import com.votegaheneta.user.repository.RedisUserRepository;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.repository.ElectionSessionRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -17,68 +18,91 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService{
+public class ChatServiceImpl implements ChatService {
 
-  private final RedisChatRepository redisChatRepository;
+  private final RedisRepository redisRepository;
   private final UsersRepository usersRepository;
-  private final RedisUserRepository redisUserRepository;
 
   private final ElectionSessionRepository electionSessionRepository;
   private final VoteTeamRepository voteTeamRepository;
 
   private static final int EXPIRATION_TIME = 30;
+  private static final int MAX_SIZE = 10;
+
+  private String generateChatRoomKey(ChatRoomDto chatRoom) {
+    return String.format("CHAT_ROOM:%s", chatRoom.getType().toUpperCase());
+  }
 
   private String generateChatKey(ChatRoomDto chatRoom) {
-    return String.format("%s:%d", chatRoom.getType().toUpperCase(), chatRoom.getRoomId());
+    return String.format("CHAT:%s:%d", chatRoom.getType().toUpperCase(), chatRoom.getRoomId());
   }
 
   private String generateUserKey(Long userId) {
     return String.format("USER:%d", userId);
   }
 
-  private void HandleInvalidChatRoomException(ChatRoomDto chatRoomDto) throws InvalidChatRoomException {
-    String type = chatRoomDto.getType();
-    Long roomId = chatRoomDto.getRoomId();
+  private void validateChatRoomKey(ChatRoomDto chatRoom)
+      throws InvalidChatRoomException {
+    String type = chatRoom.getType().toUpperCase();
+    Long roomId = chatRoom.getRoomId();
 
-    switch (type.toUpperCase()) {
-      case "SESSION" -> electionSessionRepository.findById(roomId).orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 세션입니다."));
-      case "TEAM" -> voteTeamRepository.findById(roomId).orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 팀입니다."));
-      default -> throw new InvalidChatRoomException("잘못된 입력입니다");
+    // 아예 잘못된 입력값이 들어오면 예외 발생
+    if (!type.equals("SESSION") && !type.equals("TEAM")) {
+      throw new InvalidChatRoomException("잘못된 입력입니다");
     }
+
+    // 이미 존재하는 채팅방이면 return
+    String chatRoomKey = generateChatRoomKey(chatRoom);
+    if (redisRepository.containsKeyInSet(chatRoomKey, roomId)) {
+      return;
+    }
+
+    // DB에 실제 존재하는 채팅방인지 확인
+    switch (type.toUpperCase()) {
+      case "SESSION" -> electionSessionRepository.findById(roomId)
+          .orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 세션입니다."));
+      case "TEAM" -> voteTeamRepository.findById(roomId)
+          .orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 팀입니다."));
+
+    }
+
+    // 레디스에 채팅방 정보 저장
+    redisRepository.saveInSet(chatRoomKey, roomId);
   }
 
   @Override
-  public void saveChat(ChatRoomDto chatRoomDto, ChatDto chatDto) throws InvalidChatRoomException{
-    HandleInvalidChatRoomException(chatRoomDto);
+  public void saveChat(ChatRoomDto chatRoomDto, ChatDto chatDto) throws InvalidChatRoomException {
+    validateChatRoomKey(chatRoomDto);
     String key = generateChatKey(chatRoomDto);
     String userKey = generateUserKey(chatDto.getUserId());
-    Optional<UserDto> optUserDto = redisUserRepository.getUser(userKey);
+    Optional<UserDto> optUserDto = redisRepository.get(userKey);
     UserDto userDto;
 
     if (optUserDto.isPresent()) {
       userDto = optUserDto.get();
-      redisUserRepository.setExpire(userKey, EXPIRATION_TIME);
+      redisRepository.setExpire(userKey, EXPIRATION_TIME, SECONDS);
     } else {
-      Users user = usersRepository.findById(chatDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+      Users user = usersRepository.findById(chatDto.getUserId())
+          .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
       userDto = new UserDto(user);
-      redisUserRepository.saveUser(userKey, userDto);
+      redisRepository.saveInValue(userKey, userDto);
+      redisRepository.setExpire(userKey, EXPIRATION_TIME, SECONDS);
     }
 
     chatDto.setUserInfo(userDto);
-    redisChatRepository.saveChat(key, chatDto);
+    redisRepository.saveInList(key, chatDto);
+    redisRepository.trim(key, 0, MAX_SIZE);
   }
 
   @Override
   public List<ChatDto> getChatList(ChatRoomDto chatRoomDto) throws InvalidChatRoomException {
-    HandleInvalidChatRoomException(chatRoomDto);
     String key = generateChatKey(chatRoomDto);
-    return redisChatRepository.getChatList(key);
+    return redisRepository.getList(key);
   }
 
   @Override
-  public boolean deleteChatRoom(ChatRoomDto chatRoomDto) throws InvalidChatRoomException{
-    HandleInvalidChatRoomException(chatRoomDto);
+  public boolean deleteChatRoom(ChatRoomDto chatRoomDto) throws InvalidChatRoomException {
     String key = generateChatKey(chatRoomDto);
-    return redisChatRepository.deleteChatRoom(key);
+    return redisRepository.delete(key);
   }
 }
