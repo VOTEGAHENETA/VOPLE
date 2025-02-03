@@ -1,5 +1,5 @@
 import React from 'react';
-import './VoteListItem.scss';
+import styles from './index.module.scss';
 
 interface VoteListItemProps {
   title: string;
@@ -17,16 +17,16 @@ export const VoteListItem: React.FC<VoteListItemProps> = ({
   onClick,
 }) => {
   return (
-    <div className='vote-list-item' onClick={onClick}>
-      <div className='vote-list-item__content'>
-        <div className='vote-list-item__title'>{title}</div>
-        <div className='vote-list-item__position'>{position}</div>
+    <div className={styles.voteListItem} onClick={onClick}>
+      <div className={styles.content}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.position}>{position}</div>
       </div>
-      <div className='vote-list-item__actions'>
-        <div className='vote-list-item__status'>{status}</div>
+      <div className={styles.actions}>
+        <div className={styles.status}>{status}</div>
         {onClose && (
           <button
-            className='vote-list-item__close'
+            className={styles.close}
             onClick={(e) => {
               e.stopPropagation();
               onClose();
