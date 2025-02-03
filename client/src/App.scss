@@ -1,0 +1,8 @@
+#main-container {
+  position: relative;
+  width: 100%;
+
+  &.show-header {
+    top: 60px;
+  }
+}

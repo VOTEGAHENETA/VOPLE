@@ -1,0 +1,34 @@
+.input {
+    padding: 0px 14px;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    font-size: 14px;
+    height: 40px;
+    &:focus {
+      outline: none;
+      border-color: var(--color-main-orange);
+    }
+  
+    &--error {
+      border-color: var(--color-error);
+    }
+  
+    &--search {
+      
+    }
+
+    &--warning{
+      border-color: var(--color-error);
+    }
+
+    &--disabled {
+      background-color: #f5f5f5;
+      border-color: var(--border-gray);
+      color: var(--border-gray);
+      cursor: not-allowed;
+ 
+    }
+  }
+
+
+
