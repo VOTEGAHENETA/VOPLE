@@ -17,7 +17,7 @@ export interface InputProps {
   variant?: 'default' | 'search' | 'error' | 'warning';
   placeholder?: string;
   filled?: boolean;
-  disabled?: boolean; // disabled 속성 추가
+  disabled?: boolean;
 }
 
 /* 설명 
@@ -41,8 +41,8 @@ function Input({
   const inputClassName = `
     ${styles.input}
     ${variant !== 'default' ? styles[`input--${variant}`] : ''}
-    ${disabled ? styles['input--disabled'] : ''}
-    ${filled ? styles['input--filled'] : ''}
+    ${styles[`input--disabled--${variant}`]}
+    ${styles[`input--filled--${filled}`]}
   `.trim();
 
   return (
