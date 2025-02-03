@@ -1,19 +1,14 @@
 services:
   client:
-    image: nginx:alpine
     build: 
       context: ./client
       dockerfile: Dockerfile
     container_name: client
     ports:
       - "80:80"
-    # command: sh -c "npm install --legacy-peer-deps && npm run build"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./client/build:/opt/app
-    depends_on:
-      - server
-  
+      - ./client:/client
+
   server:
     image: openjdk:17-alpine
     build: 
