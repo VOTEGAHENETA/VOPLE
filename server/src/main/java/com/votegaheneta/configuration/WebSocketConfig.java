@@ -1,4 +1,4 @@
-package com.votegaheneta.chat;
+package com.votegaheneta.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,7 +12,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/api/room");
+    config.enableSimpleBroker("/api/room", "/api/vote");
     config.setApplicationDestinationPrefixes("/api/send");
   }
 
