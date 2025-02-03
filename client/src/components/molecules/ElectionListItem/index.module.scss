@@ -12,6 +12,7 @@
 }
 
 .leftContent {
+  min-width: 0;
   max-width: 250px;
   width: inherit;
   display: flex;
@@ -28,11 +29,11 @@
 
 .title {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #1a1a1a;
   flex: 1;
-  max-width: calc(100% - 10px);
+  max-width: calc(100% - 20px);
   // min-width: 0; // flex 아이템의 너비가 내용에 맞춰 늘어나는 것을 방지
   overflow: hidden;
   text-overflow: ellipsis;
@@ -60,10 +61,6 @@
   background-color: #fff;
   font-size: 14px;
   cursor: pointer;
-
-  &:hover {
-    // background-color: var(--border-gary);
-  }
 }
 
 .menuButton {

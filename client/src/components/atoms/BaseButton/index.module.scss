@@ -31,5 +31,20 @@
       background-color: var(--color-gray-background);
       color: var(--color-gray-light);
     }
+
   }
+
+  &-mini-chip {
+    height: 26px;
+    border-radius: 13px;
+    border-color: var(--border-gray);
+    color: var(--color-black);
+    background-color: #fff;
+
+    &.btn-status-fill {
+      background-color: rgba(255,255,255,0.5);
+      color: #fff;
+    }
+  }
+
 }

@@ -6,19 +6,21 @@ import Text from '@/components/atoms/Text';
 
 interface ElectionListItemProps {
   title: string;
-  startDate: string;
-  endDate: string;
-  status?: 'participating' | 'closed' | 'created';
+  startDate?: string;
+  endDate?: string;
+  status?: 'participating' | 'created';
+  isClosed?: boolean;
   onItemClick?: () => void;
   onResultClick?: () => void;
   onMenuClick?: () => void;
 }
 
 const ElectionListItem: React.FC<ElectionListItemProps> = ({
-  title,
+  title = '선거 제목입니다.',
   startDate = '2025.01.20',
   endDate = '2025.01.25',
   status = 'participating',
+  isClosed = false,
   onItemClick,
   onResultClick,
   onMenuClick,
@@ -28,61 +30,37 @@ const ElectionListItem: React.FC<ElectionListItemProps> = ({
   };
 
   const renderContent = () => {
-    switch (status) {
-      case 'closed':
-        return (
-          <div className={styles.container} onClick={onItemClick}>
-            <div className={styles.leftContent}>
-              <div className={styles.title__wrap}>
-                <Text
-                  className={styles.closedBadge}
-                  size='m'
-                  weight='bold'
-                  color='var(--color-main-pink)'
-                >
-                  마감
-                </Text>
-                <Text
-                  className={styles.title}
-                  size='m'
-                  weight='bold'
-                  color='var(--color-black)'
-                >
-                  {title}
-                </Text>
-              </div>
-              <p className={styles.period}>
-                {formatPeriod(startDate, endDate)}
-              </p>
-            </div>
-            <button
-              className={styles.resultButton}
-              onClick={(e) => {
-                e.stopPropagation();
-                onResultClick?.();
-              }}
+    const commonLeftContent = (
+      <div className={styles.leftContent}>
+        <div className={styles.title__wrap}>
+          {isClosed && (
+            <Text
+              className={styles.closedBadge}
+              size='sm'
+              weight='bold'
+              color='var(--color-main-pink)'
             >
-              결과 확인
-            </button>
-          </div>
-        );
+              마감
+            </Text>
+          )}
+          <Text
+            className={styles.title}
+            size='sm'
+            weight='bold'
+            color='var(--color-black)'
+          >
+            {title}
+          </Text>
+        </div>
+        <p className={styles.period}>{formatPeriod(startDate, endDate)}</p>
+      </div>
+    );
 
+    switch (status) {
       case 'created':
         return (
           <div className={styles.container}>
-            <div className={styles.leftContent}>
-              <Text
-                className={styles.title}
-                size='m'
-                weight='bold'
-                color='var(--color-black)'
-              >
-                {title}
-              </Text>
-              <p className={styles.period}>
-                {formatPeriod(startDate, endDate)}
-              </p>
-            </div>
+            {commonLeftContent}
             <IconButton
               className={styles.menuButton}
               name='dots'
@@ -94,22 +72,25 @@ const ElectionListItem: React.FC<ElectionListItemProps> = ({
       case 'participating':
         return (
           <div className={styles.container} onClick={onItemClick}>
-            <div className={styles.leftContent}>
-              <Text
-                className={styles.title}
-                size='m'
-                weight='bold'
-                color='var(--color-black)'
+            {commonLeftContent}
+            {isClosed ? (
+              <button
+                className={styles.resultButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onResultClick?.();
+                }}
               >
-                {title}
-              </Text>
-              <p className={styles.period}>
-                {formatPeriod(startDate, endDate)}
-              </p>
-            </div>
-            <IconButton className={styles.rotate} name='left' />
+                결과 확인
+              </button>
+            ) : (
+              <IconButton className={styles.rotate} name='left' />
+            )}
           </div>
         );
+
+      default:
+        return null;
     }
   };
 
