@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import styles from './index.module.scss';
 import TextArea from '../../atoms/TextArea';
 import Text from '../../atoms/Text';
