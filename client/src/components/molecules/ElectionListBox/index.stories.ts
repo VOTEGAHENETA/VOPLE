@@ -26,18 +26,18 @@ type Story = StoryObj<typeof ElectionListBox>;
 
 const mockElections = [
   {
-    id: '1',
-    // id: BigInt(1),
+    // id: '1',
+    id: BigInt(1),
     title: '2024 학생회장 선거',
   },
   {
-    id: '2',
-    // id: BigInt(2),
+    // id: '2',
+    id: BigInt(2),
     title: '동아리 회장 선출',
   },
   {
-    id: '3',
-    // id: BigInt(3),
+    // id: '3',
+    id: BigInt(3),
     title: '과대표 선거',
   },
 ];
@@ -81,8 +81,8 @@ export const WithManyItems: Story = {
     elections: Array(10)
       .fill(null)
       .map((_, index) => ({
-        // id: BigInt(index + 1),
-        id: `${index + 1}`,
+        id: BigInt(index + 1),
+        // id: `${index + 1}`,
         title: `선거 제목 ${index + 1}`,
       })),
   },

@@ -3,11 +3,11 @@ import styles from './index.module.scss';
 import IconButton from '@/components/atoms/IconButton';
 import Text from '@/components/atoms/Text';
 import Menu from '@/components/molecules/Menu';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface ElectionListItemProps {
-  id: string;
-  // id: bigint; // 서버에서 long type으로 넘어오므로, 추후 전반 수정 필요 (스토리북 실행 문제로 임시로 string)
+  // id: string;
+  id: bigint; // 서버에서 long type으로 넘어오므로, 추후 전반 수정 필요 (스토리북 실행 문제로 임시로 string)
   title: string;
   startDate?: string;
   endDate?: string;
@@ -28,20 +28,20 @@ const ElectionListItem: React.FC<ElectionListItemProps> = ({
   const formatPeriod = (start: string, end: string) => {
     return `${start} ~ ${end}`;
   };
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // 참여 중인 선거 클릭 시, 해당 선거 isClosed에 따라 라우팅
   const handleItemClick = () => {
     if (isClosed) {
-      // navigate(`/elections/${id}/result`);
+      navigate(`/elections/${id}/result`);
     } else {
-      // navigate(`/elections/${id}`);
+      navigate(`/elections/${id}`);
     }
   };
 
   // 결과보기 버튼 클릭 시
   const handleResultClick = () => {
-    // navigate(`/elections/${id}/result`);
+    navigate(`/elections/${id}/result`);
   };
 
   // dots 버튼 클릭 시
