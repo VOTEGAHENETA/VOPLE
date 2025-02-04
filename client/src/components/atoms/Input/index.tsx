@@ -18,6 +18,7 @@ export interface InputProps {
   placeholder?: string;
   filled?: boolean;
   disabled?: boolean;
+  theme?: 'light' | 'dark';
 }
 
 /* 설명 
@@ -36,13 +37,14 @@ function Input({
   variant = 'default',
   disabled = false,
   filled = false,
+  theme = 'light',
   ...props
 }: InputProps) {
   const inputClassName = `
     ${styles.input}
     ${variant !== 'default' ? styles[`input--${variant}`] : ''}
     ${styles[`input--disabled--${variant}`]}
-    ${styles[`input--filled--${filled}`]}
+    ${styles[`input--filled--${filled}--${theme}`]}
   `.trim();
 
   return (

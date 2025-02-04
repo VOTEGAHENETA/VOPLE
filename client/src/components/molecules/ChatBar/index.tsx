@@ -2,21 +2,26 @@ import React, { useState } from 'react';
 import styles from './index.module.scss';
 import Input from '@/components/atoms/Input/index.tsx';
 import IconButton from '@/components/atoms/IconButton/index.tsx';
+import { ChatMessage } from '@/types/election';
 
-interface ChatMessage {
-  type: 'CHAT_MESSAGE'; // 메시지 타입 구분
-  payload: {
-    message: string; // 실제 입력한 메시지
-    roomId: string; // 채팅방 ID
-    timestamp: number; // 메시지 전송 시간
-  };
-}
+// interface ChatMessage {
+//   type: 'CHAT_MESSAGE'; // 메시지 타입 구분
+//   payload: {
+//     message: string; // 실제 입력한 메시지
+//     roomId: string; // 채팅방 ID
+//     timestamp: number; // 메시지 전송 시간
+//   };
+// }
+
+type themeType = 'dark' | 'light';
 
 interface ChatBarProps {
   roomId: string;
-  onSendMessage: (messageData: ChatMessage) => void; // 서버로 메시지를 보내는 함수
+  onSendMessage?: (messageData: ChatMessage) => void; // 서버로 메시지를 보내는 함수
+  // onSendMessage: (messageData: ChatMessage) => void; // 서버로 메시지를 보내는 함수
   placeholder?: string;
   disabled?: boolean;
+  theme?: themeType;
 }
 
 export function ChatBar({
@@ -24,6 +29,7 @@ export function ChatBar({
   onSendMessage,
   placeholder = '메세지를 입력해주세요.',
   disabled = false,
+  theme = 'dark',
 }: ChatBarProps) {
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -42,7 +48,7 @@ export function ChatBar({
         },
       };
 
-      onSendMessage(messageData);
+      onSendMessage?.(messageData);
       setInputValue('');
     }
   };
@@ -56,6 +62,7 @@ export function ChatBar({
         placeholder={placeholder}
         filled={true}
         disabled={disabled}
+        theme={theme}
       />
       <IconButton
         name='send'
