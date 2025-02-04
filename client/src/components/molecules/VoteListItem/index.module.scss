@@ -8,41 +8,32 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #f9fafb;
-  }
 }
 
 .content {
   flex: 1;
+  min-width: 0; // flex item 내부의 text overflow를 위해 필요
 }
 
 .title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 4px;
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 6px;
+  white-space: nowrap; // 한 줄로 표시
+  overflow: hidden; // 넘치는 텍스트 숨김
+  text-overflow: ellipsis; // 말줄임표 표시
 }
 
 .position {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.status {
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 14px;
-  font-weight: 500;
-  background-color: #f3f4f6;
-  color: #374151;
+  gap: 2px;
 }
 
 .close {
@@ -55,7 +46,6 @@
   cursor: pointer;
   color: #6b7280;
   transition: color 0.2s ease-in-out;
-
   &:hover {
     color: #111827;
   }
