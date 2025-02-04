@@ -28,7 +28,7 @@ public class Vote {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "session_id")
-  private Session session;
+  private ElectionSession electionSession;
 
   @OneToMany(mappedBy = "vote")
   private List<VoteInfo> voteInfos = new ArrayList<>();
@@ -49,19 +49,19 @@ public class Vote {
   }
 
   public boolean isStarted() {
-    return session.getVoteStartTime().isBefore(LocalDateTime.now());
+    return electionSession.getVoteStartTime().isBefore(LocalDateTime.now());
   }
 
   public boolean isEnded() {
-    return session.getVoteEndTime().isAfter(LocalDateTime.now());
+    return electionSession.getVoteEndTime().isAfter(LocalDateTime.now());
   }
 
   public void setId(Long id) {
     this.id = id;
   }
 
-  public void setSession(Session session) {
-    this.session = session;
+  public void setElectionSession(ElectionSession electionSession) {
+    this.electionSession = electionSession;
   }
 
   public void setVoteName(String voteName) {
