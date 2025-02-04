@@ -1,0 +1,57 @@
+.tag {
+
+  &-all {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 80px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    margin: 6px;
+  }
+
+  &-title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &-subtitle {
+    display: flex;
+    gap: 10px;
+  }
+
+  &-candidate {
+    align-items: center;
+  }
+
+  &-list {
+    display: flex;
+    justify-content: start;
+    gap: 2px;
+  }
+
+  &-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+  }
+
+  &-mini-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #dfdfdf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &.checked {
+      background-color: var(--color-main-orange);
+      border-color: var(--color-main-orange);
+    }
+  }
+}
