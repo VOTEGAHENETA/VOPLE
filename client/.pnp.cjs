@@ -61,6 +61,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:7.1.1"],\
           ["sass", "npm:1.83.4"],\
           ["storybook", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
+          ["storybook-addon-react-router-v6", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.0.15"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"],\
           ["typescript-eslint", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.19.1"],\
           ["vite", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:6.0.7"],\
@@ -3267,6 +3268,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:7.1.1"],\
           ["sass", "npm:1.83.4"],\
           ["storybook", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
+          ["storybook-addon-react-router-v6", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.0.15"],\
           ["typescript", "patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"],\
           ["typescript-eslint", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.19.1"],\
           ["vite", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:6.0.7"],\
@@ -3310,6 +3312,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["combined-stream", "npm:1.0.8"],\
           ["delayed-stream", "npm:1.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["compare-versions", [\
+      ["npm:6.1.1", {\
+        "packageLocation": "./.yarn/cache/compare-versions-npm-6.1.1-4b4ac16a32-415205c762.zip/node_modules/compare-versions/",\
+        "packageDependencies": [\
+          ["compare-versions", "npm:6.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -6169,6 +6180,28 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["react-inspector", [\
+      ["npm:6.0.2", {\
+        "packageLocation": "./.yarn/cache/react-inspector-npm-6.0.2-afe40feb14-8f9b23c21b.zip/node_modules/react-inspector/",\
+        "packageDependencies": [\
+          ["react-inspector", "npm:6.0.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:9df0c39b86cec840ec38041a2a812bbea1316ad3a3006ce7eaea56e45607a81e15d297a3ee3942c58276957efb54b0023fee8f53c7a5bbbbde764976c9770f05#npm:6.0.2", {\
+        "packageLocation": "./.yarn/__virtual__/react-inspector-virtual-93b6d45028/0/cache/react-inspector-npm-6.0.2-afe40feb14-8f9b23c21b.zip/node_modules/react-inspector/",\
+        "packageDependencies": [\
+          ["react-inspector", "virtual:9df0c39b86cec840ec38041a2a812bbea1316ad3a3006ce7eaea56e45607a81e15d297a3ee3942c58276957efb54b0023fee8f53c7a5bbbbde764976c9770f05#npm:6.0.2"],\
+          ["@types/react", "npm:18.3.18"],\
+          ["react", "npm:18.3.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/react",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["react-is", [\
       ["npm:16.13.1", {\
         "packageLocation": "./.yarn/cache/react-is-npm-16.13.1-a9b9382b4f-33977da7a5.zip/node_modules/react-is/",\
@@ -6727,6 +6760,66 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@types/prettier",\
           "prettier"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["storybook-addon-react-router-v6", [\
+      ["npm:2.0.15", {\
+        "packageLocation": "./.yarn/unplugged/storybook-addon-react-router-v6-virtual-9df0c39b86/node_modules/storybook-addon-react-router-v6/",\
+        "packageDependencies": [\
+          ["storybook-addon-react-router-v6", "npm:2.0.15"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.0.15", {\
+        "packageLocation": "./.yarn/unplugged/storybook-addon-react-router-v6-virtual-9df0c39b86/node_modules/storybook-addon-react-router-v6/",\
+        "packageDependencies": [\
+          ["storybook-addon-react-router-v6", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.0.15"],\
+          ["@storybook/blocks", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
+          ["@storybook/channels", null],\
+          ["@storybook/components", null],\
+          ["@storybook/core-events", null],\
+          ["@storybook/manager-api", null],\
+          ["@storybook/preview-api", null],\
+          ["@storybook/theming", null],\
+          ["@types/react", "npm:18.3.18"],\
+          ["@types/react-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:18.3.5"],\
+          ["@types/react-router-dom", null],\
+          ["@types/storybook__blocks", null],\
+          ["@types/storybook__channels", null],\
+          ["@types/storybook__components", null],\
+          ["@types/storybook__core-events", null],\
+          ["@types/storybook__manager-api", null],\
+          ["@types/storybook__preview-api", null],\
+          ["@types/storybook__theming", null],\
+          ["compare-versions", "npm:6.1.1"],\
+          ["react", "npm:18.3.1"],\
+          ["react-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:18.3.1"],\
+          ["react-inspector", "virtual:9df0c39b86cec840ec38041a2a812bbea1316ad3a3006ce7eaea56e45607a81e15d297a3ee3942c58276957efb54b0023fee8f53c7a5bbbbde764976c9770f05#npm:6.0.2"],\
+          ["react-router-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:7.1.1"]\
+        ],\
+        "packagePeers": [\
+          "@storybook/blocks",\
+          "@storybook/channels",\
+          "@storybook/components",\
+          "@storybook/core-events",\
+          "@storybook/manager-api",\
+          "@storybook/preview-api",\
+          "@storybook/theming",\
+          "@types/react-dom",\
+          "@types/react-router-dom",\
+          "@types/react",\
+          "@types/storybook__blocks",\
+          "@types/storybook__channels",\
+          "@types/storybook__components",\
+          "@types/storybook__core-events",\
+          "@types/storybook__manager-api",\
+          "@types/storybook__preview-api",\
+          "@types/storybook__theming",\
+          "react-dom",\
+          "react-router-dom",\
+          "react"\
         ],\
         "linkType": "HARD"\
       }]\
