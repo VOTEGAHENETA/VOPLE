@@ -22,11 +22,11 @@ public class QUsers extends EntityPathBase<Users> {
 
     public final ListPath<com.votegaheneta.vote.entity.Candidate, com.votegaheneta.vote.entity.QCandidate> candidates = this.<com.votegaheneta.vote.entity.Candidate, com.votegaheneta.vote.entity.QCandidate>createList("candidates", com.votegaheneta.vote.entity.Candidate.class, com.votegaheneta.vote.entity.QCandidate.class, PathInits.DIRECT2);
 
-    public final ListPath<com.votegaheneta.vote.entity.ElectionSession, com.votegaheneta.vote.entity.QElectionSession> electionSessions = this.<com.votegaheneta.vote.entity.ElectionSession, com.votegaheneta.vote.entity.QElectionSession>createList("electionSessions", com.votegaheneta.vote.entity.ElectionSession.class, com.votegaheneta.vote.entity.QElectionSession.class, PathInits.DIRECT2);
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath nickname = createString("nickname");
+
+    public final ListPath<com.votegaheneta.vote.entity.Session, com.votegaheneta.vote.entity.QSession> sessions = this.<com.votegaheneta.vote.entity.Session, com.votegaheneta.vote.entity.QSession>createList("sessions", com.votegaheneta.vote.entity.Session.class, com.votegaheneta.vote.entity.QSession.class, PathInits.DIRECT2);
 
     public final StringPath username = createString("username");
 

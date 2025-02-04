@@ -22,9 +22,9 @@ public class QVote extends EntityPathBase<Vote> {
 
     public static final QVote vote = new QVote("vote");
 
-    public final QElectionSession electionSession;
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final QSession session;
 
     public final ListPath<VoteInfo, QVoteInfo> voteInfos = this.<VoteInfo, QVoteInfo>createList("voteInfos", VoteInfo.class, QVoteInfo.class, PathInits.DIRECT2);
 
@@ -50,7 +50,7 @@ public class QVote extends EntityPathBase<Vote> {
 
     public QVote(Class<? extends Vote> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.electionSession = inits.isInitialized("electionSession") ? new QElectionSession(forProperty("electionSession"), inits.get("electionSession")) : null;
+        this.session = inits.isInitialized("session") ? new QSession(forProperty("session"), inits.get("session")) : null;
     }
 
 }

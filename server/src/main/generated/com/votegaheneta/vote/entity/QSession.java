@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QElectionSession is a Querydsl query type for ElectionSession
+ * QSession is a Querydsl query type for Session
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QElectionSession extends EntityPathBase<ElectionSession> {
+public class QSession extends EntityPathBase<Session> {
 
-    private static final long serialVersionUID = 31677978L;
+    private static final long serialVersionUID = 908371315L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QElectionSession electionSession = new QElectionSession("electionSession");
+    public static final QSession session = new QSession("session");
 
     public final StringPath entranceAnswer = createString("entranceAnswer");
 
@@ -46,23 +46,23 @@ public class QElectionSession extends EntityPathBase<ElectionSession> {
 
     public final NumberPath<Integer> wholeVoter = createNumber("wholeVoter", Integer.class);
 
-    public QElectionSession(String variable) {
-        this(ElectionSession.class, forVariable(variable), INITS);
+    public QSession(String variable) {
+        this(Session.class, forVariable(variable), INITS);
     }
 
-    public QElectionSession(Path<? extends ElectionSession> path) {
+    public QSession(Path<? extends Session> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QElectionSession(PathMetadata metadata) {
+    public QSession(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QElectionSession(PathMetadata metadata, PathInits inits) {
-        this(ElectionSession.class, metadata, inits);
+    public QSession(PathMetadata metadata, PathInits inits) {
+        this(Session.class, metadata, inits);
     }
 
-    public QElectionSession(Class<? extends ElectionSession> type, PathMetadata metadata, PathInits inits) {
+    public QSession(Class<? extends Session> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.hostUser = inits.isInitialized("hostUser") ? new com.votegaheneta.user.entity.QUsers(forProperty("hostUser")) : null;
     }

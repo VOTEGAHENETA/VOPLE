@@ -4,7 +4,6 @@ import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
-import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
@@ -39,10 +38,8 @@ public class VoteFindService {
   public Boolean hasVoted(Long sessionId, Long userId) {
     Session session = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
-
-    Boolean hasVoted = session.getVotes().stream().anyMatch(
+    return session.getVotes().stream().anyMatch(
         vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
-    return hasVoted;
 
 //    String voteStatus = "";
 //    LocalDateTime now = LocalDateTime.now();
@@ -66,19 +63,17 @@ public class VoteFindService {
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
 
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
-    List<Long> voteIds = votes.stream().map(Vote::getId).toList();
-    List<VoteTeam> voteTeams = voteTeamRepository.findByVote_IdIn(voteIds);
-    List<VoteFindDto> voteFindDtos = votes.stream().map(vote -> {
-      List<VoteTeam> matchTeams = voteTeams.stream()
-          .filter(vt -> vt.getVote().getId().equals(vote.getId()))
-          .toList();
-      return SessionFindDto.VoteFindDto.from(vote, matchTeams);
-    }).toList();
-
+    List<VoteTeam> voteTeams = voteTeamRepository.findByVote_IdIn(
+        votes.stream().map(Vote::getId).toList());
     return new SessionFindDto(
         session.getId(),
         session.getSessionName(),
-        voteFindDtos
+        votes.stream().map(vote -> {
+          List<VoteTeam> matchTeams = voteTeams.stream()
+              .filter(vt -> vt.getVote().getId().equals(vote.getId()))
+              .toList();
+          return SessionFindDto.VoteFindDto.from(vote, matchTeams);
+        }).toList()
     );
   }
 
