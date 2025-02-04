@@ -42,6 +42,7 @@ interface IconProps {
   className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
+  src?: string;
 }
 
 const IconButton: React.FC<IconProps> = ({

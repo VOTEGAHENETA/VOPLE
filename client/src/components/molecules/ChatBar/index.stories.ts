@@ -9,18 +9,18 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    value: {
-      description: '입력된 메시지 텍스트',
+    roomId: {
+      description: '채팅방 ID',
       control: 'text',
+      required: true,
     },
-    onChange: {
-      description: '입력값 변경 시 호출되는 핸들러',
-    },
-    onSubmit: {
-      description: '메시지 전송 시 호출되는 핸들러',
+    onSendMessage: {
+      description: '메시지 전송 시 호출되는 함수',
+      action: 'sent',
+      required: true,
     },
     placeholder: {
-      description: '플레이스홀더 텍스트',
+      description: '입력창 플레이스홀더',
       control: 'text',
     },
     disabled: {
@@ -33,44 +33,40 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// 기본 상태
 export const Default: Story = {
   args: {
-    value: '',
-    onChange: (e) => console.log('Changed:', e.target.value),
-    onSubmit: () => console.log('Message sent!'),
-    placeholder: '메시지를 입력하세요',
+    roomId: 'room-1',
+    onSendMessage: (messageData) => {
+      console.log('Sent message:', messageData);
+    },
   },
 };
 
-// 텍스트가 입력된 상태
-export const WithText: Story = {
+export const CustomPlaceholder: Story = {
   args: {
-    value: '안녕하세요!',
-    onChange: (e) => console.log('Changed:', e.target.value),
-    onSubmit: () => console.log('Message sent!'),
-    placeholder: '메시지를 입력하세요',
+    roomId: 'room-1',
+    onSendMessage: (messageData) => {
+      console.log('Sent message:', messageData);
+    },
+    placeholder: '질문을 입력해주세요.',
   },
 };
 
-// 비활성화 상태
 export const Disabled: Story = {
   args: {
-    value: '',
-    onChange: (e) => console.log('Changed:', e.target.value),
-    onSubmit: () => console.log('Message sent!'),
-    placeholder: '메시지를 입력하세요',
+    roomId: 'room-1',
+    onSendMessage: (messageData) => {
+      console.log('Sent message:', messageData);
+    },
     disabled: true,
   },
 };
 
-// 긴 텍스트가 입력된 상태
-export const LongText: Story = {
+export const LongRoomId: Story = {
   args: {
-    value:
-      '이것은 매우 긴 메시지입니다. 입력창이 어떻게 처리되는지 테스트해보기 위한 긴 텍스트입니다.',
-    onChange: (e) => console.log('Changed:', e.target.value),
-    onSubmit: () => console.log('Message sent!'),
-    placeholder: '메시지를 입력하세요',
+    roomId: 'very-long-room-id-for-testing-layout-12345678901234567890',
+    onSendMessage: (messageData) => {
+      console.log('Sent message:', messageData);
+    },
   },
 };
