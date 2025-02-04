@@ -2,6 +2,7 @@ spring:
   config:
     activate:
       on-profile: prod
+
   datasource:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
     username: ${DB_USERNAME}
@@ -20,7 +21,7 @@ spring:
 
   sql:
     init:
-      mode: always
+      mode: never
 
   data:
     redis:
