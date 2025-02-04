@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteResultResponse {
-
   private Long electionSessionId;
   private List<VoteResult> voteResultFindDtos;
 }

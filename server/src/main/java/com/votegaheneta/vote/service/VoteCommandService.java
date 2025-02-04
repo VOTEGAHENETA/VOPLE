@@ -44,7 +44,7 @@ public class VoteCommandService {
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       // 임시로 "동영으로 진행 -> 나중에 voteTeamId 변경해서 넣어야할듯"
       final Boolean TRUE = true;
-      voteInfo.updateVoteInfo(TRUE, "동영"/*voteTeamId*/);
+      voteInfo.updateVoteInfo(TRUE, "동영"/*voteTeamId*/); // 여기서 이름 없애기
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();

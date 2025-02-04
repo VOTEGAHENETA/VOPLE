@@ -40,7 +40,7 @@ public class VoteCommandController {
   })
   @PostMapping("{sessionId}/castvote")
   public ApiResponse<Void> castVote(
-      @Valid @Positive @PathVariable("sessionId") Long sessionId,
+      @Positive @PathVariable("sessionId") Long sessionId,
       @Valid @RequestBody VoteCastRequest voteCastRequest) {
     voteCommandService.castVote(voteCastRequest, sessionId);
 

@@ -166,14 +166,12 @@ public class VoteFindService {
       for (TeamResult teamResult : teamResults) {
         totalPercent += teamResult.getTeamVotePercent();
       }
-      if (Math.abs(totalPercent - 100f) > 0.01f) {
-        TeamResult maxTeamResult = null;
-        float maxTeamVotePercent = 0.0f;
-        for (TeamResult teamResult : teamResults) {
-          if (teamResult.getTeamVotePercent() > maxTeamVotePercent) {
-            maxTeamVotePercent = teamResult.getTeamVotePercent();
-            maxTeamResult = teamResult;
-          }
+      TeamResult maxTeamResult = null;
+      float maxTeamVotePercent = 0.0f;
+      for (TeamResult teamResult : teamResults) {
+        if (teamResult.getTeamVotePercent() > maxTeamVotePercent) {
+          maxTeamVotePercent = teamResult.getTeamVotePercent();
+          maxTeamResult = teamResult;
         }
         // 최종 조정치 계산
         if (maxTeamResult != null) {

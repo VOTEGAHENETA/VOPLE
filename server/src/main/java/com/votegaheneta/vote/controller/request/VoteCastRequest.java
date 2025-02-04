@@ -8,11 +8,13 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Schema(name = "voteCastRequest(투표하기요청데이터)", description = "투표를 했을 때 받을 데이터를 정의한 request객체")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@CrossOrigin("*")
 public class VoteCastRequest {
 
   @Schema(name = "userId(회원번호)")
