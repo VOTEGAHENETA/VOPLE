@@ -16,7 +16,6 @@ const ElectionListItem = ({
 }: ElectionListProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
   // 참여 중인 선거 클릭 시, 해당 선거 isClosed에 따라 라우팅
   const handleItemClick = () => {
     if (isClosed) {
