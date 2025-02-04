@@ -21,7 +21,7 @@ const currentUserId = 123444;
 const electionData = {
   sessionId: '456',
   hostId: 1234,
-  voteStartTime: '2025-02-03T22:31:10',
+  voteStartTime: '2025-02-04T09:12:30',
   voteEndTime: '2025-02-04T18:00:00',
 };
 
@@ -68,6 +68,10 @@ function CircleButton({ type = 'button', onClick }: Props) {
       }));
       setTimeout(() => {
         updateButtonState();
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+        }));
       }, 1000);
     } else if (state.status && onClick) {
       onClick();
@@ -98,7 +102,11 @@ function CircleButton({ type = 'button', onClick }: Props) {
         <Text weight='normal' size='sm'>
           {state.buttonLabel}
         </Text>
-        <div className={styles[`spin-${state.isLoading}`]}>
+        <div
+          className={clsx(styles[`spin-${state.isLoading}`], {
+            [styles.spinning]: state.isLoading,
+          })}
+        >
           {state.onlyRefresh ? <IconRefresh /> : <IconVoteHand />}
         </div>
       </button>
