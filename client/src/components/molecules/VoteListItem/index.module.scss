@@ -16,6 +16,9 @@
 }
 
 .title {
+  display: block;
+  width: 100%;
+  min-width: 100%;
   font-size: 14px;
   color: #6b7280;
   margin-bottom: 6px;
@@ -42,7 +45,7 @@
   justify-content: center;
   background: none;
   border: none;
-  padding: 4px;
+  padding: 2px;
   cursor: pointer;
   color: #6b7280;
   transition: color 0.2s ease-in-out;

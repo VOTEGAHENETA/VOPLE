@@ -1,6 +1,7 @@
 import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
-import xLg from '@/assets/icons/xLg.svg';
+import x from '@/assets/icons/x.svg';
+import Text from '@/components/atoms/Text';
 
 interface VoteListItemProps {
   id: number; // 투표 id
@@ -31,8 +32,12 @@ export const VoteListItem = ({
   return (
     <div className={styles.voteListItem}>
       <div className={styles.content}>
-        <div className={styles.title}>{sessionName}</div>
-        <div className={styles.position}>{voteName}</div>
+        <Text className={styles.title} size='s' weight='normal'>
+          {sessionName}
+        </Text>
+        <Text className={styles.position} size='m' weight='bold'>
+          {voteName}
+        </Text>
       </div>
       <div className={styles.actions}>
         <BaseButton
@@ -44,7 +49,7 @@ export const VoteListItem = ({
           후보 지정
         </BaseButton>
         <button className={styles.close} onClick={handleDelete}>
-          <img src={xLg} alt='X 삭제 아이콘' />
+          <img width='28px' src={x} alt='X 삭제 아이콘' />
         </button>
       </div>
     </div>
