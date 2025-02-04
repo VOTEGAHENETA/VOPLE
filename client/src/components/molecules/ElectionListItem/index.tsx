@@ -6,8 +6,7 @@ import Menu from '@/components/molecules/Menu';
 import { useNavigate } from 'react-router-dom';
 
 interface ElectionListItemProps {
-  // id: string;
-  id: bigint; // 서버에서 long type으로 넘어오므로, 추후 전반 수정 필요 (스토리북 실행 문제로 임시로 string)
+  id: number;
   title: string;
   startDate?: string;
   endDate?: string;

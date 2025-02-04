@@ -3,22 +3,18 @@ import ElectionListItem from '@/components/molecules/ElectionListItem';
 import { useNavigate } from 'react-router-dom';
 
 interface Election {
-  id: bigint; // 서버에서 long type으로 넘어오므로, 추후 전반 수정 필요
-  // id: string;
+  id: number;
   title: string;
   startDate?: string;
   endDate?: string;
   status?: 'participating' | 'created';
   isClosed?: boolean;
-  // onItemClick?: () => void;
-  // onResultClick?: () => void;
   onMenuClick?: () => void;
 }
 
 interface ElectionListBoxProps {
   type: 'created' | 'participating';
   elections: Election[];
-  // onCreateClick?: () => void; // 임시(스토리북 오류 해결, 추후 Router로 변경 필요)
 }
 
 const CONTENT_CONFIG = {
@@ -37,7 +33,6 @@ const CONTENT_CONFIG = {
 export function ElectionListBox({
   type,
   elections, // user_type(CANDIDATE or VOTER)에 따라 분류되어 부모에서 받음
-  // onCreateClick, // 임시(스토리북 오류 해결, 추후 Router로로 변경 필요)
 }: ElectionListBoxProps) {
   // CONTENT 타입 정의에 따른 headerStyle, title, emptyText
   const navigate = useNavigate();
