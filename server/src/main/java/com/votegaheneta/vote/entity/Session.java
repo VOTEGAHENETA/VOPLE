@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "election_session")
 @NoArgsConstructor
-public class ElectionSession {
+public class Session {
 
   @Id
   @GeneratedValue
@@ -31,11 +31,11 @@ public class ElectionSession {
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Vote> votes;
 
   @Builder
-  public ElectionSession(Users hostUser, String sessionName,
+  public Session(Users hostUser, String sessionName,
       int wholeVoter, String entranceQuestion, String entranceAnswer, LocalDateTime voteStartTime,
       LocalDateTime voteEndTime) {
     this.setHostUser(hostUser);
@@ -61,7 +61,7 @@ public class ElectionSession {
 
   public void addVote(Vote vote) {
     votes.add(vote);
-    vote.setElectionSession(this);
+    vote.setSession(this);
   }
 
   public void setId(Long id) {
@@ -70,7 +70,7 @@ public class ElectionSession {
 
   public void setHostUser(Users hostUser) {
     this.hostUser = hostUser;
-    hostUser.getElectionSessions().add(this);
+    hostUser.getSessions().add(this);
   }
 
   public void setQrCode(String qrCode) {
