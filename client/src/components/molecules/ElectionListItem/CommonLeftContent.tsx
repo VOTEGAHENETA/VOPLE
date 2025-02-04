@@ -2,7 +2,6 @@ import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
 
 interface CommonLeftContentProps {
-  id: string;
   title: string;
   startDate: string;
   endDate: string;

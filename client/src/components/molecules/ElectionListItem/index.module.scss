@@ -40,7 +40,6 @@
   color: #1a1a1a;
   flex: 1;
   max-width: calc(100% - 20px);
-  // min-width: 0; // flex 아이템의 너비가 내용에 맞춰 늘어나는 것을 방지
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -83,4 +82,10 @@
 .rotate {
   opacity: 0.5;
   transform: rotate(180deg);
+}
+
+.right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

@@ -4,7 +4,7 @@ import IconButton from '@/components/atoms/IconButton';
 import Menu from '@/components/molecules/Menu';
 import { useNavigate } from 'react-router-dom';
 import { ElectionListProps } from '@/types/election';
-import CommonLeftContent from '@/components/molecules/ElectionListItem/';
+import CommonLeftContent from '@/components/molecules/ElectionListItem/CommonLeftContent';
 
 const ElectionListItem = ({
   id,
@@ -60,7 +60,6 @@ const ElectionListItem = ({
       return (
         <>
           <IconButton
-            aria-label='메뉴 열기'
             className={styles.menuButton}
             name='dots'
             onClick={handleMenuToggle}
@@ -72,11 +71,14 @@ const ElectionListItem = ({
 
     if (status === 'participating') {
       return (
-        <div>
-          <button className={styles.resultButton} onClick={handleResultClick}>
-            결과 확인
-          </button>
-          <IconButton className={styles.rotate} name='left' />
+        <div className={styles.right}>
+          {isClosed ? (
+            <button className={styles.resultButton} onClick={handleResultClick}>
+              결과 확인
+            </button>
+          ) : (
+            <IconButton className={styles.rotate} name='left' />
+          )}
         </div>
       );
     }
@@ -90,7 +92,6 @@ const ElectionListItem = ({
       onClick={status === 'participating' ? handleItemClick : undefined}
     >
       <CommonLeftContent
-        id={id}
         title={title}
         startDate={startDate}
         endDate={endDate}
