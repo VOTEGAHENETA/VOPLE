@@ -1,0 +1,34 @@
+.text {
+  display: flex;
+  // 사이즈 변형
+  &-size {
+    &-xs {
+      font-size: 13px;
+    }
+    &-s {
+      font-size: 14px;
+    }
+    &-sm {
+      font-size: 16px;
+    }
+    &-m {
+      font-size: 18px;
+    }
+    &-lg {
+      font-size: 22px;
+    }
+    &-xl {
+      font-size: 28px;
+    }
+  }
+
+  // 두께 변형
+  &-weight {
+    &-normal {
+      font-weight: 400;
+    }
+    &-bold {
+      font-weight: 700;
+    }
+  }
+}
