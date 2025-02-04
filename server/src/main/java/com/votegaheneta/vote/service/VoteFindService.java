@@ -9,7 +9,7 @@ import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
-import com.votegaheneta.vote.entity.Session;
+import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.SessionRepository;
@@ -37,10 +37,10 @@ public class VoteFindService {
   private final String[] VOTE_STATUSES = {"isBefore", "isProgress", "isAfter"};
 
   public Boolean hasVoted(Long sessionId, Long userId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
 
-    Boolean hasVoted = session.getVotes().stream().anyMatch(
+    Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
         vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
     return hasVoted;
 
@@ -62,7 +62,7 @@ public class VoteFindService {
 
 
   public SessionFindDto findVoteBySessionId(Long sessionId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
 
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
@@ -76,30 +76,30 @@ public class VoteFindService {
     }).toList();
 
     return new SessionFindDto(
-        session.getId(),
-        session.getSessionName(),
+        electionSession.getId(),
+        electionSession.getSessionName(),
         voteFindDtos
     );
   }
 
   public SessionResultFindDto findVoteResultBySessionId(Long sessionId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
-    float wholeVoterPercent = session.getVotedVoter() > 0
-        ? ((float) session.getVotedVoter() / session.getWholeVoter()) * 100 : 0.0f;
+    float wholeVoterPercent = electionSession.getVotedVoter() > 0
+        ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
     List<VoteResult> voteResults = calculateVoteResult(sessionId);
     return new SessionResultFindDto(
-        session.getSessionName(),
+        electionSession.getSessionName(),
         wholeVoterPercent,
         voteResults
     );
   }
 
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
-    float wholeVoterPercent = session.getVotedVoter() > 0
-        ? ((float) session.getVotedVoter() / session.getWholeVoter()) * 100 : 0.0f;
+    float wholeVoterPercent = electionSession.getVotedVoter() > 0
+        ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
     List<VoteResult> voteResults = calculateVoteResult(sessionId);
     List<Elected> electedList = new ArrayList<>();
 
@@ -128,7 +128,7 @@ public class VoteFindService {
     }
 
     return new SessionFinalResultFindDto(
-        ElectionSessionDto.from(session),
+        ElectionSessionDto.from(electionSession),
         wholeVoterPercent,
         voteResults,
         electedList

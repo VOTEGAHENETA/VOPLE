@@ -2,7 +2,7 @@ package com.votegaheneta.vote.dto;
 
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
-import com.votegaheneta.vote.entity.Session;
+import com.votegaheneta.vote.entity.ElectionSession;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,14 +44,14 @@ public class SessionFinalResultFindDto {
     private final LocalDateTime voteStartTime;
     private final LocalDateTime voteEndTime;
 
-    public static ElectionSessionDto from(Session session) {
+    public static ElectionSessionDto from(ElectionSession electionSession) {
       return new ElectionSessionDto(
-          session.getId(),
-          session.getSessionName(),
-          session.getWholeVoter(),
-          session.getVotedVoter(),
-          session.getVoteStartTime(),
-          session.getVoteEndTime()
+          electionSession.getId(),
+          electionSession.getSessionName(),
+          electionSession.getWholeVoter(),
+          electionSession.getVotedVoter(),
+          electionSession.getVoteStartTime(),
+          electionSession.getVoteEndTime()
       );
     }
   }

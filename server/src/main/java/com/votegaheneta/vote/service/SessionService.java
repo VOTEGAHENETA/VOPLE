@@ -3,7 +3,8 @@ package com.votegaheneta.vote.service;
 import com.votegaheneta.vote.dto.SessionDto;
 
 public interface SessionService {
-  boolean saveSession(SessionDto sessionDto);
   SessionDto getSession(Long sessionId);
-  boolean deleteSession(SessionDto sessionDto);
+  Long saveSession(SessionDto sessionDto) throws RuntimeException;
+  void updateSession(Long sessionId, SessionDto sessionDto);
+  boolean deleteSession(Long Id);
 }
