@@ -118,7 +118,7 @@ public class VoteFindControllerTest {
 
   private SessionResultFindDto createSessionResultFindDto() {
     CandidateResult candidateResult = new CandidateResult(1, 1, "최효재");
-    TeamResult teamResult = new TeamResult(1, "poster", 0.0f, 0, List.of(candidateResult));
+    TeamResult teamResult = new TeamResult(1l, "poster", 0.0f, 0, List.of(candidateResult));
     VoteResult voteResult = new VoteResult(1, "test", List.of(teamResult));
 //    return new Session
     return null;

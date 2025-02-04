@@ -1,7 +1,7 @@
 package com.votegaheneta.user.entity;
 
 import com.votegaheneta.vote.entity.Candidate;
-import com.votegaheneta.vote.entity.Session;
+import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteInfo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ public class Users {
   private Long id;
 
   @OneToMany(mappedBy = "hostUser", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Session> sessions = new ArrayList<>();
+  private List<ElectionSession> electionSessions = new ArrayList<>();
 
   @OneToMany(mappedBy = "user")
   private List<VoteInfo> voteInfos = new ArrayList<>();

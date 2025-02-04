@@ -8,7 +8,7 @@ import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
-import com.votegaheneta.vote.entity.Session;
+import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.SessionRepository;
@@ -36,7 +36,7 @@ public class VoteFindService {
   private final String[] VOTE_STATUSES = {"isBefore", "isProgress", "isAfter"};
 
   public Boolean hasVoted(Long sessionId, Long userId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession session = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     return session.getVotes().stream().anyMatch(
         vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
@@ -59,7 +59,7 @@ public class VoteFindService {
 
 
   public SessionFindDto findVoteBySessionId(Long sessionId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession session = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
 
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
@@ -78,7 +78,7 @@ public class VoteFindService {
   }
 
   public SessionResultFindDto findVoteResultBySessionId(Long sessionId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession session = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = session.getVotedVoter() > 0
         ? ((float) session.getVotedVoter() / session.getWholeVoter()) * 100 : 0.0f;
@@ -91,7 +91,7 @@ public class VoteFindService {
   }
 
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
-    Session session = sessionRepository.findById(sessionId)
+    ElectionSession session = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = session.getVotedVoter() > 0
         ? ((float) session.getVotedVoter() / session.getWholeVoter()) * 100 : 0.0f;
