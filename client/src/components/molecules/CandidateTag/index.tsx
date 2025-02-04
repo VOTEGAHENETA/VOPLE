@@ -9,7 +9,6 @@ import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 interface Candidate {
   id: number;
   name: string;
-  image: string;
 }
 
 interface CandidateProps {
@@ -20,9 +19,9 @@ interface CandidateProps {
 }
 
 const mockCandidate: Candidate[] = [
-  { id: 1, name: '강성엽', image: x },
-  { id: 2, name: '김선명', image: x },
-  { id: 3, name: '황연주', image: x },
+  { id: 1, name: '강성엽' },
+  { id: 2, name: '김선명' },
+  { id: 3, name: '황연주' },
 ];
 
 const CandidateTag: React.FC<CandidateProps> = ({
@@ -80,7 +79,7 @@ const CandidateTag: React.FC<CandidateProps> = ({
             >
               <div className={styles['tag-name']}>
                 {candidate.name}
-                <img src={candidate.image} className={styles['tag-img']} />
+                <img src={x} className={styles['tag-img']} />
               </div>
             </BaseButton>
           </div>
