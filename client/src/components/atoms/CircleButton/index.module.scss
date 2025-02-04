@@ -17,14 +17,20 @@
   padding-top: 20px;
   color: var(--color-white);
   font-size: 1rem;
+  background-color: var(--color-gray-light);
 
   &-status {
     &-true {
       background-color: var(--color-main-orange);
     }
+  }
+}
 
-    &-false {
-      background-color: var(--color-gray-light);
-    }
+.spin-true {
+  display: inline-block;
+  transition: transform 1s linear;
+
+  &.spinning {
+    transform: rotate(360deg);
   }
 }
