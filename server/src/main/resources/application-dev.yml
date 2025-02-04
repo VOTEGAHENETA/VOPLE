@@ -11,6 +11,7 @@ spring:
 
   jpa:
     hibernate:
+#      ddl-auto: update
       ddl-auto: create
     properties:
       hibernate:
@@ -29,12 +30,19 @@ spring:
       port: 6379
 
 paging:
-    default-page-size: 10
-    default-page-number: 0
+  default-page-size: 10
+  default-page-number: 0
 
 logging.level:
   org.hibernate.SQL: DEBUG
   org.springframework:
     web.socket: DEBUG
     messaging: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+  api-docs:
+    path: /v3/api-docs
+
 

@@ -21,7 +21,7 @@ function Footer() {
       <IconButton name={ICON_NAME.HOME} onClick={handleHome} />
       <IconButton name={ICON_NAME.MYPAGE} onClick={handleMyPage} />
       <div className={styles['circle-section']}>
-        <CircleButton status={false} type='button' />
+        <CircleButton type='button' />
       </div>
     </nav>
   );

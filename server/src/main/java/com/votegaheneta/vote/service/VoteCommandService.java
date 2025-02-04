@@ -1,10 +1,14 @@
 package com.votegaheneta.vote.service;
 
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
+import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
+import com.votegaheneta.vote.exception.AlreadyVotedException;
+import com.votegaheneta.vote.repository.ElectionSessionRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,20 +19,24 @@ public class VoteCommandService {
 
   private final VoteInfoRepository voteInfoRepository;
   private final VoteTeamRepository voteTeamRepository;
-
-  // 1. 이사람이 투표했는지
-  // 2. u -> t에게 투표 + vote_info update
+  private final ElectionSessionRepository electionSessionRepository;
 
   @Transactional
-  public void castVote(VoteCastRequest voteCastRequest) {
+  public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
     Long userId = voteCastRequest.getUserId();
+    ElectionSession electionSession = electionSessionRepository.findById(sessionId)
+        .orElseThrow(() ->  new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
+    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
+    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
+      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
+    }
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
-          Long voteId = voteSelection.getVoteId();
-          Long voteTeamId = voteSelection.getVoteTeamId();
+      Long voteId = voteSelection.getVoteId();
+      Long voteTeamId = voteSelection.getVoteTeamId();
       if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId)) {
-        // AlreadyVotedException 클래스로 재구현 해야할듯
-        // ERROR_CODE = 400 | 잘못된 요청
-        throw new IllegalArgumentException("이미 투표를 진행했습니다.");
+        throw new AlreadyVotedException("이미 투표를 진행했습니다.");
       }
       VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
           // VoteUserNotFoundException 클래스 구현 필요
@@ -36,11 +44,10 @@ public class VoteCommandService {
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       // 임시로 "동영으로 진행 -> 나중에 voteTeamId 변경해서 넣어야할듯"
       final Boolean TRUE = true;
-      voteInfo.updateVoteInfo(TRUE, "동영"/*voteTeamId*/);
+      voteInfo.updateVoteInfo(TRUE, "동영"/*voteTeamId*/); // 여기서 이름 없애기
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();
-      System.out.println(voteTeam.getVote().getElectionSession().getSessionName());
       voteTeam.getVote().getElectionSession().incrementVotedVoter();
     }
   }

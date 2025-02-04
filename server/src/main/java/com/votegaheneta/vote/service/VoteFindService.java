@@ -1,5 +1,8 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
@@ -10,9 +13,9 @@ import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.ElectionSessionRepository;
+import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 생성, 조회, 수정, 삭제 관련 투표 서비스 클래스
+ * 조회 관련 투표 서비스 클래스
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,8 +32,34 @@ public class VoteFindService {
 
   private final VoteRepository voteRepository;
   private final VoteTeamRepository voteTeamRepository;
+  private final VoteInfoRepository voteInfoRepository;
   private final ElectionSessionRepository electionSessionRepository;
   private final String[] VOTE_STATUSES = {"isBefore", "isProgress", "isAfter"};
+
+  public Boolean hasVoted(Long sessionId, Long userId) {
+    ElectionSession electionSession = electionSessionRepository.findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
+
+    Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
+        vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
+    return hasVoted;
+
+//    String voteStatus = "";
+//    LocalDateTime now = LocalDateTime.now();
+//    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
+//    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
+//    if (now.isBefore(voteStartTime)) {
+//      voteStatus = VOTE_STATUSES[0];
+//    } else if (now.isEqual(voteStartTime)) {
+//      voteStatus = VOTE_STATUSES[1];
+//    } else if (now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
+//      voteStatus = VOTE_STATUSES[1];
+//    } else if (now.isAfter(voteEndTime)) {
+//      voteStatus = VOTE_STATUSES[2];
+//    }
+//    return voteStatus;
+  }
+
 
   public SessionFindDto findVoteBySessionId(Long sessionId) {
     ElectionSession electionSession = electionSessionRepository.findById(sessionId)
@@ -39,20 +68,6 @@ public class VoteFindService {
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
     List<Long> voteIds = votes.stream().map(Vote::getId).toList();
     List<VoteTeam> voteTeams = voteTeamRepository.findByVote_IdIn(voteIds);
-    String voteStatus = "";
-
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
-    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-    if(now.isBefore(voteStartTime)) {
-      voteStatus = VOTE_STATUSES[0];
-    } else if(now.isEqual(voteStartTime)) {
-      voteStatus = VOTE_STATUSES[1];
-    } else if(now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
-      voteStatus = VOTE_STATUSES[1];
-    } else if(now.isAfter(voteEndTime)) {
-      voteStatus = VOTE_STATUSES[2];
-    }
     List<VoteFindDto> voteFindDtos = votes.stream().map(vote -> {
       List<VoteTeam> matchTeams = voteTeams.stream()
           .filter(vt -> vt.getVote().getId().equals(vote.getId()))
@@ -63,7 +78,6 @@ public class VoteFindService {
     return new SessionFindDto(
         electionSession.getId(),
         electionSession.getSessionName(),
-        voteStatus,
         voteFindDtos
     );
   }
@@ -75,18 +89,57 @@ public class VoteFindService {
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
     List<VoteResult> voteResults = calculateVoteResult(sessionId);
     return new SessionResultFindDto(
-        sessionId,
         electionSession.getSessionName(),
         wholeVoterPercent,
         voteResults
     );
   }
 
+  public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
+    ElectionSession electionSession = electionSessionRepository.findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
+    float wholeVoterPercent = electionSession.getVotedVoter() > 0
+        ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
+    List<VoteResult> voteResults = calculateVoteResult(sessionId);
+    List<Elected> electedList = new ArrayList<>();
+
+    for (VoteResult voteResult : voteResults) {
+      List<TeamResult> maxTeamResultList = new ArrayList<>();
+      int max = -1;
+      for (TeamResult teamResult : voteResult.getTeamResults()) {
+        if (teamResult.getPollCnt() == max) {
+          maxTeamResultList.add(teamResult);
+        } else if (teamResult.getPollCnt() > max) {
+          max = teamResult.getPollCnt();
+          maxTeamResultList.clear();
+          maxTeamResultList.add(teamResult);
+        }
+      }
+      electedList.addAll(maxTeamResultList.stream().map(
+          teamResult -> {
+            return new Elected(
+                voteResult.getVoteId(),
+                voteResult.getVoteName(),
+                teamResult.getTeamId(),
+                teamResult.getPoster(),
+                teamResult.getVoteCandidateDtos()
+            );
+          }).toList());
+    }
+
+    return new SessionFinalResultFindDto(
+        ElectionSessionDto.from(electionSession),
+        wholeVoterPercent,
+        voteResults,
+        electedList
+    );
+  }
+
   /**
-   * 투표 결과 집계 로직
-   * JPA 성능이슈가 있어서 로직 조금 수정 필요
+   * 투표 결과 집계 로직 JPA 성능이슈가 있어서 로직 조금 수정 필요
+   *
    * @param sessionId
-   * @return
+   * @return List<VoteResult>
    */
   public List<VoteResult> calculateVoteResult(Long sessionId) {
     // 결과값 빼려면 wholeVoterPercent, VoteResults 이거 2개를 빼야하니까
@@ -101,7 +154,9 @@ public class VoteFindService {
 
         return new TeamResult(
             voteTeam.getId(),
+            voteTeam.getPoster(),
             Math.round(teamVotePercent * 10) / 10f,
+            voteTeam.getPollCnt(),
             voteTeam.getCandidates().stream().map(CandidateResult::from).toList()
         );
       }).toList();
@@ -111,28 +166,26 @@ public class VoteFindService {
       for (TeamResult teamResult : teamResults) {
         totalPercent += teamResult.getTeamVotePercent();
       }
-      if(Math.abs(totalPercent - 100f) > 0.01f) {
-        TeamResult maxTeamResult = null;
-        float maxTeamVotePercent = 0.0f;
-        for (TeamResult teamResult : teamResults) {
-          if(teamResult.getTeamVotePercent() > maxTeamVotePercent) {
-            maxTeamVotePercent = teamResult.getTeamVotePercent();
-            maxTeamResult = teamResult;
-          }
+      TeamResult maxTeamResult = null;
+      float maxTeamVotePercent = 0.0f;
+      for (TeamResult teamResult : teamResults) {
+        if (teamResult.getTeamVotePercent() > maxTeamVotePercent) {
+          maxTeamVotePercent = teamResult.getTeamVotePercent();
+          maxTeamResult = teamResult;
         }
         // 최종 조정치 계산
-        if(maxTeamResult != null) {
+        if (maxTeamResult != null) {
           float adjustment = 100f - totalPercent;
           maxTeamResult.adjustVoteTeamPercent(adjustment);
         }
       }
 
-      VoteResult voteResultFindDto = new VoteResult(
+      VoteResult voteResult = new VoteResult(
           vote.getId(),
           vote.getVoteName(),
           teamResults
       );
-      voteResults.add(voteResultFindDto);
+      voteResults.add(voteResult);
     }
     return voteResults;
   }

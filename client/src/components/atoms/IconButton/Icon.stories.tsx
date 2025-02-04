@@ -9,7 +9,6 @@ import bigger from '../../../assets/icons/bigger.svg';
 import orangebigger from '../../../assets/icons/orangebigger.svg';
 import dots from '../../../assets/icons/dots.svg';
 import left from '../../../assets/icons/left.svg';
-import React from 'react';
 import Icon from '.';
 
 const meta: Meta<typeof Icon> = {
@@ -17,7 +16,6 @@ const meta: Meta<typeof Icon> = {
   component: Icon,
   tags: ['autodocs'],
   argTypes: {
-    description: '기능 별 아이콘',
     name: {
       control: {
         type: 'select',
@@ -45,8 +43,8 @@ type Story = StoryObj<typeof Icon>;
 export const Primary: Story = {
   args: {
     name: 'mypage',
-  }
-} 
+  },
+};
 
 export const Mypage: Story = {
   render: () => (
@@ -55,8 +53,8 @@ export const Mypage: Story = {
         mypage Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const DoodleBack: Story = {
   render: () => (
@@ -65,8 +63,8 @@ export const DoodleBack: Story = {
         doodleback Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Home: Story = {
   render: () => (
@@ -75,8 +73,8 @@ export const Home: Story = {
         home Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Heart: Story = {
   render: () => (
@@ -85,8 +83,8 @@ export const Heart: Story = {
         heart Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Send: Story = {
   render: () => (
@@ -95,8 +93,8 @@ export const Send: Story = {
         send Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Back: Story = {
   render: () => (
@@ -105,8 +103,8 @@ export const Back: Story = {
         back Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Bigger: Story = {
   render: () => (
@@ -115,8 +113,8 @@ export const Bigger: Story = {
         bigger Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const OrangeBigger: Story = {
   render: () => (
@@ -125,8 +123,8 @@ export const OrangeBigger: Story = {
         orangebigger Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Dots: Story = {
   render: () => (
@@ -135,8 +133,8 @@ export const Dots: Story = {
         dots Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};
 
 export const Left: Story = {
   render: () => (
@@ -145,5 +143,5 @@ export const Left: Story = {
         left Icon
       </Icon>
     </div>
-  )
-}
+  ),
+};

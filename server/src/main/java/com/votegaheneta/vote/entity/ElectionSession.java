@@ -23,7 +23,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ElectionSession {
 
-  @Id @GeneratedValue
+  @Id
+  @GeneratedValue
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
