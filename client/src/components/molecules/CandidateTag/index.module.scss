@@ -35,11 +35,14 @@ body {
     justify-content: start;
     gap: 2px;
   }
+
   &-name {
-    border: 1px solid #dfdfdfdf;
-    padding: 6px 12px;
-    border-radius: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
   }
+
   &-mini-check {
     width: 24px;
     height: 24px;

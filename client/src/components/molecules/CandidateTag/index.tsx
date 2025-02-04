@@ -3,6 +3,8 @@ import x from '@/assets/icons/x.svg';
 import styles from '@/components/molecules/CandidateTag/index.module.scss';
 import IconMiniCheck from '@/assets/icons/IconMiniCheck';
 import React, { useState } from 'react';
+import BaseButton from '@/components/atoms/BaseButton';
+import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 
 interface Candidate {
   id: number;
@@ -70,15 +72,17 @@ const CandidateTag: React.FC<CandidateProps> = ({
       <div className={styles['tag-list']}>
         {mockCandidate.map((candidate) => (
           <div key={candidate.id}>
-            <Text
-              size='xs'
-              weight='normal'
-              color='#000000'
-              className={styles['tag-name']}
+            <BaseButton
+              type='button'
+              kind='mini-chip'
+              status={BASE_BUTTON_STATUS.OUTLINE}
+              onClick={() => deleteCandidate}
             >
-              {candidate.name}
-              <img src={candidate.image} onClick={deleteCandidate} />
-            </Text>
+              <div className={styles['tag-name']}>
+                {candidate.name}
+                <img src={candidate.image} className={styles['tag-img']} />
+              </div>
+            </BaseButton>
           </div>
         ))}
       </div>
