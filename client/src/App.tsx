@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
-import ElectionListItem from './components/molecules/ElectionListItem';
 
 function App() {
   const location = useLocation();
@@ -25,12 +24,6 @@ function App() {
       <main id='main-container' className={showHeader ? 'show-header' : ''}>
         app page
         <Outlet />
-        <ElectionListItem
-          id={1}
-          title='제목'
-          endDate='2045-234'
-          isClosed={true}
-        ></ElectionListItem>
       </main>
     </>
   );
