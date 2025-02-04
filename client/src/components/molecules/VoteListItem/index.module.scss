@@ -12,16 +12,16 @@
 
 .content {
   flex: 1;
-  min-width: 0; // flex item 내부의 text overflow를 위해 필요
+  min-width: 0;
 }
 
 .title {
   font-size: 14px;
   color: #6b7280;
   margin-bottom: 6px;
-  white-space: nowrap; // 한 줄로 표시
-  overflow: hidden; // 넘치는 텍스트 숨김
-  text-overflow: ellipsis; // 말줄임표 표시
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 .position {
