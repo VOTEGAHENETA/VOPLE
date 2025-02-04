@@ -10,7 +10,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    type: {
+    status: {
       description: '선거 목록 타입',
       control: 'radio',
       options: ['created', 'participating'],
@@ -27,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Created: Story = {
   args: {
-    type: 'created',
+    status: 'created',
     elections: [
       {
         id: 1,
@@ -43,7 +43,7 @@ export const Created: Story = {
 
 export const Participating: Story = {
   args: {
-    type: 'participating',
+    status: 'participating',
     elections: [
       {
         id: 3,
@@ -59,14 +59,14 @@ export const Participating: Story = {
 
 export const Empty: Story = {
   args: {
-    type: 'created',
+    status: 'created',
     elections: [],
   },
 };
 
 export const LongTitles: Story = {
   args: {
-    type: 'created',
+    status: 'created',
     elections: [
       {
         id: 5,

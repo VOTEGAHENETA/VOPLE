@@ -1,20 +1,22 @@
 import styles from './index.module.scss';
 import ElectionListItem from '@/components/molecules/ElectionListItem';
 import { useNavigate } from 'react-router-dom';
+import { ElectionListProps } from '@/types/election';
 
-interface Election {
-  id: number;
-  title: string;
-  startDate?: string;
-  endDate?: string;
-  status?: 'participating' | 'created';
-  isClosed?: boolean;
-  onMenuClick?: () => void;
-}
+/**
+ * # ElectionListProps
+    id: number;
+    title: string;
+    startDate?: string;
+    endDate?: string;
+    status?: 'participating' | 'created';
+    isClosed?: boolean;
+    onMenuClick?: () => void;
+ */
 
 interface ElectionListBoxProps {
-  type: 'created' | 'participating';
-  elections: Election[];
+  status: 'created' | 'participating';
+  elections: ElectionListProps[];
 }
 
 const CONTENT_CONFIG = {
@@ -31,12 +33,12 @@ const CONTENT_CONFIG = {
 } as const;
 
 export function ElectionListBox({
-  type,
+  status,
   elections, // user_type(CANDIDATE or VOTER)에 따라 분류되어 부모에서 받음
 }: ElectionListBoxProps) {
   // CONTENT 타입 정의에 따른 headerStyle, title, emptyText
   const navigate = useNavigate();
-  const contentConfig = CONTENT_CONFIG[type];
+  const contentConfig = CONTENT_CONFIG[status];
 
   const onCreateClick = () => {
     navigate('/elections/create');
@@ -63,7 +65,7 @@ export function ElectionListBox({
             ))}
           </div>
         )}
-        {type === 'created' && (
+        {status === 'created' && (
           <button onClick={onCreateClick} className={styles.createButton}>
             선거 만들기 →
           </button>

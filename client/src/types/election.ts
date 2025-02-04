@@ -23,3 +23,13 @@ export interface ElectionContents {
   voteRemainTime: string;
   votes: Vote;
 }
+
+export interface ElectionListProps {
+  id: number;
+  title: string;
+  startDate?: string;
+  endDate?: string;
+  status?: 'participating' | 'created';
+  isClosed?: boolean;
+  onMenuClick?: () => void;
+}
