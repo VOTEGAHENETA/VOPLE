@@ -21,7 +21,7 @@ function CandidateChoice() {
         )}
       </div>
       <Text size='s' weight='bold' color='#000000'>
-        김미리
+        {mockCandidate.username}
       </Text>
     </div>
   );

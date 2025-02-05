@@ -5,18 +5,19 @@ import silverCrown from '@/assets/icons/silverCrown.svg';
 import Text from '@/components/atoms/Text';
 
 interface Props {
-  id: number;
+  voteId: number;
   voteName: string;
   username: string;
+  candidateId?: number;
 }
 
-function RoleNameTag({ id, voteName, username }: Props) {
+function RoleNameTag({ voteId, voteName, username }: Props) {
   return (
     <div className={styles.role}>
       <div className={styles.votename}>
-        {id === 1 ? (
+        {voteId === 1 ? (
           <img src={crown} />
-        ) : id === 2 ? (
+        ) : voteId === 2 ? (
           <img src={silverCrown} />
         ) : (
           <img src={medal} />
