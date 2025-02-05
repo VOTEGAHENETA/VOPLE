@@ -12,8 +12,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "election_session")
 @NoArgsConstructor
-public class Session {
+public class ElectionSession {
 
   @Id
   @GeneratedValue
@@ -31,11 +31,11 @@ public class Session {
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Vote> votes;
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Vote> votes = new ArrayList<>();
 
-  @Builder
-  public Session(Users hostUser, String sessionName,
+//  @Builder
+  public ElectionSession(Users hostUser, String sessionName,
       int wholeVoter, String entranceQuestion, String entranceAnswer, LocalDateTime voteStartTime,
       LocalDateTime voteEndTime) {
     this.setHostUser(hostUser);
@@ -45,6 +45,7 @@ public class Session {
     this.entranceAnswer = entranceAnswer;
     this.voteStartTime = voteStartTime;
     this.voteEndTime = voteEndTime;
+    this.sessionStartTime = LocalDateTime.now();
   }
 
   private String qrCode;
@@ -53,15 +54,19 @@ public class Session {
   private int votedVoter;
   private String entranceQuestion;
   private String entranceAnswer;
-  private LocalDateTime sessionStartTime = LocalDateTime.now();
+  private LocalDateTime sessionStartTime;
   private LocalDateTime voteStartTime;
   private LocalDateTime voteEndTime;
   @Transient
   private boolean isActive;
 
+//  public static Session fromDto(SessionDto sessionDto) {
+//
+//  }
+
   public void addVote(Vote vote) {
     votes.add(vote);
-    vote.setSession(this);
+    vote.setElectionSession(this);
   }
 
   public void setId(Long id) {
@@ -70,7 +75,7 @@ public class Session {
 
   public void setHostUser(Users hostUser) {
     this.hostUser = hostUser;
-    hostUser.getSessions().add(this);
+    hostUser.getElectionSessions().add(this);
   }
 
   public void setQrCode(String qrCode) {
