@@ -1,5 +1,5 @@
-delete from Election_session;
-delete from Users;
+-- delete from Election_session;
+-- delete from Users;
 
 -- Users table
 INSERT INTO users (id, username, nickname)
