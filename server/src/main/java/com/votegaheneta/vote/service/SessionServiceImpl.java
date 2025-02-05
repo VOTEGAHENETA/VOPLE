@@ -38,6 +38,13 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
+  public SessionDto getSessionById(Long sessionId) {
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
+    return SessionDto.fromEntity(electionSession);
+  }
+
+  @Override
   public SessionInitialInfoDto getSession(Long sessionId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("해당되는 세션 정보가 없습니다."));
@@ -65,6 +72,12 @@ public class SessionServiceImpl implements SessionService {
         voteResults,
         wholeVoterPercent
     );
+  }
+
+  @Override
+  public List<SessionDto> getSessionList() {
+    List<ElectionSession> sessionList = sessionRepository.findAll();
+    return sessionList.stream().map(SessionDto::fromEntity).toList();
   }
 
   @Transactional

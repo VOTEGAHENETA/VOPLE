@@ -41,7 +41,7 @@ logging.level:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui/index.html
+    path: /index.html
   api-docs:
     path: /v3/api-docs
 

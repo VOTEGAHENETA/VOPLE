@@ -4,6 +4,7 @@ import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.service.SessionService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SessionController {
 
   private final SessionService sessionService;
+
+  @GetMapping
+  public ApiResponse<List<SessionDto>> getSessionList() {
+    List<SessionDto> result = sessionService.getSessionList();
+    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
+  }
 
   @GetMapping("/{sessionId}")
   public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId) {

@@ -1,5 +1,6 @@
 package com.votegaheneta.chat.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.votegaheneta.user.dto.UserDto;
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -19,12 +20,13 @@ public class ChatDto implements Serializable {
   private String nickname;
   private String text;
   private String color;
-//  @JsonFormat(pattern = "HH:mm:ss")
+  @JsonFormat(pattern = "HH:mm:ss")
   private LocalTime createdTime;
 
   public ChatDto() {
     this.color = ColorGenerator.generateColor();
     this.createdTime = LocalTime.now();
+//    this.createdTime = LocalDateTimeUtil.getLocalTime();
   }
 
   public void setText(String text) {

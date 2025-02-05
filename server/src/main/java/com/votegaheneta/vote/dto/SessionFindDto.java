@@ -5,7 +5,9 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Schema(name = "SessionFindDto(선거 세션 객체)")
@@ -19,12 +21,19 @@ public class SessionFindDto {
   private final List<VoteFindDto> voteFindDtos;
 
   @Getter
-  @RequiredArgsConstructor
+  @AllArgsConstructor
+  @NoArgsConstructor
   public static class VoteFindDto {
 
-    private final Long voteId;
-    private final String voteName;
-    private final List<VoteTeamFindDto> voteTeams;
+    private Long voteId;
+    private String voteName;
+    private List<VoteTeamFindDto> voteTeams;
+
+    public VoteFindDto(Long voteId, String voteName) {
+      this.voteId = voteId;
+      this.voteName = voteName;
+      this.voteTeams = null;
+    }
 
     @Getter
     @RequiredArgsConstructor
@@ -67,6 +76,13 @@ public class SessionFindDto {
           vote.getVoteName(),
           voteTeams.stream()
               .map(VoteTeamFindDto::from).toList()
+      );
+    }
+
+    public static VoteFindDto from(Vote vote) {
+      return new VoteFindDto(
+          vote.getId(),
+          vote.getVoteName()
       );
     }
   }
