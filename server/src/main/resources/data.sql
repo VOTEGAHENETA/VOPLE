@@ -2,10 +2,10 @@
 -- delete from Users;
 
 -- Users table
-INSERT INTO users (id, username, nickname)
-VALUES (1, 'user1', 'nickname1'),
-       (2, 'user2', 'nickname2'),
-       (3, 'user3', 'nickname3');
+-- INSERT INTO users (id, username, nickname)
+-- VALUES (1, 'user1', 'nickname1'),
+--        (2, 'user2', 'nickname2'),
+--        (3, 'user3', 'nickname3');
 
 -- Election_session table
 -- INSERT INTO election_session (id, host_id, qr_code, session_name, whole_voter, voted_voter,

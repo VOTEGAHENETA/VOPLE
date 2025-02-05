@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.service.SessionService;
@@ -29,11 +30,12 @@ public class SessionController {
   }
 
   @GetMapping
-  public ApiResponse<Void> getSessions() {
+  public ApiResponse<SessionResponse> getSessions() {
     // 내가 참여하고있는 세션 리스트
     // 내가 관리하고있는 세션 리스트
-
-    return null;
+    Long userId = 1L;
+    SessionResponse result = sessionService.getSessions(userId);
+    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
   }
 
   @PostMapping

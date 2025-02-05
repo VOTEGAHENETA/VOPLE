@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "vote-find-controller", description = "vote-find-controller API")
 public class VoteFindController {
 
-  private final VoteFindService voteFindService;
+  private final VoteFindService voteFindServiceImpl;
 
   @Operation(
       summary = "투표 상세화면 조회",
@@ -35,7 +35,7 @@ public class VoteFindController {
   @GetMapping("/{sessionId}/detail")
   public ApiResponse<SessionFindDto> findVoteBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
-    SessionFindDto sessionFindDto = voteFindService.findVoteBySessionId(sessionId);
+    SessionFindDto sessionFindDto = voteFindServiceImpl.findVoteBySessionId(sessionId);
     return ApiResponse.success(HttpStatus.OK, "투표 상세화면 조회 성공", sessionFindDto);
   }
 
@@ -48,7 +48,7 @@ public class VoteFindController {
   @GetMapping("/{sessionId}/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
-    SessionResultFindDto sessionResultFindDto = voteFindService.findVoteResultBySessionId(
+    SessionResultFindDto sessionResultFindDto = voteFindServiceImpl.findVoteResultBySessionId(
         sessionId);
     return ApiResponse.success(HttpStatus.OK, "투표 결과 조회 성공", sessionResultFindDto);
   }
@@ -63,7 +63,7 @@ public class VoteFindController {
   @GetMapping("/{sessionId}/result/final")
   public ApiResponse<SessionFinalResultFindDto> findVoteFinalResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
-    SessionFinalResultFindDto sessionFinalResultFindDto = voteFindService.findVoteFinalResultBySessionId(
+    SessionFinalResultFindDto sessionFinalResultFindDto = voteFindServiceImpl.findVoteFinalResultBySessionId(
         sessionId);
     return ApiResponse.success(HttpStatus.OK, "최종 투표 결과 조회 성공", sessionFinalResultFindDto);
   }
@@ -80,6 +80,6 @@ public class VoteFindController {
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId,
       @Valid @Positive @PathVariable(name = "userId") Long userId) {
     return ApiResponse.success(HttpStatus.OK, "투표 완료 여부 확인",
-        voteFindService.hasVoted(sessionId, userId));
+        voteFindServiceImpl.hasVoted(sessionId, userId));
   }
 }

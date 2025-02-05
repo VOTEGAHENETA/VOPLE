@@ -3,10 +3,12 @@ package com.votegaheneta.vote.service;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
+import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.VoteStatus;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -26,7 +28,6 @@ public class SessionServiceImpl implements SessionService {
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
 
-  private final String[] VOTE_STATUSES = {"isBefore", "isProgress", "isAfter"};
 
   @Override
   public Long saveSession(SessionDto sessionDto) {
@@ -44,19 +45,12 @@ public class SessionServiceImpl implements SessionService {
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
-    String voteStatus = "";
+    VoteStatus voteStatus = VoteStatus.IN_PROGRESS;
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
-    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-    if (now.isBefore(voteStartTime)) {
-
-      voteStatus = VOTE_STATUSES[0];
-    } else if (now.isEqual(voteStartTime)) {
-      voteStatus = VOTE_STATUSES[1];
-    } else if (now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
-      voteStatus = VOTE_STATUSES[1];
-    } else if (now.isAfter(voteEndTime)) {
-      voteStatus = VOTE_STATUSES[2];
+    if (now.isBefore(electionSession.getVoteStartTime())) {
+      voteStatus = VoteStatus.BEFORE_START;
+    } else if (now.isAfter(electionSession.getVoteEndTime())) {
+      voteStatus = VoteStatus.FINISHED;
     }
     return new SessionInitialInfoDto(
         electionSession.getId(),
@@ -64,6 +58,15 @@ public class SessionServiceImpl implements SessionService {
         voteStatus,
         voteResults,
         wholeVoterPercent
+    );
+  }
+
+  @Override
+  public SessionResponse getSessions(Long userId) {
+    List<ElectionSession> managedElectionSessions = sessionRepository.findByHostUser_Id(userId);
+    return new SessionResponse(
+        managedElectionSessions.stream().map(SessionDto::fromEntity).toList(),
+        managedElectionSessions.stream().map(SessionDto::fromEntity).toList()
     );
   }
 

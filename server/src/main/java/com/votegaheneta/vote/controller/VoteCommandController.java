@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "vote-command-controller", description = "vote-command-controller API")
 public class VoteCommandController {
 
-  private final VoteFindService voteFindService;
+  private final VoteFindService voteFindServiceImpl;
   private final VoteCommandService voteCommandService;
   private final SimpMessagingTemplate messagingTemplate;
 
@@ -45,7 +45,7 @@ public class VoteCommandController {
     voteCommandService.castVote(voteCastRequest, sessionId);
 
     messagingTemplate.convertAndSend("/api/vote/"+sessionId
-        , voteFindService.findVoteResultBySessionId(sessionId));
+        , voteFindServiceImpl.findVoteResultBySessionId(sessionId));
 
     return ApiResponse.success(HttpStatus.OK, "투표 성공", null);
   }
