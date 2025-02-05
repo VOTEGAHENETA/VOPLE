@@ -2,6 +2,7 @@ package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.vote.dto.SessionDto;
+import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.service.SessionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,17 @@ public class SessionController {
   }
 
   @GetMapping("/{sessionId}")
-  public ApiResponse<SessionDto> getSession(@PathVariable Long sessionId) {
-    SessionDto result = sessionService.getSession(sessionId);
+  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId) {
+    SessionInitialInfoDto result = sessionService.getSession(sessionId);
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
+  }
+
+  @GetMapping
+  public ApiResponse<Void> getSessions() {
+    // 내가 참여하고있는 세션 리스트
+    // 내가 관리하고있는 세션 리스트
+
+    return null;
   }
 
   @PostMapping
