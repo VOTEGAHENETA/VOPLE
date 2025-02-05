@@ -1,7 +1,6 @@
 .candidate {
   display: flex;
   justify-content: center;
-  margin-top: 100px;
   height: 213px;
 
   &-all {
@@ -32,9 +31,9 @@
 }
 
 .information {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &-perfix {
     margin-right: 5px;
   }

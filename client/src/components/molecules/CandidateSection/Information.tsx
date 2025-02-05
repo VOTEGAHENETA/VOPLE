@@ -1,8 +1,12 @@
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
-import { mockCandidate } from './mockData';
 
-function Information() {
+interface Props {
+  perfix: string;
+  username: string;
+}
+
+function Information({ perfix, username }: Props) {
   return (
     <div className={styles.information}>
       <Text
@@ -11,10 +15,10 @@ function Information() {
         color='#333333'
         className={styles['information-perfix']}
       >
-        {mockCandidate.perfix}
+        {perfix}
       </Text>
       <Text size='lg' weight='bold' color='#000000'>
-        {mockCandidate.username}
+        {username}
       </Text>
     </div>
   );

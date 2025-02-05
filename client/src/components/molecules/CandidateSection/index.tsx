@@ -3,23 +3,31 @@ import Poster from '@/components/atoms/Poster';
 import Text from '@/components/atoms/Text';
 import Information from './Information';
 import Introduction from './Introduction';
-import { mockCandidate } from './mockData';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
+import { TeamResult } from '@/types/election';
 
-function CandidateSection() {
+interface Props {
+  team: TeamResult;
+}
+
+function CandidateSection({ team }: Props) {
   return (
     <div className={styles.candidate}>
       <div className={styles['candidate-all']}>
         <Poster
           size='xs'
-          src={mockCandidate.poster}
+          src={team.poster}
           className={styles['candidate-poster']}
         />
         <div className={styles['candidate-content']}>
-          <Information />
-          {mockCandidate.candidate_statement ? (
-            <Introduction />
+          {team.voteCandidateDtos.map((candi) => (
+            <div key={candi.userId}>
+              <Information perfix={team.prefix} username={candi.userName} />
+            </div>
+          ))}
+          {team.candidateStatement ? (
+            <Introduction candidateStatement={team.candidateStatement} />
           ) : (
             <Text
               size='xs'
