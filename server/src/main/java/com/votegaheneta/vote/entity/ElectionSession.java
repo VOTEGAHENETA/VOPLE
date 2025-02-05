@@ -31,7 +31,7 @@ public class ElectionSession {
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Vote> votes = new ArrayList<>();
 
 //  @Builder

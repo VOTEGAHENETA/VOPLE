@@ -43,21 +43,11 @@ public class VoteFindService {
     Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
         vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
     return hasVoted;
+  }
 
-//    String voteStatus = "";
-//    LocalDateTime now = LocalDateTime.now();
-//    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
-//    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-//    if (now.isBefore(voteStartTime)) {
-//      voteStatus = VOTE_STATUSES[0];
-//    } else if (now.isEqual(voteStartTime)) {
-//      voteStatus = VOTE_STATUSES[1];
-//    } else if (now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
-//      voteStatus = VOTE_STATUSES[1];
-//    } else if (now.isAfter(voteEndTime)) {
-//      voteStatus = VOTE_STATUSES[2];
-//    }
-//    return voteStatus;
+  public List<VoteFindDto> getVoteList(Long sessionId) {
+    List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
+    return votes.stream().map(VoteFindDto::from).toList();
   }
 
 

@@ -5,6 +5,7 @@ import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.repository.SessionRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,12 @@ public class SessionServiceImpl implements SessionService {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
     return SessionDto.fromEntity(electionSession);
+  }
+
+  @Override
+  public List<SessionDto> getSessionList() {
+    List<ElectionSession> sessionList = sessionRepository.findAll();
+    return sessionList.stream().map(SessionDto::fromEntity).toList();
   }
 
   @Transactional

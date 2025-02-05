@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SessionDto {
 
+  private Long id;
   private Long hostId;
   private String sessionName;
   private String entranceQuestion;
@@ -35,7 +36,7 @@ public class SessionDto {
   }
 
   public static SessionDto fromEntity(ElectionSession electionSession) {
-    return new SessionDto(electionSession.getHostUser().getId(), electionSession.getSessionName(),
+    return new SessionDto(electionSession.getId(), electionSession.getHostUser().getId(), electionSession.getSessionName(),
         electionSession.getEntranceQuestion(), electionSession.getEntranceAnswer(), electionSession.getVoteStartTime(),
         electionSession.getVoteEndTime(), electionSession.getWholeVoter());
   }
