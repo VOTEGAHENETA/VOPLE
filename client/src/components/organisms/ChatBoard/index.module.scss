@@ -1,0 +1,87 @@
+.chatBoard {
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  &.dark {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    .time {
+      color : #fff;
+    }
+    .systemMessage {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+  }
+
+  &.light {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    .time {
+      color : #333;
+    }
+    .systemMessage {
+      text-align: center;
+      color: #333;
+      font-size: 14px;
+    }
+
+  }
+
+}
+
+.statusBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+  button {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+}
+
+.messageArea {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px 0;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+}
+
+.messageRow {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.username {
+  font-weight: 500;
+}
+
+.content {
+  word-break: break-all;
+}

@@ -1,9 +1,8 @@
 .chatBar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
-  background-color: white;
-
 
   .sendButton {
     display: flex;
@@ -22,6 +21,7 @@
     &:hover {
       opacity: 0.7;
     }
+
 
     &:active {
       opacity: 0.5;
