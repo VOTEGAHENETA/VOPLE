@@ -36,11 +36,12 @@ public class SessionController {
   }
 
 //  @GetMapping
-//  public ApiResponse<Void> getSessions() {
+//  public ApiResponse<SessionResponse> getSessions() {
 //    // 내가 참여하고있는 세션 리스트
 //    // 내가 관리하고있는 세션 리스트
-//
-//    return null;
+//    Long userId = 1L;
+//    SessionResponse result = sessionService.getSessions(userId);
+//    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
 //  }
 
   @PostMapping
@@ -61,4 +62,10 @@ public class SessionController {
     return result ? ApiResponse.success(HttpStatus.NO_CONTENT, "세션 삭제 성공", null)
         : ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, "세션 삭제 실패");
   }
+
+  @GetMapping("/{sessionId}/qrcode")
+  public ApiResponse<String> getQrCode(@PathVariable("sessionId") Long sessionId) {
+    return ApiResponse.success(HttpStatus.OK, "QR코드 조회 성공", sessionService.getQrcode(sessionId));
+  }
+
 }
