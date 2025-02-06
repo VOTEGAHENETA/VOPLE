@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
         element: <Channel />,
       },
       {
-        path: 'election/:election_id',
+        path: 'elections/:election_id',
         element: <Main />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정

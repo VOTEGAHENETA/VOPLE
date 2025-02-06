@@ -1,5 +1,4 @@
 import styles from './index.module.scss';
-import Footer from '@/components/molecules/Footer';
 import Text from '@/components/atoms/Text';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
@@ -13,6 +12,10 @@ import {
 import sample from '@/assets/sample/sample.png';
 import IconFlower from '@/assets/icons/IconFlower';
 import MainCandidateList from '@/components/organisms/MainCandidateList';
+import IconBlurChart from '@/assets/icons/IconBlurChart';
+import IconFire from '@/assets/icons/IconFire';
+import { useEffect, useState } from 'react';
+import Turnout from './Turnout';
 
 const candidates1: VoteCandidate[] = [
   {
@@ -126,7 +129,7 @@ function ElectionMainTemplate() {
             <Text size='sm' color='#7c7c7c'>
               나의 한 표로 바뀌는 우리 학교
             </Text>
-            <Text size='xl' color='#333333'>
+            <Text size='xl' color='#333333' weight='bold'>
               {electionData.sessionName}
             </Text>
           </div>
@@ -136,14 +139,21 @@ function ElectionMainTemplate() {
           </div>
         </div>
         <div className={styles['main-contents']}>
+          <div className={styles['main-contents-text']}>
+            <Text size='m' color='var(--color-main-orange)' weight='bold'>
+              후보 리스트
+            </Text>
+            <Text size='xl' color='var(--color-black)' weight='bold'>
+              내가 선택할 후보는?
+            </Text>
+          </div>
           {electionData.voteResults.map((vote) => {
             vote.teamResults.sort(() => Math.random() - 0.5);
             return <MainCandidateList key={vote.voteId} vote={vote} />;
           })}
         </div>
-        <div className={styles['main-turnout']}></div>
+        <Turnout data={electionData} />
       </div>
-      <Footer />
     </div>
   );
 }
