@@ -22,7 +22,6 @@ function App() {
     <>
       {showHeader && <Header />}
       <main id='main-container' className={showHeader ? 'show-header' : ''}>
-        app page
         <Outlet />
       </main>
     </>
