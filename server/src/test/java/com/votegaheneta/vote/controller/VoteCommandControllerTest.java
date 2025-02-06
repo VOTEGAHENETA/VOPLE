@@ -35,7 +35,7 @@ public class VoteCommandControllerTest {
   private SimpMessagingTemplate simpMessagingTemplate;
 
   @Mock
-  private VoteFindService voteFindService;
+  private VoteFindService voteFindServiceImpl;
 
   @InjectMocks
   private VoteCommandController voteCommandController;

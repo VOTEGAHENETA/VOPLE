@@ -1,10 +1,11 @@
 package com.votegaheneta.common.component;
 
+import com.votegaheneta.vote.dto.CandidateResultDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
-import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
+import com.votegaheneta.vote.repository.CandidateRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class VoteResultCalculator {
 
   private final VoteRepository voteRepository;
   private final VoteTeamRepository voteTeamRepository;
+  private final CandidateRepository candidateRepository;
 
   /**
    * 투표 결과 집계 로직 JPA 성능이슈가 있어서 로직 조금 수정 필요
@@ -35,11 +37,12 @@ public class VoteResultCalculator {
       List<TeamResult> teamResults = voteTeams.stream().map(voteTeam -> {
         float teamVotePercent =
             totalVoteCnt > 0 ? ((float) voteTeam.getPollCnt() / totalVoteCnt) * 100 : 0.0f;
+        List<CandidateResultDto> candidates = candidateRepository.findByVoteTeamId(voteTeam.getId());
         return new TeamResult(
             voteTeam.getId(),
             voteTeam.getPrefix(),
             voteTeam.getPollCnt(),
-            voteTeam.getCandidates().stream().map(CandidateResult::from).toList(),
+            candidates,
             voteTeam.getPoster(),
             voteTeam.getCandidateStatement(),
             Math.round(teamVotePercent * 10) / 10f);

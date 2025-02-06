@@ -1,17 +1,26 @@
 package com.votegaheneta.vote.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
+import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.VoteStatus;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +35,7 @@ public class SessionServiceImpl implements SessionService {
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
 
-  private final String[] VOTE_STATUSES = {"isBefore", "isProgress", "isAfter"};
+  private final String UPLOAD_DIR = "/app/uploads/";
 
   @Override
   public Long saveSession(SessionDto sessionDto) {
@@ -34,6 +43,31 @@ public class SessionServiceImpl implements SessionService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     ElectionSession electionSession = sessionDto.toEntity(user);
     electionSession = sessionRepository.save(electionSession);
+
+    // qr코드로 접속할 url
+    String url = "http://i12b102.p.ssafy.io/api/election/"+electionSession.getId();
+
+    int width = 400;
+    int height = 400;
+
+    // qr코드 생성하는 코드
+    try {
+      BitMatrix encode = new MultiFormatWriter()
+          .encode(url, BarcodeFormat.QR_CODE, width, height);
+
+      BufferedImage qrCodeImage = MatrixToImageWriter.toBufferedImage(encode);
+
+      String fileName = "qrcode_" + electionSession.getId() + ".png";
+      File qrCodeFile = new File(UPLOAD_DIR + "qrcode/", fileName);
+
+      qrCodeFile.getParentFile().mkdirs();
+      ImageIO.write(qrCodeImage, "png", qrCodeFile);
+      String relativePath = "/qrcode/" + fileName;
+      electionSession.setQrCode(relativePath);
+      sessionRepository.save(electionSession);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("QR코드 생성에 실패했습니다.", e);
+    }
     return electionSession.getId();
   }
 
@@ -51,19 +85,12 @@ public class SessionServiceImpl implements SessionService {
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
-    String voteStatus = "";
+    VoteStatus voteStatus = VoteStatus.IN_PROGRESS;
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
-    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-    if (now.isBefore(voteStartTime)) {
-
-      voteStatus = VOTE_STATUSES[0];
-    } else if (now.isEqual(voteStartTime)) {
-      voteStatus = VOTE_STATUSES[1];
-    } else if (now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
-      voteStatus = VOTE_STATUSES[1];
-    } else if (now.isAfter(voteEndTime)) {
-      voteStatus = VOTE_STATUSES[2];
+    if (now.isBefore(electionSession.getVoteStartTime())) {
+      voteStatus = VoteStatus.BEFORE_START;
+    } else if (now.isAfter(electionSession.getVoteEndTime())) {
+      voteStatus = VoteStatus.FINISHED;
     }
     return new SessionInitialInfoDto(
         electionSession.getId(),
@@ -75,6 +102,14 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
+  public SessionResponse getSessions(Long userId) {
+    List<ElectionSession> managedElectionSessions = sessionRepository.findByHostUser_Id(userId);
+    return new SessionResponse(
+        managedElectionSessions.stream().map(SessionDto::fromEntity).toList(),
+        managedElectionSessions.stream().map(SessionDto::fromEntity).toList()
+    );
+  }
+  
   public List<SessionDto> getSessionList() {
     List<ElectionSession> sessionList = sessionRepository.findAll();
     return sessionList.stream().map(SessionDto::fromEntity).toList();
@@ -96,5 +131,10 @@ public class SessionServiceImpl implements SessionService {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String getQrcode(Long sessionId) {
+    return sessionRepository.findQrcodeById(sessionId);
   }
 }
