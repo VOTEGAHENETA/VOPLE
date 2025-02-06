@@ -20,9 +20,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
 
-#  sql:
-#    init:
-#      mode: always
+  sql:
+    init:
+      mode: always
 
   data:
     redis:
@@ -41,7 +41,7 @@ logging.level:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui/index.html
+    path: /index.html
   api-docs:
     path: /v3/api-docs
 

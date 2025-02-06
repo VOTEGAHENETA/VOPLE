@@ -5,6 +5,7 @@ import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
+import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
@@ -82,7 +83,10 @@ public class VoteFindServiceImpl implements VoteFindService{
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = session.getVotedVoter() > 0
         ? ((float) session.getVotedVoter() / session.getWholeVoter()) * 100 : 0.0f;
+    System.out.println("=".repeat(50));
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+    System.out.println("=".repeat(50));
+
     List<Elected> electedList = new ArrayList<>();
     for (VoteResult voteResult : voteResults) {
       List<TeamResult> maxTeamResultList = new ArrayList<>();
@@ -108,12 +112,16 @@ public class VoteFindServiceImpl implements VoteFindService{
             );
           }).toList());
     }
-
     return new SessionFinalResultFindDto(
         ElectionSessionDto.from(session),
         wholeVoterPercent,
         voteResults,
         electedList
     );
+  }
+
+  @Override
+  public List<VoteFindDto> getVoteList(Long sessionId) {
+    return null;
   }
 }

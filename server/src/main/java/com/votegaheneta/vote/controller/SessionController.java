@@ -1,10 +1,10 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
-import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.service.SessionService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,20 +23,26 @@ public class SessionController {
 
   private final SessionService sessionService;
 
+  @GetMapping
+  public ApiResponse<List<SessionDto>> getSessionList() {
+    List<SessionDto> result = sessionService.getSessionList();
+    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
+  }
+
   @GetMapping("/{sessionId}")
   public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId) {
     SessionInitialInfoDto result = sessionService.getSession(sessionId);
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
   }
 
-  @GetMapping
-  public ApiResponse<SessionResponse> getSessions() {
-    // 내가 참여하고있는 세션 리스트
-    // 내가 관리하고있는 세션 리스트
-    Long userId = 1L;
-    SessionResponse result = sessionService.getSessions(userId);
-    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
-  }
+//  @GetMapping
+//  public ApiResponse<SessionResponse> getSessions() {
+//    // 내가 참여하고있는 세션 리스트
+//    // 내가 관리하고있는 세션 리스트
+//    Long userId = 1L;
+//    SessionResponse result = sessionService.getSessions(userId);
+//    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
+//  }
 
   @PostMapping
   public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto) {
@@ -56,4 +62,10 @@ public class SessionController {
     return result ? ApiResponse.success(HttpStatus.NO_CONTENT, "세션 삭제 성공", null)
         : ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, "세션 삭제 실패");
   }
+
+  @GetMapping("/{sessionId}/qrcode")
+  public ApiResponse<String> getQrCode(@PathVariable("sessionId") Long sessionId) {
+    return ApiResponse.success(HttpStatus.OK, "QR코드 조회 성공", sessionService.getQrcode(sessionId));
+  }
+
 }

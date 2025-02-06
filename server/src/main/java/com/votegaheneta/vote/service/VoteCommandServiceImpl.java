@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.service;
 
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
+import com.votegaheneta.vote.controller.request.VoteCastRequest.VoteSelection;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
@@ -32,7 +33,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
         || now.isAfter(electionSession.getVoteEndTime())) {
       throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
     }
-    for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
+    for (VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
       if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId)) {
@@ -41,7 +42,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
       VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       final Boolean TRUE = true;
-//      voteInfo.updateVoteInfo(TRUE); // 여기서 이름 없애기
+      voteInfo.updateVoteInfo(TRUE); // 여기서 이름 없애기
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();

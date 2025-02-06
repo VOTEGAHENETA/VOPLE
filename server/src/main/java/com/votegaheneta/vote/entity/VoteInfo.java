@@ -36,7 +36,7 @@ public class VoteInfo {
   @JoinColumn(name = "user_id")
   private Users user;
 
-  private String selectCandidate;
+//  private String selectCandidate;
   private boolean hasSelect;
 
   @Enumerated(EnumType.STRING)
@@ -67,9 +67,7 @@ public class VoteInfo {
     user.getVoteInfos().add(this);
   }
 
-  public void setSelectCandidate(String selectCandidate) {
-    this.selectCandidate = selectCandidate;
-  }
+
 
   public void setHasSelect(boolean hasSelect) {
     this.hasSelect = hasSelect;
@@ -80,9 +78,8 @@ public class VoteInfo {
   }
 
   // 투표했을 때 update
-  public void updateVoteInfo(Boolean hasSelect, String selectCandidate) {
+  public void updateVoteInfo(Boolean hasSelect) {
     this.hasSelect = hasSelect;
-    this.selectCandidate = selectCandidate;
   }
 
 }

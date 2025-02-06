@@ -1,5 +1,9 @@
 package com.votegaheneta.vote.service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
@@ -12,8 +16,11 @@ import com.votegaheneta.vote.entity.VoteStatus;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +35,7 @@ public class SessionServiceImpl implements SessionService {
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
 
+  private final String UPLOAD_DIR = "/app/uploads/";
 
   @Override
   public Long saveSession(SessionDto sessionDto) {
@@ -35,7 +43,39 @@ public class SessionServiceImpl implements SessionService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     ElectionSession electionSession = sessionDto.toEntity(user);
     electionSession = sessionRepository.save(electionSession);
+
+    // qr코드로 접속할 url
+    String url = "http://i12b102.p.ssafy.io/api/election/"+electionSession.getId();
+
+    int width = 400;
+    int height = 400;
+
+    // qr코드 생성하는 코드
+    try {
+      BitMatrix encode = new MultiFormatWriter()
+          .encode(url, BarcodeFormat.QR_CODE, width, height);
+
+      BufferedImage qrCodeImage = MatrixToImageWriter.toBufferedImage(encode);
+
+      String fileName = "qrcode_" + electionSession.getId() + ".png";
+      File qrCodeFile = new File(UPLOAD_DIR + "qrcode/", fileName);
+
+      qrCodeFile.getParentFile().mkdirs();
+      ImageIO.write(qrCodeImage, "png", qrCodeFile);
+      String relativePath = "/qrcode/" + fileName;
+      electionSession.setQrCode(relativePath);
+      sessionRepository.save(electionSession);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("QR코드 생성에 실패했습니다.", e);
+    }
     return electionSession.getId();
+  }
+
+  @Override
+  public SessionDto getSessionById(Long sessionId) {
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
+    return SessionDto.fromEntity(electionSession);
   }
 
   @Override
@@ -69,6 +109,11 @@ public class SessionServiceImpl implements SessionService {
         managedElectionSessions.stream().map(SessionDto::fromEntity).toList()
     );
   }
+  
+  public List<SessionDto> getSessionList() {
+    List<ElectionSession> sessionList = sessionRepository.findAll();
+    return sessionList.stream().map(SessionDto::fromEntity).toList();
+  }
 
   @Transactional
   @Override
@@ -86,5 +131,10 @@ public class SessionServiceImpl implements SessionService {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String getQrcode(Long sessionId) {
+    return sessionRepository.findQrcodeById(sessionId);
   }
 }
