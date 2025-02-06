@@ -17,7 +17,6 @@ VALUES (1, 1, 'QR_CODE_1', 'Session 1', 100, 50, 'Question 1', 'Answer 1', '2023
        (2, 2, 'QR_CODE_2', 'Session 2', 200, 150, 'Question 2', 'Answer 2', '2023-02-01 10:00:00',
         '2023-02-01 11:00:00', '2023-02-01 12:00:00');
 
-
 -- Vote Table
 insert into vote (id, session_id, vote_name)
 values (1, 1, 'test');
@@ -27,8 +26,7 @@ insert into vote_team (id, vote_id, poll_cnt, candidate_statement, poster, prefi
 values (1, 1, 0, 'statement', 'poster', 'prefix');
 
 
---
--- ---USER---
+---USER---
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (1, 'sunset_glow', '김석양');
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (2, 'winter_snow', '이눈꽃');
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (3, 'gentle_breeze', '박바람');
@@ -79,13 +77,13 @@ values (1, 1, 0, 'statement', 'poster', 'prefix');
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (48, 'spring_echo', '최봄소리');
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (49, 'summer_dream', '한여름꿈');
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (50, 'winter_light', '박겨울빛');
---
--- ---ELECTION_SESSION
+
+---ELECTION_SESSION
 -- INSERT INTO ELECTION_SESSION (VOTED_VOTER, WHOLE_VOTER, HOST_ID, ID, SESSION_START_TIME, VOTE_END_TIME, VOTE_START_TIME, ENTRANCE_ANSWER, ENTRANCE_QUESTION, QR_CODE, SESSION_NAME)
 -- VALUES (0, 100, 1, 1, '2025-02-03 15:45:00', '2025-02-03 15:45:00', '2025-02-04 15:45:00', '파란색', '하늘의 색깔은?', 'QR003', '동아리 회장 선거');
---
---
--- ---VOTE_INFO---
+
+
+---VOTE_INFO---
 -- INSERT INTO vote_info (has_select, user_type, id, user_id, vote_id, select_candidate) VALUES (false, 'VOTER', 1, 1, 1, null);
 -- INSERT INTO vote_info (has_select, user_type, id, user_id, vote_id, select_candidate) VALUES (false, 'VOTER', 2, 2, 1, null);
 -- INSERT INTO vote_info (has_select, user_type, id, user_id, vote_id, select_candidate) VALUES (false, 'VOTER', 3, 3, 1, null);
@@ -137,21 +135,24 @@ values (1, 1, 0, 'statement', 'poster', 'prefix');
 -- INSERT INTO vote_info (has_select, user_type, id, user_id, vote_id, select_candidate) VALUES (false, 'VOTER', 49, 49, 1, null);
 -- INSERT INTO vote_info (has_select, user_type, id, user_id, vote_id, select_candidate) VALUES (false, 'VOTER', 50, 50, 1, null);
 --
---
---
--- ---VOTE---
+
+
+---VOTE---
 -- INSERT INTO VOTE (ID, SESSION_ID, VOTE_NAME) VALUES (1, 1, '학생회장 선거');
 -- INSERT INTO VOTE (ID, SESSION_ID, VOTE_NAME) VALUES (2, 2, '학생회장 선거');
 -- INSERT INTO VOTE (ID, SESSION_ID, VOTE_NAME) VALUES (3, 3, '학생회 예산안 의결');
---
---
--- ---VOTE_TEAM---
+
+
+---VOTE_TEAM---
 -- INSERT INTO vote_team (id, vote_id, prefix, candidate_statement, poster, poll_cnt) VALUES (1, 1, '똘끼', '잘부탁드립니다.', '1번후보포스터.img', 0);
 -- INSERT INTO vote_team (id, vote_id, prefix, candidate_statement, poster, poll_cnt) VALUES (2, 1, '혁명', '잘부탁드립니다.', '2번후보포스터.img', 0);
---
---
--- ---CANDIDATE---
+
+
+---CANDIDATE---
 -- INSERT INTO candidate (id, user_id, vote_team_id) VALUES (1, 1, 1);
 -- INSERT INTO candidate (id, user_id, vote_team_id) VALUES (2, 2, 1);
 -- INSERT INTO candidate (id, user_id, vote_team_id) VALUES (3, 3, 2);
 -- INSERT INTO candidate (id, user_id, vote_team_id) VALUES (4, 4, 2);
+
+-- STREAM --
+-- insert into stream values(false, 1, 'http://i12b102.p.ssafy.io:8050/hls/1.m3u8');
