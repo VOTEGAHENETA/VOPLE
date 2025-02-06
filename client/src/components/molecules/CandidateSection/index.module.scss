@@ -1,23 +1,19 @@
 .candidate {
-  display: flex;
-  justify-content: center;
+  flex: 0 0 100%;
   height: 213px;
-
-  &-all {
-    display: flex;
-    border-radius: 10px;
-    background-color: white;
-    overflow: hidden;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
 
   &-content {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: fit-content;
-    gap: 12px;
-    padding: 0 16px;
+    justify-content: space-between;
+    padding: 10px 16px;
   }
+
   &-none-intro {
     height: 100px;
     text-align: center;
@@ -28,19 +24,28 @@
     justify-content: center;
     align-items: center;
   }
-}
 
-.information {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &-perfix {
-    margin-right: 5px;
+  &-information {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+
+    &-prefix {
+      width: 50%;
+      white-space: pre-line;
+      margin-right: 5px;
+    }
+  }
+
+  &-name {
+    display: flex;
   }
 }
 
 .introduction {
   height: 100px;
+  width: 100%;
   line-height: 20px;
+  overflow: auto;
   white-space: pre-line;
 }

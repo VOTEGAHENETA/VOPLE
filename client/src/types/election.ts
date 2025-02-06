@@ -10,7 +10,7 @@ export type TeamResult = {
   pollCnt: number;
   voteCandidateDtos: VoteCandidate[];
   poster: string;
-  candidateStatement: string; // 카멜 케이스로 리팩터링
+  candidateStatement: string;
   teamVotePercent: number;
 };
 
