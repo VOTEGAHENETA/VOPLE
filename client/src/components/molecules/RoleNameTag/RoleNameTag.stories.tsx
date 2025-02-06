@@ -5,7 +5,7 @@ const meta: Meta<typeof RoleNameTag> = {
   title: 'Components/RoleNameTag',
   component: RoleNameTag,
   argTypes: {
-    id: {
+    voteId: {
       control: { type: 'number' },
       description:
         '역할에 따른 아이콘 표시 (1: crown, 2: silverCrown, 3이하 모두 medal)',
@@ -29,7 +29,7 @@ type Story = StoryObj<typeof RoleNameTag>;
 
 export const Primary: Story = {
   args: {
-    id: 1,
+    voteId: 1,
     voteName: '회장',
     username: '김선명',
   },
@@ -37,7 +37,7 @@ export const Primary: Story = {
 
 export const VicePresident: Story = {
   args: {
-    id: 2,
+    voteId: 2,
     voteName: '부회장',
     username: '황연주주',
   },
@@ -45,7 +45,7 @@ export const VicePresident: Story = {
 
 export const ETC: Story = {
   args: {
-    id: 3,
+    voteId: 3,
     voteName: '제주부장',
     username: '강성엽엽',
   },

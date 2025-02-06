@@ -2,19 +2,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 10px;
   gap: 10px;
 }
 
 .choice-poster {
+  justify-content: center;
+  align-items: center;
   position: relative;
-  max-width: 176px;
+  margin: 0px 10px;
+  min-width: 176px;
 }
 
 .choice-check {
   position: absolute;
   max-height: 42px;
   max-width: 42px;
-  bottom: 10px;
+  bottom: 30px;
   right: 10px;
+}
+
+.darkPoster {
+  filter: brightness(50%);
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }

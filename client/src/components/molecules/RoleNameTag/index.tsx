@@ -4,19 +4,26 @@ import crown from '@/assets/icons/crown.svg';
 import silverCrown from '@/assets/icons/silverCrown.svg';
 import Text from '@/components/atoms/Text';
 
+// username을 선택적으로 보여주는 props 추가
 interface Props {
-  id: number;
-  voteName: string;
-  username: string;
+  voteId?: number;
+  voteName?: string;
+  username?: string;
+  showUsername?: boolean;
 }
 
-function RoleNameTag({ id, voteName, username }: Props) {
+function RoleNameTag({
+  voteId,
+  voteName,
+  username,
+  showUsername = true,
+}: Props) {
   return (
     <div className={styles.role}>
       <div className={styles.votename}>
-        {id === 1 ? (
+        {voteId === 1 ? (
           <img src={crown} />
-        ) : id === 2 ? (
+        ) : voteId === 2 ? (
           <img src={silverCrown} />
         ) : (
           <img src={medal} />
@@ -26,9 +33,16 @@ function RoleNameTag({ id, voteName, username }: Props) {
           {voteName}
         </Text>
       </div>
-      <Text size='s' weight='bold' color='#000000' className={styles.username}>
-        {username}
-      </Text>
+      {showUsername && (
+        <Text
+          size='s'
+          weight='bold'
+          color='#000000'
+          className={styles.username}
+        >
+          {username}
+        </Text>
+      )}
     </div>
   );
 }
