@@ -61,4 +61,10 @@ public class SessionController {
     return result ? ApiResponse.success(HttpStatus.NO_CONTENT, "세션 삭제 성공", null)
         : ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, "세션 삭제 실패");
   }
+
+  @GetMapping("/{sessionId}/qrcode")
+  public ApiResponse<String> getQrCode(@PathVariable("sessionId") Long sessionId) {
+    return ApiResponse.success(HttpStatus.OK, "QR코드 조회 성공", sessionService.getQrcode(sessionId));
+  }
+
 }

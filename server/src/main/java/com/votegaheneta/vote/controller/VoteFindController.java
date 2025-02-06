@@ -46,7 +46,7 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true)
   })
   @GetMapping
-  public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId") Long sessionId) {
+  public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId ") Long sessionId) {
     List<VoteFindDto> result = voteFindService.getVoteList(sessionId);
     return ApiResponse.success(HttpStatus.OK, "투표 목록 조회 성공", result);
   }

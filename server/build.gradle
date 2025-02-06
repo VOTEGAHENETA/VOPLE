@@ -67,6 +67,9 @@ dependencies {
 	// assertJ 관련 의존성
 	testImplementation 'org.junit.jupiter:junit-jupiter'
 	testImplementation("org.assertj:assertj-core:3.22.0")
+	// qr코드 생성 의존성
+	implementation group: 'com.google.zxing', name: 'javase', version: '3.5.0'
+	implementation group: 'com.google.zxing', name: 'core', version: '3.5.0'
 }
 
 tasks.named('test') {
