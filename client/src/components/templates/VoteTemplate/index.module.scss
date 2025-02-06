@@ -1,0 +1,30 @@
+.vote {
+    display: flex;
+    flex-direction: column;
+    padding-top: 50px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 30px;
+}
+
+.gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.canceled {
+    min-width: 178px;
+}
+
+.one {
+    min-width: 178px;
+}

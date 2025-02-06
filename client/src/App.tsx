@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
+import VoteTemplate from './components/templates/VoteTemplate';
 
 function App() {
   const location = useLocation();
@@ -22,8 +23,8 @@ function App() {
     <>
       {showHeader && <Header />}
       <main id='main-container' className={showHeader ? 'show-header' : ''}>
-        app page
         <Outlet />
+        <VoteTemplate />
       </main>
     </>
   );
