@@ -31,8 +31,11 @@ public class ElectionSession {
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private List<Vote> votes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true)
+  private List<SessionUserInfo> sessionUserInfos = new ArrayList<>();
 
 //  @Builder
   public ElectionSession(Users hostUser, String sessionName,
@@ -63,6 +66,15 @@ public class ElectionSession {
 //  public static Session fromDto(SessionDto sessionDto) {
 //
 //  }
+
+  public List<SessionUserInfo> getSessionUserInfos() {
+    return sessionUserInfos;
+  }
+
+  public void addSessionUserInfo(SessionUserInfo sessionUserInfo) {
+    sessionUserInfos.add(sessionUserInfo);
+    sessionUserInfo.setElectionSession(this);
+  }
 
   public void addVote(Vote vote) {
     votes.add(vote);

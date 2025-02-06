@@ -1,5 +1,6 @@
 package com.votegaheneta.user.entity;
 
+import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteInfo;
@@ -39,6 +40,10 @@ public class Users {
   public Users(String username, String nickname) {
     this.username = username;
     this.nickname = nickname;
+  }
+
+  public UserDto toDto() {
+    return new UserDto(this);
   }
 
   public void addCandidate(Candidate candidate) {

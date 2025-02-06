@@ -17,4 +17,6 @@ public interface VoteTeamRepository extends JpaRepository<VoteTeam, Long> {
   List<VoteTeam> findByVote_IdIn(@Param("voteIds")List<Long> voteIds);
 
   List<VoteTeam> findByVoteId(Long voteId);
+
+  void deleteVoteTeamByVoteId(Long voteId);
 }

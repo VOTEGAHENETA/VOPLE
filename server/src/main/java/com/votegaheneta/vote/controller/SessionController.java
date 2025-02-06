@@ -36,12 +36,11 @@ public class SessionController {
   }
 
 //  @GetMapping
-//  public ApiResponse<SessionResponse> getSessions() {
+//  public ApiResponse<Void> getSessions() {
 //    // 내가 참여하고있는 세션 리스트
 //    // 내가 관리하고있는 세션 리스트
-//    Long userId = 1L;
-//    SessionResponse result = sessionService.getSessions(userId);
-//    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
+//
+//    return null;
 //  }
 
   @PostMapping

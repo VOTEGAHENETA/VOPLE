@@ -3,10 +3,12 @@
 
 
 -- Users table
--- INSERT INTO users (id, username, nickname)
--- VALUES (1, 'user1', 'nickname1'),
---        (2, 'user2', 'nickname2'),
---        (3, 'user3', 'nickname3');
+INSERT INTO users (id, username, nickname)
+VALUES (1, 'user1', 'nickname1'),
+       (2, 'user2', 'nickname2'),
+       (3, 'user3', 'nickname3'),
+       (4, 'user4', 'nickname4'),
+       (5, 'user5', 'nickname5');
 
 -- Election_session table
 INSERT INTO election_session (id, host_id, qr_code, session_name, whole_voter, voted_voter,
@@ -19,12 +21,42 @@ VALUES (1, 1, 'QR_CODE_1', 'Session 1', 100, 50, 'Question 1', 'Answer 1', '2023
 
 -- Vote Table
 insert into vote (id, session_id, vote_name)
-values (1, 1, 'test');
+values (1, 1, 'test'),
+       (2, 1, 'test2');
 
 -- Vote_team table
 insert into vote_team (id, vote_id, poll_cnt, candidate_statement, poster, prefix)
-values (1, 1, 0, 'statement', 'poster', 'prefix');
+values (1, 1, 0, 'statement1', 'poster1', 'prefix1'),
+       (2, 1, 0, 'statement2', 'poster2', 'prefix2');
 
+-- Session_user_info table
+insert into session_user_info (id, user_id, session_id)
+values (1, 1, 1),
+       (2, 2, 1),
+       (3, 3, 1),
+       (4, 4, 1),
+       (5, 5, 1),
+       (6, 1, 2),
+       (7, 2, 2),
+       (8, 3, 2);
+
+-- Vote_info table
+insert into vote_info (id, user_id, vote_id, user_type, has_select)
+values (1, 1, 1, 'CANDIDATE', false),
+       (2, 2, 1, 'CANDIDATE', false),
+       (3, 3, 1, 'CANDIDATE', false),
+       (4, 4, 1, 'VOTER', false),
+       (5, 5, 1, 'VOTER', false),
+       (6, 1, 2, 'VOTER', false),
+       (7, 2, 2, 'VOTER', false),
+       (8, 3, 2, 'VOTER', false);
+
+-- Candidate Table
+insert into candidate (id, user_id, vote_team_id)
+values
+    (1, 2, 1),
+    (2, 3, 2),
+    (3, 1, 2);
 
 ---USER---
 -- INSERT INTO users (ID, NICKNAME, USERNAME) VALUES (1, 'sunset_glow', '김석양');
