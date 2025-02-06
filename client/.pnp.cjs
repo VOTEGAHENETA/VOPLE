@@ -29,7 +29,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@chromatic-com/storybook", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:3.2.3"],\
           ["@eslint/js", "npm:9.18.0"],\
-          ["@stomp/stompjs", "npm:7.0.0"],\
           ["@storybook/addon-essentials", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
           ["@storybook/addon-interactions", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
           ["@storybook/addon-onboarding", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
@@ -43,7 +42,6 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.18"],\
           ["@types/react-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:18.3.5"],\
           ["@types/sockjs-client", "npm:1.5.4"],\
-          ["@types/stompjs", "npm:2.3.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.19.1"],\
           ["@typescript-eslint/parser", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.19.1"],\
           ["@vitejs/plugin-react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:4.3.4"],\
@@ -1303,15 +1301,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@stomp/stompjs", [\
-      ["npm:7.0.0", {\
-        "packageLocation": "./.yarn/cache/@stomp-stompjs-npm-7.0.0-c66e011389-b68d32625e.zip/node_modules/@stomp/stompjs/",\
-        "packageDependencies": [\
-          ["@stomp/stompjs", "npm:7.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@storybook/addon-actions", [\
       ["npm:8.4.7", {\
         "packageLocation": "./.yarn/cache/@storybook-addon-actions-npm-8.4.7-73ffad47ec-411be60f35.zip/node_modules/@storybook/addon-actions/",\
@@ -2352,14 +2341,6 @@ const RAW_RUNTIME_STATE =
           ["undici-types", "npm:6.20.0"]\
         ],\
         "linkType": "HARD"\
-      }],\
-      ["npm:22.13.1", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-22.13.1-f9de886009-d4e56d41d8.zip/node_modules/@types/node/",\
-        "packageDependencies": [\
-          ["@types/node", "npm:22.13.1"],\
-          ["undici-types", "npm:6.20.0"]\
-        ],\
-        "linkType": "HARD"\
       }]\
     ]],\
     ["@types/prop-types", [\
@@ -2416,16 +2397,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-sockjs-client-npm-1.5.4-5a72c42b35-fd016cb9c4.zip/node_modules/@types/sockjs-client/",\
         "packageDependencies": [\
           ["@types/sockjs-client", "npm:1.5.4"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/stompjs", [\
-      ["npm:2.3.9", {\
-        "packageLocation": "./.yarn/cache/@types-stompjs-npm-2.3.9-e7c8dbca4b-54c208c421.zip/node_modules/@types/stompjs/",\
-        "packageDependencies": [\
-          ["@types/stompjs", "npm:2.3.9"],\
-          ["@types/node", "npm:22.13.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3288,7 +3259,6 @@ const RAW_RUNTIME_STATE =
           ["client", "workspace:."],\
           ["@chromatic-com/storybook", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:3.2.3"],\
           ["@eslint/js", "npm:9.18.0"],\
-          ["@stomp/stompjs", "npm:7.0.0"],\
           ["@storybook/addon-essentials", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
           ["@storybook/addon-interactions", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
           ["@storybook/addon-onboarding", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.4.7"],\
@@ -3302,7 +3272,6 @@ const RAW_RUNTIME_STATE =
           ["@types/react", "npm:18.3.18"],\
           ["@types/react-dom", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:18.3.5"],\
           ["@types/sockjs-client", "npm:1.5.4"],\
-          ["@types/stompjs", "npm:2.3.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.19.1"],\
           ["@typescript-eslint/parser", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:8.19.1"],\
           ["@vitejs/plugin-react", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:4.3.4"],\
