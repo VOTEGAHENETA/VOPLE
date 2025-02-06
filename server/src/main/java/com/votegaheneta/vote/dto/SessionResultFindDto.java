@@ -45,6 +45,13 @@ public class SessionResultFindDto {
         this.pollCnt = pollCnt;
         this.voteCandidateDtos = voteCandidateDtos;
       }
+
+//      public TeamResult from(VoteTeam voteTeam) {
+//        return new TeamResult(
+//            voteTeam.getId()
+//        )
+//      }
+
       public void adjustVoteTeamPercent(float adjustment) {
         this.teamVotePercent += adjustment;
       }
