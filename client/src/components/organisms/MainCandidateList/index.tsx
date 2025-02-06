@@ -27,7 +27,6 @@ function MainCandidateList({ vote }: Props) {
 
   // [0, 1, 2] => [2, 0, 1, 2, 0] 으로 만들기
   function getItems() {
-    vote.teamResults.sort(() => Math.random() - 0.5);
     return isSingleItem
       ? vote.teamResults
       : [
