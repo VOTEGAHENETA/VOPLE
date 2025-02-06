@@ -21,7 +21,7 @@ function Turnout({ data }: Props) {
       setTimeout(() => {
         setCurIndex((prev) => (prev + 1) % data.voteResults.length);
         setIsVisible(true);
-      }, 500);
+      }, 3000);
     }, 3000);
 
     return () => clearInterval(interval);
@@ -38,17 +38,19 @@ function Turnout({ data }: Props) {
         </Text>
         <Text size='xl' color='var(--color-black)' weight='bold'>
           다음 [&nbsp;
-          <Text
-            size='xl'
-            color='var(--color-main-orange)'
-            weight='bold'
-            className={clsx(
-              styles['vote-name'],
-              isVisible ? styles['fade-in'] : styles['fade-out']
-            )}
-          >
-            {data.voteResults[curIndex].voteName}
-          </Text>
+          <div className={styles.rotate}>
+            <Text
+              size='xl'
+              color='var(--color-main-orange)'
+              weight='bold'
+              className={clsx(
+                styles['vote-name'],
+                isVisible ? styles['fade-in'] : styles['fade-out']
+              )}
+            >
+              {data.voteResults[curIndex].voteName}
+            </Text>
+          </div>
           &nbsp;] 은 누구?!
         </Text>
       </div>
