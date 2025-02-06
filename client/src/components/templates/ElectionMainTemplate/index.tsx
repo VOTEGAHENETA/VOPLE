@@ -1,8 +1,8 @@
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
-import { getElection } from '@/services/election';
+// import { useQuery } from '@tanstack/react-query';
+// import { useParams } from 'react-router-dom';
+// import { getElection } from '@/services/election';
 import {
   TeamResult,
   VoteCandidate,
@@ -12,9 +12,6 @@ import {
 import sample from '@/assets/sample/sample.png';
 import IconFlower from '@/assets/icons/IconFlower';
 import MainCandidateList from '@/components/organisms/MainCandidateList';
-import IconBlurChart from '@/assets/icons/IconBlurChart';
-import IconFire from '@/assets/icons/IconFire';
-import { useEffect, useState } from 'react';
 import Turnout from './Turnout';
 
 const candidates1: VoteCandidate[] = [
