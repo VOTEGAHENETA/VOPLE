@@ -3,6 +3,7 @@ package com.votegaheneta.vote.controller;
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
+import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.service.VoteFindService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/vote")
+@RequestMapping("/api/vote/{sessionId}")
 @Tag(name = "vote-find-controller", description = "vote-find-controller API")
 public class VoteFindController {
 
   private final VoteFindService voteFindService;
+
+  @Operation(
+      summary = "투표 리스트 조회",
+      description = "선거의 투표 리스트를 API")
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true)
+  })
+  @GetMapping
+  public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId ") Long sessionId) {
+    List<VoteFindDto> result = voteFindService.getVoteList(sessionId);
+    return ApiResponse.success(HttpStatus.OK, "투표 목록 조회 성공", result);
+  }
 
   @Operation(
       summary = "투표 상세화면 조회",
@@ -32,7 +46,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true)
   })
-  @GetMapping("/{sessionId}/detail")
+  @GetMapping("/detail")
   public ApiResponse<SessionFindDto> findVoteBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
     SessionFindDto sessionFindDto = voteFindService.findVoteBySessionId(sessionId);
@@ -45,7 +59,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true)
   })
-  @GetMapping("/{sessionId}/result/current")
+  @GetMapping("/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
     SessionResultFindDto sessionResultFindDto = voteFindService.findVoteResultBySessionId(
@@ -60,7 +74,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true)
   })
-  @GetMapping("/{sessionId}/result/final")
+  @GetMapping("/result/final")
   public ApiResponse<SessionFinalResultFindDto> findVoteFinalResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
     SessionFinalResultFindDto sessionFinalResultFindDto = voteFindService.findVoteFinalResultBySessionId(
@@ -75,7 +89,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true)
   })
-  @GetMapping("/{sessionId}/{userId}/hasVoted")
+  @GetMapping("/{userId}/hasVoted")
   public ApiResponse<Boolean> hasVoted(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId,
       @Valid @Positive @PathVariable(name = "userId") Long userId) {

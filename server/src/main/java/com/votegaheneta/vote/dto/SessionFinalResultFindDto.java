@@ -1,7 +1,6 @@
 package com.votegaheneta.vote.dto;
 
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
-import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
 import com.votegaheneta.vote.entity.ElectionSession;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -26,20 +25,21 @@ public class SessionFinalResultFindDto {
     private final Long voteId;
     private final String voteName;
     private final Long voteTeamId;
+    private final String prefix;
     private final String poster;
-    private final List<CandidateResult> candidateResults;
+    private final List<CandidateResultDto> candidateResults;
   }
 
-  @Schema(name = "ElectionSessionDto(투표세션데이터)", description = "투표세션에 대한 정보를 반환할 dto 객체")
+  @Schema(name = "ElectionSessionDto", description = "투표세션에 대한 정보를 반환할 dto 객체")
   @Getter
   @RequiredArgsConstructor
   public static class ElectionSessionDto {
 
     private final Long sessionId;
     private final String sessionName;
-    @Schema(name = "wholeVoter(총 투표자수)")
+    @Schema(description = "wholeVoter(총 투표자수)")
     private final Integer wholeVoter;
-    @Schema(name = "votedVoter(투표진행한 투표자수)")
+    @Schema(description = "votedVoter(투표진행한 투표자수)")
     private final Integer votedVoter;
     private final LocalDateTime voteStartTime;
     private final LocalDateTime voteEndTime;

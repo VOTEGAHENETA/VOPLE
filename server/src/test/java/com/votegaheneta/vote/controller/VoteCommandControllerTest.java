@@ -35,7 +35,7 @@ public class VoteCommandControllerTest {
   private SimpMessagingTemplate simpMessagingTemplate;
 
   @Mock
-  private VoteFindService voteFindService;
+  private VoteFindService voteFindServiceImpl;
 
   @InjectMocks
   private VoteCommandController voteCommandController;
@@ -97,26 +97,5 @@ public class VoteCommandControllerTest {
             .content(objectMapper.writeValueAsString(voteCastRequest)))
         .andExpect(status().isBadRequest());
   }
-
-
-
-  // 웹소켓 테스트는 나중에 진행
-//  @Test
-//  void castVote_잘못된_웹소켓_메시지요청() throws Exception {
-//    // given
-//    Long sessionId = 1L;
-//    VoteCastRequest voteCastRequest = new VoteCastRequest(1L,
-//        List.of(new VoteSelection(1L, 1L)));
-//
-//    // when & then
-//    mockMvc.perform(post("/api/vote/{sessionid}/castvote", sessionId)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .content(objectMapper.writeValueAsString(voteCastRequest)))
-//        .andExpect(status().isOk());
-//
-//      // 여기서 잘못된 메시지를 넘길때 오류를 잡아야하나??
-//      // 어떤식으로 메시지 오류를 잡지?
-////    verify(simpMessagingTemplate).convertAndSend(eq("/api/vote/" + sessionId));
-//  }
 
 }

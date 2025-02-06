@@ -12,8 +12,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,10 +31,10 @@ public class ElectionSession {
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Vote> votes;
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<Vote> votes = new ArrayList<>();
 
-  @Builder
+//  @Builder
   public ElectionSession(Users hostUser, String sessionName,
       int wholeVoter, String entranceQuestion, String entranceAnswer, LocalDateTime voteStartTime,
       LocalDateTime voteEndTime) {
@@ -45,6 +45,7 @@ public class ElectionSession {
     this.entranceAnswer = entranceAnswer;
     this.voteStartTime = voteStartTime;
     this.voteEndTime = voteEndTime;
+    this.sessionStartTime = LocalDateTime.now();
   }
 
   private String qrCode;
@@ -53,11 +54,15 @@ public class ElectionSession {
   private int votedVoter;
   private String entranceQuestion;
   private String entranceAnswer;
-  private LocalDateTime sessionStartTime = LocalDateTime.now();
+  private LocalDateTime sessionStartTime;
   private LocalDateTime voteStartTime;
   private LocalDateTime voteEndTime;
   @Transient
   private boolean isActive;
+
+//  public static Session fromDto(SessionDto sessionDto) {
+//
+//  }
 
   public void addVote(Vote vote) {
     votes.add(vote);

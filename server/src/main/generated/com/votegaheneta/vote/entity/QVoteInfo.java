@@ -26,8 +26,6 @@ public class QVoteInfo extends EntityPathBase<VoteInfo> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath selectCandidate = createString("selectCandidate");
-
     public final com.votegaheneta.user.entity.QUsers user;
 
     public final EnumPath<com.votegaheneta.user.enums.USER_TYPE> userType = createEnum("userType", com.votegaheneta.user.enums.USER_TYPE.class);
