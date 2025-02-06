@@ -8,6 +8,7 @@ services:
       - "80:80"
     volumes:
       - ./client:/client
+      - ./data/uploads:/app/uploads
 
   server:
     image: openjdk:17-alpine
@@ -29,6 +30,7 @@ services:
       - "8000:8080"
     volumes:
       - ./server/:/server
+      - ./data/uploads:/app/uploads
     depends_on:
       db:
         condition: service_healthy
