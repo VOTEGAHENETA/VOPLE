@@ -1,11 +1,11 @@
 package com.votegaheneta.vote.repository;
 
 import com.votegaheneta.vote.entity.ElectionSession;
-import java.util.Optional;
+import io.lettuce.core.dynamic.annotation.Param;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface SessionRepository extends JpaRepository<ElectionSession, Long> {
 

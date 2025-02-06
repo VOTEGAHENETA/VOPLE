@@ -2,6 +2,7 @@ package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
+import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.service.VoteCommandService;
 import com.votegaheneta.vote.service.VoteFindService;
 import com.votegaheneta.vote.service.VoteTeamService;
@@ -14,6 +15,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "vote-command-controller", description = "vote-command-controller API")
 public class VoteCommandController {
 
-  private final VoteFindService voteFindServiceImpl;
+  private final VoteFindService voteFindService;
   private final VoteCommandService voteCommandService;
   private final VoteTeamService voteTeamService;
   private final SimpMessagingTemplate messagingTemplate;
@@ -82,7 +84,7 @@ public class VoteCommandController {
     voteCommandService.castVote(voteCastRequest, sessionId);
 
     messagingTemplate.convertAndSend("/api/vote/"+sessionId
-        , voteFindServiceImpl.findVoteResultBySessionId(sessionId));
+        , voteFindService.findVoteResultBySessionId(sessionId));
 
     return ApiResponse.success(HttpStatus.OK, "투표 성공", null);
   }
