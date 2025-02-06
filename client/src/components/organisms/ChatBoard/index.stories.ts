@@ -15,14 +15,6 @@ const meta = {
       ],
     },
   },
-  //  decorators: [
-  //    (Story) => (
-  //      <div style={{ width: '600px' }}>
-  //        <Story />
-  //      </div>
-  //    ),
-  //  ],
-  //  decorators : [Story => <div>{Story()}</div>], //데코레이터 적용
 } satisfies Meta<typeof ChatBoard>;
 export default meta;
 type Story = StoryObj<typeof ChatBoard>;
@@ -31,7 +23,6 @@ type Story = StoryObj<typeof ChatBoard>;
 export const Default: Story = {
   args: {
     sessionId: 'test-session-1',
-    wsUrl: 'wss://mock-websocket-server.com',
   },
 };
 
@@ -39,7 +30,6 @@ export const Default: Story = {
 export const EmptyState: Story = {
   args: {
     sessionId: 'empty-session',
-    wsUrl: 'wss://mock-websocket-server.com',
   },
   parameters: {
     mockData: {
@@ -54,7 +44,6 @@ export const EmptyState: Story = {
 export const InvalidSession: Story = {
   args: {
     sessionId: 'invalid-session',
-    wsUrl: 'wss://mock-websocket-server.com',
   },
   parameters: {
     mockData: {
@@ -69,7 +58,6 @@ export const InvalidSession: Story = {
 export const InvalidInput: Story = {
   args: {
     sessionId: 'wrong-type',
-    wsUrl: 'wss://mock-websocket-server.com',
   },
   parameters: {
     mockData: {
@@ -84,7 +72,6 @@ export const InvalidInput: Story = {
 export const ConnectionError: Story = {
   args: {
     sessionId: 'test-session',
-    wsUrl: 'wss://invalid-websocket-server.com',
   },
 };
 
@@ -92,7 +79,6 @@ export const ConnectionError: Story = {
 export const ActiveChat: Story = {
   args: {
     sessionId: 'active-session',
-    wsUrl: 'wss://mock-websocket-server.com',
   },
   parameters: {
     mockData: {

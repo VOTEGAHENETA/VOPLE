@@ -1,5 +1,4 @@
 .chatBoard {
-  background: rgba(0, 0, 0, 0.5);
   border-radius: 16px;
   padding: 20px;
   width: 100%;
@@ -7,7 +6,35 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  color: white;
+  
+  &.dark {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    .time {
+      color : #fff;
+    }
+    .systemMessage {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+  }
+
+  &.light {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    .time {
+      color : #333;
+    }
+    .systemMessage {
+      text-align: center;
+      color: #333;
+      font-size: 14px;
+    }
+
+  }
+
 }
 
 .statusBar {
@@ -24,14 +51,6 @@
     border-radius: 20px;
     font-size: 14px;
   }
-}
-
-
-
-.systemMessage {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
 }
 
 .messageArea {
@@ -57,10 +76,6 @@
   gap: 8px;
   font-size: 14px;
   line-height: 1.5;
-}
-
-.time {
-  color: rgba(255, 255, 255, 0.6);
 }
 
 .username {

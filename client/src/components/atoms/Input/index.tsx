@@ -13,7 +13,7 @@ export interface InputProps {
   id: string; // 필수 값
   value: string; // 필수 값
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 값
-  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   variant?: 'default' | 'search' | 'error' | 'warning';
   placeholder?: string;
   filled?: boolean;
@@ -33,7 +33,7 @@ export interface InputProps {
 function Input({
   value = '',
   onChange,
-  onKeyPress,
+  onKeyDown,
   variant = 'default',
   disabled = false,
   filled = false,
@@ -49,7 +49,7 @@ function Input({
 
   return (
     <input
-      onKeyPress={onKeyPress}
+      onKeyDown={onKeyDown}
       value={value}
       className={inputClassName}
       disabled={disabled}

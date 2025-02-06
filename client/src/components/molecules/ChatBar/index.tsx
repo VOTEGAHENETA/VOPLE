@@ -2,28 +2,17 @@ import React, { useState } from 'react';
 import styles from './index.module.scss';
 import Input from '@/components/atoms/Input/index.tsx';
 import IconButton from '@/components/atoms/IconButton/index.tsx';
-import { ChatMessage } from '@/types/election';
-
-// interface ChatMessage {
-//   type: 'CHAT_MESSAGE'; // 메시지 타입 구분
-//   payload: {
-//     message: string; // 실제 입력한 메시지
-//     roomId: string; // 채팅방 ID
-//     timestamp: number; // 메시지 전송 시간
-//   };
-// }
+import { ChatSendMessage } from '@/types/chat';
 
 type themeType = 'dark' | 'light';
 
 interface ChatBarProps {
   roomId: string;
-  onSendMessage?: (messageData: ChatMessage) => void; // 서버로 메시지를 보내는 함수
-  // onSendMessage: (messageData: ChatMessage) => void; // 서버로 메시지를 보내는 함수
+  onSendMessage?: (messageData: ChatSendMessage) => void;
   placeholder?: string;
   disabled?: boolean;
   theme?: themeType;
 }
-
 export function ChatBar({
   roomId,
   onSendMessage,
@@ -37,19 +26,25 @@ export function ChatBar({
     setInputValue(e.target.value);
   };
 
+  console.log('roomId : ', roomId);
+
   const onSubmit = () => {
     if (inputValue.trim()) {
-      const messageData: ChatMessage = {
-        type: 'CHAT_MESSAGE',
-        payload: {
-          message: inputValue.trim(),
-          roomId: roomId,
-          timestamp: Date.now(),
-        },
+      const messageData: ChatSendMessage = {
+        userId: 2,
+        text: inputValue,
       };
 
       onSendMessage?.(messageData);
       setInputValue('');
+    }
+  };
+
+  // Enter 키 이벤트 핸들러
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      onSubmit();
     }
   };
 
@@ -59,6 +54,7 @@ export function ChatBar({
         id='chat-input'
         value={inputValue}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         filled={true}
         disabled={disabled}
