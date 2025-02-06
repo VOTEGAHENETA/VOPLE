@@ -32,10 +32,21 @@ public class SessionResultFindDto {
     public static class TeamResult {
 
       private final Long teamId;
-      private final String poster;
-      private Float teamVotePercent;
-      private Integer pollCnt;
+      private final String prefix;
+      private final Integer pollCnt;
       private final List<CandidateResult> voteCandidateDtos;
+      private String poster;
+      private String candidate_statement;
+      private Float teamVotePercent;
+
+      public TeamResult(Long teamId, String prefix, Float teamVotePercent, Integer pollCnt,
+          List<CandidateResult> voteCandidateDtos) {
+        this.teamId = teamId;
+        this.prefix = prefix;
+        this.teamVotePercent = teamVotePercent;
+        this.pollCnt = pollCnt;
+        this.voteCandidateDtos = voteCandidateDtos;
+      }
 
       public void adjustVoteTeamPercent(float adjustment) {
         this.teamVotePercent += adjustment;

@@ -2,11 +2,13 @@ package com.votegaheneta.vote.service;
 
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
+import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,18 @@ public class VoteCommandService {
   private final VoteInfoRepository voteInfoRepository;
   private final VoteTeamRepository voteTeamRepository;
   private final SessionRepository sessionRepository;
+  private final VoteRepository voteRepository;
+
+  @Transactional
+  public void createVote(Long sessionId, String voteName) {
+    ElectionSession electionSession = sessionRepository.findSessionById(sessionId);
+    electionSession.addVote(new Vote(voteName));
+  }
+
+  @Transactional
+  public void deleteVote(Long voteId) {
+    voteRepository.deleteById(voteId);
+  }
 
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
@@ -44,7 +58,7 @@ public class VoteCommandService {
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       // 임시로 "동영으로 진행 -> 나중에 voteTeamId 변경해서 넣어야할듯"
       final Boolean TRUE = true;
-      voteInfo.updateVoteInfo(TRUE, "동영"/*voteTeamId*/); // 여기서 이름 없애기
+      voteInfo.updateVoteInfo(TRUE); // 여기서 이름 없애기
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();

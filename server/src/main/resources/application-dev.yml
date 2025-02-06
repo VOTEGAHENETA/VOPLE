@@ -11,8 +11,8 @@ spring:
 
   jpa:
     hibernate:
-#      ddl-auto: update
-      ddl-auto: create
+      ddl-auto: update
+#      ddl-auto: create
     properties:
       hibernate:
 #        show_sql: true
@@ -41,7 +41,7 @@ logging.level:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui/index.html
+    path: /index.html
   api-docs:
     path: /v3/api-docs
 

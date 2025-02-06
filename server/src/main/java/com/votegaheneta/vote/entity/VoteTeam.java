@@ -34,7 +34,7 @@ public class VoteTeam {
   @JoinColumn(name = "vote_id")
   private Vote vote;
 
-  @OneToMany(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "voteTeam", orphanRemoval = true)
   @BatchSize(size = 100)
   private List<Pledge> pledges = new ArrayList<>();
 

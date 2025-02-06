@@ -1,5 +1,6 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
@@ -34,7 +35,7 @@ public class VoteFindService {
   private final VoteTeamRepository voteTeamRepository;
   private final VoteInfoRepository voteInfoRepository;
   private final SessionRepository sessionRepository;
-  private final String[] VOTE_STATUSES = {"isBefore", "isProgress", "isAfter"};
+  private final VoteResultCalculator voteResultCalculator;
 
   public Boolean hasVoted(Long sessionId, Long userId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
@@ -43,23 +44,12 @@ public class VoteFindService {
     Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
         vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
     return hasVoted;
-
-//    String voteStatus = "";
-//    LocalDateTime now = LocalDateTime.now();
-//    LocalDateTime voteStartTime = electionSession.getVoteStartTime();
-//    LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-//    if (now.isBefore(voteStartTime)) {
-//      voteStatus = VOTE_STATUSES[0];
-//    } else if (now.isEqual(voteStartTime)) {
-//      voteStatus = VOTE_STATUSES[1];
-//    } else if (now.isAfter(voteStartTime) && now.isBefore(voteEndTime)) {
-//      voteStatus = VOTE_STATUSES[1];
-//    } else if (now.isAfter(voteEndTime)) {
-//      voteStatus = VOTE_STATUSES[2];
-//    }
-//    return voteStatus;
   }
 
+  public List<VoteFindDto> getVoteList(Long sessionId) {
+    List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
+    return votes.stream().map(VoteFindDto::from).toList();
+  }
 
   public SessionFindDto findVoteBySessionId(Long sessionId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
@@ -87,7 +77,7 @@ public class VoteFindService {
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
-    List<VoteResult> voteResults = calculateVoteResult(sessionId);
+    List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     return new SessionResultFindDto(
         electionSession.getSessionName(),
         wholeVoterPercent,
@@ -100,7 +90,7 @@ public class VoteFindService {
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
-    List<VoteResult> voteResults = calculateVoteResult(sessionId);
+    List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     List<Elected> electedList = new ArrayList<>();
 
     for (VoteResult voteResult : voteResults) {
@@ -121,6 +111,7 @@ public class VoteFindService {
                 voteResult.getVoteId(),
                 voteResult.getVoteName(),
                 teamResult.getTeamId(),
+                teamResult.getPrefix(),
                 teamResult.getPoster(),
                 teamResult.getVoteCandidateDtos()
             );

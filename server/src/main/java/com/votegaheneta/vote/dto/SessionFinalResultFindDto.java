@@ -26,6 +26,7 @@ public class SessionFinalResultFindDto {
     private final Long voteId;
     private final String voteName;
     private final Long voteTeamId;
+    private final String prefix;
     private final String poster;
     private final List<CandidateResult> candidateResults;
   }

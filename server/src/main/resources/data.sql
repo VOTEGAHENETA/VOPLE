@@ -1,5 +1,6 @@
-delete from Election_session;
-delete from Users;
+-- delete from Election_session;
+-- delete from Users;
+
 
 -- Users table
 INSERT INTO users (id, username, nickname)
@@ -8,22 +9,22 @@ VALUES (1, 'user1', 'nickname1'),
        (3, 'user3', 'nickname3');
 
 -- Election_session table
--- INSERT INTO election_session (id, host_id, qr_code, session_name, whole_voter, voted_voter,
---                               entrance_question, entrance_answer, session_start_time,
---                               vote_start_time, vote_end_time)
--- VALUES (1, 1, 'QR_CODE_1', 'Session 1', 100, 50, 'Question 1', 'Answer 1', '2023-01-01 10:00:00',
---         '2023-01-01 11:00:00', '2023-01-01 12:00:00'),
---        (2, 2, 'QR_CODE_2', 'Session 2', 200, 150, 'Question 2', 'Answer 2', '2023-02-01 10:00:00',
---         '2023-02-01 11:00:00', '2023-02-01 12:00:00');
---
---
--- -- Vote Table
--- insert into vote (id, session_id, vote_name)
--- values (1, 1, 'test');
---
--- -- Vote_team table
--- insert into vote_team (id, vote_id, poll_cnt, candidate_statement, poster, prefix)
--- values (1, 1, 0, 'statement', 'poster', 'prefix');
+INSERT INTO election_session (id, host_id, qr_code, session_name, whole_voter, voted_voter,
+                              entrance_question, entrance_answer, session_start_time,
+                              vote_start_time, vote_end_time)
+VALUES (1, 1, 'QR_CODE_1', 'Session 1', 100, 50, 'Question 1', 'Answer 1', '2023-01-01 10:00:00',
+        '2023-01-01 11:00:00', '2023-01-01 12:00:00'),
+       (2, 2, 'QR_CODE_2', 'Session 2', 200, 150, 'Question 2', 'Answer 2', '2023-02-01 10:00:00',
+        '2023-02-01 11:00:00', '2023-02-01 12:00:00');
+
+
+-- Vote Table
+insert into vote (id, session_id, vote_name)
+values (1, 1, 'test');
+
+-- Vote_team table
+insert into vote_team (id, vote_id, poll_cnt, candidate_statement, poster, prefix)
+values (1, 1, 0, 'statement', 'poster', 'prefix');
 
 
 --
