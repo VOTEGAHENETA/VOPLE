@@ -34,15 +34,15 @@ public class VoteTeam {
   @JoinColumn(name = "vote_id")
   private Vote vote;
 
-  @OneToMany(mappedBy = "voteTeam", orphanRemoval = true)
+  @OneToMany(mappedBy = "voteTeam", cascade = CascadeType.PERSIST, orphanRemoval = true)
   @BatchSize(size = 100)
   private List<Pledge> pledges = new ArrayList<>();
 
-  @OneToMany(mappedBy = "voteTeam")
+  @OneToMany(mappedBy = "voteTeam", cascade = CascadeType.PERSIST, orphanRemoval = true)
   @BatchSize(size = 100)
   private List<Candidate> candidates = new ArrayList<>();
 
-  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(mappedBy = "voteTeam", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private Stream stream;
 
   private int pollCnt;

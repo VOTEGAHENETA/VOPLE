@@ -5,6 +5,7 @@ import com.votegaheneta.vote.controller.request.VoteCastRequest;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.service.VoteCommandService;
 import com.votegaheneta.vote.service.VoteFindService;
+import com.votegaheneta.vote.service.VoteTeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -29,7 +30,14 @@ public class VoteCommandController {
 
   private final VoteFindService voteFindService;
   private final VoteCommandService voteCommandService;
+  private final VoteTeamService voteTeamService;
   private final SimpMessagingTemplate messagingTemplate;
+
+  @PostMapping("/{voteId}")
+  public ApiResponse modifyVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId) {
+    voteTeamService.modifyVoteTeam(sessionId, voteId);
+    return null;
+  }
 
   @Operation(
       summary = "투표 생성",

@@ -35,13 +35,13 @@ public class SessionController {
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
   }
 
-  @GetMapping
-  public ApiResponse<Void> getSessions() {
-    // 내가 참여하고있는 세션 리스트
-    // 내가 관리하고있는 세션 리스트
-
-    return null;
-  }
+//  @GetMapping
+//  public ApiResponse<Void> getSessions() {
+//    // 내가 참여하고있는 세션 리스트
+//    // 내가 관리하고있는 세션 리스트
+//
+//    return null;
+//  }
 
   @PostMapping
   public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto) {

@@ -10,6 +10,7 @@ import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
+import com.votegaheneta.vote.dto.VoteDetailDto;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
@@ -20,6 +21,7 @@ import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,10 @@ public class VoteFindService {
   private final VoteInfoRepository voteInfoRepository;
   private final SessionRepository sessionRepository;
   private final VoteResultCalculator voteResultCalculator;
+
+  public VoteDetailDto getVoteDetail(Long sessionId, Long voteId, Pageable pageable) {
+    return voteRepository.getVoteDetails(sessionId, voteId, pageable);
+  }
 
   public Boolean hasVoted(Long sessionId, Long userId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)

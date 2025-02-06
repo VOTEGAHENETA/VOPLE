@@ -5,6 +5,7 @@ import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
+import com.votegaheneta.vote.dto.VoteDetailDto;
 import com.votegaheneta.vote.service.VoteFindService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class VoteFindController {
 
   private final VoteFindService voteFindService;
+
+  @Operation(
+      summary = "투표 입후보자 페이지 정보 조회")
+  @GetMapping("/{voteId}")
+  public ApiResponse<VoteDetailDto> getVoteDetail(@PathVariable("sessionId") Long sessionId,
+      @PathVariable("voteId") Long voteId, Pageable pageable) {
+    VoteDetailDto voteDetail = voteFindService.getVoteDetail(sessionId, voteId, pageable);
+    return ApiResponse.success(HttpStatus.OK, "투표 상세 정보 조회 성공", voteDetail);
+  }
 
   @Operation(
       summary = "투표 리스트 조회",
