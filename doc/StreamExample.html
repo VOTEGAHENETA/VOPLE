@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>라이브 스트리밍 테스트</title>
+</head>
+<body>
+    <h2>웹 브라우저 라이브 스트리밍</h2>
+    <video id="preview" autoplay playsinline></video>
+    <button onclick="startStream()">방송 시작</button>
+    <button onclick="stopStream()">방송 종료</button>
+
+    <script>
+        let ws;
+        let recorder;
+        let stream;
+
+        async function startStream() {
+            try {
+                ws = new WebSocket("ws://localhost:8080/ws/stream?streamKey=1");
+
+                ws.onopen = async () => {
+                    console.log("✅ WebSocket 연결됨, 방송 시작!");
+                    
+                    // 카메라 및 마이크 접근
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { width: 1280, height: 720 },
+                        audio: true
+                    });
+
+                    document.getElementById("preview").srcObject = stream;
+
+                    // MediaRecorder 설정 (webm/VP8 형식)
+                    recorder = new MediaRecorder(stream, { mimeType: "video/webm; codecs=vp8" });
+
+                    recorder.ondataavailable = (event) => {
+                        if (ws.readyState === WebSocket.OPEN) {
+                            ws.send(event.data);
+                        }
+                    };
+
+                    recorder.start(100);  // 100ms 단위로 스트림 전송
+                };
+
+                ws.onerror = (error) => console.error("WebSocket 오류:", error);
+                ws.onclose = () => console.log("WebSocket 연결 종료됨");
+
+            } catch (err) {
+                console.error("🎥 스트리밍 오류:", err);
+            }
+        }
+
+        function stopStream() {
+            if (recorder && recorder.state !== "inactive") {
+                recorder.stop();
+            }
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            console.log("📴 방송 종료됨");
+        }
+    </script>
+</body>
+</html>
