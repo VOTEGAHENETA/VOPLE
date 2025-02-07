@@ -1,5 +1,6 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.stream.entity.Stream;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
@@ -12,9 +13,11 @@ import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +30,18 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   private final UsersRepository usersRepository;
   private final VoteInfoRepository voteInfoRepository;
 
+  @Value("${spring.data.hls.host-prefix}")
+  private String STREAMING_PREFIX;
+
+  @Value("${spring.data.hls.host-postfix}")
+  private String STREAMING_POSTFIX;
+
   @Transactional
   @Override
   public void modifyVoteTeam(Long sessionId, Long voteId, CandidateRequestDto candidateRequest) {
     deleteAllVoteTeam(voteId);
-    createVoteTeam(voteId, candidateRequest);
+    List<VoteTeam> voteTeam = createVoteTeam(voteId, candidateRequest);
+    createStream(voteId, voteTeam);
     updateUserTypeInVoteInfo(voteId, candidateRequest);
   }
 
@@ -51,9 +61,10 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }
 
-  private void createVoteTeam(Long voteId, CandidateRequestDto request) {
+  private List<VoteTeam> createVoteTeam(Long voteId, CandidateRequestDto request) {
     Vote vote = voteRepository.findById(voteId)
         .orElseThrow(() -> new IllegalArgumentException("투표가 존재하지 않습니다."));
+    List<VoteTeam> voteTeams = new ArrayList<>();
     List<List<UserDto>> voteTeamList = request.getVoteTeamList();
     for (List<UserDto> userDtos : voteTeamList) {
       VoteTeam voteTeam = new VoteTeam();
@@ -63,10 +74,15 @@ public class VoteTeamServiceImpl implements VoteTeamService {
         voteTeam.addCandidate(new Candidate(user));
       }
       vote.addVoteTeam(voteTeam);
+      voteTeams.add(voteTeam);
     }
+    voteTeamRepository.saveAll(voteTeams);
+    voteTeamRepository.flush();
+    return voteTeams;
   }
 
-  private void createCandidate(Long voteTeamId, Long userId) {
-
+  private void createStream(Long voteTeamId, List<VoteTeam> voteTeams) {
+    voteTeams.forEach(voteTeam -> voteTeam.setStream(
+        new Stream(STREAMING_PREFIX + voteTeam.getId() + STREAMING_POSTFIX)));
   }
 }
