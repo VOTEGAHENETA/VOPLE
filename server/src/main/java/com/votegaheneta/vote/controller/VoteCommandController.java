@@ -39,6 +39,41 @@ public class VoteCommandController {
   private final VoteTeamService voteTeamService;
   private final SimpMessagingTemplate messagingTemplate;
 
+  @Operation(
+      summary = "투표팀 정보 수정",
+      description = "FIGMA : 관리자 플로우 - [입후보자 조회/수정 화면]",
+      requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+          description = "새로운 투표팀 후보자 정보",
+          required = true,
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = CandidateRequestDto.class),
+              examples = {
+                  @ExampleObject(
+                      name = "요청 데이터",
+                      value = """
+                          
+                            {
+                                "voteTeamList" :
+                                [
+                                    [
+                                        {"userId" : 1}
+                                    ],
+                                    [
+                                        {"userId" : 4}
+                                    ],
+                                    [
+                                        {"userId" : 5}
+                                    ]
+                                ]
+                            }
+                          """
+
+                  )
+              }))
+  )
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
+      @Parameter(name = "voteId", description = "투표id", required = true, in = ParameterIn.PATH)
+  })
   @PostMapping("/{voteId}")
   public ApiResponse modifyVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId, @RequestBody
       CandidateRequestDto candidateRequest) {
