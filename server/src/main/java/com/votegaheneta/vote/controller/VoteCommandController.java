@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.vote.controller.request.CandidateRequestDto;
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.service.VoteCommandService;
@@ -39,9 +40,10 @@ public class VoteCommandController {
   private final SimpMessagingTemplate messagingTemplate;
 
   @PostMapping("/{voteId}")
-  public ApiResponse modifyVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId) {
-    voteTeamService.modifyVoteTeam(sessionId, voteId);
-    return null;
+  public ApiResponse modifyVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId, @RequestBody
+      CandidateRequestDto candidateRequest) {
+    voteTeamService.modifyVoteTeam(sessionId, voteId, candidateRequest);
+    return ApiResponse.success(HttpStatus.OK, "투표팀 수정 성공", null);
   }
 
   @Operation(
