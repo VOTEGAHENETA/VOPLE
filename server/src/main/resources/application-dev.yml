@@ -22,9 +22,9 @@ spring:
           new_generator_mappings: true
     defer-datasource-initialization: true
 
-#  sql:
-#    init:
-#      mode: always
+  sql:
+    init:
+      mode: always
 
   data:
     redis:
