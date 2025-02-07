@@ -4,6 +4,13 @@ import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.service.SessionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,12 +30,23 @@ public class SessionController {
 
   private final SessionService sessionService;
 
+  @Operation(
+      summary = "전체 선거 세션 조회",
+      description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
+  )
   @GetMapping
   public ApiResponse<List<SessionDto>> getSessionList() {
     List<SessionDto> result = sessionService.getSessionList();
     return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
   }
 
+  @Operation(
+      summary = "특정 세션 조회",
+      description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
+  )
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
+  })
   @GetMapping("/{sessionId}")
   public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId) {
     SessionInitialInfoDto result = sessionService.getSession(sessionId);
@@ -44,18 +62,80 @@ public class SessionController {
 //    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
 //  }
 
+  @Operation(
+      summary = "새로운 세션 생성",
+      description = "FIGMA : 관리자 플로우 - [선거 추가 페이지]",
+      requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+          description = "생성할 세션 정보",
+          required = true,
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class),
+              examples = {
+                  @ExampleObject(
+                      name = "요청 데이터",
+                      description = "임시데이터가 존재할때는 pk오류남",
+                      value = """
+                          {
+                          "hostId": 1,
+                          "sessionName": "Session 3",
+                          "entranceQuestion": "Question 3",
+                          "entranceAnswer": "Answer 2",
+                                  "startTime": "2023-01-01T11:00:00",
+                                  "endTime": "2023-01-01T12:00:00",
+                                  "wholeVoter": 80
+                          }
+                          """
+
+                  )
+              }))
+  )
   @PostMapping
   public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto) {
     Long result = sessionService.saveSession(sessionDto);
     return ApiResponse.success(HttpStatus.CREATED, "세션 생성 성공", result);
   }
 
+  @Operation(
+      summary = "특정 세션 수정",
+      description = "FIGMA : 관리자 플로우 - [선거 상세 페이지 (선거정보 수정)]",
+      requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+          description = "수정할 세션 정보",
+          required = true,
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class),
+              examples = {
+                  @ExampleObject(
+                      name = "요청 데이터",
+                      value = """
+                          {
+                          "hostId": 1,
+                          "sessionName": "Session 3",
+                          "entranceQuestion": "Question 3",
+                          "entranceAnswer": "Answer 2",
+                                  "startTime": "2023-01-01T11:00:00",
+                                  "endTime": "2023-01-01T12:00:00",
+                                  "wholeVoter": 80
+                          }
+                          """
+
+                  )
+              }))
+  )
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
+  })
   @PutMapping("/{sessionId}")
-  public ApiResponse<SessionDto> updateSession(@PathVariable Long sessionId, @RequestBody SessionDto sessionDto) {
+  public ApiResponse<SessionDto> updateSession(@PathVariable Long sessionId,
+      @RequestBody SessionDto sessionDto) {
     sessionService.updateSession(sessionId, sessionDto);
     return ApiResponse.success(HttpStatus.NO_CONTENT, "세션 수정 성공", null);
   }
 
+  @Operation(
+      summary = "특정 세션 삭제",
+      description = "FIGMA : 관리자 플로우 - [선거 상세 페이지(학생 권한 설정 전)]"
+  )
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
+  })
   @DeleteMapping("/{sessionId}")
   public ApiResponse deleteSession(@PathVariable Long sessionId) {
     boolean result = sessionService.deleteSession(sessionId);

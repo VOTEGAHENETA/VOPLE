@@ -9,6 +9,10 @@ import com.votegaheneta.vote.service.VoteTeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//@Tag(name = "VoteCommand", description = "Vote 수정 작업 API")
 @RestController
 @RequestMapping("/api/vote/{sessionId}")
 @RequiredArgsConstructor
@@ -41,11 +46,25 @@ public class VoteCommandController {
 
   @Operation(
       summary = "투표 생성",
-      description = "새로운 투표 생성"
+      description = "FIGMA : 관리자 플로우 - [선거 상세 페이지(학생 권한 설정 전)]",
+      requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+          description = "생성할 투표 정보",
+          required = true,
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = VoteFindDto.class),
+              examples = {
+                  @ExampleObject(
+                      name = "요청 데이터",
+                      value = """
+                          {
+                               "voteName": "회장"
+                           }
+                          """
+
+                  )
+              }))
   )
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true),
-      @Parameter(name = "voteName", description = "투표 이름", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PostMapping
   public ApiResponse<Void> createVote(@PathVariable("sessionId") Long sessionId, @RequestBody
@@ -56,11 +75,11 @@ public class VoteCommandController {
 
   @Operation(
       summary = "투표 삭제",
-      description = "특정 투표 ID의 투표 삭제"
+      description = "FIGMA : 관리자 플로우 - [선거 상세 페이지(학생 권한 설정 전)]"
   )
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true),
-      @Parameter(name = "voteId", description = "투표id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
+      @Parameter(name = "voteId", description = "투표id", required = true, in = ParameterIn.PATH)
   })
   @DeleteMapping("/{voteId}")
   public ApiResponse<Void> deleteVote(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId) {
@@ -75,7 +94,7 @@ public class VoteCommandController {
       description = "투표를 진행하고 투표 진행결과를 WebSocket으로 돌려주는 API"
   )
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PostMapping("/castvote")
   public ApiResponse<Void> castVote(
