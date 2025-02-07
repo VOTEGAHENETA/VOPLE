@@ -11,12 +11,17 @@ function VoteTemplate() {
   const { selectedCandidates, isModalOpen, chooseCandidate, setModalOpen } =
     useVoteStore();
 
+  // 투표 수
+  const totalCandidates = info.voteFindDto.length;
+
+  // 객체의 key(예: voteTeamId)를 기준으로 선택된 후보 수 계산
+  const selectedCount = Object.keys(selectedCandidates).length;
+  const allCandidatesSelected = selectedCount === totalCandidates;
+
   return (
     <div className={styles.vote}>
-      {/* VotingBoard에 선택된 후보 정보를 전달 */}
       <VotingBoard info={info} selectedCandidates={selectedCandidates} />
       <div className={styles.gallery}>
-        {/* CandidateGallery에 선택 함수와 선택 상태 전달 */}
         <CandidateGallery
           info={info}
           chooseCandidate={chooseCandidate}
@@ -36,9 +41,16 @@ function VoteTemplate() {
         <div className={styles.one}>
           <BaseButton
             kind='base'
-            status={BASE_BUTTON_STATUS.FILL}
+            status={
+              allCandidatesSelected
+                ? BASE_BUTTON_STATUS.FILL
+                : BASE_BUTTON_STATUS.DISABLE
+            }
             type='button'
-            onClick={() => setModalOpen(true)}
+            onClick={() => {
+              if (!allCandidatesSelected) return;
+              setModalOpen(true);
+            }}
           >
             소중한 한표
           </BaseButton>
