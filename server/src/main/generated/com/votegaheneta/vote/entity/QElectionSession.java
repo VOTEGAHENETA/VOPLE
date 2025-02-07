@@ -36,6 +36,8 @@ public class QElectionSession extends EntityPathBase<ElectionSession> {
 
     public final DateTimePath<java.time.LocalDateTime> sessionStartTime = createDateTime("sessionStartTime", java.time.LocalDateTime.class);
 
+    public final ListPath<SessionUserInfo, QSessionUserInfo> sessionUserInfos = this.<SessionUserInfo, QSessionUserInfo>createList("sessionUserInfos", SessionUserInfo.class, QSessionUserInfo.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> votedVoter = createNumber("votedVoter", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> voteEndTime = createDateTime("voteEndTime", java.time.LocalDateTime.class);
