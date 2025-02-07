@@ -18,7 +18,7 @@
 
         async function startStream() {
             try {
-                ws = new WebSocket("ws://i12b102.p.ssafy.io:8000/ws/stream?streamKey=1");
+                ws = new WebSocket("ws://i12b102.p.ssafy.io:8000/stream?streamKey=1");
 
                 ws.onopen = async () => {
                     console.log("✅ WebSocket 연결됨, 방송 시작!");
