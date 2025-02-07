@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       {showHeader && <Header />}
-      <main id='main-container' className={showHeader ? 'show-header' : ''}>
+      <main id='main-container'>
         <Outlet />
       </main>
     </>
