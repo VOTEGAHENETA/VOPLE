@@ -15,6 +15,7 @@ const meta = {
     variant: 'default',
     filled: false,
     onChange: () => {},
+    theme: 'light',
   },
 } satisfies Meta<typeof Input>;
 
@@ -60,5 +61,15 @@ export const FilledInput: Story = {
     placeholder: '검색어를 입력하세요',
     variant: 'search',
     filled: true,
+  },
+};
+
+export const FilledDarkInput: Story = {
+  args: {
+    id: 'search-input',
+    placeholder: '검색어를 입력하세요',
+    variant: 'search',
+    filled: true,
+    theme: 'dark',
   },
 };
