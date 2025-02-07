@@ -1,0 +1,59 @@
+// TabContainer.module.scss
+.container {
+  min-width: 300px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+}
+
+.tabNavigator {
+  display: flex;
+  gap: 8px;
+  background-color: rgba(0,0,0,0.5);
+  padding: 8px 8px 0;
+  .tabButton {
+    flex: 1;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  
+    &.active {
+      color: #fff;
+      background-color:var(--color-main-orange);
+      font-weight: 600;
+    }
+  }
+  
+}
+
+.tabContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+//  Pledge 
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.5;
+  
+  .bullet {
+    margin-right: 8px;
+  }
+}
+

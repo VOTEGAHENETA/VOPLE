@@ -1,6 +1,9 @@
-@import url('./variable.css');
-@import './reset';
-@import './fonts';
+// @import url('./variable.css');
+// @import './reset';
+// @import './fonts';
+@use 'variable.css';
+@use 'reset';
+@use 'fonts';
 
 body {
     font-family: 'Pretendard', sans-serif;
