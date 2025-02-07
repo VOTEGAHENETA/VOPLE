@@ -3,15 +3,17 @@
 @import './fonts';
 
 body {
-    font-family: 'Pretendard', sans-serif;
-    color:var(--color-black);
+  font-family: 'Pretendard', sans-serif;
+  color: var(--color-black);
+  display: flex;
+  flex-direction: column;
 }
 
 input,
 textarea,
 select,
 button {
-  font: inherit;  
+  font: inherit;
   color: inherit;
 }
 
