@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
-import VoteTemplate from './components/templates/VoteTemplate';
 
 function App() {
   const location = useLocation();
