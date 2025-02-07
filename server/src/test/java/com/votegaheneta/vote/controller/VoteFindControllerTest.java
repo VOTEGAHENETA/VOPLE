@@ -6,13 +6,13 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.vote.dto.CandidateResultDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto.VoteCandidateFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto.VoteTeamFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
-import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.CandidateResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
 import com.votegaheneta.vote.service.VoteFindService;
 import java.util.List;
@@ -115,7 +115,7 @@ public class VoteFindControllerTest {
   }
 
   private SessionResultFindDto createSessionResultFindDto() {
-    CandidateResult candidateResult = new CandidateResult(1L, 1L, "최효재");
+    CandidateResultDto candidateResult = new CandidateResultDto(1L, 1L, "최효재");
     TeamResult teamResult = new TeamResult(
         1L,
         "똘끼",
@@ -136,7 +136,7 @@ public class VoteFindControllerTest {
 
     // when
     when(voteFindService.findVoteResultBySessionId(sessionId)).thenThrow(
-        new IllegalArgumentException("투표를"));
+        new IllegalArgumentException("투표중"));
 
     // then
     assertThatThrownBy(() -> voteFindController

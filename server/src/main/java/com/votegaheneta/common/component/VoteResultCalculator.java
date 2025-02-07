@@ -55,11 +55,7 @@ public class VoteResultCalculator {
                   vote.getUserName()
               ));
     }
-
-
-
-
-
+    // pollCount 계산
     return null;
   }
 }
