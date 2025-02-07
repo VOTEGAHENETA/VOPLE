@@ -18,4 +18,5 @@ public interface VoteInfoRepository extends JpaRepository<VoteInfo, Long> {
 
   @Query("select vi from VoteInfo vi where vi.vote.id = :voteId")
   List<VoteInfo> findAllByVoteId(Long voteId);
+
 }
