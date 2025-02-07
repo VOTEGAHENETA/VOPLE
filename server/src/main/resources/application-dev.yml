@@ -30,6 +30,11 @@ spring:
     redis:
       host: localhost
       port: 6379
+    rtmp:
+      host: rtmp://i12b102.p.ssafy.io:1935/live/
+    hls:
+      host-prefix: http://i12b102.p.ssafy.io:8050/hls/
+      host-postfix: .m3u8
 
 paging:
   default-page-size: 10
