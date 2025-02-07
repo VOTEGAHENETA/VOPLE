@@ -42,3 +42,12 @@ export interface ElectionListProps {
   onMenuClick?: () => void;
 }
 
+export type TCreateElection = {
+  hostId: number;
+  entranceQuestion: string;
+  entranceAnswer: string;
+  startTime: Date;
+  endTime: Date;
+  wholeVoter: number;
+  sessionName: string;
+};
