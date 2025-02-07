@@ -7,7 +7,7 @@ import {
   TeamResult,
   VoteCandidate,
   VoteResult,
-  VoteSession,
+  ElectionSection,
 } from '@/types/election';
 import sample from '@/assets/sample/sample.png';
 import IconFlower from '@/assets/icons/IconFlower';
@@ -101,7 +101,7 @@ const votes: VoteResult[] = [
   },
 ];
 
-const electionData: VoteSession = {
+const electionData: ElectionSection = {
   sessionId: 1,
   sessionName: '제 12대 학생회장 선거',
   voteStatus: 'isAfter',
