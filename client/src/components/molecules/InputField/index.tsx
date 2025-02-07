@@ -13,7 +13,7 @@ import {
 
 export interface InputFieldProps {
   id: string; // input의 필수값
-  value: string; // input의 필수값
+  value: string | number; // input의 필수값
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // input의 필수값
   type?: InputType;
   variant?: InputVariant;
@@ -47,7 +47,7 @@ export default function InputField({
     const { value } = e.target;
 
     // 입력값이 비어있는 경우는 항상 허용
-    if (value === '') {
+    if (!value) {
       onChange(e);
       return;
     }

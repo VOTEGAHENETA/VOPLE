@@ -11,7 +11,7 @@ export interface BaseInputProps {
 
 export interface InputProps {
   id: string; // 필수 값
-  value: string; // 필수 값
+  value: string | number; // 필수 값
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 값
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   variant?: 'default' | 'search' | 'error' | 'warning';
@@ -31,7 +31,7 @@ export interface InputProps {
 */
 
 function Input({
-  value = '',
+  value,
   onChange,
   onKeyDown,
   variant = 'default',
