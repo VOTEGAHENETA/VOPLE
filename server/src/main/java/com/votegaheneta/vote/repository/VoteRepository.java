@@ -28,4 +28,5 @@ public interface VoteRepository extends JpaRepository<Vote, Long>, CustomVoteRep
                  + " join Users u on c.user.id = u.id "
                  + " where v.electionSession.id = :sessionId")
     List<VoteResultProjection> findVotesBySessionId(@Param("sessionId") Long sessionId);
+
 }
