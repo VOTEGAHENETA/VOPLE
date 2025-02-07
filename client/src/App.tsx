@@ -24,7 +24,6 @@ function App() {
       {showHeader && <Header />}
       <main id='main-container'>
         <Outlet />
-        <VoteTemplate />
       </main>
     </>
   );
