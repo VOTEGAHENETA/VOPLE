@@ -5,37 +5,54 @@ import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
+import com.votegaheneta.vote.dto.VoteDetailDto;
 import com.votegaheneta.vote.service.VoteFindService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//@Tag(name = "VoteFind", description = "Vote 조회 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/vote/{sessionId}")
-@Tag(name = "vote-find-controller", description = "vote-find-controller API")
+//@Tag(name = "vote-find-controller", description = "vote-find-controller API")
 public class VoteFindController {
 
   private final VoteFindService voteFindService;
 
   @Operation(
-      summary = "투표 리스트 조회",
-      description = "선거의 투표 리스트를 API")
+      summary = "투표 입후보자 페이지 정보 조회",
+      description = "FIGMA : 관리자 플로우 - [입후보자 조회/수정 화면]")
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
+      @Parameter(name = "sessionId", description = "투표id", required = true, in = ParameterIn.PATH)
+  })
+  @GetMapping("/{voteId}")
+  public ApiResponse<VoteDetailDto> getVoteDetail(@PathVariable("sessionId") Long sessionId,
+      @PathVariable("voteId") Long voteId, Pageable pageable) {
+    VoteDetailDto voteDetail = voteFindService.getVoteDetail(sessionId, voteId, pageable);
+    return ApiResponse.success(HttpStatus.OK, "투표 상세 정보 조회 성공", voteDetail);
+  }
+
+  @Operation(
+      summary = "투표 리스트 조회",
+      description = "FIGMA : 관리자 플로우 - [선거 상세 페이지(학생 권한 설정 전)]")
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping
-  public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId ") Long sessionId) {
+  public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId") Long sessionId) {
     List<VoteFindDto> result = voteFindService.getVoteList(sessionId);
     return ApiResponse.success(HttpStatus.OK, "투표 목록 조회 성공", result);
   }
@@ -44,7 +61,7 @@ public class VoteFindController {
       summary = "투표 상세화면 조회",
       description = "투표 상세화면의 팀 리스트를 반환해주는 API")
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping("/detail")
   public ApiResponse<SessionFindDto> findVoteBySessionId(
@@ -57,7 +74,7 @@ public class VoteFindController {
       summary = "투표 진행 결과화면 조회",
       description = "투표를 진행중일 때 결과화면 조회 API")
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping("/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
@@ -72,7 +89,7 @@ public class VoteFindController {
       description = "투표가 완전히 종료된 후 결과화면 조회 API"
   )
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping("/result/final")
   public ApiResponse<SessionFinalResultFindDto> findVoteFinalResultBySessionId(
@@ -87,7 +104,8 @@ public class VoteFindController {
       description = "특정 회원이 특정 투표에 대해서 투표 진행을 했는지 여부를 반환"
   )
   @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true)
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
+      @Parameter(name = "userId", description = "사용자id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping("/{userId}/hasVoted")
   public ApiResponse<Boolean> hasVoted(

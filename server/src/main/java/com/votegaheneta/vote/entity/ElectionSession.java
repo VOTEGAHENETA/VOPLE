@@ -5,6 +5,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,15 +25,18 @@ import lombok.NoArgsConstructor;
 public class ElectionSession {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "host_id")
   private Users hostUser;
 
-  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private List<Vote> votes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true)
+  private List<SessionUserInfo> sessionUserInfos = new ArrayList<>();
 
 //  @Builder
   public ElectionSession(Users hostUser, String sessionName,
@@ -63,6 +67,15 @@ public class ElectionSession {
 //  public static Session fromDto(SessionDto sessionDto) {
 //
 //  }
+
+  public List<SessionUserInfo> getSessionUserInfos() {
+    return sessionUserInfos;
+  }
+
+  public void addSessionUserInfo(SessionUserInfo sessionUserInfo) {
+    sessionUserInfos.add(sessionUserInfo);
+    sessionUserInfo.setElectionSession(this);
+  }
 
   public void addVote(Vote vote) {
     votes.add(vote);

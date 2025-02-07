@@ -1,6 +1,6 @@
 package com.votegaheneta.chat.service;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.ChatRoomDto;
@@ -26,8 +26,8 @@ public class ChatServiceImpl implements ChatService {
   private final SessionRepository sessionRepository;
   private final VoteTeamRepository voteTeamRepository;
 
-  private static final int EXPIRATION_TIME = 30;
-  private static final int MAX_SIZE = 10;
+  private static final int EXPIRATION_TIME = 3;
+  private static final int MAX_SIZE = 100;
 
   private String generateChatRoomKey(ChatRoomDto chatRoom) {
     return String.format("CHAT_ROOM:%s", chatRoom.getType().toUpperCase());
@@ -80,13 +80,13 @@ public class ChatServiceImpl implements ChatService {
 
     if (optUserDto.isPresent()) {
       userDto = optUserDto.get();
-      redisRepository.setExpire(userKey, EXPIRATION_TIME, SECONDS);
+      redisRepository.setExpire(userKey, EXPIRATION_TIME, MINUTES);
     } else {
       Users user = usersRepository.findById(chatDto.getUserId())
           .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
       userDto = new UserDto(user);
       redisRepository.saveInValue(userKey, userDto);
-      redisRepository.setExpire(userKey, EXPIRATION_TIME, SECONDS);
+      redisRepository.setExpire(userKey, EXPIRATION_TIME, MINUTES);
     }
 
     chatDto.setUserInfo(userDto);

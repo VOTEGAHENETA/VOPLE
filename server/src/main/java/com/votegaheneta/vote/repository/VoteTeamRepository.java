@@ -10,11 +10,19 @@ import org.springframework.data.repository.query.Param;
 public interface VoteTeamRepository extends JpaRepository<VoteTeam, Long> {
 
   @Query("select distinct vt from VoteTeam vt " +
-      "join fetch vt.vote v " +
-      "join fetch vt.candidates c " +
-      "join fetch c.user u " +
-      "where vt.vote.id in :voteIds")
+      " join fetch vt.vote v " +
+      " join fetch vt.candidates c " +
+      " join fetch c.user u " +
+      " where vt.vote.id in :voteIds" +
+      " order by vt.pollCnt desc ")
   List<VoteTeam> findByVote_IdIn(@Param("voteIds")List<Long> voteIds);
 
-  List<VoteTeam> findByVoteId(Long voteId);
+  void deleteVoteTeamByVoteId(Long voteId);
+  @Query("select vt "
+      + " from VoteTeam vt "
+      + " join fetch Candidate c "
+      + " join fetch Users u "
+      + " where vt.vote.id = :voteId "
+      + " order by vt.pollCnt desc")
+  List<VoteTeam> findByVoteId(@Param("voteId") Long voteId);
 }

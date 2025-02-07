@@ -1,11 +1,13 @@
 package com.votegaheneta.user.entity;
 
+import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteInfo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Users {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @OneToMany(mappedBy = "hostUser", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -39,6 +41,10 @@ public class Users {
   public Users(String username, String nickname) {
     this.username = username;
     this.nickname = nickname;
+  }
+
+  public UserDto toDto() {
+    return new UserDto(this);
   }
 
   public void addCandidate(Candidate candidate) {

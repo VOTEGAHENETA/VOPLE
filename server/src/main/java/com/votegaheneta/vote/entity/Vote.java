@@ -4,6 +4,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -23,17 +24,17 @@ import org.hibernate.annotations.BatchSize;
 public class Vote {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "session_id")
   private ElectionSession electionSession;
 
-  @OneToMany(mappedBy = "vote")
+  @OneToMany(mappedBy = "vote", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private List<VoteInfo> voteInfos = new ArrayList<>();
 
-  @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "vote", cascade = CascadeType.PERSIST, orphanRemoval = true)
   @BatchSize(size = 100)
   private List<VoteTeam> voteTeams = new ArrayList<>();
 

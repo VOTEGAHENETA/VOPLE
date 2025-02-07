@@ -4,9 +4,13 @@ import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
+import com.votegaheneta.vote.dto.VoteDetailDto;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface VoteFindService {
+
+  public VoteDetailDto getVoteDetail(Long sessionId, Long voteId, Pageable pageable);
 
   public Boolean hasVoted(Long sessionId, Long userId);
 
