@@ -3,7 +3,7 @@ package com.votegaheneta.vote.dto;
 public interface VoteResultProjection {
   Long getVoteId();
   String getVoteName();
-  Long getTeamId();
+  Long getVoteTeamId();
   String getPrefix();
   Integer getPollCnt();
   String getPoster();

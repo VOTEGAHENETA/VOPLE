@@ -43,7 +43,6 @@ public class SessionServiceImpl implements SessionService {
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     ElectionSession electionSession = sessionDto.toEntity(user);
     electionSession = sessionRepository.save(electionSession);
-
     // qr코드로 접속할 url
     String url = "http://i12b102.p.ssafy.io/api/election/"+electionSession.getId();
 
@@ -103,16 +102,13 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public SessionResponse getSessions(Long userId) {
-    List<ElectionSession> managedElectionSessions = sessionRepository.findByHostUser_Id(userId);
-    return new SessionResponse(
-        managedElectionSessions.stream().map(SessionDto::fromEntity).toList(),
-        managedElectionSessions.stream().map(SessionDto::fromEntity).toList()
-    );
-  }
-  
-  public List<SessionDto> getSessionList() {
-    List<ElectionSession> sessionList = sessionRepository.findAll();
-    return sessionList.stream().map(SessionDto::fromEntity).toList();
+//    List<ElectionSession> ParticipatingSessions = sessionRepository.findBySessionUserInfos_Id(userId);
+//    List<ElectionSession> managedSessions = sessionRepository.findByHostUser_Id(userId);
+//    return new SessionResponse(
+//        ParticipatingSessions.stream().map(SessionDto::fromEntity).toList(),
+//        managedSessions.stream().map(SessionDto::fromEntity).toList()
+//    );
+    return null;
   }
 
   @Transactional

@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class SessionResultFindDto {
-  
+
   private final String sessionName;
   @Schema(description = "wholeVoterPercent(총투표자 퍼센트)")
   private final Float wholeVoterPercent;
@@ -46,11 +46,9 @@ public class SessionResultFindDto {
         this.voteCandidateDtos = voteCandidateDtos;
       }
 
-//      public TeamResult from(VoteTeam voteTeam) {
-//        return new TeamResult(
-//            voteTeam.getId()
-//        )
-//      }
+      public void setTeamVotePercent(Float teamVotePercent) {
+        this.teamVotePercent = teamVotePercent;
+      }
 
       public void adjustVoteTeamPercent(float adjustment) {
         this.teamVotePercent += adjustment;

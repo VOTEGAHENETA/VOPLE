@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.service.SessionService;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,16 +31,6 @@ public class SessionController {
   private final SessionService sessionService;
 
   @Operation(
-      summary = "전체 선거 세션 조회",
-      description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
-  )
-  @GetMapping
-  public ApiResponse<List<SessionDto>> getSessionList() {
-    List<SessionDto> result = sessionService.getSessionList();
-    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
-  }
-
-  @Operation(
       summary = "특정 세션 조회",
       description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
   )
@@ -53,14 +43,16 @@ public class SessionController {
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
   }
 
-//  @GetMapping
-//  public ApiResponse<SessionResponse> getSessions() {
-//    // 내가 참여하고있는 세션 리스트
-//    // 내가 관리하고있는 세션 리스트
-//    Long userId = 1L;
-//    SessionResponse result = sessionService.getSessions(userId);
-//    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
-//  }
+  @Operation(
+      summary = "사용자가 참여중인 세션 리스트 조회",
+      description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
+  )
+  @GetMapping
+  public ApiResponse<SessionResponse> getSessions() {
+    Long userId = 1L;
+    SessionResponse result = sessionService.getSessions(userId);
+    return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
+  }
 
   @Operation(
       summary = "새로운 세션 생성",
@@ -143,6 +135,13 @@ public class SessionController {
         : ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, "세션 삭제 실패");
   }
 
+  @Operation(
+      summary = "QR코드 조회",
+      description = "FIGMA : 관리자 플로우 - [학생 권한 설정전 QR코드 보기]"
+  )
+  @Parameters(
+      @Parameter(name = "sessionId", description = "세션id", required = true)
+  )
   @GetMapping("/{sessionId}/qrcode")
   public ApiResponse<String> getQrCode(@PathVariable("sessionId") Long sessionId) {
     return ApiResponse.success(HttpStatus.OK, "QR코드 조회 성공", sessionService.getQrcode(sessionId));

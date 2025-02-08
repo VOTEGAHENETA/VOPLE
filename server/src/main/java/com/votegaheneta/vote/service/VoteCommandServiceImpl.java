@@ -45,9 +45,9 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
     LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
-      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
-    }
+//    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
+//      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
+//    }
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
@@ -55,16 +55,14 @@ public class VoteCommandServiceImpl implements VoteCommandService {
         throw new AlreadyVotedException("이미 투표를 진행했습니다.");
       }
       VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
-          // VoteUserNotFoundException 클래스 구현 필요
-          // ERROR_CODE = 404 | 투표 리소스를 찾을 수 없음
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
-      // 임시로 "동영으로 진행 -> 나중에 voteTeamId 변경해서 넣어야할듯"
       final Boolean TRUE = true;
-      voteInfo.updateVoteInfo(TRUE); // 여기서 이름 없애기
+      voteInfo.updateVoteInfo(TRUE);
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();
-      voteTeam.getVote().getElectionSession().incrementVotedVoter();
     }
+    electionSession.incrementVotedVoter();
   }
+
 }

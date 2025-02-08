@@ -3,11 +3,8 @@ package com.votegaheneta.vote.service;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
-import java.util.List;
 
 public interface SessionService {
-
-  List<SessionDto> getSessionList();
 
   SessionDto getSessionById(Long sessionId);
 
