@@ -1,5 +1,3 @@
-
-
 export type VoteCandidate = {
   candidateId: number;
   userId: number;
