@@ -10,6 +10,7 @@ import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
+import com.votegaheneta.vote.dto.SessionListDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteStatus;
@@ -102,13 +103,18 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public SessionResponse getSessions(Long userId) {
-//    List<ElectionSession> ParticipatingSessions = sessionRepository.findBySessionUserInfos_Id(userId);
-//    List<ElectionSession> managedSessions = sessionRepository.findByHostUser_Id(userId);
-//    return new SessionResponse(
-//        ParticipatingSessions.stream().map(SessionDto::fromEntity).toList(),
-//        managedSessions.stream().map(SessionDto::fromEntity).toList()
-//    );
-    return null;
+    List<ElectionSession> ParticipatingSessions = sessionRepository.findBySessionUserInfos_Id(userId);
+    List<ElectionSession> managedSessions = sessionRepository.findByHostUser_Id(userId);
+    return new SessionResponse(
+        ParticipatingSessions.stream().map(participatingSession -> {
+          Boolean isClosed = LocalDateTime.now().isAfter(participatingSession.getVoteEndTime());
+          return SessionListDto.from(participatingSession, isClosed);
+        }).toList(),
+        managedSessions.stream().map(managedSession -> {
+          Boolean isClosed = LocalDateTime.now().isAfter(managedSession.getVoteEndTime());
+          return SessionListDto.from(managedSession, isClosed);
+        }).toList()
+    );
   }
 
   @Transactional
@@ -131,6 +137,7 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public String getQrcode(Long sessionId) {
-    return sessionRepository.findQrcodeById(sessionId);
+    return sessionRepository.findQrcodeById(sessionId).orElseThrow(
+        () -> new IllegalArgumentException("QR 코드가 생성되지 않았습니다."));
   }
 }
