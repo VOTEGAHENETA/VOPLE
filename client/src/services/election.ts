@@ -1,19 +1,27 @@
-import { ElectionContents } from '@/types/election';
+import { ElectionSection } from '@/types/election';
+import { CandidateSessionData } from '@/types/voteSession';
+import { TCreateElection } from '@/types/election';
 import instance from './api';
 
 /**
  *
  * @returns 선거 세션 데이터 (GET 요청)
  */
-export const getElection = async (
-  sessionId: string
-): Promise<ElectionContents> => {
-  const data = await instance
-    .get(`/election/${sessionId}`)
-    .then((res) => res.data)
-    .catch((err) => {
-      throw new Error(err);
-    });
 
-  return data;
+export const getElection = async (
+  sessionId: number
+): Promise<ElectionSection> => {
+  return await instance.get(`/election/${sessionId}`);
+};
+
+// 투표 상세 페이지 데이터(GET 요청)
+export const getVoteDetail = async (
+  sessionId: number
+): Promise<CandidateSessionData> => {
+  return await instance.get(`/vote/${sessionId}/detail`);
+};
+
+export const postElection = async (createData: TCreateElection) => {
+  const response = await instance.post('/election', createData);
+  return response;
 };

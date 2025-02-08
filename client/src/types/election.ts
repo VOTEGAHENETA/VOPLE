@@ -1,25 +1,51 @@
-export interface Candidate {
+export type VoteCandidate = {
+  candidateId: number;
   userId: number;
-}
+  userName: string;
+};
 
-export interface Team {
-  pollPercent: number;
+export type TeamResult = {
+  teamId: number;
+  prefix: string;
+  pollCnt: number;
+  voteCandidateDtos: VoteCandidate[];
   poster: string;
-  perfix: string;
   candidateStatement: string;
-  candidates: Candidate[];
-}
+  teamVotePercent: number;
+};
 
-export interface Vote {
+export type VoteResult = {
+  voteId: number;
   voteName: string;
-  teams: Team[];
+  teamResults: TeamResult[];
+};
+
+export type VoteStatus = 'isBefore' | 'isProgress' | 'isAfter';
+
+export type ElectionSection = {
+  sessionId: number;
+  sessionName: string;
+  voteStatus: VoteStatus;
+  voteResults: VoteResult[];
+  wholeVoterPercent: number;
+};
+
+export interface ElectionListProps {
+  id: number;
+  title: string;
+  startDate?: string;
+  endDate?: string;
+  status?: 'participating' | 'created';
+  isClosed?: boolean;
+  onMenuClick?: () => void;
 }
 
-export interface ElectionContents {
+export type TCreateElection = {
   hostId: number;
+  entranceQuestion: string;
+  entranceAnswer: string;
+  startTime: Date;
+  endTime: Date;
+  wholeVoter: number;
   sessionName: string;
-  voteStartTime: string;
-  voteEndTime: string;
-  voteRemainTime: string;
-  votes: Vote;
-}
+};

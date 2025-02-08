@@ -12,13 +12,18 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^5.63.0",
+    "@types/sockjs-client": "^1.5.4",
+    "@types/stompjs": "^2.3.9",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "eslint-config-airbnb": "^19.0.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -46,9 +51,11 @@
     "eslint-plugin-react-refresh": "^0.4.16",
     "eslint-plugin-storybook": "^0.11.2",
     "globals": "^15.14.0",
+    "msw": "^2.7.0",
     "prettier": "^3.4.2",
     "sass": "^1.83.4",
     "storybook": "8.4.7",
+    "storybook-addon-react-router-v6": "^2.0.15",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.19.1",
     "vite": "^6.0.5",
@@ -58,6 +65,11 @@
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
     ]
   }
 }

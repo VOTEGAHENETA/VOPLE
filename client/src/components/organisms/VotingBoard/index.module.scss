@@ -1,0 +1,33 @@
+.board { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  gap:10px
+}
+
+.point {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px
+}
+
+.tag  {
+  display: flex;
+  gap: 10px;
+  min-width: 92px;
+  min-height: 42px;
+}

@@ -1,0 +1,31 @@
+.create-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+
+  .create-title {
+    width: 100%;
+  }
+
+  .create-form {
+    width: 100%;
+  }
+
+  .btn {
+    &-section {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+    }
+
+    &-cancel {
+      width: 100%;
+    }
+
+    &-create {
+      width: 100%;
+    }
+  }
+}

@@ -11,13 +11,15 @@ export interface BaseInputProps {
 
 export interface InputProps {
   id: string; // 필수 값
-  value: string; // 필수 값
+  value: string | number; // 필수 값
+  type?: string; // type 지정
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 값
-  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   variant?: 'default' | 'search' | 'error' | 'warning';
   placeholder?: string;
   filled?: boolean;
   disabled?: boolean;
+  theme?: 'light' | 'dark';
 }
 
 /* 설명 
@@ -30,24 +32,27 @@ export interface InputProps {
 */
 
 function Input({
-  value = '',
+  value,
+  type,
   onChange,
-  onKeyPress,
+  onKeyDown,
   variant = 'default',
   disabled = false,
   filled = false,
+  theme = 'light',
   ...props
 }: InputProps) {
   const inputClassName = `
     ${styles.input}
     ${variant !== 'default' ? styles[`input--${variant}`] : ''}
     ${styles[`input--disabled--${variant}`]}
-    ${styles[`input--filled--${filled}`]}
+    ${styles[`input--filled--${filled}--${theme}`]}
   `.trim();
 
   return (
     <input
-      onKeyPress={onKeyPress}
+      type={type}
+      onKeyDown={onKeyDown}
       value={value}
       className={inputClassName}
       disabled={disabled}
