@@ -11,6 +11,18 @@ pipeline {
     }
 
     stages {
+        stage('Build Started') {
+            steps {
+                withCredentials([string(credentialsId: 'discord-webhook', variable: 'DISCORD_WEBHOOK')]) {
+                    discordSend description: '🚀 Jenkins Build Started!', 
+                              footer: 'Build is starting...',
+                              title: 'Jenkins Build Alert', 
+                              result: 'UNSTABLE',
+                              webhookURL: DISCORD_WEBHOOK
+                }
+            }
+        }
+        
         stage('Setup Environment') {
             steps {
                 script {
@@ -57,6 +69,11 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: 6379
+    rtmp:
+      host: rtmp://i12b102.p.ssafy.io:1935/live/
+    hls:
+      host-prefix: http://i12b102.p.ssafy.io:8050/hls/
+      host-postfix: .m3u8
 springdoc:
   swagger-ui:
     path: /index.html
@@ -99,21 +116,21 @@ springdoc:
     
         success {
             withCredentials([string(credentialsId: 'discord-webhook', variable: 'DISCORD_WEBHOOK')]) {
-                discordSend description: 'Jenkins Build Success!', 
-                           footer: 'Build was successful!',
-                           title: 'Jenkins Build Alert',
-                           result: currentBuild.currentResult,
-                           webhookURL: DISCORD_WEBHOOK
+                discordSend description: '✅ Jenkins Build Success!', 
+                          footer: 'Build was successful!',
+                          title: 'Jenkins Build Alert',
+                          result: currentBuild.currentResult,
+                          webhookURL: DISCORD_WEBHOOK
             }
         }
     
         failure {
             withCredentials([string(credentialsId: 'discord-webhook', variable: 'DISCORD_WEBHOOK')]) {
-                discordSend description: 'Jenkins Build Failed!', 
-                           footer: 'Build failed.',
-                           title: 'Jenkins Build Alert', 
-                           result: currentBuild.currentResult,
-                           webhookURL: DISCORD_WEBHOOK
+                discordSend description: '❌ Jenkins Build Failed!', 
+                          footer: 'Build failed.',
+                          title: 'Jenkins Build Alert', 
+                          result: currentBuild.currentResult,
+                          webhookURL: DISCORD_WEBHOOK
             }
         }
     }

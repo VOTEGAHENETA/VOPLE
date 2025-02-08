@@ -8,6 +8,7 @@ services:
       - "80:80"
     volumes:
       - ./client:/client
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
       - ./data/uploads:/app/uploads
 
   server:
@@ -22,6 +23,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     command: sh -c "
+        apk add --no-cache ffmpeg &&
         chmod +x /server/gradlew &&
         /server/gradlew clean build --stacktrace &&
         cp /server/build/libs/server-0.0.1-SNAPSHOT.jar /server/app.jar &&
@@ -47,7 +49,6 @@ services:
       - "1936:80" # RTMP console
     volumes:
       - ./nginx/rtmp.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d/:/etc/nginx/conf.d/:ro
       - ./hls:/opt/data/hls
 
   db:

@@ -49,8 +49,10 @@ public class SessionController {
   )
   @GetMapping
   public ApiResponse<SessionResponse> getSessions() {
-    Long userId = 1L;
+    Long userId = 100L;
     SessionResponse result = sessionService.getSessions(userId);
+    if(result.getManagedSessions().isEmpty() && result.getInvolvedSessions().isEmpty())
+      return ApiResponse.fail(HttpStatus.NO_CONTENT, "세션 목록이 없습니다.");
     return ApiResponse.success(HttpStatus.OK, "세션 목록 조회 성공", result);
   }
 

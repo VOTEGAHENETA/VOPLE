@@ -15,6 +15,6 @@ public class StreamWebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(streamWebSocketHandler, "/ws/stream").setAllowedOrigins("*");
+        registry.addHandler(streamWebSocketHandler, "/stream").setAllowedOrigins("*");
     }
 }
