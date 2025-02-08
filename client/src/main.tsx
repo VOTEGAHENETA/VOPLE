@@ -15,13 +15,13 @@ const queryClient = new QueryClient({
 });
 
 async function enableMocking() {
-  if (!import.meta.env.NODE_ENV) {
+  if (import.meta.env.MODE !== 'development') {
     return;
   }
 
   const { worker } = await import('./mocks/browser.ts');
 
-  worker.start();
+  return worker.start();
 }
 
 enableMocking().then(() => {
