@@ -32,9 +32,10 @@ export const useMediaStream = () => {
     }
   };
 
-  const toggleCamera = () => {
+  const toggleCamera = async () => {
     stopStream();
     setFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'));
+    await startStream(); // 카메라 다시 연결
   };
 
   return {
