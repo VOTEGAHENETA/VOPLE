@@ -22,6 +22,6 @@ export const getVoteDetail = async (
 };
 
 export const postElection = async (createData: TCreateElection) => {
-  const response = await instance.post('/election', { data: createData });
+  const response = await instance.post('/election', createData);
   return response;
 };

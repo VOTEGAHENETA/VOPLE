@@ -5,8 +5,7 @@ import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import Text from '@/components/atoms/Text';
-import { useMutation } from '@tanstack/react-query';
-import { postElection } from '@/services/election';
+import { useCreateElection } from '@/services/hooks/useCreateElection';
 
 function ElectionCreateTemplate() {
   const [state, setState] = useState<TCreateElection>({
@@ -96,20 +95,10 @@ function ElectionCreateTemplate() {
     }));
   }
 
-  const mutation = useMutation({
-    mutationFn: postElection,
-    onSuccess: (data) => {
-      console.log('등록 성공:', data);
-      alert('선거 등록 성공!');
-    },
-    onError: (error) => {
-      console.log('등록 실패:', error);
-      alert('선거 등록 실패!');
-    },
-  });
+  const mutation = useCreateElection();
 
   function handleSubmit() {
-    console.log('제출 데이터:', state);
+    console.log('election data:', state);
     mutation.mutate(state);
   }
 
