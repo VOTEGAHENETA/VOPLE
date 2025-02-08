@@ -1,9 +1,15 @@
 import { http, HttpResponse } from 'msw';
 
-const { VITE_PUBLIC_API_URL } = import.meta.env;
-
 export const handlers = [
-  http.post(VITE_PUBLIC_API_URL + '/election', async ({ request }) => {
-    return HttpResponse.json(request);
+  http.post('/election', async ({ request }) => {
+    const requestData = await request.json();
+    console.log('데이터:', requestData);
+    return HttpResponse.json(
+      {
+        message: '선거 만들기 성공',
+        createdData: requestData,
+      },
+      { status: 201 }
+    );
   }),
 ];
