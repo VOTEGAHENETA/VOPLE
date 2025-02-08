@@ -1,12 +1,15 @@
-echo "🔹 EC2에서 Git 리포지토리 업데이트 중..."
+echo "🔹 EC1에서 Git 리포지토리 업데이트 중..."
 git pull origin master
 
 # Docker Compose 실행
 echo "🚀 Docker Compose 실행 중..."
+docker compose down client server --volumes
+docker compose up -d --build client
+docker compose up -d --build server
 docker compose up -d server client
 
 echo "서비스 시작 대기 중..."
-sleep 70
+sleep 80
 
 for i in {1..3}; do
     if curl -f http://i12b102.p.ssafy.io/api/test; then
