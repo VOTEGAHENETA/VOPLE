@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import Text from '@/components/atoms/Text';
+import { useNavigate } from 'react-router-dom';
 
 function ElectionCreateTemplate() {
   const [state, setState] = useState<TCreateElection>({
@@ -22,6 +23,8 @@ function ElectionCreateTemplate() {
     endDate: '',
     endTime: '',
   });
+
+  const navigate = useNavigate();
 
   function handleChangeLabel(e: React.ChangeEvent<HTMLInputElement>) {
     setState((prev) => ({
@@ -98,6 +101,10 @@ function ElectionCreateTemplate() {
     console.log(state);
   }
 
+  function onClose() {
+    navigate('/');
+  }
+
   return (
     <div className={styles['create-container']}>
       <div className={styles['create-title']}>
@@ -123,6 +130,7 @@ function ElectionCreateTemplate() {
             type='reset'
             kind='base'
             status={BASE_BUTTON_STATUS.OUTLINE}
+            onClick={onClose}
           >
             취소
           </BaseButton>

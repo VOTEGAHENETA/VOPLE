@@ -24,7 +24,6 @@ export interface CandidateSessionData {
   voteFindDto: Vote[];
 }
 
-
 export const info: CandidateSessionData = {
   sessionId: 12,
   sessionName: '제 12대 싸피 회장선거',
