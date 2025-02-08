@@ -3,6 +3,8 @@ package com.votegaheneta.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +47,16 @@ public class RedisConfig {
 //    redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(ObjectMapperProvider.createObjectMapper()));
     return redisTemplate;
   }
+  
+  @Bean
+  public RedisTemplate<String, List<VoteResult>> VoteResultRedisTemplate(
+      RedisConnectionFactory redisConnectionFactory) {
+    RedisTemplate<String, List<VoteResult>> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setConnectionFactory(redisConnectionFactory);
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(genericJackson2JsonRedisSerializer());
+    return redisTemplate;
+  }
 
   @Bean
   public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer() {
@@ -52,7 +64,7 @@ public class RedisConfig {
     objectMapper.registerModule(new JavaTimeModule());
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(),
-                                       ObjectMapper.DefaultTyping.NON_FINAL); // 클래스 타입 정보 추가
+        ObjectMapper.DefaultTyping.NON_FINAL); // 클래스 타입 정보 추가
     return new GenericJackson2JsonRedisSerializer(objectMapper);
   }
 }
