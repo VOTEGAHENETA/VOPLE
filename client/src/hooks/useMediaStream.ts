@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-type FacingMode = 'user' | 'environment';
+type FacingMode = 'user' | 'environment'; // 카메라 전면(user), 후면(environment)
 
 export const useMediaStream = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -21,7 +21,7 @@ export const useMediaStream = () => {
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      console.error('Camera access error:', err);
+      console.error('카메라 접근 에러:', err);
     }
   };
 

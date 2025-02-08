@@ -17,7 +17,7 @@ function StreamReceiver({ streamKey }: Props) {
         if (hlsPlayerRef.current) {
           hlsPlayerRef.current.muted = true;
           hlsPlayerRef.current.play().catch((err) => {
-            console.error('Auto-play blocked:', err);
+            console.error('방송 수신 중 에러:', err);
           });
         }
       });
@@ -32,7 +32,7 @@ function StreamReceiver({ streamKey }: Props) {
         controls
         autoPlay
         playsInline
-        muted // ✅ 자동 재생 허용
+        muted
         style={{ width: '100%', maxHeight: '300px' }}
       />
     </div>
