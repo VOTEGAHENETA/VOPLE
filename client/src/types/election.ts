@@ -1,3 +1,5 @@
+
+
 export type VoteCandidate = {
   candidateId: number;
   userId: number;
@@ -22,7 +24,7 @@ export type VoteResult = {
 
 export type VoteStatus = 'isBefore' | 'isProgress' | 'isAfter';
 
-export type VoteSession = {
+export type ElectionSection = {
   sessionId: number;
   sessionName: string;
   voteStatus: VoteStatus;
