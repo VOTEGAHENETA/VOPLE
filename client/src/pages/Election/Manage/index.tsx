@@ -1,5 +1,11 @@
+import ElectionDetailTemplate from '@/components/templates/ElectionDetailTemplate';
+
 function Manage() {
-  return <div>election manage</div>;
+  return (
+    <div>
+      <ElectionDetailTemplate />
+    </div>
+  );
 }
 
 export default Manage;
