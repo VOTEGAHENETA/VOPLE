@@ -21,7 +21,10 @@ async function enableMocking() {
 
   const { worker } = await import('./mocks/browser.ts');
 
-  return worker.start();
+  // handle에 정의된 외 사항에 대해선 warning 경고 제거
+  return await worker.start({
+    onUnhandledRequest: 'bypass',
+  });
 }
 
 enableMocking().then(() => {

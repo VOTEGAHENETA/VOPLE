@@ -21,7 +21,8 @@ function App() {
   return (
     <>
       {showHeader && <Header />}
-      <main id='main-container'>
+      <main id='main-container' className={showHeader ? 'show-header' : ''}>
+        app page
         <Outlet />
       </main>
     </>
