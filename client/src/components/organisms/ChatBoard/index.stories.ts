@@ -22,14 +22,14 @@ type Story = StoryObj<typeof ChatBoard>;
 // 기본 상태
 export const Default: Story = {
   args: {
-    sessionId: 'test-session-1',
+    sessionId: 1,
   },
 };
 
 // 채팅 목록이 비어있는 상태
 export const EmptyState: Story = {
   args: {
-    sessionId: 'empty-session',
+    sessionId: 1,
   },
   parameters: {
     mockData: {
@@ -43,7 +43,7 @@ export const EmptyState: Story = {
 // 에러 상태 (존재하지 않는 세션)
 export const InvalidSession: Story = {
   args: {
-    sessionId: 'invalid-session',
+    sessionId: 1,
   },
   parameters: {
     mockData: {
@@ -57,7 +57,7 @@ export const InvalidSession: Story = {
 // 에러 상태 (잘못된 입력)
 export const InvalidInput: Story = {
   args: {
-    sessionId: 'wrong-type',
+    sessionId: 1,
   },
   parameters: {
     mockData: {
@@ -71,14 +71,14 @@ export const InvalidInput: Story = {
 // WebSocket 연결 실패 상태
 export const ConnectionError: Story = {
   args: {
-    sessionId: 'test-session',
+    sessionId: 1,
   },
 };
 
 // 활발한 채팅이 있는 상태
 export const ActiveChat: Story = {
   args: {
-    sessionId: 'active-session',
+    sessionId: 1,
   },
   parameters: {
     mockData: {

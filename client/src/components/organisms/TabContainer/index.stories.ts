@@ -16,6 +16,30 @@ const meta = {
       ],
     },
   },
+  argTypes: {
+    type: {
+      control: 'radio',
+      options: ['session', 'team'],
+      description: '채팅방 타입',
+    },
+    theme: {
+      control: 'radio',
+      options: ['dark', 'light'],
+      description: '테마',
+    },
+    userId: {
+      control: 'number',
+      description: '유저 ID',
+    },
+    sessionId: {
+      control: 'number',
+      description: '세션 ID',
+    },
+    voteTeamId: {
+      control: 'number',
+      description: '투표 팀 ID (선택)',
+    },
+  },
 } satisfies Meta<typeof TabContainer>;
 
 export default meta;
@@ -23,8 +47,19 @@ type Story = StoryObj<typeof TabContainer>;
 
 export const Default: Story = {
   args: {
-    chatComponent: `<div>채팅 컴포넌트</div>`,
-    noticeComponent: `<div>공지사항 컴포넌트</div>`,
-    posterComponent: `<div>포스터 컴포넌트</div>`,
+    type: 'team',
+    theme: 'dark',
+    userId: 1,
+    sessionId: 123,
+    voteTeamId: 456,
+  },
+};
+
+export const SessionChat: Story = {
+  args: {
+    type: 'session',
+    theme: 'dark',
+    userId: 1,
+    sessionId: 123,
   },
 };

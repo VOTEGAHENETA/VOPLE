@@ -1,31 +1,38 @@
-// TabContainer.module.scss
 .container {
-  min-width: 300px;
+  padding-top: 20px;
+  min-width: 500px;
   width: 100%;
-  height: 100%;
+  height: 350px;
   display: flex;
   flex-direction: column;
   background-color: rgba(0,0,0,0.5);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
+  gap: 4px;
 }
 
 .tabNavigator {
   display: flex;
-  gap: 8px;
-  background-color: rgba(0,0,0,0.5);
-  padding: 8px 8px 0;
-  .tabButton {
-    flex: 1;
-    font-size: 14px;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  justify-content: space-between;
+  padding: 10px 16px 0;
   
-    &.active {
+  .tabMenu {
+    display: flex;
+    gap: 8px;
+
+    .tabButton {
+      width: auto;
+      font-size: 14px;
       color: #fff;
-      background-color:var(--color-main-orange);
-      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-color: rgba(255,255,255,0.7);
+    
+      &.active {
+        color: #fff;
+        background-color:var(--color-main-orange);
+        padding-bottom: 6px;
+      }
     }
   }
   
@@ -33,16 +40,52 @@
 
 .tabContent {
   flex: 1;
-  overflow-y: auto;
-  padding: 16px;
+  height: calc(350px - 100px);
+  padding: 0 16px 16px 16px;
+  margin-top: 16px;
+
+    // ChatBoard를 위한 특별 스타일
+    > div {
+      height: 100%; // 부모 높이를 모두 사용
+      
+      // ChatBoard 컴포넌트가 들어있는 div
+      &[style*="display: block"] {
+        height: 100%;
+        
+        // ChatBoard 컴포넌트 자체도 전체 높이 사용
+        > div {
+          height: 100%;
+        }
+      }
+    }
 }
 
-//  Pledge 
+// ======================
+// Common
+// ======================
+
+.emptyMessage{
+  color: #999;
+}
+
+// ======================
+// PledgeTab
+// ======================
+
+.pledgeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
 .list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 16px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 10px;
+  margin-top: 10px
 }
 
 .item {
@@ -57,3 +100,160 @@
   }
 }
 
+
+
+// ======================
+// PosterTab
+// ======================
+.posterContainer {
+  position: relative;
+}
+.posterWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+
+  > div {
+    width: inherit;
+    height: inherit;
+  }
+
+  .poster{
+    width: 100%;
+    height: inherit;
+    position: relative;
+    overflow: auto;
+    img {
+      display: block;
+      max-width: none;
+      width: 100%;
+      height: auto;
+      position: absolute;
+      left: 0;top: 0;
+    }
+  }
+}
+
+.posterImage {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 200px);
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.zoomButton {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  right: 16px;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 50%;
+  font-size: 13px;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+  font-weight: 700;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  span {
+    font-size: 14px;
+  }
+}
+
+// 모달 스타일
+.modal {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+
+  .modalContent {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 16px;
+  
+    .poster{
+      overflow: hidden;
+      border-radius: 10px;
+    }
+  }
+
+}
+
+// ==================
+// Heart
+// ==================
+
+// Heart/index.module.scss
+.heartContainer {
+  position: absolute;
+  right: 20px;
+  top: 44px;
+  display: inline-block;
+}
+
+.heartButton {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.floatingHeart {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  pointer-events: none;
+  animation: floatUp 1s ease-out forwards;
+  
+  @keyframes floatUp {
+    0% {
+      transform: translateX(-50%) translateY(0) scale(1);
+      opacity: 1;
+    }
+    
+    100% {
+      transform: translateX(var(--heart-x)) translateY(-100px) scale(0.3);
+      opacity: 0;
+    }
+  }
+}

@@ -61,6 +61,7 @@ export function ElectionListBox({
                 key={election.id}
                 id={election.id}
                 title={election.title}
+                status={status}
               />
             ))}
           </div>

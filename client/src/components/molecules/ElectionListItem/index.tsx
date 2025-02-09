@@ -11,7 +11,7 @@ const ElectionListItem = ({
   title = '선거 제목입니다.',
   startDate = '2025.01.20',
   endDate = '2025.01.25',
-  status = 'participating',
+  status,
   isClosed = false,
 }: ElectionListProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
