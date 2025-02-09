@@ -6,15 +6,18 @@
 @use 'fonts';
 
 body {
-    font-family: 'Pretendard', sans-serif;
-    color:var(--color-black);
+  font-family: 'Pretendard', sans-serif;
+  color: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 input,
 textarea,
 select,
 button {
-  font: inherit;  
+  font: inherit;
   color: inherit;
 }
 

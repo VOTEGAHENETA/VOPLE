@@ -1,0 +1,18 @@
+.election {
+  &-wrapper {
+    width: 100%;
+  }
+
+  &-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.input-wrapper {
+  width: 100%;
+  padding: 10px 0;
+}
