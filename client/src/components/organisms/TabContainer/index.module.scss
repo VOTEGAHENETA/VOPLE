@@ -7,7 +7,6 @@
   flex-direction: column;
   background-color: rgba(0,0,0,0.5);
   border-radius: 10px 10px 0 0;
-  overflow: hidden;
   gap: 4px;
 }
 
@@ -208,52 +207,4 @@
     }
   }
 
-}
-
-// ==================
-// Heart
-// ==================
-
-// Heart/index.module.scss
-.heartContainer {
-  position: absolute;
-  right: 20px;
-  top: 44px;
-  display: inline-block;
-}
-
-.heartButton {
-  position: relative;
-  z-index: 1;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-.floatingHeart {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  pointer-events: none;
-  animation: floatUp 1s ease-out forwards;
-  
-  @keyframes floatUp {
-    0% {
-      transform: translateX(-50%) translateY(0) scale(1);
-      opacity: 1;
-    }
-    
-    100% {
-      transform: translateX(var(--heart-x)) translateY(-100px) scale(0.3);
-      opacity: 0;
-    }
-  }
 }

@@ -5,7 +5,6 @@ import BaseButton from '@/components/atoms/BaseButton';
 import ChatBoard from '../ChatBoard';
 import PledgeTab from './PledgeTab';
 import PosterTab from './PosterTab';
-import Heart from './Heart';
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
 import SAMPLE_POSTER from '@/assets/sample/sample.png';
@@ -87,8 +86,6 @@ export default function TabContainer({
             userId={userId}
             voteTeamId={voteTeamId}
           />
-          {/* 채팅 Heart */}
-          <Heart></Heart>
         </div>
         {activeTab === 'notice' && <PledgeTab pledges={MOCK_PLEDGES} />}
         {activeTab === 'poster' && <PosterTab imageSrc={SAMPLE_POSTER} />}
