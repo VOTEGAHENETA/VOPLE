@@ -1,14 +1,7 @@
 import { ElectionSection } from '@/types/election';
 import { CandidateSessionData } from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
-
 import instance from './api';
-
-type TResponse = {
-  httpStatus: number;
-  message: string;
-  data: number;
-};
 
 /**
  *
@@ -28,8 +21,7 @@ export const getVoteDetail = async (
   return await instance.get(`/vote/${sessionId}/detail`);
 };
 
-export const postElection = async (
-  createData: TCreateElection
-): Promise<TResponse> => {
-  return await instance.post('/election', { data: createData });
+export const postElection = async (createData: TCreateElection) => {
+  const response = await instance.post('/election', createData);
+  return response;
 };

@@ -6,6 +6,7 @@ import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import Text from '@/components/atoms/Text';
 import { useNavigate } from 'react-router-dom';
+import { useCreateElection } from '@/services/hooks/useCreateElection';
 
 function ElectionCreateTemplate() {
   const [state, setState] = useState<TCreateElection>({
@@ -97,8 +98,11 @@ function ElectionCreateTemplate() {
     }));
   }
 
+  const mutation = useCreateElection();
+
   function handleSubmit() {
-    console.log(state);
+    console.log('election data:', state);
+    mutation.mutate(state);
   }
 
   function onClose() {
