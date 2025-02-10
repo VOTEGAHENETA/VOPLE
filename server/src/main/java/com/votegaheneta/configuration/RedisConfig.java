@@ -3,8 +3,6 @@ package com.votegaheneta.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +10,14 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
+@EnableRedisRepositories
 public class RedisConfig {
 
   @Value("${spring.data.redis.host}")
@@ -38,6 +38,7 @@ public class RedisConfig {
     return new LettuceConnectionFactory(redisHost, redisPort);
   }
 
+
   @Bean
   public RedisTemplate<String, ?> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
     RedisTemplate<String, ?> redisTemplate = new RedisTemplate<>();
@@ -47,16 +48,7 @@ public class RedisConfig {
 //    redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(ObjectMapperProvider.createObjectMapper()));
     return redisTemplate;
   }
-  
-  @Bean
-  public RedisTemplate<String, List<VoteResult>> VoteResultRedisTemplate(
-      RedisConnectionFactory redisConnectionFactory) {
-    RedisTemplate<String, List<VoteResult>> redisTemplate = new RedisTemplate<>();
-    redisTemplate.setConnectionFactory(redisConnectionFactory);
-    redisTemplate.setKeySerializer(new StringRedisSerializer());
-    redisTemplate.setValueSerializer(genericJackson2JsonRedisSerializer());
-    return redisTemplate;
-  }
+
 
   @Bean
   public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer() {

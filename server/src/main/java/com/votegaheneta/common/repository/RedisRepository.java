@@ -1,5 +1,6 @@
 package com.votegaheneta.common.repository;
 
+import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -17,5 +18,6 @@ public interface RedisRepository {
   boolean containsKey(String key);
   <T> boolean containsKeyInSet(String key, T value);
   boolean delete(String key);
-
+  void saveVoteResults(String key, List<VoteResult> voteResults);
+  List<VoteResult> getVoteResults(String key);
 }

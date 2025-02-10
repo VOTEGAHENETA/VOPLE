@@ -9,10 +9,13 @@ import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
+import com.votegaheneta.vote.dto.SessionEditDto;
+import com.votegaheneta.vote.dto.SessionEditDto.VoteEditInfo;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.dto.SessionListDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteStatus;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
@@ -45,7 +48,7 @@ public class SessionServiceImpl implements SessionService {
     ElectionSession electionSession = sessionDto.toEntity(user);
     electionSession = sessionRepository.save(electionSession);
     // qr코드로 접속할 url
-    String url = "http://i12b102.p.ssafy.io/api/election/"+electionSession.getId();
+    String url = "http://i12b102.p.ssafy.io/api/election/" + electionSession.getId();
 
     int width = 400;
     int height = 400;
@@ -103,7 +106,8 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public SessionResponse getSessions(Long userId) {
-    List<ElectionSession> ParticipatingSessions = sessionRepository.findBySessionUserInfos_Id(userId);
+    List<ElectionSession> ParticipatingSessions = sessionRepository.findBySessionUserInfos_Id(
+        userId);
     List<ElectionSession> managedSessions = sessionRepository.findByHostUser_Id(userId);
     return new SessionResponse(
         ParticipatingSessions.stream().map(participatingSession -> {
@@ -116,6 +120,8 @@ public class SessionServiceImpl implements SessionService {
         }).toList()
     );
   }
+
+  // session
 
   @Transactional
   @Override
@@ -139,5 +145,20 @@ public class SessionServiceImpl implements SessionService {
   public String getQrcode(Long sessionId) {
     return sessionRepository.findQrcodeById(sessionId).orElseThrow(
         () -> new IllegalArgumentException("QR 코드가 생성되지 않았습니다."));
+  }
+
+  @Override
+  public SessionEditDto getSessionEdit(Long sessionId) {
+    ElectionSession electionSession = sessionRepository.findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
+    List<Vote> votes = sessionRepository.findSessionEditById(sessionId);
+    return new SessionEditDto(
+      SessionDto.fromEntity(electionSession),
+        votes.stream().map(vote ->
+            VoteEditInfo.from(
+                vote, electionSession.getSessionName()
+            )
+        ).toList()
+    );
   }
 }

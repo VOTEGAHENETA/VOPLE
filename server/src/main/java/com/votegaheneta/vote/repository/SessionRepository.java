@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.repository;
 
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.Vote;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,7 @@ public interface SessionRepository extends JpaRepository<ElectionSession, Long> 
 
   @Query("select es from ElectionSession es join fetch es.sessionUserInfos sui where sui.user.id = :userId")
   List<ElectionSession> findBySessionUserInfos_Id(@Param("userId") Long userId);
+
+  @Query("select v from Vote v join v.electionSession es where es.id = :sessionId")
+  List<Vote> findSessionEditById(@Param("sessionId") Long sessionId);
 }

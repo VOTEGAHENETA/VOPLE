@@ -1,8 +1,12 @@
 package com.votegaheneta.common.repository;
 
+import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -90,4 +94,28 @@ public class RedisRepositoryImpl implements RedisRepository {
 //  public boolean deleteChatRoom(String key) {
 //    return redisTemplate.delete(key);
 //  }
+
+  // 투표 결과값을 리스트형태로 저장
+  public void saveVoteResults(String key, List<VoteResult> voteResults) {
+    if (voteResults == null || voteResults.isEmpty()) {
+      return;
+    }
+    for (VoteResult result : voteResults) {
+      if (result != null) {
+        redisTemplate.opsForList().rightPush(key, result);
+      }
+    }
+  }
+
+  // 투표 결과 조회
+  public List<VoteResult> getVoteResults(String key) {
+    if (redisTemplate.opsForList().size(key) == 0) {
+      return new ArrayList<>();
+    }
+    return redisTemplate.opsForList().range(key, 0, - 1)
+        .stream()
+        .filter(Objects::nonNull)
+        .map(item -> (VoteResult) item)
+        .collect(Collectors.toList());
+  }
 }

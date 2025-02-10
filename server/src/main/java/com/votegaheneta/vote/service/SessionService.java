@@ -2,6 +2,7 @@ package com.votegaheneta.vote.service;
 
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
+import com.votegaheneta.vote.dto.SessionEditDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 
 public interface SessionService {
@@ -19,4 +20,6 @@ public interface SessionService {
   boolean deleteSession(Long Id);
 
   String getQrcode(Long sessionId);
+
+  SessionEditDto getSessionEdit(Long sessionId);
 }
