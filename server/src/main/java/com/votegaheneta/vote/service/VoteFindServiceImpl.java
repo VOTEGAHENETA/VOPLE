@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.service;
 
 import com.votegaheneta.common.component.VoteResultCalculator;
+import com.votegaheneta.common.repository.RedisRepository;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
@@ -37,6 +38,7 @@ public class VoteFindServiceImpl implements VoteFindService {
   private final VoteInfoRepository voteInfoRepository;
   private final SessionRepository sessionRepository;
   private final VoteResultCalculator voteResultCalculator;
+  private final RedisRepository redisRepository;
 
   @Override
   public VoteDetailDto getVoteDetail(Long sessionId, Long voteId, Pageable pageable) {
@@ -97,13 +99,20 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   @Override
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
+    String sessionRedisKey = "session:vote:result:" + sessionId;
+    List<VoteResult> voteResults = new ArrayList<>();
+    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
+    if(redisVoteResults.isEmpty()) {
+      voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+      redisRepository.saveVoteResults(sessionRedisKey, voteResults);
+    }else {
+      voteResults = redisVoteResults;
+    }
+    List<Elected> electedList = new ArrayList<>();
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
-    List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
-    List<Elected> electedList = new ArrayList<>();
-
     for (VoteResult voteResult : voteResults) {
       List<TeamResult> maxTeamResultList = new ArrayList<>();
       int max = -1;
@@ -128,7 +137,6 @@ public class VoteFindServiceImpl implements VoteFindService {
             );
           }).toList());
     }
-
     return new SessionFinalResultFindDto(
         ElectionSessionDto.from(electionSession),
         wholeVoterPercent,

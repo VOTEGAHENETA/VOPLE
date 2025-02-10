@@ -4,32 +4,29 @@ import com.votegaheneta.vote.dto.CandidateResultDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
 import com.votegaheneta.vote.dto.VoteResultProjection;
-import com.votegaheneta.vote.repository.CandidateRepository;
-import com.votegaheneta.vote.repository.VoteRepository;
-import com.votegaheneta.vote.repository.VoteTeamRepository;
+import com.votegaheneta.vote.repository.CustomVoteRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class VoteResultCalculator {
 
-  private final VoteRepository voteRepository;
-  private final VoteTeamRepository voteTeamRepository;
-  private final CandidateRepository candidateRepository;
+  private final CustomVoteRepository customVoteRepository;
+  public VoteResultCalculator(@Qualifier("customVoteRepositoryImpl") CustomVoteRepository customVoteRepository) {
+    this.customVoteRepository = customVoteRepository;
+  }
 
   /**
-   * 투표 결과 집계 로직 JPA 성능이슈가 있어서 로직 조금 수정 필요
-   *
+   * 투표 결과 집계 로직
    * @param sessionId
    * @return List<VoteResult>
    */
   public List<VoteResult> calculateVoteResult(Long sessionId) {
     // 일단 투표 ID를 기준으로 teaid를 그룹화
-    List<VoteResultProjection> voteResultProjections = voteRepository.findVotesBySessionId(
+    List<VoteResultProjection> voteResultProjections = customVoteRepository.findVoteResultBySessionId(
         sessionId);
     Map<Long, Map<Long, List<VoteResultProjection>>> voteMap = voteResultProjections.stream()
         .collect(Collectors.groupingBy(VoteResultProjection::getVoteId,
@@ -58,7 +55,8 @@ public class VoteResultCalculator {
                     firstVoteResult.getCandidateStatement(),
                     firstVoteResult.getTeamVotePercent()
                 );
-              }).toList();
+              }).sorted((a, b) -> b.getPollCnt().compareTo(a.getPollCnt()))
+              .toList();
           float teamVotetotalCount = 0.0f;
           for (TeamResult teamResult : teamResults) {
             teamVotetotalCount += teamResult.getPollCnt();
