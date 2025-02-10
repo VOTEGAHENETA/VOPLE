@@ -1,4 +1,4 @@
-package util;
+package com.votegaheneta.util;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
