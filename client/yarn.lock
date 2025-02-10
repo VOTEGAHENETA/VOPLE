@@ -2423,6 +2423,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.4.16"
     eslint-plugin-storybook: "npm:^0.11.2"
     globals: "npm:^15.14.0"
+    hls.js: "npm:^1.5.20"
     msw: "npm:^2.7.0"
     prettier: "npm:^3.4.2"
     react: "npm:^18.3.1"
@@ -3796,6 +3797,13 @@ __metadata:
   version: 4.0.3
   resolution: "headers-polyfill@npm:4.0.3"
   checksum: 10c0/53e85b2c6385f8d411945fb890c5369f1469ce8aa32a6e8d28196df38568148de640c81cf88cbc7c67767103dd9acba48f4f891982da63178fc6e34560022afe
+  languageName: node
+  linkType: hard
+
+"hls.js@npm:^1.5.20":
+  version: 1.5.20
+  resolution: "hls.js@npm:1.5.20"
+  checksum: 10c0/1d0357e381f6fa81a6b2737aab7fcf88b79b8f9b23c66665e0405eea6c2cfb58df00ba7fc72ee71990c6898d67f092732f8e7046914098ebba2c33323dc627f4
   languageName: node
   linkType: hard
 
