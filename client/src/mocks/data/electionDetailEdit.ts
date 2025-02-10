@@ -1,5 +1,5 @@
 export const electionDetailEditMock = {
-  session: {
+  sessionDto: {
     id: 123,
     hostId: 1111,
     sessionName: '제 12회 싸피 중학교 학생 임원 선거',
