@@ -2,7 +2,7 @@ import React from 'react';
 import Text from '../Text';
 import styles from './index.module.scss';
 
-type PosterSize = 'xs' | 's' | 'm' | 'lg';
+type PosterSize = 'xs' | 's' | 'm' | 'lg' | 'full';
 
 interface PosterProps {
   size: PosterSize;
