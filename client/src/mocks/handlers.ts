@@ -1,4 +1,6 @@
 import { http, HttpResponse } from 'msw';
+import dummyQR from '@/assets/icons/dummyQR.svg';
+import { electionDetailEditMock } from './data/electionDetailEdit';
 import { mockElectionList } from './data/electionList';
 import { mockChatMessages } from './data/chatMessages';
 
@@ -12,6 +14,35 @@ export const handlers = [
         createdData: requestData,
       },
       { status: 201 }
+    );
+  }),
+
+  http.get(`/election/${1}/qrcode`, async () => {
+    return HttpResponse.json(
+      {
+        message: 'qr 가져오기 성공',
+        data: dummyQR,
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.post(`/vote/12`, async () => {
+    return HttpResponse.json(
+      {
+        message: '투표 등록 성공',
+      },
+      { status: 201 }
+    );
+  }),
+
+  http.get('/election/1/edit', async () => {
+    return HttpResponse.json(
+      {
+        message: '선거 정보 디테일 가져오기 성공',
+        data: electionDetailEditMock,
+      },
+      { status: 200 }
     );
   }),
 
