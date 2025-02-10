@@ -24,7 +24,7 @@ public class StreamController {
             @Parameter(name="streamId", description = "teamId와 streamId는 동일한 값", required = true),
             @Parameter(name="isStreaming", description = "true는 스트리밍 시작, false는 종료", required = true)
     })
-    @PatchMapping("/{streamId}/status")
+    @PutMapping("/{streamId}/status")
     public ApiResponse<Object> updateStreamingStatus(@PathVariable Long streamId, @RequestParam boolean isStreaming) {
         String streamingUrl = streamService.updateStreamingStatus(streamId, isStreaming);
         Map<String, String> m = new HashMap<>();
