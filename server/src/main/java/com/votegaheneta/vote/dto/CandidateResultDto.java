@@ -1,12 +1,17 @@
 package com.votegaheneta.vote.dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class CandidateResultDto {
-  private final Long candidateId;
-  private final Long userId;
-  private final String userName;
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+public class CandidateResultDto implements Serializable {
+  private Long candidateId;
+  private Long userId;
+  private String userName;
 }

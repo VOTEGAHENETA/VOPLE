@@ -138,10 +138,8 @@ public class VoteCommandController {
       @Positive @PathVariable("sessionId") Long sessionId,
       @Valid @RequestBody VoteCastRequest voteCastRequest) {
     voteCommandService.castVote(voteCastRequest, sessionId);
-
     messagingTemplate.convertAndSend("/api/vote/"+sessionId
         , voteFindService.findVoteResultBySessionId(sessionId));
-
     return ApiResponse.success(HttpStatus.OK, "투표 성공", null);
   }
 }

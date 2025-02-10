@@ -21,4 +21,10 @@ public class VoteTeamDto {
     voteTeam.setPrefix(this.prefix);
     voteTeam.setCandidateStatement(this.candidateStatement);
   }
+
+  public VoteTeamDto(VoteTeam voteTeam) {
+    this.poster = voteTeam.getPoster();
+    this.prefix = voteTeam.getPrefix();
+    this.candidateStatement = voteTeam.getCandidateStatement();
+  }
 }

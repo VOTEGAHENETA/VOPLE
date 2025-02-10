@@ -14,4 +14,8 @@ public class PledgeDto {
   public Pledge toEntity() {
     return new Pledge(content);
   }
+
+  public static PledgeDto fromEntity(Pledge pledge) {
+    return new PledgeDto(pledge.getContent());
+  }
 }
