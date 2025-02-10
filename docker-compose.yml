@@ -52,6 +52,17 @@ services:
     volumes:
       - ./nginx/rtmp.conf:/etc/nginx/nginx.conf:ro
       - ./hls:/opt/data/hls
+      
+#  srs:
+#    image: ossrs/srs:latest
+#    container_name: srs
+#    ports:
+#      - "1935:1935"    # RTMP
+#      - "8050:8080"    # HTTP(HLS)
+#      - "1985:1985"    # HTTP API (Optional)
+#    volumes:
+#      - ./nginx/srs.conf:/usr/local/srs/conf/srs.conf:ro
+#    restart: always
 
   db:
     image: mysql:8.0.30
