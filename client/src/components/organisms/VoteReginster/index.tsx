@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { VoteListItem } from '@/components/molecules/VoteListItem';
 import { useCreateVote } from '@/services/hooks/useCreateVote';
 import { TVoteEdit } from '@/types/election';
+import { useElectionDetailDelete } from '@/services/hooks/useElectionDetail';
 
 interface Props {
   sessionId: number;
@@ -27,14 +28,16 @@ function VoteReginster({ sessionId, sessionName, votes }: Props) {
     setVoteName(e.target.value);
   }
 
+  const deleteVoteMutation = useElectionDetailDelete();
   function handleDeleteVote(voteId: number) {
     setVoteList(voteList.filter((vote) => vote.voteId !== voteId));
+    deleteVoteMutation.mutate({ sessionId: sessionId, voteId: voteId });
   }
 
-  const mutation = useCreateVote();
+  const createVoteMutation = useCreateVote();
 
   function handleVoteRegister() {
-    mutation.mutate({ sessionId: sessionId, voteName: voteName });
+    createVoteMutation.mutate({ sessionId: sessionId, voteName: voteName });
     const newVote = {
       sessionName: sessionName,
       voteId: lastId++,

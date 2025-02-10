@@ -8,11 +8,13 @@ import Text from '@/components/atoms/Text';
 import QRContainer from './QRContainer';
 import VoteReginster from '@/components/organisms/VoteReginster';
 import { useParams } from 'react-router-dom';
-import { useElectionDetail } from '@/services/hooks/useElectionDetail';
+import { useElectionDetailGet } from '@/services/hooks/useElectionDetail';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
-  const { data, isLoading, isError } = useElectionDetail(Number(election_id));
+  const { data, isLoading, isError } = useElectionDetailGet(
+    Number(election_id)
+  );
 
   const [state, setState] = useState<TSession>({
     id: 0,
