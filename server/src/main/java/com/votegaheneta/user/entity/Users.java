@@ -63,4 +63,9 @@ public class Users {
   public void setNickname(String nickname) {
     this.nickname = nickname;
   }
+
+  public void updateUser(UserDto userDto) {
+    this.username = userDto.getUsername();
+    this.nickname = userDto.getNickname();
+  }
 }
