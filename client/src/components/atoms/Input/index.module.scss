@@ -1,5 +1,5 @@
 .input {
-  width: calc(100% - 30px);
+  width: -webkit-fill-available;
   padding: 0px 14px;
   border: 1px solid var(--border-gray);
   border-radius: 8px;
@@ -13,9 +13,6 @@
 
   &--error {
     border-color: var(--color-error);
-  }
-
-  &--search {
   }
 
   &--warning {

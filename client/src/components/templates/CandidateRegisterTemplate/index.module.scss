@@ -1,0 +1,13 @@
+.modal {
+  &-register {
+    width: 100%;
+  }
+
+  &-wrapper {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
