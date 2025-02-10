@@ -24,10 +24,9 @@ export interface CandidateSessionData {
   voteFindDto: Vote[];
 }
 
-
 export const info: CandidateSessionData = {
   sessionId: 12,
-  sessionName: '제 12대 싸피 회장선거',
+  sessionName: '제 12대 싸피 회장선거거',
   voteFindDto: [
     {
       voteId: 1,
@@ -81,7 +80,7 @@ export const info: CandidateSessionData = {
     },
     {
       voteId: 2,
-      voteName: '부회장 선거',
+      voteName: '부회장 부회장 선거',
       voteTeams: [
         {
           voteTeamId: 1,

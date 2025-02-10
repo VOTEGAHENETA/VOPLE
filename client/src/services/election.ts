@@ -1,7 +1,8 @@
-import { ElectionSection } from '@/types/election';
+import { ElectionSection, ISessionDetail } from '@/types/election';
 import { CandidateSessionData } from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
 import instance from './api';
+import { AxiosResponse } from 'axios';
 
 /**
  *
@@ -24,4 +25,14 @@ export const getVoteDetail = async (
 export const postElection = async (createData: TCreateElection) => {
   const response = await instance.post('/election', createData);
   return response;
+};
+
+export const getQRCode = async (sessionId: string): Promise<string> => {
+  return await instance.get(`/election/${sessionId}/qrcode`);
+};
+
+export const getElectionDetail = async (
+  sessionId: number
+): Promise<ISessionDetail> => {
+  return await instance.get(`/election/${sessionId}/edit`);
 };

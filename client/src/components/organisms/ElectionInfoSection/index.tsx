@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import InputField from '@/components/molecules/InputField';
 import DateTimeField from '@/components/molecules/DateTimeField';
 import { INPUT_TYPES } from '@/constants/ui.constants';
-import { TCreateElection } from '@/types/election';
+import { TCreateElection, TSession } from '@/types/election';
 
 type TDateDate = {
   startDate: string;
@@ -13,7 +13,7 @@ type TDateDate = {
 };
 
 interface Props {
-  data: TCreateElection;
+  data: TCreateElection | TSession;
   dateData: TDateDate;
   onChangeLabel: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeWholeVoter: (e: React.ChangeEvent<HTMLInputElement>) => void;

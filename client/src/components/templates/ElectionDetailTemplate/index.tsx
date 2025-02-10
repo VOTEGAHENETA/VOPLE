@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import ElectionInfoSection from '@/components/organisms/ElectionInfoSection';
-import { TCreateElection } from '@/types/election';
+import { TSession, TVoteEdit } from '@/types/election';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import Text from '@/components/atoms/Text';
+import QRContainer from './QRContainer';
+import VoteReginster from '@/components/organisms/VoteReginster';
+import { useParams } from 'react-router-dom';
+import { useElectionDetail } from '@/services/hooks/useElectionDetail';
 
 function ElectionDetailTemplate() {
-  const [state, setState] = useState<TCreateElection>({
+  const { election_id } = useParams() as { election_id: string };
+  const { data, isLoading, isError } = useElectionDetail(Number(election_id));
+
+  const [state, setState] = useState<TSession>({
+    id: 0,
     hostId: 0,
-    entranceQuestion: '',
-    entranceAnswer: '',
+    sessionName: '',
+    wholeVoter: 0,
     startTime: new Date(),
     endTime: new Date(),
-    wholeVoter: 0,
-    sessionName: '',
+    entranceQuestion: '',
+    entranceAnswer: '',
   });
   const [dateState, setDateState] = useState({
     startDate: '',
@@ -22,7 +30,44 @@ function ElectionDetailTemplate() {
     endDate: '',
     endTime: '',
   });
+  const [voteState, setVoteState] = useState<TVoteEdit[]>([
+    {
+      voteId: 0,
+      sessionName: '',
+      voteName: '',
+    },
+  ]);
   const [isModify, setIsModify] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (isLoading) {
+      console.log('데이터 로딩 중...');
+    }
+
+    if (isError) {
+      console.log('데이터 로드 에러');
+    }
+
+    if (data?.data) {
+      setState(data.data.sessionDto);
+      setVoteState(data.data.voteEditInfos);
+
+      setDateState({
+        startDate: new Date(state.startTime).toISOString().split('T')[0],
+        startTime: new Date(state.startTime).toLocaleTimeString('en-US', {
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        endDate: new Date(state.endTime).toISOString().split('T')[0],
+        endTime: new Date(state.endTime).toLocaleTimeString('en-US', {
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+      });
+    }
+  }, [data]);
 
   function handleChangeLabel(e: React.ChangeEvent<HTMLInputElement>) {
     setState((prev) => ({
@@ -99,12 +144,18 @@ function ElectionDetailTemplate() {
     setIsModify(!isModify);
   }
 
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
   return (
     <div className={styles['detail-container']}>
       <div className={styles['info-container']}>
         <div className={styles['info-top']}>
           <div className={styles['label-section']}>
-            <Text>선거 정보</Text>
+            <Text size='sm' weight='bold'>
+              선거 정보
+            </Text>
           </div>
           <div className={styles['btn-section']} data-modify={isModify}>
             <div className={styles['btn-status']} data-visible={isModify}>
@@ -113,7 +164,7 @@ function ElectionDetailTemplate() {
                 kind='mini-chip'
                 status={BASE_BUTTON_STATUS.OUTLINE}
               >
-                삭제하기
+                <Text size='xs'>삭제하기</Text>
               </BaseButton>
               <BaseButton
                 type='button'
@@ -121,7 +172,7 @@ function ElectionDetailTemplate() {
                 status={BASE_BUTTON_STATUS.OUTLINE}
                 onClick={handleChangeModify}
               >
-                수정하기
+                <Text size='xs'>수정하기</Text>
               </BaseButton>
             </div>
             <div className={styles['btn-status']} data-visible={!isModify}>
@@ -144,20 +195,26 @@ function ElectionDetailTemplate() {
           </div>
         </div>
         <div className={styles['info-bottom']}>
-          <ElectionInfoSection
-            data={state}
-            dateData={dateState}
-            onChangeLabel={handleChangeLabel}
-            onChangeDate={handleChangeDate}
-            onChangeWholeVoter={handleChangeWholeVoter}
-            onChangeQuestion={handleChangeQuestion}
-            onChangeAnswer={handleChangeAnswer}
-            isModify={isModify}
-          />
+          <div className={styles['info-wrapper']}>
+            <ElectionInfoSection
+              data={state}
+              dateData={dateState}
+              onChangeLabel={handleChangeLabel}
+              onChangeDate={handleChangeDate}
+              onChangeWholeVoter={handleChangeWholeVoter}
+              onChangeQuestion={handleChangeQuestion}
+              onChangeAnswer={handleChangeAnswer}
+              isModify={isModify}
+            />
+          </div>
         </div>
       </div>
-      <div className={styles['qr-container']}></div>
-      <div className={styles['register-container']}></div>
+      <QRContainer param={election_id} />
+      <VoteReginster
+        sessionId={state.id}
+        sessionName={state.sessionName}
+        votes={voteState}
+      />
     </div>
   );
 }
