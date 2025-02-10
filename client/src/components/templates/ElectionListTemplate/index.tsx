@@ -1,17 +1,32 @@
 import styles from './index.module.scss';
+import { useState, useEffect } from 'react';
 import ElectionListBox from '@/components/molecules/ElectionListBox';
-import { mockElectionList } from '@/types/election';
+import { ElectionList } from '@/types/election';
+import { getElectionList } from '@/services/election';
 
 function ElectionListTemplate() {
-  const participaintedElections = mockElectionList.involvedSessions;
-  const createdElesctions = mockElectionList.managedSessions;
+  const [electionList, setElectionList] = useState<ElectionList | null>(null);
+
+  useEffect(() => {
+    getElectionList().then((response) => {
+      setElectionList(response);
+    });
+  }, []);
+
+  if (!electionList) {
+    return <div>Loading...</div>;
+  }
+
+  const participatedElections = electionList.involvedSessions;
+  const createdElections = electionList.managedSessions;
+
   return (
     <div className={styles.list}>
       <ElectionListBox
-        elections={participaintedElections}
+        elections={participatedElections}
         status='participating'
       />
-      <ElectionListBox elections={createdElesctions} status='created' />
+      <ElectionListBox elections={createdElections} status='created' />
     </div>
   );
 }

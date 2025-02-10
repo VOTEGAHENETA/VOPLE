@@ -1,4 +1,4 @@
-import { ElectionSection } from '@/types/election';
+import { ElectionList, ElectionSection } from '@/types/election';
 import { CandidateSessionData } from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
 import instance from './api';
@@ -24,4 +24,8 @@ export const getVoteDetail = async (
 export const postElection = async (createData: TCreateElection) => {
   const response = await instance.post('/election', createData);
   return response;
+};
+
+export const getElectionList = async (): Promise<ElectionList> => {
+  return await instance.get(`/election`);
 };

@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw';
+import { mockElectionList } from './data/electionList';
 
 export const handlers = [
   http.post('/election', async ({ request }) => {
@@ -11,5 +12,10 @@ export const handlers = [
       },
       { status: 201 }
     );
+  }),
+
+  http.get('/election', async (request) => {
+    console.log('test data', request);
+    return HttpResponse.json(mockElectionList, { status: 200 });
   }),
 ];
