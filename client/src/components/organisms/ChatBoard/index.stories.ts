@@ -1,126 +1,80 @@
+// ChatBoard.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import ChatBoard from './index.tsx';
+import ChatBoard from './index';
+
 const meta = {
   title: 'Components/ChatBoard',
   component: ChatBoard,
   parameters: {
-    layout: 'centered',
-    backgrounds: {
-      default: 'dark',
-      values: [
-        {
-          name: 'dark',
-          value: '#333333',
-        },
-      ],
+    layout: 'fullscreen',
+  },
+  tags: ['autodocs'],
+  argTypes: {
+    type: {
+      control: 'radio',
+      options: ['session', 'team'],
+      description: '채팅방 타입',
+    },
+    theme: {
+      control: 'radio',
+      options: ['dark', 'light'],
+      description: '테마 설정',
+    },
+    userId: {
+      control: 'number',
+      description: '사용자 ID',
+    },
+    sessionId: {
+      control: 'number',
+      description: '세션 ID',
+    },
+    voteTeamId: {
+      control: 'number',
+      description: '투표 팀 ID (선택사항)',
     },
   },
 } satisfies Meta<typeof ChatBoard>;
+
 export default meta;
-type Story = StoryObj<typeof ChatBoard>;
+type Story = StoryObj<typeof meta>;
 
-// 기본 상태
-export const Default: Story = {
+// 세션 채팅 기본 스토리
+export const SessionChat: Story = {
   args: {
-    sessionId: 1,
+    type: 'session',
+    theme: 'dark',
+    userId: 1,
+    sessionId: 1234,
   },
 };
 
-// 채팅 목록이 비어있는 상태
-export const EmptyState: Story = {
+// 팀 채팅 기본 스토리
+export const TeamChat: Story = {
   args: {
-    sessionId: 1,
-  },
-  parameters: {
-    mockData: {
-      httpStatus: 204,
-      message: '채팅 목록이 없습니다.',
-      data: [],
-    },
+    type: 'team',
+    theme: 'dark',
+    userId: 1,
+    sessionId: 1234,
+    voteTeamId: 5678,
   },
 };
 
-// 에러 상태 (존재하지 않는 세션)
-export const InvalidSession: Story = {
+// 라이트 테마 스토리
+export const LightTheme: Story = {
   args: {
-    sessionId: 1,
-  },
-  parameters: {
-    mockData: {
-      httpStatus: 404,
-      message: '존재하지 않는 세션입니다.',
-      data: null,
-    },
+    type: 'session',
+    theme: 'light',
+    userId: 1,
+    sessionId: 1234,
   },
 };
 
-// 에러 상태 (잘못된 입력)
-export const InvalidInput: Story = {
+// 에러 상태를 시뮬레이션하는 스토리
+export const WithError: Story = {
   args: {
-    sessionId: 1,
-  },
-  parameters: {
-    mockData: {
-      httpStatus: 404,
-      message: '잘못된 입력입니다',
-      data: null,
-    },
-  },
-};
-
-// WebSocket 연결 실패 상태
-export const ConnectionError: Story = {
-  args: {
-    sessionId: 1,
-  },
-};
-
-// 활발한 채팅이 있는 상태
-export const ActiveChat: Story = {
-  args: {
-    sessionId: 1,
-  },
-  parameters: {
-    mockData: {
-      httpStatus: 200,
-      message: '채팅 목록 조회 성공',
-      data: [
-        {
-          userId: 1,
-          nickname: '날뛰는 날다람쥐',
-          text: '1',
-          color: '#c9eb37',
-          createdTime: '13:00:09',
-        },
-        {
-          userId: 2,
-          nickname: '말하는 말',
-          text: '○',
-          color: '#ed2fae',
-          createdTime: '13:01:55',
-        },
-        {
-          userId: 3,
-          nickname: '얼록진 얼룩말',
-          text: '와 진짜 박빙이네 ㅋㅋ',
-          color: '#45B7D1',
-          createdTime: '13:01:55',
-        },
-        {
-          userId: 4,
-          nickname: '그래도 화면',
-          text: '김싸피가 누구임?',
-          color: '#FF1493',
-          createdTime: '14:23:00',
-        },
-        {
-          userId: 5,
-          nickname: '첫한 첫',
-          text: '재 공부 잘함?',
-          color: '#FFD700',
-          createdTime: '15:00:00',
-        },
-      ],
-    },
+    type: 'session',
+    theme: 'dark',
+    userId: 1,
+    sessionId: -1, // 잘못된 세션 ID로 에러 상황 재현
   },
 };
