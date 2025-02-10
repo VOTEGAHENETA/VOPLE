@@ -6,6 +6,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.user.entity.Users;
+import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
@@ -40,6 +41,7 @@ public class SessionServiceImpl implements SessionService {
   private final VoteResultCalculator voteResultCalculator;
 
   private final String UPLOAD_DIR = "/app/uploads/";
+//  private final SessionService sessionService;
 
   @Override
   public Long saveSession(SessionDto sessionDto) {
@@ -160,5 +162,12 @@ public class SessionServiceImpl implements SessionService {
             )
         ).toList()
     );
+  }
+
+  @Override
+  public USER_TYPE judgeUserType(Long sessionId, Long userId) {
+    Long count = sessionRepository.judgeUserType(sessionId, userId);
+    System.out.println("count = " + count);
+    return count == 1 ? USER_TYPE.CANDIDATE : USER_TYPE.VOTER;
   }
 }

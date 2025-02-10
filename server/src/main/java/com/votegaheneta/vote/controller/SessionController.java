@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionEditDto;
@@ -31,11 +32,15 @@ public class SessionController {
 
   private final SessionService sessionService;
 
+  @Operation(
+      summary = "정보 수정 버튼을 눌렀을때 유권자 / 후보자 판별",
+      description = "FIGMA : 후보자 플로우 - [메인 페이지-후보자 등록 전]"
+  )
   @GetMapping("/{sessionId}/{userId}")
-  public ApiResponse<String> judgeUserType(@PathVariable("sessionId") Long sessionId,
+  public ApiResponse<USER_TYPE> judgeUserType(@PathVariable("sessionId") Long sessionId,
       @PathVariable("userId") Long userId) {
-//    sessionService.judgeUserType(sessionId, userId);
-    return ApiResponse.success(HttpStatus.OK, "사용자 권한 조회 성공", null);
+    USER_TYPE userType = sessionService.judgeUserType(sessionId, userId);
+    return ApiResponse.success(HttpStatus.OK, "사용자 권한 조회 성공", userType);
   }
 
   @Operation(
