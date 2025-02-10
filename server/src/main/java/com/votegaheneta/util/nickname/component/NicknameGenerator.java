@@ -21,7 +21,7 @@ public class NicknameGenerator {
   private final AnimalRepository animalRepository;
   private final AttributeRepository attributeRepository;
 
-  public NicknameGenerator(AnimalRepository animalRepository,
+  private NicknameGenerator(AnimalRepository animalRepository,
       AttributeRepository attributeRepository) {
     this.animalRepository = animalRepository;
     this.attributeRepository = attributeRepository;

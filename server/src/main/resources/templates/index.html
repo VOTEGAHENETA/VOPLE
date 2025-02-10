@@ -1,82 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>WebSocket Chat</title>
-  <!-- SockJS & STOMP.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <meta charset="UTF-8">
+  <title>검색 폼</title>
 </head>
 <body>
-<h1>Chat Application</h1>
-<input type="text" id="messageInput" placeholder="Type your message here..." />
-<select id="type">
-  <option value="session">Session</option>
-  <option value="team">Team</option>
-</select>
-<button onclick="connect()">Connect</button>
-<button onclick="sendMessage()">Send</button>
-<button onclick="requestTest()">request Test</button>
-<div id="messages"></div>
-<button onclick="getChatList()">Get Session Chat list</button>
-<script>
-  function requestTest() {
-    const select = document.getElementById('type');
-    fetch('/api/room/test/' + select.value + '/1')
-    .then(response => console.log(response));
-  }
-
-  function getChatList() {
-    const select = document.getElementById('type');
-    fetch('/api/room/' + select.value + '/1')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      });
-  }
-
-  let stompClient = null;
-
-  function connect() {
-    const socket = new SockJS('/ws'); // Spring Boot에서 설정한 엔드포인트
-    stompClient = Stomp.over(socket);
-    const select = document.getElementById('type');
-
-    stompClient.connect({}, function(frame) {
-      console.log('Connected: ' + frame);
-
-      // 토픽 구독
-      stompClient.subscribe('/api/room/'+ select.value + '/1', function(message) {
-        showMessage(message.body);
-      });
-    });
-  }
-
-  function sendMessage() {
-    const messageInput = document.getElementById('messageInput');
-    const message = messageInput.value.trim();
-    const select = document.getElementById('type');
-
-    if (message && stompClient) {
-      stompClient.send('/api/send/' + select.value + '/1', {
-      }, JSON.stringify({
-        userId : 2,
-        // nickname : 'nickname1',
-        text : message
-      })); // 메시지 전송
-      messageInput.value = ''; // 입력 필드 초기화
-    }
-  }
-
-  function showMessage(message) {
-    const messagesDiv = document.getElementById('messages');
-    const messageElement = document.createElement('p');
-    messageElement.textContent = message;
-    messagesDiv.appendChild(messageElement);
-  }
-
-  // 페이지 로드 시 WebSocket 연결 시작
-  getChatList();
-  // connect();
-</script>
+<a th:href="/api/election/1">1번 선거 화면 입장</a>
 </body>
 </html>

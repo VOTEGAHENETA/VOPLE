@@ -20,7 +20,7 @@ public class LoginController {
   @GetMapping
   public String home(@AuthenticationPrincipal Object principal) {
     System.out.println("principal = " + principal);
-    return "index";
+    return "chat";
   }
 
   @GetMapping("/logout")
@@ -29,5 +29,10 @@ public class LoginController {
         .getAuthentication();
     new SecurityContextLogoutHandler().logout(request, response, authentication);
     return "login";
+  }
+
+  @GetMapping("/chat")
+  public String chat() {
+    return "chat";
   }
 }

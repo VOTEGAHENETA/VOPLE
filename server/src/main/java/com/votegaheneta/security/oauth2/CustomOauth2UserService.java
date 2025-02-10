@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
   private final UsersRepository usersRepository;
-  private final NicknameGenerator nicknameGenerator;
 
   @Transactional
   @Override

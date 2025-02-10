@@ -2,7 +2,6 @@ package com.votegaheneta.security.oauth2;
 
 import com.votegaheneta.user.entity.Users;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -29,7 +28,7 @@ public class CustomOauth2User implements OAuth2User {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of();
+    return oauth2User.getAuthorities();
   }
 
   @Override
