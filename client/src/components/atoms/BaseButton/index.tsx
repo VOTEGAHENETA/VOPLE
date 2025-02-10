@@ -13,6 +13,8 @@ interface Props {
   status: BaseButtonStatus;
   /** 버튼에 이벤트 지정 */
   onClick?: () => void;
+  /** className */
+  customClass: string;
 }
 
 /** 버튼 기본 UI 제공 */
@@ -22,12 +24,16 @@ const BaseButton = ({
   kind,
   status,
   onClick,
+  customClass,
 }: Props) => {
   const btnClasses = [
     styles.btn,
     styles[`btn-${kind}`],
     styles[`btn-status-${status}`],
-  ].join(' ');
+    customClass,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <button type={type} className={btnClasses} onClick={onClick}>

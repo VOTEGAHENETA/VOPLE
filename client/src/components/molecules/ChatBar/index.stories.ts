@@ -1,3 +1,4 @@
+// ChatBar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { ChatBar } from './index';
 
@@ -10,22 +11,25 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     roomId: {
+      control: 'number',
       description: '채팅방 ID',
-      control: 'text',
-      required: true,
     },
     onSendMessage: {
-      description: '메시지 전송 시 호출되는 함수',
       action: 'sent',
-      required: true,
+      description: '메시지 전송 핸들러',
     },
     placeholder: {
-      description: '입력창 플레이스홀더',
       control: 'text',
+      description: '입력창 플레이스홀더 텍스트',
     },
     disabled: {
-      description: '비활성화 여부',
       control: 'boolean',
+      description: '채팅창 비활성화 여부',
+    },
+    theme: {
+      control: 'radio',
+      options: ['dark', 'light'],
+      description: '테마 설정',
     },
   },
 } satisfies Meta<typeof ChatBar>;
@@ -35,38 +39,36 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    roomId: 'room-1',
-    onSendMessage: (messageData) => {
-      console.log('Sent message:', messageData);
-    },
+    roomId: 1,
+    placeholder: '메세지를 입력해주세요.',
+    disabled: false,
+    theme: 'dark',
   },
 };
 
-export const CustomPlaceholder: Story = {
+export const Light: Story = {
   args: {
-    roomId: 'room-1',
-    onSendMessage: (messageData) => {
-      console.log('Sent message:', messageData);
-    },
-    placeholder: '질문을 입력해주세요.',
+    roomId: 1,
+    placeholder: '메세지를 입력해주세요.',
+    disabled: false,
+    theme: 'light',
   },
 };
 
 export const Disabled: Story = {
   args: {
-    roomId: 'room-1',
-    onSendMessage: (messageData) => {
-      console.log('Sent message:', messageData);
-    },
+    roomId: 1,
+    placeholder: '메세지를 입력해주세요.',
     disabled: true,
+    theme: 'dark',
   },
 };
 
-export const LongRoomId: Story = {
+export const CustomPlaceholder: Story = {
   args: {
-    roomId: 'very-long-room-id-for-testing-layout-12345678901234567890',
-    onSendMessage: (messageData) => {
-      console.log('Sent message:', messageData);
-    },
+    roomId: 1,
+    placeholder: '새로운 메시지를 입력하세요',
+    disabled: false,
+    theme: 'dark',
   },
 };
