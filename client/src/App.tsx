@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
+import CandidateInfoUpdateTemplate from './components/templates/CandidateInfoUpdateTemplate';
 
 function App() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function App() {
     <>
       {showHeader && <Header />}
       <main id='main-container'>
+        <CandidateInfoUpdateTemplate></CandidateInfoUpdateTemplate>
         <Outlet />
       </main>
     </>
