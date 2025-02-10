@@ -12,16 +12,9 @@ interface ElectionListItemProps extends ElectionListDetail {
 
 const ElectionListItem = ({
   id,
-<<<<<<< HEAD
-  title = '선거 제목입니다.',
-  startDate = '2025.01.20',
-  endDate = '2025.01.25',
-  status,
-=======
   sessionName = '선거 제목입니다.',
   startTime = '2025.01.20',
   endTime = '2025.01.25',
->>>>>>> frontend-dev
   isClosed = false,
   status,
 }: ElectionListItemProps) => {
