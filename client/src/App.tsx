@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
-import TabContainer from './components/organisms/TabContainer';
 
 function App() {
   const location = useLocation();
@@ -24,13 +23,6 @@ function App() {
       {showHeader && <Header />}
       <main id='main-container' className={showHeader ? 'show-header' : ''}>
         app page
-        <TabContainer
-          sessionId={1}
-          theme='dark'
-          type='team'
-          userId={1}
-          voteTeamId={1}
-        ></TabContainer>
         <Outlet />
       </main>
     </>
