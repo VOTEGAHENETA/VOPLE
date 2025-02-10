@@ -44,6 +44,7 @@ export const handlers = [
       },
       { status: 200 }
     );
+  }),
 
   http.get('/election', async (request) => {
     console.log('test data', request);

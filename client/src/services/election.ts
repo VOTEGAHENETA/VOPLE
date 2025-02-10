@@ -1,8 +1,11 @@
-import { ElectionSection, ISessionDetail, ElectionList } from '@/types/election';
+import {
+  ElectionSection,
+  ISessionDetail,
+  ElectionList,
+} from '@/types/election';
 import { CandidateSessionData } from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
 import instance from './api';
-import { AxiosResponse } from 'axios';
 
 /**
  *
@@ -35,7 +38,8 @@ export const getElectionDetail = async (
   sessionId: number
 ): Promise<ISessionDetail> => {
   return await instance.get(`/election/${sessionId}/edit`);
-  
+};
+
 export const getElectionList = async (): Promise<ElectionList> => {
   return await instance.get(`/election`);
 };
