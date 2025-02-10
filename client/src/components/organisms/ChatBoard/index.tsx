@@ -15,10 +15,10 @@ type ChatResponse = {
 };
 
 type ThemeType = 'dark' | 'light';
-type ChatType = 'session' | 'team';
+type roomType = 'session' | 'team';
 
 type ChatBoardProps = {
-  type: ChatType;
+  type: roomType;
   theme: ThemeType;
   userId: number;
   sessionId: number;
