@@ -17,6 +17,7 @@ import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.vote.dto.CandidateDto;
 import com.votegaheneta.vote.dto.VoteDetailDto;
+import com.votegaheneta.vote.dto.VoteResultProjection;
 import com.votegaheneta.vote.entity.QCandidate;
 import com.votegaheneta.vote.entity.QElectionSession;
 import com.votegaheneta.vote.entity.QSessionUserInfo;
@@ -28,8 +29,11 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
-public class CustomVoteRepositoryImpl implements CustomVoteRepository{
+
+@Repository("customVoteRepositoryImpl")  // 빈 이름 명시
+public class CustomVoteRepositoryImpl implements CustomVoteRepository {
 
   private QElectionSession qElectionSession = electionSession;
   private QUsers qUsers = users;
@@ -46,8 +50,9 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository{
   }
 
   private Map<Long, List<CandidateDto>> getCandidateList(Long sessionId, Long voteId) {
-    List<CandidateDto> candidateList = queryFactory.select(Projections.constructor(CandidateDto.class,
-            qVoteTeam.id, qUsers.id ,qUsers.username))
+    List<CandidateDto> candidateList = queryFactory.select(
+            Projections.constructor(CandidateDto.class,
+                qVoteTeam.id, qUsers.id, qUsers.username))
         .from(qCandidate)
         .join(qCandidate.voteTeam, qVoteTeam)
         .join(qVoteTeam.vote, qVote)
@@ -97,7 +102,8 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository{
     return filteredUser;
   }
 
-  private List<Users> getSessionUsers(Long sessionId, List<Users> filteredUserList, Pageable pageable) {
+  private List<Users> getSessionUsers(Long sessionId, List<Users> filteredUserList,
+      Pageable pageable) {
     List<Users> users = queryFactory.select(qUsers)
         .from(qSessionUserInfo)
         .join(qSessionUserInfo.user, qUsers)
@@ -111,5 +117,27 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository{
       System.out.println("user = " + user);
     }
     return users;
+  }
+
+  @Override
+  public List<VoteResultProjection> findVoteResultBySessionId(Long sessionId) {
+    return queryFactory.select(Projections.constructor(VoteResultProjection.class,
+            qVote.id.as("voteId"),
+            qVote.voteName.as("voteName"),
+            qVoteTeam.id.as("voteTeamId"),
+            qVoteTeam.prefix.as("prefix"),
+            qVoteTeam.poster.as("poster"),
+            qVoteTeam.pollCnt.as("pollCnt"),
+            qVoteTeam.candidateStatement.as("candidateStatement"),
+            qCandidate.id.as("candidateId"),
+            qUsers.id.as("userId"),
+            qUsers.username.as("userName")
+        )).from(qVote)
+        .join(qVoteTeam).on(qVote.id.eq(qVoteTeam.vote.id))
+        .join(qCandidate).on(qCandidate.voteTeam.id.eq(qVoteTeam.id))
+        .join(qUsers).on(qCandidate.user.id.eq(qUsers.id))
+        .where(qVote.electionSession.id.eq(sessionId))
+        .orderBy(qVoteTeam.pollCnt.desc())
+        .fetch();
   }
 }

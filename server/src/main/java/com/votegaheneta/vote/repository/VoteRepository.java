@@ -18,6 +18,8 @@ public interface VoteRepository extends JpaRepository<Vote, Long>, CustomVoteRep
   @Query("select vt from VoteTeam vt join fetch vt.candidates c join fetch c.user u where vt.vote.id = :voteId order by vt.pollCnt desc ")
   List<VoteTeam> findVoteTeamWithCandidateByVoteId(@Param("voteId") Long voteId);
 
+
+  // order by 하는 로직을 만들어야하는데 JPQL로는 한계가 있을것 같아 QueryDSL을 사용해서 로직을 다시 짬
   @Query(value = "select "
                  + " v.id as voteId, v.voteName as voteName, vt.id as voteTeamId, "
                  + " vt.prefix as prefix, vt.poster as poster, vt.pollCnt as pollCnt, "
