@@ -5,14 +5,9 @@ import MessageList from './MessageList';
 import { ChatSendMessage, ChatReceiveMessage } from '@/types/chat';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import Heart from './Heart';
+import { useChatMessages } from '@/services/hooks/useChatMessages';
 
 console.log('ChatBoard Rendered');
-
-type ChatResponse = {
-  httpStatus: number;
-  message: string;
-  data: ChatReceiveMessage[] | [];
-};
 
 type ThemeType = 'dark' | 'light';
 type roomType = 'session' | 'team';
@@ -46,10 +41,15 @@ export default function ChatBoard({
   voteTeamId,
 }: ChatBoardProps) {
   // 탭 변환 시 렌더링 확인용
-  console.log('ChatBoard Rendered');
+  // console.log('ChatBoard Rendered');
 
   // as 사용해야하는 케이스인가 재차 고려 필요
   const roomId = type === 'session' ? sessionId : (voteTeamId as number);
+
+  const { data: initialChats, isError: chatError } = useChatMessages(
+    type,
+    roomId
+  );
 
   const { messages, connected, error, sendMessage, setMessages, setError } =
     useWebSocket({
@@ -60,27 +60,21 @@ export default function ChatBoard({
     });
 
   useEffect(() => {
-    // 초기화
-    const fetchInitialChats = async () => {
-      try {
-        const response = await fetch(`/api/room/${type}/${roomId}`);
-        const data: ChatResponse = await response.json();
+    if (chatError) {
+      setError('채팅 메시지를 불러오는데 실패했습니다.');
+      return;
+    }
 
-        if (data.httpStatus === 200) {
-          setMessages([...data.data.reverse(), enterMessage]);
-        } else if (data.httpStatus === 204) {
-          setMessages([enterMessage]);
-        } else {
-          setError(data.message);
-        }
-      } catch (error) {
-        console.error('초기 채팅 로딩 에러:', error);
-        setError('채팅 내역을 불러오는데 실패했습니다.');
+    if (initialChats) {
+      if (initialChats.httpStatus === 200) {
+        setMessages([...initialChats.data.reverse(), enterMessage]);
+      } else if (initialChats.httpStatus === 204) {
+        setMessages([enterMessage]);
+      } else {
+        setError(initialChats.message);
       }
-    };
-
-    fetchInitialChats();
-  }, [type, roomId]);
+    }
+  }, [initialChats]);
 
   const handleSendMessage = (messageData: ChatSendMessage) => {
     sendMessage(messageData.text);
@@ -99,7 +93,6 @@ export default function ChatBoard({
         disabled={!connected || !!error}
         theme={theme}
       />
-      <div></div>
       {/* 채팅 Heart */}
       <div style={{ display: type === 'team' ? 'block' : 'none' }}>
         <Heart></Heart>

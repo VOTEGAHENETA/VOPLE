@@ -16,17 +16,6 @@ export const useWebSocket = ({
   sessionId,
   userId,
 }: WebSocketProps) => {
-  console.log('33333333 - useWebSocket');
-  console.log(
-    'type / roomId / sessionId / userId : ' +
-      type +
-      '/' +
-      roomId +
-      '/' +
-      sessionId +
-      '/' +
-      userId
-  );
   const [messages, setMessages] = useState<ChatReceiveMessage[]>([]);
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +24,6 @@ export const useWebSocket = ({
   const isMounted = useRef(false);
 
   useEffect(() => {
-    console.log('44444 useWebSocket - useEffect');
     isMounted.current = true;
     if (stompClient.current?.connected) {
       return;

@@ -72,11 +72,3 @@ export const mockChatMessages: ChatReceiveMessage[] = [
     createdTime: '07:18:50',
   },
 ];
-
-export const MOCK_PLEDGES = [
-  '학생 자치회 예산 50% 증액 및 투명한 예산 사용 보고 시스템 도입',
-  '교내 카페테리아 운영시간 연장 및 메뉴 다양화 추진',
-  '분기별 학생-교사 간담회 정례화로 소통 강화',
-  '동아리실 시설 개선 및 신규 동아리 설립 지원 확대',
-  '교내 휴게공간 확충 및 현대화 사업 추진',
-];

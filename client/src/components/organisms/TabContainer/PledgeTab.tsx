@@ -9,7 +9,7 @@ interface PledgeTabProps {
 
 const PledgeTab = ({ pledges = [] }: PledgeTabProps) => {
   // 탭 변환 시 렌더링 확인용
-  console.log('PledgeTabProps Rendered');
+  // console.log('PledgeTabProps Rendered');
 
   return (
     <div className={styles.pledgeContainer}>

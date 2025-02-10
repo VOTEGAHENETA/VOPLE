@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-// import { mockChatMessages } from './mockDatas';
+import { mockChatMessages } from './mockDatas';
 
 export const handlers = [
   http.post('/election', async ({ request }) => {
@@ -15,14 +15,14 @@ export const handlers = [
   }),
 
   // 채팅 메세지 수신 핸들러
-  // http.get('/api/room/:type/:roomId', async ({ params }) => {
-  //   const { type, roomId } = params;
-  //   console.log('type / roomId : ' + type + '/' + roomId);
+  http.get('/api/room/:type/:roomId', async ({ params }) => {
+    const { type, roomId } = params;
+    console.log('type / roomId : ' + type + '/' + roomId);
 
-  //   return HttpResponse.json({
-  //     httpStatus: 200,
-  //     message: 'success',
-  //     data: mockChatMessages,
-  //   });
-  // }),
+    return HttpResponse.json({
+      httpStatus: 200,
+      message: 'success',
+      data: mockChatMessages,
+    });
+  }),
 ];

@@ -11,7 +11,7 @@ interface PosterTabProps {
 
 export default function PosterTab({ imageSrc }: PosterTabProps) {
   // 탭 변환 시 렌더링 확인용
-  console.log('PosterTabProps Rendered');
+  // console.log('PosterTabProps Rendered');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleImageClick = () => {

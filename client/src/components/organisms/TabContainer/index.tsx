@@ -5,6 +5,16 @@ import BaseButton from '@/components/atoms/BaseButton';
 import ChatBoard from '../ChatBoard';
 import PledgeTab from './PledgeTab';
 import PosterTab from './PosterTab';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
 import SAMPLE_POSTER from '@/assets/sample/sample.png';
@@ -75,18 +85,19 @@ export default function TabContainer({
           ))}
         </div>
       </div>
-
       <div className={styles.tabContent}>
         {/* 탭 변경 시 채팅만 리렌더링 되지 않도록 설정*/}
-        <div style={{ display: activeTab === 'chat' ? 'block' : 'none' }}>
-          <MemoizedChatBoard
-            sessionId={sessionId}
-            theme={theme}
-            type={type}
-            userId={userId}
-            voteTeamId={voteTeamId}
-          />
-        </div>
+        <QueryClientProvider client={queryClient}>
+          <div style={{ display: activeTab === 'chat' ? 'block' : 'none' }}>
+            <MemoizedChatBoard
+              sessionId={sessionId}
+              theme={theme}
+              type={type}
+              userId={userId}
+              voteTeamId={voteTeamId}
+            />
+          </div>
+        </QueryClientProvider>
         {activeTab === 'notice' && <PledgeTab pledges={MOCK_PLEDGES} />}
         {activeTab === 'poster' && <PosterTab imageSrc={SAMPLE_POSTER} />}
       </div>
