@@ -2,21 +2,21 @@ import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
 
 interface CommonLeftContentProps {
-  title: string;
-  startDate: string;
-  endDate: string;
+  sessionName: string;
+  startTime: string;
+  endTime: string;
   isClosed?: boolean;
 }
 
-const formatPeriod = (startDate: string, endDate: string): string => {
+const formatPeriod = (startTime: string, endTime: string): string => {
   // 기존의 formatPeriod 함수 구현을 여기에 추가하시면 됩니다.
-  return `${startDate} - ${endDate}`;
+  return `${startTime} - ${endTime}`;
 };
 
 export const CommonLeftContent = ({
-  title,
-  startDate,
-  endDate,
+  sessionName,
+  startTime,
+  endTime,
   isClosed = false,
 }: CommonLeftContentProps) => {
   return (
@@ -38,10 +38,10 @@ export const CommonLeftContent = ({
           weight='bold'
           color='var(--color-black)'
         >
-          {title}
+          {sessionName}
         </Text>
       </div>
-      <p className={styles.period}>{formatPeriod(startDate, endDate)}</p>
+      <p className={styles.period}>{formatPeriod(startTime, endTime)}</p>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { ChatSendMessage } from '@/types/chat';
 type themeType = 'dark' | 'light';
 
 interface ChatBarProps {
-  roomId: string;
+  roomId: number;
   onSendMessage?: (messageData: ChatSendMessage) => void;
   placeholder?: string;
   disabled?: boolean;

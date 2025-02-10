@@ -58,6 +58,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-refresh", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:0.4.18"],\
           ["eslint-plugin-storybook", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:0.11.2"],\
           ["globals", "npm:15.14.0"],\
+          ["hls.js", "npm:1.5.20"],\
           ["msw", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.7.0"],\
           ["prettier", "npm:3.4.2"],\
           ["react", "npm:18.3.1"],\
@@ -3509,6 +3510,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-refresh", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:0.4.18"],\
           ["eslint-plugin-storybook", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:0.11.2"],\
           ["globals", "npm:15.14.0"],\
+          ["hls.js", "npm:1.5.20"],\
           ["msw", "virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:2.7.0"],\
           ["prettier", "npm:3.4.2"],\
           ["react", "npm:18.3.1"],\
@@ -5144,6 +5146,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/headers-polyfill-npm-4.0.3-65ca63b329-53e85b2c63.zip/node_modules/headers-polyfill/",\
         "packageDependencies": [\
           ["headers-polyfill", "npm:4.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["hls.js", [\
+      ["npm:1.5.20", {\
+        "packageLocation": "./.yarn/cache/hls.js-npm-1.5.20-b0ca511509-1d0357e381.zip/node_modules/hls.js/",\
+        "packageDependencies": [\
+          ["hls.js", "npm:1.5.20"]\
         ],\
         "linkType": "HARD"\
       }]\
