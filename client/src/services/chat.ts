@@ -1,6 +1,10 @@
-// src/api/chatApi.ts
-export const fetchInitialChats = async (type: string, roomId: number) => {
-  const response = await fetch(`/api/room/${type}/${roomId}`);
-  const data = await response.json();
-  return data;
+import axios from 'axios';
+import { ChatResponse } from '@/types/chat';
+
+export const fetchInitialChats = async (
+  type: string,
+  roomId: number
+): Promise<ChatResponse> => {
+  const response = await axios.get(`/api/room/${type}/${roomId}`);
+  return response.data;
 };

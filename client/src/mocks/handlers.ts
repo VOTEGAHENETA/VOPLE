@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
-import { mockChatMessages } from './mockDatas';
+import { mockElectionList } from './data/electionList';
+import { mockChatMessages } from './data/chatMessages';
 
 export const handlers = [
   http.post('/election', async ({ request }) => {
@@ -12,6 +13,11 @@ export const handlers = [
       },
       { status: 201 }
     );
+  }),
+
+  http.get('/election', async (request) => {
+    console.log('test data', request);
+    return HttpResponse.json(mockElectionList, { status: 200 });
   }),
 
   // 채팅 메세지 수신 핸들러

@@ -30,15 +30,18 @@ export type ElectionSection = {
   wholeVoterPercent: number;
 };
 
-export interface ElectionListProps {
+export type ElectionListDetail = {
   id: number;
-  title: string;
-  startDate?: string;
-  endDate?: string;
-  status?: 'participating' | 'created';
-  isClosed?: boolean;
-  onMenuClick?: () => void;
-}
+  sessionName: string;
+  startTime: string;
+  endTime: string;
+  isClosed: boolean;
+};
+
+export type ElectionList = {
+  involvedSessions: ElectionListDetail[];
+  managedSessions: ElectionListDetail[];
+};
 
 export type TCreateElection = {
   hostId: number;

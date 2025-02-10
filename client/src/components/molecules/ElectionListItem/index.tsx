@@ -3,17 +3,28 @@ import styles from './index.module.scss';
 import IconButton from '@/components/atoms/IconButton';
 import Menu from '@/components/molecules/Menu';
 import { useNavigate } from 'react-router-dom';
-import { ElectionListProps } from '@/types/election';
+import { ElectionListDetail } from '@/types/election';
 import CommonLeftContent from '@/components/molecules/ElectionListItem/CommonLeftContent';
+
+interface ElectionListItemProps extends ElectionListDetail {
+  status: 'created' | 'participating';
+}
 
 const ElectionListItem = ({
   id,
+<<<<<<< HEAD
   title = '선거 제목입니다.',
   startDate = '2025.01.20',
   endDate = '2025.01.25',
   status,
+=======
+  sessionName = '선거 제목입니다.',
+  startTime = '2025.01.20',
+  endTime = '2025.01.25',
+>>>>>>> frontend-dev
   isClosed = false,
-}: ElectionListProps) => {
+  status,
+}: ElectionListItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   // 참여 중인 선거 클릭 시, 해당 선거 isClosed에 따라 라우팅
@@ -91,9 +102,9 @@ const ElectionListItem = ({
       onClick={status === 'participating' ? handleItemClick : undefined}
     >
       <CommonLeftContent
-        title={title}
-        startDate={startDate}
-        endDate={endDate}
+        sessionName={sessionName}
+        startTime={startTime}
+        endTime={endTime}
         isClosed={isClosed}
       />
       {renderRightContent()}
