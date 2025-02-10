@@ -1,7 +1,42 @@
 import { useMediaStream } from '@/hooks/useMediaStream';
+import { useStreamControl, useStreamData } from '@/services/hooks/live';
+import { useState } from 'react';
 
-function StreamSender() {
-  const { videoRef, startStream, stopStream, toggleCamera } = useMediaStream();
+interface Props {
+  streamId: number;
+}
+
+function StreamSender({ streamId }: Props) {
+  const { data: streamData } = useStreamData(streamId);
+  const { mutate: updateStreamStatus } = useStreamControl();
+  const { videoRef, startStream, stopStream } = useMediaStream({
+    streamKey: streamData?.streamingUrl?.split('/').pop() || null,
+  });
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+
+  function handleStart() {
+    updateStreamStatus(
+      { streamId, isStreaming: true },
+      {
+        onSuccess: () => {
+          setIsStreaming(true);
+          startStream();
+        },
+      }
+    );
+  }
+
+  function handleStop() {
+    updateStreamStatus(
+      { streamId, isStreaming: false },
+      {
+        onSuccess: () => {
+          setIsStreaming(false);
+          stopStream();
+        },
+      }
+    );
+  }
 
   return (
     <div>
@@ -14,9 +49,12 @@ function StreamSender() {
         style={{ width: '100%', maxHeight: '300px' }}
       />
       <div>
-        <button onClick={startStream}>방송 시작</button>
-        <button onClick={stopStream}>방송 종료</button>
-        <button onClick={toggleCamera}>카메라 전환</button>
+        <button onClick={handleStart} disabled={isStreaming}>
+          방송 시작
+        </button>
+        <button onClick={handleStop} disabled={!isStreaming}>
+          방송 종료
+        </button>
       </div>
     </div>
   );

@@ -9,13 +9,16 @@ export default defineConfig({
     global: 'window', // global을 window로 대체
   },
   server: {
+    host: '0.0.0.0',
     proxy: {
       '/ws': {
         target: 'http://i12b102.p.ssafy.io:8000', // 스프링 부트 서버 주소
         ws: true, // WebSocket 프록시 활성화
       },
       '/api': {
-        target: 'http://i12b102.p.ssafy.io:8000',
+        target: 'http://i12b102.p.ssafy.io',
+        changeOrigin: true,
+        secure: false,
       },
     },
   },
