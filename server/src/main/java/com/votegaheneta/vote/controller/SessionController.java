@@ -30,6 +30,13 @@ public class SessionController {
 
   private final SessionService sessionService;
 
+  @GetMapping("/{sessionId}/{userId}")
+  public ApiResponse<String> judgeUserType(@PathVariable("sessionId") Long sessionId,
+      @PathVariable("userId") Long userId) {
+//    sessionService.judgeUserType(sessionId, userId);
+    return ApiResponse.success(HttpStatus.OK, "사용자 권한 조회 성공", null);
+  }
+
   @Operation(
       summary = "특정 세션 조회",
       description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"

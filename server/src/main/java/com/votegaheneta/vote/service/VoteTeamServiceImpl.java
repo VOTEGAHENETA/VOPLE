@@ -7,7 +7,9 @@ import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.controller.request.CandidateRequestDto;
 import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
+import com.votegaheneta.vote.controller.response.VoteTeamInfoResponse;
 import com.votegaheneta.vote.dto.PledgeDto;
+import com.votegaheneta.vote.dto.VoteTeamDto;
 import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
@@ -100,14 +102,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   public void updateVoteTeamInfo(Long sessionId, VoteTeamInfoRequest request) {
     UserDto userDto = request.getUser();
     // 특정 id의 후보자 리스트 가져옴
-    List<Candidate> candidateList = candidateRepository.findCandidateAndUserAndVoteTeamByUserId(
-        userDto.getUserId());
-
-    // 특정 투표에 속한 후보자만 가져옴
-    Candidate candidate = candidateList.stream()
-        .filter(c -> Objects.equals(c.getVoteTeam().getVote().getElectionSession().getId(),
-            sessionId)).toList()
-        .get(0);
+    Candidate candidate = getCandidate(sessionId, userDto.getUserId());
 
     Users user = candidate.getUser();
     VoteTeam voteTeam = candidate.getVoteTeam();
@@ -120,5 +115,27 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
     pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
     Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
+  }
+
+  private Candidate getCandidate(Long sessionId, Long userId) {
+    List<Candidate> candidateList = candidateRepository.findCandidateAndUserAndVoteTeamByUserId(
+        userId);
+
+    // 특정 투표에 속한 후보자만 가져옴
+    Candidate candidate = candidateList.stream()
+        .filter(c -> Objects.equals(c.getVoteTeam().getVote().getElectionSession().getId(),
+            sessionId)).toList()
+        .get(0);
+    return candidate;
+  }
+
+  @Override
+  public VoteTeamInfoResponse getVoteTeamInfo(Long sessionId, Long userId) {
+    Candidate candidate = getCandidate(sessionId, userId);
+    UserDto userDto = candidate.getUser().toDto();
+    VoteTeamDto voteTeamDto = new VoteTeamDto(candidate.getVoteTeam());
+    List<PledgeDto> pledgeDtoList = candidate.getVoteTeam().getPledges().stream()
+        .map(PledgeDto::fromEntity).toList();
+    return new VoteTeamInfoResponse(userDto, voteTeamDto, pledgeDtoList);
   }
 }

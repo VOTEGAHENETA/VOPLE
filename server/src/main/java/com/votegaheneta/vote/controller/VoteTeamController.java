@@ -2,6 +2,7 @@ package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
+import com.votegaheneta.vote.controller.response.VoteTeamInfoResponse;
 import com.votegaheneta.vote.service.VoteTeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -67,5 +68,14 @@ public class VoteTeamController {
   public ApiResponse updateVoteTeam(@PathVariable("sessionId") Long sessionId, @RequestBody VoteTeamInfoRequest voteTeamInfoRequest) {
     voteTeamService.updateVoteTeamInfo(sessionId, voteTeamInfoRequest);
     return ApiResponse.success(HttpStatus.OK, "투표팀 정보 수정 성공", null);
+  }
+
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
+  })
+  @GetMapping("/{userId}")
+  public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("userId") Long userId) {
+    VoteTeamInfoResponse voteTeamInfo = voteTeamService.getVoteTeamInfo(sessionId, userId);
+    return ApiResponse.success(HttpStatus.OK, "투표팀 정보 수정 성공", voteTeamInfo);
   }
 }
