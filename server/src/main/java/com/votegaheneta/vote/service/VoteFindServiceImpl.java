@@ -79,7 +79,6 @@ public class VoteFindServiceImpl implements VoteFindService {
   public SessionFindDto findVoteBySessionId(Long sessionId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
-
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
     List<Long> voteIds = votes.stream().map(Vote::getId).toList();
     List<VoteTeam> voteTeams = voteTeamRepository.findByVote_IdIn(voteIds);
@@ -89,7 +88,6 @@ public class VoteFindServiceImpl implements VoteFindService {
           .toList();
       return VoteFindDto.from(vote, matchTeams);
     }).toList();
-
     return new SessionFindDto(
         electionSession.getId(),
         electionSession.getSessionName(),
