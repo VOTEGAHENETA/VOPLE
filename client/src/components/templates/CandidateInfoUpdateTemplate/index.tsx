@@ -76,25 +76,35 @@ export default function CandidateInfoUpdateTemplate() {
     }
   }, [data, error]);
 
+  interface VoteTeamInfoRequest {
+    user: {
+      userId: number;
+      username: string;
+    };
+    voteTeam: {
+      poster: string;
+      prefix: string;
+      candidateStatement: string;
+    };
+    pledges: Array<{
+      content: string;
+    }>;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // FormData 생성
       const formData = new FormData();
 
-      // 파일이 있는 경우에만 추가
-      if (fileData.file) {
-        formData.append('poster', fileData.file);
-      }
-
-      // JSON 데이터를 문자열로 변환하여 추가
-      const jsonData = {
+      // VoteTeamInfoRequest DTO 생성
+      const voteTeamInfoRequest: VoteTeamInfoRequest = {
         user: {
-          userId: userId,
+          userId: 1,
           username: UserInfoFormData.username,
         },
         voteTeam: {
+          poster: 'poster-url',
           prefix: UserInfoFormData.prefix,
           candidateStatement: UserInfoFormData.candidateStatement,
         },
@@ -103,27 +113,43 @@ export default function CandidateInfoUpdateTemplate() {
         })),
       };
 
+      // DTO를 FormData에 추가
       formData.append(
-        'data',
-        new Blob([JSON.stringify(jsonData)], {
+        'voteTeamInfoRequest',
+        new Blob([JSON.stringify(voteTeamInfoRequest)], {
           type: 'application/json',
         })
       );
 
-      // 방법 1: FormData의 모든 key-value 쌍 출력
-      console.log('=== FormData 내용 확인 ===');
-      for (const pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
+      // 파일이 있는 경우 추가
+      if (fileData.file) {
+        formData.append('file', fileData.file);
       }
 
-      // 방법 2: JSON 데이터 내용 확인
-      console.log('=== JSON 데이터 확인 ===');
-      console.log('전송할 JSON 데이터:', jsonData);
+      // FormData 내용 확인을 위한 로깅
+      console.log('=== FormData 상세 내용 ===');
+      for (let [key, value] of formData.entries()) {
+        if (key === 'voteTeamInfoRequest') {
+          // Blob 데이터는 텍스트로 변환해서 확인
+          const blobText = await new Response(value as Blob).text();
+          console.log(`${key}:`, JSON.parse(blobText));
+        } else if (key === 'file') {
+          console.log('파일 정보:', {
+            이름: (value as File).name,
+            크기: (value as File).size,
+            타입: (value as File).type,
+            최종수정: new Date((value as File).lastModified).toLocaleString(),
+          });
+        } else {
+          console.log(`${key}:`, value);
+        }
+      }
 
-      // 방법 3: FormData에서 특정 키의 값 확인
-      console.log('=== 개별 필드 확인 ===');
-      console.log('poster:', formData.get('poster'));
-      console.log('data:', formData.get('data'));
+      // 전체 키 목록 확인
+      console.log('=== FormData 키 목록 ===');
+      for (let key of formData.keys()) {
+        console.log('키:', key);
+      }
 
       const response = await axios.post(
         `${API_URL}/candidate/${sessionId}`,

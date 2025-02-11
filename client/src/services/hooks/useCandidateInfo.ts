@@ -25,6 +25,7 @@ export const useGetCandidateInfo = (sessionId: string, userId: string) => {
       const response = await axios.get<CandidateInfoResponse>(
         `${API_URL}/candidate/${sessionId}/${userId}`
       );
+      console.log('#### response.data :', response.data);
       return response.data;
     },
     enabled: !!sessionId && !!userId,
