@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
-// import ResultChatContainer from './components/organisms/ResultChatContainer';
 
 function App() {
   const location = useLocation();
@@ -27,8 +26,6 @@ function App() {
     <>
       {showHeader && <Header />}
       <main id='main-container' className={showHeader ? 'show-header' : ''}>
-        {/* app page */}
-        {/* <ResultChatContainer userId={1} sessionId={1}></ResultChatContainer> */}
         <Outlet />
       </main>
     </>
