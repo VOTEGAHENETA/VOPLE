@@ -3,7 +3,12 @@ import dummyQR from '@/assets/icons/dummyQR.svg';
 import { electionDetailEditMock } from './data/electionDetailEdit';
 import { mockElectionList } from './data/electionList';
 import { mockChatMessages } from './data/chatMessages';
-import { data } from './data/userData';
+import { mockCandidateData } from './data/candidateData';
+import { CandidateUpdateRequest } from '@/types/candidate';
+
+const { VITE_PUBLIC_API_URL } = import.meta.env;
+const isMocking = import.meta.env.MODE === 'development';
+const baseURL = isMocking ? '/' : VITE_PUBLIC_API_URL;
 
 export const handlers = [
   http.post('/election', async ({ request }) => {
@@ -52,8 +57,25 @@ export const handlers = [
     return HttpResponse.json(mockElectionList, { status: 200 });
   }),
 
+  http.post('/vote/:sessionId/castvote', async ({ params, request }) => {
+    const { sessionId } = params;
+    const requestData = await request.json();
+
+    console.log(`세션 아이디: ${sessionId}`);
+    console.log('요청 데이터:', requestData);
+
+    return HttpResponse.json(
+      {
+        message: '투표 완료 제발',
+        sessionId,
+        receivedData: requestData,
+      },
+      { status: 200 }
+    );
+  }),
+
   // 채팅 메세지 수신 핸들러
-  http.get('/api/room/:type/:roomId', async ({ params }) => {
+  http.get(`${baseURL}/room/:type/:roomId`, async ({ params }) => {
     const { type, roomId } = params;
     console.log('type / roomId : ' + type + '/' + roomId);
 
@@ -61,13 +83,6 @@ export const handlers = [
       httpStatus: 200,
       message: 'success',
       data: mockChatMessages,
-    });
-  }),
-
-  http.get(`/vote/1/1?page=0`, async () => {
-    return HttpResponse.json({
-      httpStatus: 200,
-      message: '유저 가져여기',
     });
   }),
 ];

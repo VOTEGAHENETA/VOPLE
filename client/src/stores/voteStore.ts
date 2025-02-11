@@ -1,4 +1,4 @@
-import { info } from '@/types/voteSession';
+import { info } from '@/mocks/data/candidateInfo';
 import { CandidateSessionData } from '@/types/voteSession';
 import { create } from 'zustand';
 

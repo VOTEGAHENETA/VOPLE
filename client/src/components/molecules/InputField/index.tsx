@@ -60,11 +60,11 @@ export default function InputField({
   };
 
   return (
-    <div className='inputfield'>
+    <div className={styles.inputfield}>
       {/* label */}
       {label && (
         <label className={styles.inputfield__label}>
-          <Text size='xs' weight='normal'>
+          <Text size='sm' weight='normal'>
             {label}
           </Text>
         </label>
