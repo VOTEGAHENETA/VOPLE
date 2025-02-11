@@ -4,7 +4,7 @@ export const sendStreamData = async (
   streamId: number,
   isStreaming: boolean
 ) => {
-  return await instance.patch(`/live/${streamId}/status`, {
+  return await instance.put(`/live/${streamId}/status`, {
     isStreaming: isStreaming,
   });
 };
