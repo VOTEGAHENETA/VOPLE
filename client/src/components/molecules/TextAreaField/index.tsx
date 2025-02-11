@@ -30,7 +30,7 @@ export function TextAreaField({
     <div className={styles.textAreaField}>
       {label && (
         <label className={styles.textAreaField__label}>
-          <Text size='xs' weight='normal'>
+          <Text size='sm' weight='normal'>
             {label}
           </Text>
         </label>

@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
 import SAMPLE_POSTER from '@/assets/sample/sample.png';
+import IconButton from '@/components/atoms/IconButton';
 
 const MOCK_PLEDGES = [
   '학생 자치회 예산 50% 증액 및 투명한 예산 사용 보고 시스템 도입',
@@ -55,18 +56,32 @@ const MemoizedChatBoard = memo(ChatBoard);
 export default function TabContainer({
   type = 'team',
   theme = 'dark',
-  userId = 1,
+  userId,
   sessionId,
-  voteTeamId = 1,
+  voteTeamId,
 }: TabContainerProps) {
   const [activeTab, setActiveTab] = useState<TabType>('chat');
+  // 슬라이드 상태 추가
+  const [isSlideDown, setIsSlideDown] = useState(false);
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
   };
 
+  // 슬라이드 토글 함수 추가
+  const toggleSlide = () => {
+    setIsSlideDown((prev) => !prev);
+  };
+
   return (
-    <div className={styles.container}>
+    <div
+      className={clsx(styles.container, { [styles.slideDown]: isSlideDown })}
+    >
+      <IconButton
+        name='leftLongWhite'
+        className={styles.slideButton}
+        onClick={toggleSlide}
+      />
       <div className={styles.tabNavigator}>
         <div className={styles.tabMenu}>
           {TABS.map(({ type, label }) => (
