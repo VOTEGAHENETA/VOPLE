@@ -14,25 +14,10 @@ const queryClient = new QueryClient({
   },
 });
 
-async function enableMocking() {
-  if (import.meta.env.MODE !== 'development') {
-    return;
-  }
-
-  const { worker } = await import('./mocks/browser.ts');
-
-  // handle에 정의된 외 사항에 대해선 warning 경고 제거
-  return await worker.start({
-    onUnhandledRequest: 'bypass',
-  });
-}
-
-enableMocking().then(() => {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </StrictMode>
-  );
-});
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </StrictMode>
+);
