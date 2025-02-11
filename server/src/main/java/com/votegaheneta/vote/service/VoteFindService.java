@@ -1,5 +1,6 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.vote.dto.CandidateSearchDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
@@ -21,4 +22,6 @@ public interface VoteFindService {
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId);
 
   List<VoteFindDto> getVoteList(Long sessionId);
+
+  CandidateSearchDto findSearchCandidates(Long sessionId, Long voteId, String keyword, Pageable pageable);
 }

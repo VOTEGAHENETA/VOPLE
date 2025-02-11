@@ -13,12 +13,14 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,9 +66,17 @@ public class VoteTeamController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PostMapping
-  public ApiResponse updateVoteTeam(@PathVariable("sessionId") Long sessionId, @RequestBody VoteTeamInfoRequest voteTeamInfoRequest) {
-    voteTeamService.updateVoteTeamInfo(sessionId, voteTeamInfoRequest);
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ApiResponse<Void> updateVoteTeam(
+      @PathVariable("sessionId") Long sessionId,
+      @RequestPart(name = "voteTeamInfoRequest") VoteTeamInfoRequest voteTeamInfoRequest,
+      @RequestPart(name = "file", required = false) MultipartFile file) {
+    try {
+      voteTeamService.updateVoteTeamInfo(sessionId, voteTeamInfoRequest, file);
+      return ApiResponse.success(HttpStatus.OK, "투표팀 정보 수정 성공", null);
+    } catch(Exception e) {
+
+    }
     return ApiResponse.success(HttpStatus.OK, "투표팀 정보 수정 성공", null);
   }
 
