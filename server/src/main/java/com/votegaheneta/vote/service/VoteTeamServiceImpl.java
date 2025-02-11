@@ -129,6 +129,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     return candidate;
   }
 
+  @Transactional
   @Override
   public VoteTeamInfoResponse getVoteTeamInfo(Long sessionId, Long userId) {
     Candidate candidate = getCandidate(sessionId, userId);

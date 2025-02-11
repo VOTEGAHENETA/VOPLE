@@ -43,6 +43,7 @@ public class SessionServiceImpl implements SessionService {
   private final String UPLOAD_DIR = "/app/uploads/";
 //  private final SessionService sessionService;
 
+  @Transactional
   @Override
   public Long saveSession(SessionDto sessionDto) {
     Users user = usersRepository.findById(sessionDto.getHostId())
