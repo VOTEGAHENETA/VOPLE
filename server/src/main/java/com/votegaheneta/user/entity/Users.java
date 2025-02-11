@@ -5,6 +5,7 @@ import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.VoteInfo;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,13 +35,17 @@ public class Users {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Candidate> candidates = new ArrayList<>();
 
+  @Column(unique = true)
+  private Long kakaoId;
+
   private String username;
   private String nickname;
 
   @Builder
-  public Users(String username, String nickname) {
+  public Users(String username, String nickname, Long kakaoId) {
     this.username = username;
     this.nickname = nickname;
+    this.kakaoId = kakaoId;
   }
 
   public UserDto toDto() {
@@ -56,6 +61,9 @@ public class Users {
     this.id = id;
   }
 
+  public void setKakaoId(Long kakaoId) {
+    this.kakaoId = kakaoId;
+  }
   public void setUsername(String username) {
     this.username = username;
   }
@@ -67,5 +75,6 @@ public class Users {
   public void updateUser(UserDto userDto) {
     this.username = userDto.getUsername();
     this.nickname = userDto.getNickname();
+    this.kakaoId = userDto.getKakaoId();
   }
 }

@@ -32,6 +32,12 @@ public class SessionController {
 
   private final SessionService sessionService;
 
+  @GetMapping("/question/{sessionId}")
+  public ApiResponse<Void> getQuestion(@PathVariable("sessionId") Long sessionId) {
+    System.out.println("redirecting");
+    return ApiResponse.success(HttpStatus.OK, "redirecting", null);
+  }
+
   @Operation(
       summary = "정보 수정 버튼을 눌렀을때 유권자 / 후보자 판별",
       description = "FIGMA : 후보자 플로우 - [메인 페이지-후보자 등록 전]"

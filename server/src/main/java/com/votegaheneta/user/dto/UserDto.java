@@ -14,6 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class UserDto {
   private Long userId;
+  private Long kakaoId;
   private String nickname;
   private String username;
 
@@ -21,5 +22,6 @@ public class UserDto {
     this.userId = user.getId();
     this.nickname = user.getNickname();
     this.username = user.getUsername();
+    this.kakaoId = user.getKakaoId();
   }
 }

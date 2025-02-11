@@ -29,6 +29,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   public void createVote(Long sessionId, String voteName) {
     ElectionSession electionSession = sessionRepository.findSessionById(sessionId);
     electionSession.addVote(new Vote(voteName));
+    // VoteInfo도 추가해줘야겠네, 배치 Insert
   }
 
   @Override
