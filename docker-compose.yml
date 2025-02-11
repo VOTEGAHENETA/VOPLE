@@ -6,10 +6,12 @@ services:
     container_name: client
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./client:/client
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
-      - ./data/uploads:/app/uploads
+      - ./media/uploads:/app/uploads
 
   server:
     image: openjdk:17-alpine
@@ -32,7 +34,7 @@ services:
       - "8000:8080"
     volumes:
       - ./server/:/server
-      - ./data/uploads:/app/uploads
+      - ./media/uploads:/app/uploads
     depends_on:
       db:
         condition: service_healthy
