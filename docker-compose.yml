@@ -9,6 +9,7 @@ services:
       - "443:443"
     volumes:
       - ./client:/client
+      - ./client/.env:/app/.env
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
       - ./media/uploads:/app/uploads
