@@ -21,15 +21,15 @@ const meta = {
       control: 'number',
       description: '선거의 고유 식별자',
     },
-    title: {
+    sessionName: {
       control: 'text',
       description: '선거의 제목',
     },
-    startDate: {
+    startTime: {
       control: 'text',
       description: '선거 시작일',
     },
-    endDate: {
+    endTime: {
       control: 'text',
       description: '선거 종료일',
     },

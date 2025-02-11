@@ -2,7 +2,7 @@ import React from 'react';
 import Text from '../Text';
 import styles from './index.module.scss';
 
-type PosterSize = 'xs' | 's' | 'm' | 'lg';
+type PosterSize = 'xs' | 's' | 'm' | 'lg' | 'full';
 
 interface PosterProps {
   size: PosterSize;
@@ -23,7 +23,7 @@ const Poster: React.FC<PosterProps> = ({ size = 'm', className = '', src }) => {
       {src ? (
         <img src={src} className={PosterClasses} />
       ) : (
-        <Text size='xs' weight='normal' color='#999999'>
+        <Text size='s' weight='normal' color='#999999'>
           아직 포스터가 <br />
           없어요.
         </Text>

@@ -13,7 +13,7 @@ import {
 
 export interface InputFieldProps {
   id: string; // input의 필수값
-  value: string; // input의 필수값
+  value: string | number; // input의 필수값
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // input의 필수값
   type?: InputType;
   variant?: InputVariant;
@@ -38,34 +38,16 @@ export default function InputField({
   helperText,
   errorMessage,
   disabled,
-  validationMessage = {
-    [INPUT_TYPES.NUMBER]: '숫자만 입력 가능합니다.',
-  },
   ...props
 }: InputFieldProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    const inputValue = e.target.value;
 
-    // 입력값이 비어있는 경우는 항상 허용
-    if (value === '') {
-      onChange(e);
-      return;
+    if (type === 'number') {
+      // e.target.value 값을 조정해서 이벤트 객체 전달
+      e.target.value = inputValue === '' ? '' : String(parseFloat(inputValue));
     }
 
-    // 숫자 타입 검증
-    if (type === INPUT_TYPES.NUMBER) {
-      const numberRegex = /^[0-9]*\.?[0-9]*$/;
-      if (numberRegex.test(value)) {
-        onChange(e);
-      } else {
-        alert(
-          validationMessage[INPUT_TYPES.NUMBER] || '숫자만 입력 가능합니다.'
-        );
-      }
-      return;
-    }
-
-    // 기본적으로는 모든 입력 허용
     onChange(e);
   };
 
@@ -78,11 +60,11 @@ export default function InputField({
   };
 
   return (
-    <div className='inputfield'>
+    <div className={styles.inputfield}>
       {/* label */}
       {label && (
         <label className={styles.inputfield__label}>
-          <Text size='xs' weight='normal'>
+          <Text size='sm' weight='normal'>
             {label}
           </Text>
         </label>
@@ -92,7 +74,12 @@ export default function InputField({
       <div className={styles.inputfield__wrapper}>
         {/* input */}
         <Input
-          value={value}
+          type={type}
+          value={
+            type === 'number' && (value === undefined || isNaN(Number(value)))
+              ? ''
+              : value
+          }
           variant={variant}
           placeholder={placeholder}
           disabled={disabled}
