@@ -9,32 +9,25 @@ import { useCandidateStore } from '@/stores/candidateStore';
 import { Candidate } from '@/types/user';
 
 interface Props {
+  idx: number;
   id: number;
   candidates: Candidate[];
 }
 
-function CandidateTag({ id, candidates }: Props) {
-  const {
-    sendCandidates,
-    activeTeamId,
-    setActiveTeamId,
-    removeCandidate,
-    resetCandidate,
-  } = useCandidateStore();
+function CandidateTag({ idx, id, candidates }: Props) {
+  const { activeTeamId, setActiveTeamId, removeCandidate, resetCandidate } =
+    useCandidateStore();
   const isChecked = activeTeamId === id;
-  console.log('send:', sendCandidates);
 
   const handlerCheckCandidate = () => {
     setActiveTeamId(id);
   };
 
   const handleDeleteCandidate = (userId: number) => {
-    console.log('개별 삭제');
     removeCandidate(userId);
   };
 
   const handleClearSection = () => {
-    console.log('후보 삭제');
     resetCandidate();
   };
 
@@ -53,7 +46,7 @@ function CandidateTag({ id, candidates }: Props) {
             color='#111111'
             className={styles['tag-candidate']}
           >
-            후보{id}
+            후보{idx}
           </Text>
         </div>
         <div onClick={handleClearSection}>

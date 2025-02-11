@@ -5,6 +5,8 @@ import CandidateTag from '@/components/molecules/CandidateTag';
 import { useCandidateStore } from '@/stores/candidateStore';
 import { CandidateList } from '@/types/user';
 import { useEffect } from 'react';
+import BaseButton from '@/components/atoms/BaseButton';
+import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 
 interface Props {
   voteName: string;
@@ -17,17 +19,22 @@ function CandidateSelectedSection({ voteName, candidateList }: Props) {
     setSendCandidates,
     setOpenCandidateModal,
     setActiveTeamId,
+    addGroup,
   } = useCandidateStore();
-
-  function handleCloseModal() {
-    setOpenCandidateModal(-1, '');
-  }
 
   useEffect(() => {
     if (candidateList) {
       setSendCandidates(candidateList);
     }
   }, [candidateList]);
+
+  useEffect(() => {
+    console.log('rendering...');
+  }, [sendCandidates]);
+
+  function handleCloseModal() {
+    setOpenCandidateModal(-1, '');
+  }
 
   return (
     <div className={styles['selected-container']}>
@@ -54,17 +61,30 @@ function CandidateSelectedSection({ voteName, candidateList }: Props) {
       <div className={styles['selected-box']}>
         <div className={styles['selected-wrapper']}>
           {candidateList &&
-            Object.entries(sendCandidates).map(([teamId, candidateList]) =>
-              Object.entries(candidateList).map(([groupKey, candidates]) => (
-                <div
-                  key={`${teamId}-${groupKey}`}
-                  className={styles['selected-item']}
-                  onClick={() => setActiveTeamId(Number(teamId))}
-                >
-                  <CandidateTag id={Number(teamId)} candidates={candidates} />
-                </div>
-              ))
+            Object.entries(sendCandidates).map(
+              ([teamId, candidateList], index) =>
+                Object.entries(candidateList).map(([groupKey, candidates]) => (
+                  <div
+                    key={`${teamId}-${groupKey}`}
+                    className={styles['selected-item']}
+                    onClick={() => setActiveTeamId(Number(teamId))}
+                  >
+                    <CandidateTag
+                      idx={index + 1}
+                      id={Number(teamId)}
+                      candidates={candidates}
+                    />
+                  </div>
+                ))
             )}
+          <BaseButton
+            type='button'
+            kind='base'
+            status={BASE_BUTTON_STATUS.OUTLINE}
+            onClick={addGroup}
+          >
+            후보자 그룹 추가
+          </BaseButton>
         </div>
       </div>
     </div>

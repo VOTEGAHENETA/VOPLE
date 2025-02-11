@@ -11,6 +11,7 @@ interface CandidateStore {
   addCandidate: (candidate: User) => void;
   removeCandidate: (candidateId: number) => void;
   resetCandidate: () => void;
+  addGroup: () => void;
 }
 
 export const useCandidateStore = create<CandidateStore>((set) => ({
@@ -107,5 +108,28 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
       delete updatedSendCandidates[teamId];
 
       return { sendCandidates: updatedSendCandidates };
+    }),
+
+  addGroup: () =>
+    set((state) => {
+      const lastIdx = Object.keys(state.sendCandidates).length;
+      const newTeamId =
+        Number(Object.keys(state.sendCandidates)[lastIdx - 1]) + 1;
+      const newTeamKey = String(newTeamId);
+
+      const updatedCandidates = {
+        ...state.sendCandidates,
+        [newTeamId]: {
+          [newTeamKey]: [],
+        },
+      };
+      console.log();
+
+      console.log('update candi:', updatedCandidates);
+
+      return {
+        sendCandidates: updatedCandidates,
+        activeTeamId: newTeamId,
+      };
     }),
 }));
