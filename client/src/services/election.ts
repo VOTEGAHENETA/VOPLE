@@ -31,7 +31,7 @@ export const postElection = async (createData: TCreateElection) => {
   return response;
 };
 
-export const getQRCode = async (sessionId: string): Promise<string> => {
+export const getQRCode = async (sessionId: number): Promise<string> => {
   return await instance.get(`/election/${sessionId}/qrcode`);
 };
 

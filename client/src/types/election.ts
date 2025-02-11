@@ -71,6 +71,6 @@ export type TVoteEdit = {
 };
 
 export interface ISessionDetail {
-  session: TSession;
+  sessionDto: TSession;
   voteEditInfos: TVoteEdit[];
 }

@@ -3,32 +3,15 @@ import Text from '@/components/atoms/Text';
 import duumyQR from '@/assets/icons/dummyQR.svg';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
-import React, { useState } from 'react';
-import { useQRCode } from '@/services/hooks/useQRCode.ts';
+import React from 'react';
 
 interface Props {
-  param: string;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function QRContainer({ param }: Props) {
-  const { data } = useQRCode(param);
-  const [qr, SetQR] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
+function QRContainer({ setIsOpen }: Props) {
   function handleExpendQR() {
-    console.log(data);
-    SetQR(data?.data);
     setIsOpen(true);
-  }
-
-  function handleCloseDialog() {
-    setIsOpen(false);
-  }
-
-  function handleDialogOutSideClick(e: React.MouseEvent<HTMLDialogElement>) {
-    if (e.target === e.currentTarget) {
-      setIsOpen(false);
-    }
   }
 
   return (
@@ -57,27 +40,6 @@ function QRContainer({ param }: Props) {
           </div>
         </div>
       </div>
-      <dialog
-        id='qr-modal'
-        className={styles['qr-modal']}
-        open={isOpen}
-        onClick={handleDialogOutSideClick}
-        style={{ display: isOpen ? 'flex' : 'none' }}
-      >
-        <div className={styles['qr-modal-wrapper']}>
-          <img src={qr} alt='확대한 QR' />
-          <BaseButton
-            type='button'
-            kind='mini-chip'
-            status={BASE_BUTTON_STATUS.OUTLINE}
-            onClick={handleCloseDialog}
-          >
-            <Text size='s' weight='bold'>
-              닫기
-            </Text>
-          </BaseButton>
-        </div>
-      </dialog>
     </div>
   );
 }

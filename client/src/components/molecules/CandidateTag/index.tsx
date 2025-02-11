@@ -2,54 +2,46 @@ import Text from '@/components/atoms/Text';
 import x from '@/assets/icons/x.svg';
 import styles from '@/components/molecules/CandidateTag/index.module.scss';
 import IconMiniCheck from '@/assets/icons/IconMiniCheck';
-import React, { useState } from 'react';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
+import clsx from 'clsx';
+import { useCandidateStore } from '@/stores/candidateStore';
+import { Candidate } from '@/types/user';
 
-interface Candidate {
+interface Props {
   id: number;
-  name: string;
+  candidates: Candidate[];
 }
 
-interface CandidateProps {
-  checkCandidate?: () => void;
-  deleteCandidate?: () => void;
-  clearSection?: () => void;
-  id: number;
-}
-
-const mockCandidate: Candidate[] = [
-  { id: 1, name: '강성엽' },
-  { id: 2, name: '김선명' },
-  { id: 3, name: '황연주' },
-];
-
-const CandidateTag: React.FC<CandidateProps> = ({
-  id,
-  checkCandidate,
-  deleteCandidate,
-  clearSection,
-}) => {
-  const [checked, setChecked] = useState(false);
+function CandidateTag({ id, candidates }: Props) {
+  const { activeTeamId, setActiveTeamId, removeCandidate, resetCandidates } =
+    useCandidateStore();
+  const isChecked = activeTeamId === id;
 
   // molecules에서도 동작하고, organism에서도 동작하는 checked
   const handlerCheckCandidate = () => {
-    if (checkCandidate) {
-      checkCandidate();
-    } else {
-      setChecked((prev) => !prev);
-    }
+    setActiveTeamId(id);
+  };
+
+  const handleDeleteCandidate = (userId: number) => {
+    console.log('개별 삭제');
+    removeCandidate(id, userId);
+  };
+
+  const handleClearSection = () => {
+    console.log('후보 삭제');
+    resetCandidates();
   };
 
   return (
-    <div className={styles['tag-all']}>
-      <div className={styles['tag-title']}>
+    <div className={clsx(styles['tag-all'], styles[`tag-select-${isChecked}`])}>
+      <div className={styles['tag-title']} onClick={handlerCheckCandidate}>
         {/* 후보자 태그 영역 선택 ex) 후보1 or 후보2 */}
-        <div className={styles['tag-subtitle']} onClick={handlerCheckCandidate}>
+        <div className={styles['tag-subtitle']}>
           <div
-            className={`${styles['tag-mini-check']} ${checked ? styles.checked : ''}`}
+            className={`${styles['tag-mini-check']} ${isChecked ? styles.checked : ''}`}
           >
-            {checked && <IconMiniCheck />}
+            {isChecked && <IconMiniCheck />}
           </div>
           <Text
             size='s'
@@ -60,7 +52,7 @@ const CandidateTag: React.FC<CandidateProps> = ({
             후보{id}
           </Text>
         </div>
-        <div onClick={clearSection}>
+        <div onClick={handleClearSection}>
           <Text size='s' weight='normal' color='#000000'>
             삭제
           </Text>
@@ -69,16 +61,18 @@ const CandidateTag: React.FC<CandidateProps> = ({
 
       {/* 후보자 목데이터 출력 및 제거 */}
       <div className={styles['tag-list']}>
-        {mockCandidate.map((candidate) => (
-          <div key={candidate.id}>
+        {candidates.map((candidate) => (
+          <div
+            key={candidate.userId}
+            onClick={() => handleDeleteCandidate(candidate.userId)}
+          >
             <BaseButton
               type='button'
               kind='mini-chip'
               status={BASE_BUTTON_STATUS.OUTLINE}
-              onClick={() => deleteCandidate}
             >
               <div className={styles['tag-name']}>
-                {candidate.name}
+                {candidate.username}
                 <img src={x} className={styles['tag-img']} />
               </div>
             </BaseButton>
@@ -87,6 +81,6 @@ const CandidateTag: React.FC<CandidateProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default CandidateTag;
