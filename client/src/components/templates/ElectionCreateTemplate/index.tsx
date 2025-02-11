@@ -9,8 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateElection } from '@/services/hooks/useCreateElection';
 
 function ElectionCreateTemplate() {
+  const navigate = useNavigate();
   const [state, setState] = useState<TCreateElection>({
-    hostId: 0,
+    hostId: 1,
     entranceQuestion: '',
     entranceAnswer: '',
     startTime: new Date(),
@@ -24,8 +25,6 @@ function ElectionCreateTemplate() {
     endDate: '',
     endTime: '',
   });
-
-  const navigate = useNavigate();
 
   function handleChangeLabel(e: React.ChangeEvent<HTMLInputElement>) {
     setState((prev) => ({
@@ -103,6 +102,9 @@ function ElectionCreateTemplate() {
   function handleSubmit() {
     console.log('election data:', state);
     mutation.mutate(state);
+    if (mutation.isSuccess) {
+      navigate(`/elections/${mutation.data}`);
+    }
   }
 
   function onClose() {
