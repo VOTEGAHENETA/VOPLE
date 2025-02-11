@@ -46,9 +46,31 @@ export type ElectionList = {
 export type TCreateElection = {
   hostId: number;
   entranceQuestion: string;
+  sessionName: string;
   entranceAnswer: string;
   startTime: Date;
   endTime: Date;
   wholeVoter: number;
-  sessionName: string;
 };
+
+export type TSession = {
+  id: number;
+  hostId: number;
+  sessionName: string;
+  entranceQuestion: string;
+  entranceAnswer: string;
+  startTime: Date;
+  endTime: Date;
+  wholeVoter: number;
+};
+
+export type TVoteEdit = {
+  voteId: number;
+  sessionName: string;
+  voteName: string;
+};
+
+export interface ISessionDetail {
+  sessionDto: TSession;
+  voteEditInfos: TVoteEdit[];
+}

@@ -1,17 +1,15 @@
 import axios from 'axios';
 
 const { VITE_PUBLIC_API_URL } = import.meta.env;
-const isMocking = import.meta.env.MODE === 'development';
-const baseURL = isMocking ? '/' : VITE_PUBLIC_API_URL;
 
 const instance = axios.create({
-  baseURL: baseURL,
+  baseURL: VITE_PUBLIC_API_URL,
   timeout: 5_000,
 });
 
 instance.interceptors.response.use(
   (response) => {
-    return response.data;
+    return response.data.data;
   },
   (error) => {
     console.error('API 요청 에러:', error);
