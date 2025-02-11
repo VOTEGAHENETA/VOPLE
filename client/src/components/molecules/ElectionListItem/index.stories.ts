@@ -21,15 +21,15 @@ const meta = {
       control: 'number',
       description: '선거의 고유 식별자',
     },
-    title: {
+    sessionName: {
       control: 'text',
       description: '선거의 제목',
     },
-    startDate: {
+    startTime: {
       control: 'text',
       description: '선거 시작일',
     },
-    endDate: {
+    endTime: {
       control: 'text',
       description: '선거 종료일',
     },
@@ -98,23 +98,6 @@ export const Created: Story = {
       description: {
         story:
           '사용자가 생성한 선거의 표시 형태입니다. 관리 메뉴가 제공됩니다.',
-      },
-    },
-  },
-};
-
-// 긴 제목의 선거
-export const LongTitle: Story = {
-  args: {
-    ...defaultArgs,
-    title:
-      '2024년 제 10회 학생회장 선거 투표를 시작합니다. 많은 참여 부탁드립니다.',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '긴 제목을 가진 선거의 표시 형태입니다. 제목이 자동으로 줄바꿈됩니다.',
       },
     },
   },

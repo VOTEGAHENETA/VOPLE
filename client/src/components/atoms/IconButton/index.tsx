@@ -11,6 +11,8 @@ import bigger from '@/assets/icons/bigger.svg';
 import orangebigger from '@/assets/icons/orangebigger.svg';
 import dots from '@/assets/icons/dots.svg';
 import left from '@/assets/icons/left.svg';
+import leftLongWhite from '@/assets/icons/leftLongWhite.svg';
+import leftLongBlack from '@/assets/icons/leftLongBlack.svg';
 
 type IconName =
   | 'mypage'
@@ -22,7 +24,9 @@ type IconName =
   | 'bigger'
   | 'orangebigger'
   | 'dots'
-  | 'left';
+  | 'left'
+  | 'leftLongWhite'
+  | 'leftLongBlack';
 
 const ICON_MAPPING = {
   mypage,
@@ -35,6 +39,8 @@ const ICON_MAPPING = {
   orangebigger,
   dots,
   left,
+  leftLongWhite,
+  leftLongBlack,
 };
 
 interface IconProps {
