@@ -6,3 +6,8 @@ export const createVote = async (sessionId: number, voteName: string) => {
   });
   return response;
 };
+
+export const deleteVote = async (sessionId: number, voteId: number) => {
+  const response = await instance.delete(`/vote/${sessionId}/${voteId}`);
+  return response;
+};

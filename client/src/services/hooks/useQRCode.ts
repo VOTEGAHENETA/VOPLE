@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getQRCode } from '../election';
 
-export const useQRCode = (param: string) => {
+export const useQRCode = (sessionId: number) => {
   return useQuery({
-    queryKey: ['qr', param],
-    queryFn: async () => await getQRCode(param),
+    queryKey: ['qr', sessionId],
+    queryFn: () => getQRCode(sessionId),
   });
 };

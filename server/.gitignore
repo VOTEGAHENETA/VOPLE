@@ -1,3 +1,6 @@
+**/resources/static/
+**/resources/*.yml
+
 HELP.md
 .gradle
 build/

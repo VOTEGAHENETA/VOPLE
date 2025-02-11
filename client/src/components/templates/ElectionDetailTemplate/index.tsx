@@ -8,12 +8,19 @@ import Text from '@/components/atoms/Text';
 import QRContainer from './QRContainer';
 import VoteReginster from '@/components/organisms/VoteReginster';
 import { useParams } from 'react-router-dom';
-import { useElectionDetail } from '@/services/hooks/useElectionDetail';
+import { useElectionDetailGet } from '@/services/hooks/useElectionDetail';
+import QRModal from './QRModal';
+import CandidateRegisterTemplate from '../CandidateRegisterTemplate';
+import { useCandidateStore } from '@/stores/candidateStore';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
-  const { data, isLoading, isError } = useElectionDetail(Number(election_id));
+  const { data, isLoading, isError } = useElectionDetailGet(
+    Number(election_id)
+  );
+  const { openCandidateModal } = useCandidateStore();
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, setState] = useState<TSession>({
     id: 0,
     hostId: 0,
@@ -48,9 +55,9 @@ function ElectionDetailTemplate() {
       console.log('데이터 로드 에러');
     }
 
-    if (data?.data) {
-      setState(data.data.sessionDto);
-      setVoteState(data.data.voteEditInfos);
+    if (data?.sessionDto) {
+      setState(data.sessionDto);
+      setVoteState(data.voteEditInfos);
 
       setDateState({
         startDate: new Date(state.startTime).toISOString().split('T')[0],
@@ -209,12 +216,20 @@ function ElectionDetailTemplate() {
           </div>
         </div>
       </div>
-      <QRContainer param={election_id} />
+      <QRContainer setIsOpen={setIsOpen} />
       <VoteReginster
         sessionId={state.id}
         sessionName={state.sessionName}
         votes={voteState}
       />
+      <QRModal isOpen={isOpen} setIsOpen={setIsOpen} param={election_id} />
+      {openCandidateModal && (
+        <CandidateRegisterTemplate
+          sessionId={Number(election_id)}
+          voteId={openCandidateModal.voteId}
+          voteName={openCandidateModal.voteName}
+        />
+      )}
     </div>
   );
 }

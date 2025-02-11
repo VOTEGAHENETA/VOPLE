@@ -103,23 +103,6 @@ export const Created: Story = {
   },
 };
 
-// 긴 제목의 선거
-export const LongTitle: Story = {
-  args: {
-    ...defaultArgs,
-    title:
-      '2024년 제 10회 학생회장 선거 투표를 시작합니다. 많은 참여 부탁드립니다.',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '긴 제목을 가진 선거의 표시 형태입니다. 제목이 자동으로 줄바꿈됩니다.',
-      },
-    },
-  },
-};
-
 // 메뉴가 열린 상태의 생성된 선거
 export const CreatedWithOpenMenu: Story = {
   args: {
