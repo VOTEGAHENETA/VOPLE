@@ -17,11 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin("*")
 public class VoteCastRequest {
 
-  @Schema(name = "userId(회원번호)")
-  @NotNull
-  @Positive
-  private Long userId;
-
   @NotEmpty
   private List<VoteSelection> voteSelections;
 

@@ -14,5 +14,5 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
   List<CandidateResultDto> findByVoteTeamId(@Param("voteTeamId") Long voteTeamId);
 
   @Query("select c from Candidate c join fetch c.user u join fetch c.voteTeam vt join fetch vt.vote v join fetch v.electionSession where u.id = :userId")
-  List<Candidate> findCandidateAndUserAndVoteTeamByUserId(Long userId);
+  List<Candidate> findCandidateAndUserAndVoteTeamByUserId(@Param("userId") Long userId);
 }

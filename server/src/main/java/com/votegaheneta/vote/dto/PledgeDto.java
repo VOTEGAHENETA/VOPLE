@@ -1,12 +1,16 @@
 package com.votegaheneta.vote.dto;
 
 import com.votegaheneta.vote.entity.Pledge;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO for {@link com.votegaheneta.vote.entity.Pledge}
  */
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PledgeDto {
 
   String content;
