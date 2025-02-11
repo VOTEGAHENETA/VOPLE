@@ -6,6 +6,12 @@
     gap: 10px;
 }
 
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .text {
   display: flex;
   align-items: center;
@@ -22,4 +28,6 @@
 .tag  {
   display: flex;
   gap: 10px;
+  min-width: 92px;
+  min-height: 42px;
 }

@@ -1,22 +1,11 @@
 import styles from './index.module.scss';
 import ElectionListItem from '@/components/molecules/ElectionListItem';
 import { useNavigate } from 'react-router-dom';
-import { ElectionListProps } from '@/types/election';
-
-/**
- * # ElectionListProps
-    id: number;
-    title: string;
-    startDate?: string;
-    endDate?: string;
-    status?: 'participating' | 'created';
-    isClosed?: boolean;
-    onMenuClick?: () => void;
- */
+import { ElectionListDetail } from '@/types/election';
 
 interface ElectionListBoxProps {
   status: 'created' | 'participating';
-  elections: ElectionListProps[];
+  elections: ElectionListDetail[];
 }
 
 const CONTENT_CONFIG = {
@@ -59,8 +48,8 @@ export function ElectionListBox({
             {elections.map((election) => (
               <ElectionListItem
                 key={election.id}
-                id={election.id}
-                title={election.title}
+                {...election}
+                status={status}
               />
             ))}
           </div>

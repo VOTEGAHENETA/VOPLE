@@ -1,0 +1,83 @@
+.section {
+    display: flex;
+    flex-direction: column;
+  
+    .section__wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+  
+      .upload__btn {
+        display: inline-block;
+        width: auto;
+      }
+  
+      .poster__wrap {
+        border-radius: 10px;
+        box-shadow: 0 0 14px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+      }
+    }
+  }
+  
+  .sectionTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+  
+  .pledgeField {
+    width: 100%;
+  
+    .pledgeHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+  
+      .pledgeCount {
+        color: #6b7280;
+      }
+    }
+  
+    .pledgeContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  
+      .pledge {
+        position: relative;
+  
+        .x__btn {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          right: 10px;
+          top: 10px;
+          background-color: rgba(0, 0, 0, 0);
+          border: none;
+          cursor: pointer;
+  
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+  }
+  
+  .btn_wrap {
+    margin-top: 10px;
+    display: flex;
+    justify-content: end;
+  
+    .add__btn {
+      display: inline-block;
+      width: auto;
+      background-color: #e3e3e4;
+      color: #333;
+    }
+  }

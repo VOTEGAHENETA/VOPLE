@@ -7,9 +7,9 @@ const instance = axios.create({
   timeout: 5_000,
 });
 
-instance.interceptors.request.use(
+instance.interceptors.response.use(
   (response) => {
-    return response.data;
+    return response.data.data;
   },
   (error) => {
     console.error('API 요청 에러:', error);

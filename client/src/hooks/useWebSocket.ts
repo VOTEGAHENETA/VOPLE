@@ -5,8 +5,8 @@ import { ChatReceiveMessage } from '@/types/chat';
 
 type WebSocketProps = {
   type: string;
-  roomId: string;
-  sessionId: string;
+  roomId: number;
+  sessionId: number;
   userId: number;
 };
 

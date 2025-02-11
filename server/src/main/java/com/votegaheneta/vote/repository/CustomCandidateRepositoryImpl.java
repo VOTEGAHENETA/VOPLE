@@ -41,12 +41,12 @@ public class CustomCandidateRepositoryImpl implements CustomCandidateRepository 
         .from(voteInfo)
         .join(users).on(users.id.eq(voteInfo.user.id))
         .where(voteInfo.userType.eq(USER_TYPE.VOTER), (voteInfo.vote.id.eq(voteId)))
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
         .fetch();
     Pattern pattern = Pattern.compile(regex);
     return allResults.stream()
         .filter(dto -> pattern.matcher(dto.getUserName()).find())
+        .skip(pageable.getOffset())
+        .limit(pageable.getPageSize())
         .collect(Collectors.toList());
   }
 }

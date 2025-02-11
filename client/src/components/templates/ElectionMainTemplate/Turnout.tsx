@@ -2,12 +2,12 @@ import styles from './index.module.scss';
 import IconBlurChart from '@/assets/icons/IconBlurChart';
 import IconFire from '@/assets/icons/IconFire';
 import Text from '@/components/atoms/Text';
-import { VoteSession } from '@/types/election';
+import { ElectionSection } from '@/types/election';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
 interface Props {
-  data: VoteSession;
+  data: ElectionSection;
 }
 
 function Turnout({ data }: Props) {

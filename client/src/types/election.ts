@@ -22,7 +22,7 @@ export type VoteResult = {
 
 export type VoteStatus = 'isBefore' | 'isProgress' | 'isAfter';
 
-export type VoteSession = {
+export type ElectionSection = {
   sessionId: number;
   sessionName: string;
   voteStatus: VoteStatus;
@@ -30,12 +30,47 @@ export type VoteSession = {
   wholeVoterPercent: number;
 };
 
-export interface ElectionListProps {
+export type ElectionListDetail = {
   id: number;
-  title: string;
-  startDate?: string;
-  endDate?: string;
-  status?: 'participating' | 'created';
-  isClosed?: boolean;
-  onMenuClick?: () => void;
+  sessionName: string;
+  startTime: string;
+  endTime: string;
+  isClosed: boolean;
+};
+
+export type ElectionList = {
+  involvedSessions: ElectionListDetail[];
+  managedSessions: ElectionListDetail[];
+};
+
+export type TCreateElection = {
+  hostId: number;
+  entranceQuestion: string;
+  sessionName: string;
+  entranceAnswer: string;
+  startTime: Date;
+  endTime: Date;
+  wholeVoter: number;
+};
+
+export type TSession = {
+  id: number;
+  hostId: number;
+  sessionName: string;
+  entranceQuestion: string;
+  entranceAnswer: string;
+  startTime: Date;
+  endTime: Date;
+  wholeVoter: number;
+};
+
+export type TVoteEdit = {
+  voteId: number;
+  sessionName: string;
+  voteName: string;
+};
+
+export interface ISessionDetail {
+  sessionDto: TSession;
+  voteEditInfos: TVoteEdit[];
 }
