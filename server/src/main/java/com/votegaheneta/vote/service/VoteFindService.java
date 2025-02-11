@@ -1,11 +1,11 @@
 package com.votegaheneta.vote.service;
 
-import com.votegaheneta.vote.dto.CandidateSearchDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.VoteDetailDto;
+import com.votegaheneta.vote.dto.VoteInfoDto;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
@@ -23,5 +23,5 @@ public interface VoteFindService {
 
   List<VoteFindDto> getVoteList(Long sessionId);
 
-  CandidateSearchDto findSearchCandidates(Long sessionId, Long voteId, String keyword, Pageable pageable);
+  List<VoteInfoDto> findSearchCandidates(Long voteId, String keyword, Pageable pageable);
 }
