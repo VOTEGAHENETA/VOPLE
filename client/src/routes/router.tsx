@@ -34,10 +34,10 @@ export const router = createBrowserRouter([
         element: <Manage />,
       },
       {
-        path: 'vote/:session_id/result/current',
+        path: 'elections/:election_id/result/',
         element: <Result />,
       },
-      { path: 'vote/:session_id/detail', element: <VoteTemplate /> },
+      { path: 'elections/:election_id/vote', element: <VoteTemplate /> },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],
   },

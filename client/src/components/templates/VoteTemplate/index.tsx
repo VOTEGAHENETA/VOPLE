@@ -18,12 +18,12 @@ function VoteTemplate() {
   // 투표 버튼 누르면 언마운트 되고, 투표 완료 페이지로 이동
   useEffect(() => {
     if (!isVoting) {
-      navigate(`/vote/${info.sessionId}/result/current`);
+      navigate(`/elections/${info.sessionId}/result/`);
     }
   }, [isVoting, navigate]);
 
   // 투표 수
-  const totalCandidates = info.voteFindDto.length;
+  const totalCandidates = info.voteFindDtos.length;
 
   // 객체의 key(예: voteTeamId)를 기준으로 선택된 후보 수 계산
   const selectedCount = Object.keys(selectedCandidates).length;

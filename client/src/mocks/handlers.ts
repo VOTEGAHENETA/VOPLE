@@ -3,6 +3,7 @@ import dummyQR from '@/assets/icons/dummyQR.svg';
 import { electionDetailEditMock } from './data/electionDetailEdit';
 import { mockElectionList } from './data/electionList';
 import { mockChatMessages } from './data/chatMessages';
+import { info } from './data/candidateInfo';
 
 export const handlers = [
   http.post('/election', async ({ request }) => {
@@ -78,5 +79,15 @@ export const handlers = [
       message: 'success',
       data: mockChatMessages,
     });
+  }),
+
+  http.get('vote/12/detail', async () => {
+    return HttpResponse.json(
+      {
+        msessage: '후보자 정보 가져오기 성공',
+        data: info,
+      },
+      { status: 200 }
+    );
   }),
 ];

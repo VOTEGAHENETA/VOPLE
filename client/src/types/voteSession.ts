@@ -19,5 +19,5 @@ export interface Vote {
 export interface CandidateSessionData {
   sessionId: number;
   sessionName: string;
-  voteFindDto: Vote[];
+  voteFindDtos: Vote[];
 }

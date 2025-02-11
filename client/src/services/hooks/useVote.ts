@@ -20,7 +20,7 @@ export const useVoteMutation = ({
     const voteSelections: VoteSelection[] = Object.entries(
       selectedCandidates
     ).map(([voteId, candidate]) => {
-      const vote = voteSession.voteFindDto.find(
+      const vote = voteSession.voteFindDtos.find(
         (v) => v.voteId === Number(voteId)
       );
       const team = vote?.voteTeams.find((team) =>
