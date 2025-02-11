@@ -39,15 +39,15 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
-    Long userId = voteCastRequest.getUserId();
+    Long userId = 1L;
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() ->  new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
     LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-//    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
-//      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
-//    }
+    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
+      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
+    }
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
@@ -64,5 +64,4 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     }
     electionSession.incrementVotedVoter();
   }
-
 }

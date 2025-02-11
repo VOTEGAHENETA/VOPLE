@@ -1,7 +1,9 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.common.component.SearchComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.common.repository.RedisRepository;
+import com.votegaheneta.vote.dto.CandidateSearchDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
@@ -14,6 +16,7 @@ import com.votegaheneta.vote.dto.VoteDetailDto;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
+import com.votegaheneta.vote.repository.CustomCandidateRepository;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
@@ -39,6 +42,8 @@ public class VoteFindServiceImpl implements VoteFindService {
   private final SessionRepository sessionRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final RedisRepository redisRepository;
+  private final SearchComponent searchComponent;
+  private final CustomCandidateRepository customCandidateRepository;
 
   @Override
   public VoteDetailDto getVoteDetail(Long sessionId, Long voteId, Pageable pageable) {
@@ -49,7 +54,6 @@ public class VoteFindServiceImpl implements VoteFindService {
   public Boolean hasVoted(Long sessionId, Long userId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
-
     Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
         vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
     return hasVoted;
@@ -59,6 +63,17 @@ public class VoteFindServiceImpl implements VoteFindService {
   public List<VoteFindDto> getVoteList(Long sessionId) {
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
     return votes.stream().map(VoteFindDto::from).toList();
+  }
+
+  @Override
+  public CandidateSearchDto findSearchCandidates(Long sessionId, Long voteId, String keyword, Pageable pageable) {
+    // 찾아올때 어떤 데이터를 들고와야할까?
+    StringBuilder sb = new StringBuilder();
+    for (String word : keyword.split("")) {
+      sb.append(searchComponent.searchWordReSetting(word));
+    }
+    
+    return null;
   }
 
   @Override
@@ -73,7 +88,7 @@ public class VoteFindServiceImpl implements VoteFindService {
       List<VoteTeam> matchTeams = voteTeams.stream()
           .filter(vt -> vt.getVote().getId().equals(vote.getId()))
           .toList();
-      return SessionFindDto.VoteFindDto.from(vote, matchTeams);
+      return VoteFindDto.from(vote, matchTeams);
     }).toList();
 
     return new SessionFindDto(

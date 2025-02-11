@@ -1,5 +1,6 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.stream.entity.Stream;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -40,12 +42,15 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   private final SessionUserInfoRepository sessionUserInfoRepository;
   private final CandidateRepository candidateRepository;
   private final PledgeRepository pledgeRepository;
+  private final FileStorageComponent fileStorageComponent;
 
   @Value("${spring.data.hls.host-prefix}")
   private String STREAMING_PREFIX;
 
   @Value("${spring.data.hls.host-postfix}")
   private String STREAMING_POSTFIX;
+
+  private final static String POSTER_TYPE = "poster";
 
   @Transactional
   @Override
@@ -99,28 +104,28 @@ public class VoteTeamServiceImpl implements VoteTeamService {
 
   @Transactional
   @Override
-  public void updateVoteTeamInfo(Long sessionId, VoteTeamInfoRequest request) {
-    UserDto userDto = request.getUser();
-    // 특정 id의 후보자 리스트 가져옴
-    Candidate candidate = getCandidate(sessionId, userDto.getUserId());
-
-    Users user = candidate.getUser();
-    VoteTeam voteTeam = candidate.getVoteTeam();
-
-    // 사용자 이름 바꿈
-    user.setUsername(userDto.getUsername());
-    // 후보자 칭호, 상태 메세지, 포스터 바꿈
-    request.getVoteTeam().updateVoteTeamInfo(voteTeam);
-
-    // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
-    pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
-    Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
+  public void updateVoteTeamInfo(Long sessionId, VoteTeamInfoRequest request, MultipartFile file) {
+    try {
+      UserDto userDto = request.getUser();
+      // 특정 id의 후보자 리스트 가져옴
+      Candidate candidate = getCandidate(sessionId, userDto.getUserId());
+      Users user = candidate.getUser();
+      VoteTeam voteTeam = candidate.getVoteTeam();
+      request.getVoteTeam().setPoster(fileStorageComponent.localSave(file, POSTER_TYPE));
+      // 사용자 이름 바꿈
+      user.setUsername(userDto.getUsername());
+      // 후보자 칭호, 상태 메세지, 포스터 바꿈
+      request.getVoteTeam().updateVoteTeamInfo(voteTeam);
+      // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
+      pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
+      Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private Candidate getCandidate(Long sessionId, Long userId) {
-    List<Candidate> candidateList = candidateRepository.findCandidateAndUserAndVoteTeamByUserId(
-        userId);
-
+    List<Candidate> candidateList = candidateRepository.findCandidateAndUserAndVoteTeamByUserId(userId);
     // 특정 투표에 속한 후보자만 가져옴
     Candidate candidate = candidateList.stream()
         .filter(c -> Objects.equals(c.getVoteTeam().getVote().getElectionSession().getId(),
