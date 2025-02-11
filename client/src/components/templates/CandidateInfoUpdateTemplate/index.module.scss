@@ -1,0 +1,12 @@
+.form {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.charCount {
+  text-align: right;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
