@@ -1,4 +1,3 @@
-// components/organisms/ModalPopup/index.tsx
 import { CandidateSessionData } from '@/types/voteSession';
 import ConfirmModal from '@/components/molecules/ConfirmModal';
 import stamp from '@/assets/icons/stamp.svg';
@@ -7,19 +6,43 @@ import { useVoteStore } from '@/stores/voteStore';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import RoleNameTag from '@/components/molecules/RoleNameTag';
+import { useState } from 'react';
+import Loading from './Loading';
+import { useVoteMutation } from '@/services/hooks/useVote';
 
 interface ModalPopupProps {
   voteSession: CandidateSessionData;
   selectedCandidates: {
     [voteId: number]: { candidateId: number; userName: string };
   };
+  voteComplete: () => void;
 }
-
-function ModalPopup({ voteSession, selectedCandidates }: ModalPopupProps) {
+function ModalPopup({
+  voteSession,
+  selectedCandidates,
+  voteComplete,
+}: ModalPopupProps) {
   const { setModalOpen } = useVoteStore();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // voteSession이 없으면 렌더링하지 않음.
-  if (!voteSession) return null;
+  const mutation = useVoteMutation({
+    voteSession,
+    selectedCandidates,
+    voteComplete: () => {
+      setIsLoading(false);
+      setModalOpen(false);
+      voteComplete();
+    },
+  });
+
+  const handleVoteSubmit = () => {
+    setIsLoading(true);
+    mutation.mutate();
+  };
+
+  if (isLoading) {
+    return <Loading onComplete={() => voteComplete()} />;
+  }
 
   return (
     <ConfirmModal imgSrc={stamp} label='당신이 선택한 국가권력 멤버!'>
@@ -57,7 +80,12 @@ function ModalPopup({ voteSession, selectedCandidates }: ModalPopupProps) {
         >
           취소
         </BaseButton>
-        <BaseButton type='submit' kind='base' status={BASE_BUTTON_STATUS.FILL}>
+        <BaseButton
+          type='submit'
+          kind='base'
+          status={BASE_BUTTON_STATUS.FILL}
+          onClick={handleVoteSubmit}
+        >
           투표
         </BaseButton>
       </div>
