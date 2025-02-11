@@ -28,11 +28,12 @@ public class SecurityConfig {
         .cors(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login", "/logout", "/chat", "/api/**").permitAll()
-            .anyRequest().authenticated()
+//            .requestMatchers("/login", "/logout", "/chat", "/api/**", "/ws/**", "/stream/**", "/hls/**").permitAll()
+//            .anyRequest().authenticated()
+                .anyRequest().permitAll()
         )
         .oauth2Login(oauth2 -> oauth2
-            .loginPage("/login")
+            .loginPage("/api/login")
             .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
 //            .successHandler(oauth2AuthenticationSuccessHandler)
         );
