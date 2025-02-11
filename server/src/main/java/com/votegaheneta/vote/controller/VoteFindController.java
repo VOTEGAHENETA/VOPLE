@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.vote.dto.CandidateSearchDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +45,17 @@ public class VoteFindController {
       @PathVariable("voteId") Long voteId, Pageable pageable) {
     VoteDetailDto voteDetail = voteFindService.getVoteDetail(sessionId, voteId, pageable);
     return ApiResponse.success(HttpStatus.OK, "투표 상세 정보 조회 성공", voteDetail);
+  }
+
+  // ㄴ -> ㄴ이 들어간 모든 이름 조회
+  @GetMapping("/{voteId}/search")
+  public ApiResponse<CandidateSearchDto> searchVoteCandidate(
+      @PathVariable("sessionId") Long sessionId,
+      @PathVariable("voteId") Long voteId,
+      @RequestBody String keyword,
+      Pageable pageable) {
+    CandidateSearchDto result = voteFindService.findSearchCandidates(sessionId, voteId, keyword, pageable);
+    return ApiResponse.success(HttpStatus.OK, "후보자 리스트 검색 성공", result);
   }
 
   @Operation(
