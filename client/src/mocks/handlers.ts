@@ -51,6 +51,23 @@ export const handlers = [
     return HttpResponse.json(mockElectionList, { status: 200 });
   }),
 
+  http.post('/vote/:sessionId/castvote', async ({ params, request }) => {
+    const { sessionId } = params;
+    const requestData = await request.json();
+
+    console.log(`세션 아이디: ${sessionId}`);
+    console.log('요청 데이터:', requestData);
+
+    return HttpResponse.json(
+      {
+        message: '투표 완료 제발',
+        sessionId,
+        receivedData: requestData,
+      },
+      { status: 200 }
+    );
+  }),
+
   // 채팅 메세지 수신 핸들러
   http.get('/api/room/:type/:roomId', async ({ params }) => {
     const { type, roomId } = params;

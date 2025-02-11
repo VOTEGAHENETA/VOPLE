@@ -60,3 +60,17 @@ main {
   z-index: 9999;
 }
 
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: 50px 50px;
+}
+
+.complete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}

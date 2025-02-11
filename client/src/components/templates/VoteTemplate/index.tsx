@@ -5,11 +5,22 @@ import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { useVoteStore } from '@/stores/voteStore';
 import ModalPopup from './ModalPopUp';
-import { info } from '@/types/voteSession';
+import { info } from '@/mocks/data/candidateInfo';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function VoteTemplate() {
   const { selectedCandidates, isModalOpen, chooseCandidate, setModalOpen } =
     useVoteStore();
+  const [isVoting, setIsVoting] = useState(true);
+  const navigate = useNavigate();
+
+  // 투표 버튼 누르면 언마운트 되고, 투표 완료 페이지로 이동
+  useEffect(() => {
+    if (!isVoting) {
+      navigate(`/vote/${info.sessionId}/result/current`);
+    }
+  }, [isVoting, navigate]);
 
   // 투표 수
   const totalCandidates = info.voteFindDto.length;
@@ -17,6 +28,15 @@ function VoteTemplate() {
   // 객체의 key(예: voteTeamId)를 기준으로 선택된 후보 수 계산
   const selectedCount = Object.keys(selectedCandidates).length;
   const allCandidatesSelected = selectedCount === totalCandidates;
+
+  const voteComplete = () => {
+    setIsVoting(false);
+  };
+
+  // 투표 완료 후 VoteTemplate 페이지 언마운트
+  if (!isVoting) {
+    return null;
+  }
 
   return (
     <div className={styles.vote}>
@@ -63,6 +83,7 @@ function VoteTemplate() {
             <ModalPopup
               voteSession={info}
               selectedCandidates={selectedCandidates}
+              voteComplete={voteComplete}
             />
           </div>
         )}

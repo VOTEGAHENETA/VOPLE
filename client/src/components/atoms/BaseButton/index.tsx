@@ -14,7 +14,7 @@ interface Props {
   /** 버튼에 이벤트 지정 */
   onClick?: () => void;
   /** className */
-  customClass: string;
+  customClass?: string;
 }
 
 /** 버튼 기본 UI 제공 */
