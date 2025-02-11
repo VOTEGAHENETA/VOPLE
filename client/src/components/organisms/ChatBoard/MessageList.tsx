@@ -20,13 +20,21 @@ export default function MessageList({ messages }: MessageListProps) {
   return (
     <div className={styles.messageArea} ref={messageAreaRef}>
       {messages.map((message, index) => (
-        <div key={`${message.userId}-${index}`} className={styles.messageRow}>
+        <div
+          key={`${message.userId}-${index}`}
+          className={`${styles.messageRow} ${
+            message.userId === 0 ? styles.systemMessage : ''
+          }`}
+        >
+          {/* 시간 */}
           <Text className={styles.time} size='s'>
             [{message.createdTime.slice(0, 5)}]
           </Text>
+          {/* 닉네임 */}
           <Text className={styles.username} color={message.color} size='s'>
             {message.nickname}
           </Text>
+          {/* 내용 */}
           <Text className={styles.content} size='s'>
             {message.text}
           </Text>

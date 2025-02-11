@@ -1,4 +1,3 @@
-// src/hooks/usePostElection.ts
 import { useMutation } from '@tanstack/react-query';
 import { postElection } from '../election';
 
