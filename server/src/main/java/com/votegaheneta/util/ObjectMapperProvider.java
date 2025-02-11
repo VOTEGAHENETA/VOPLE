@@ -1,4 +1,4 @@
-package util;
+package com.votegaheneta.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

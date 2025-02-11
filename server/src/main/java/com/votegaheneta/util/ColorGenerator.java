@@ -1,4 +1,4 @@
-package util;
+package com.votegaheneta.util;
 
 import java.util.Random;
 

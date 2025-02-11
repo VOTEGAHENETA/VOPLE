@@ -86,6 +86,6 @@ public class VoteTeamController {
   @GetMapping("/{userId}")
   public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("userId") Long userId) {
     VoteTeamInfoResponse voteTeamInfo = voteTeamService.getVoteTeamInfo(sessionId, userId);
-    return ApiResponse.success(HttpStatus.OK, "투표팀 정보 수정 성공", voteTeamInfo);
+    return ApiResponse.success(HttpStatus.OK, "투표팀 정보 조회 성공", voteTeamInfo);
   }
 }

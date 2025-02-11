@@ -12,8 +12,8 @@ public class SwaggerConfig {
   public OpenAPI openAPI() {
     return new OpenAPI()
         .info(new Info()
-            .title("Chatting API")
-            .description("채팅 API")
+            .title("VOPLE API")
+            .description("VOPLE API")
             .version("v1.0.0"));
   }
 }
