@@ -51,7 +51,7 @@ export const handlers = [
     return HttpResponse.json(mockElectionList, { status: 200 });
   }),
 
-  http.post('/api/vote/:sessionId/castvote', async ({ params, request }) => {
+  http.post('/vote/:sessionId/castvote', async ({ params, request }) => {
     const { sessionId } = params;
     const requestData = await request.json();
 

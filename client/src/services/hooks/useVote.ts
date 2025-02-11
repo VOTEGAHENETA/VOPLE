@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { postVote } from '../election';
 import { VoteRequest, VoteSelection } from '@/types/vote';
 import { CandidateSessionData } from '@/types/voteSession';
@@ -17,8 +16,6 @@ export const useVoteMutation = ({
   selectedCandidates,
   voteComplete,
 }: UseVoteMutationProps) => {
-  const navigate = useNavigate();
-
   const createVotePayload = (): { sessionId: number; payload: VoteRequest } => {
     const voteSelections: VoteSelection[] = Object.entries(
       selectedCandidates
@@ -53,7 +50,6 @@ export const useVoteMutation = ({
     onSuccess: () => {
       setTimeout(() => {
         voteComplete?.();
-        navigate(`/vote/${voteSession.sessionId}/result/current`);
       }, 3000);
     },
   });

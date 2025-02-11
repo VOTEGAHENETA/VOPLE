@@ -1,9 +1,9 @@
-import Text from '@/components/atoms/Text';
+import ChatBoard from '@/components/organisms/ChatBoard';
 
 const Result = () => {
   return (
     <div>
-      <Text>결과 페이지 </Text>
+      <ChatBoard type='session' theme='light' userId={1} sessionId={1} />
     </div>
   );
 };

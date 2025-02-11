@@ -4,16 +4,22 @@ import greenCheck from '@/assets/icons/greenCheck.svg';
 import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
 
-function Loading() {
+function Loading({ onComplete }: { onComplete: () => void }) {
   const [count, setCount] = useState(3);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCount((prev) => (prev > 1 ? prev - 1 : 1));
+      setCount((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          onComplete(); // 부모로 콜백 전달
+        }
+        return prev > 1 ? prev - 1 : 0;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [onComplete]);
 
   return (
     <ConfirmModal imgSrc={greenCheck}>

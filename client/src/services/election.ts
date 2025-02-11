@@ -53,9 +53,6 @@ export const postVote = async ({
   sessionId: number;
   payload: VoteRequest;
 }) => {
-  const response = await instance.post(
-    `/api/vote/${sessionId}/castvote`,
-    payload
-  );
+  const response = await instance.post(`/vote/${sessionId}/castvote`, payload);
   return response.data;
 };

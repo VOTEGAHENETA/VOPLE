@@ -41,7 +41,7 @@ function ModalPopup({
   };
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading onComplete={() => voteComplete()} />;
   }
 
   return (
