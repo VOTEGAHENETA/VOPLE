@@ -9,6 +9,7 @@ import QRContainer from './QRContainer';
 import VoteReginster from '@/components/organisms/VoteReginster';
 import { useParams } from 'react-router-dom';
 import { useElectionDetailGet } from '@/services/hooks/useElectionDetail';
+import QRModal from './QRModal';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -16,6 +17,7 @@ function ElectionDetailTemplate() {
     Number(election_id)
   );
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, setState] = useState<TSession>({
     id: 0,
     hostId: 0,
@@ -50,9 +52,9 @@ function ElectionDetailTemplate() {
       console.log('데이터 로드 에러');
     }
 
-    if (data?.data) {
-      setState(data.data.sessionDto);
-      setVoteState(data.data.voteEditInfos);
+    if (data?.sessionDto) {
+      setState(data.sessionDto);
+      setVoteState(data.voteEditInfos);
 
       setDateState({
         startDate: new Date(state.startTime).toISOString().split('T')[0],
@@ -211,12 +213,13 @@ function ElectionDetailTemplate() {
           </div>
         </div>
       </div>
-      <QRContainer param={election_id} />
+      <QRContainer setIsOpen={setIsOpen} />
       <VoteReginster
         sessionId={state.id}
         sessionName={state.sessionName}
         votes={voteState}
       />
+      <QRModal isOpen={isOpen} setIsOpen={setIsOpen} param={election_id} />
     </div>
   );
 }
