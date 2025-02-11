@@ -2,7 +2,6 @@ export interface Candidate {
   candidateId: number;
   userId: number;
   userName: string;
-  poster: string;
 }
 
 export interface VoteTeam {

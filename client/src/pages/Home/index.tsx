@@ -1,10 +1,11 @@
-import Footer from '@/components/molecules/Footer';
+import StreamReceiver from '@/components/atoms/StreamReceiver';
 
 function Home() {
   return (
     <>
-      <div>home page</div>
-      <Footer />
+      <div>
+        <StreamReceiver streamKey='test' />
+      </div>
     </>
   );
 }

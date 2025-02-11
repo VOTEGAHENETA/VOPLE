@@ -1,6 +1,7 @@
 .inputfield {
+  width: 100%;
   position: relative;
-  
+
   &__label {
     display: block;
     margin-bottom: 8px;
@@ -21,11 +22,10 @@
       color: var(--color-error);
     }
   }
-
 }
 
-.search__button{
-  padding : 10px;
+.search__button {
+  padding: 0 10px;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -38,8 +38,7 @@
   background-color: var(--color-white);
 }
 
-
-.search__icon{
+.search__icon {
   width: 18px;
   height: 18px;
 }

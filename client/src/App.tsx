@@ -9,19 +9,23 @@ function App() {
   const nonHeaderLocation = [
     '/login',
     '/elections/:election_id/cadindates/:candidate_id',
+    '/live/:team_id',
   ];
 
   // [/elections//candidates/] => id값을 빼고 나온 path를 기준으로 header 유무 판단
   const showHeader = !nonHeaderLocation.some((path) =>
     location.pathname.startsWith(
-      path.replace(':election_id', '').replace(':candidate_id', '')
+      path
+        .replace(':election_id', '')
+        .replace(':candidate_id', '')
+        .replace(':team_id', '')
     )
   );
 
   return (
     <>
       {showHeader && <Header />}
-      <main id='main-container'>
+      <main id='main-container' className={showHeader ? 'show-header' : ''}>
         <Outlet />
       </main>
     </>
