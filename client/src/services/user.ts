@@ -6,7 +6,5 @@ export const getUserList = async (
   voteId: number,
   pgno: number
 ): Promise<UserResponse> => {
-  return await instance.get(`/vote/${sessionId}/${voteId}`, {
-    params: { page: pgno },
-  });
+  return await instance.get(`/vote/${sessionId}/${voteId}?page=${pgno}`);
 };

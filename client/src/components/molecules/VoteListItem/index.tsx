@@ -3,6 +3,7 @@ import BaseButton from '@/components/atoms/BaseButton';
 import x from '@/assets/icons/x.svg';
 import Text from '@/components/atoms/Text';
 import { shortendWords } from '@/utils/shortenWorkds';
+import { useCandidateStore } from '@/stores/candidateStore';
 
 interface VoteListItemProps {
   id: number; // 투표 id
@@ -17,13 +18,12 @@ export const VoteListItem = ({
   sessionName,
   onDelete,
 }: VoteListItemProps) => {
+  const { setOpenCandidateModal } = useCandidateStore();
   sessionName = shortendWords(sessionName, 14);
   voteName = shortendWords(voteName, 10);
 
-  // 추후 모달 구현 시 반영 예정
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModalOpen = () => {
-    // setIsModalOpen(true);
+    setOpenCandidateModal(id, voteName);
   };
 
   const handleDelete = async () => {

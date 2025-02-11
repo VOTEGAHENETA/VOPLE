@@ -1,5 +1,4 @@
 .tag {
-
   &-all {
     background-color: white;
     display: flex;
@@ -53,5 +52,9 @@
       background-color: var(--color-main-orange);
       border-color: var(--color-main-orange);
     }
+  }
+
+  &-select-true {
+    border: 1px solid var(--color-main-orange);
   }
 }

@@ -10,12 +10,15 @@ import VoteReginster from '@/components/organisms/VoteReginster';
 import { useParams } from 'react-router-dom';
 import { useElectionDetailGet } from '@/services/hooks/useElectionDetail';
 import QRModal from './QRModal';
+import CandidateRegisterTemplate from '../CandidateRegisterTemplate';
+import { useCandidateStore } from '@/stores/candidateStore';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
   const { data, isLoading, isError } = useElectionDetailGet(
     Number(election_id)
   );
+  const { openCandidateModal } = useCandidateStore();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, setState] = useState<TSession>({
@@ -220,6 +223,13 @@ function ElectionDetailTemplate() {
         votes={voteState}
       />
       <QRModal isOpen={isOpen} setIsOpen={setIsOpen} param={election_id} />
+      {openCandidateModal && (
+        <CandidateRegisterTemplate
+          sessionId={Number(election_id)}
+          voteId={openCandidateModal.voteId}
+          voteName={openCandidateModal.voteName}
+        />
+      )}
     </div>
   );
 }

@@ -37,9 +37,12 @@
     width: 100%;
     background-color: var(--color-gray-background);
     border-radius: 10px;
+    border: 1px solid var(--color-gray-background);
   }
 
   &-wrapper {
     padding: 5px;
+    max-height: 250px;
+    overflow: auto;
   }
 }

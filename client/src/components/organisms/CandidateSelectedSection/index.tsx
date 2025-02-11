@@ -1,14 +1,22 @@
 import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
-import { Vote } from '@/types/voteSession';
 import X from '@/assets/icons/x.svg';
 import CandidateTag from '@/components/molecules/CandidateTag';
+import { useCandidateStore } from '@/stores/candidateStore';
+import { CandidateList } from '@/types/user';
 
 interface Props {
-  vote: Vote;
+  voteName: string;
+  candidateList: CandidateList | undefined;
 }
 
-function CandidateSelectedSection({ vote }: Props) {
+function CandidateSelectedSection({ voteName, candidateList }: Props) {
+  const { setOpenCandidateModal, setActiveTeamId } = useCandidateStore();
+
+  function handleCloseModal() {
+    setOpenCandidateModal(-1, '');
+  }
+
   return (
     <div className={styles['selected-container']}>
       <div className={styles['selected-text-section']}>
@@ -16,11 +24,11 @@ function CandidateSelectedSection({ vote }: Props) {
           <Text size='lg' weight='bold'>
             &apos;&nbsp;
             <Text size='lg' color='var(--color-main-orange)' weight='bold'>
-              {vote.voteName}
+              {voteName}
             </Text>
             &nbsp;&apos; 후보 지정
           </Text>
-          <div>
+          <div onClick={handleCloseModal}>
             <img src={X} alt='닫기' />
           </div>
         </div>
@@ -33,11 +41,16 @@ function CandidateSelectedSection({ vote }: Props) {
       </div>
       <div className={styles['selected-box']}>
         <div className={styles['selected-wrapper']}>
-          {vote.voteTeams.map((team, index) => (
-            <div key={team.voteTeamId} className={styles['selected-item']}>
-              <CandidateTag id={index} />
-            </div>
-          ))}
+          {candidateList &&
+            Object.entries(candidateList).map(([teamId, candidates]) => (
+              <div
+                key={teamId}
+                className={styles['selected-item']}
+                onClick={() => setActiveTeamId(Number(teamId))}
+              >
+                <CandidateTag id={Number(teamId)} candidates={candidates} />
+              </div>
+            ))}
         </div>
       </div>
     </div>

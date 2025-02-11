@@ -3,6 +3,7 @@ import dummyQR from '@/assets/icons/dummyQR.svg';
 import { electionDetailEditMock } from './data/electionDetailEdit';
 import { mockElectionList } from './data/electionList';
 import { mockChatMessages } from './data/chatMessages';
+import { data } from './data/userData';
 
 export const handlers = [
   http.post('/election', async ({ request }) => {
@@ -60,6 +61,13 @@ export const handlers = [
       httpStatus: 200,
       message: 'success',
       data: mockChatMessages,
+    });
+  }),
+
+  http.get(`/vote/1/1?page=0`, async () => {
+    return HttpResponse.json({
+      httpStatus: 200,
+      message: '유저 가져여기',
     });
   }),
 ];
