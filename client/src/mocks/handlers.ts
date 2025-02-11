@@ -3,7 +3,6 @@ import dummyQR from '@/assets/icons/dummyQR.svg';
 import { electionDetailEditMock } from './data/electionDetailEdit';
 import { mockElectionList } from './data/electionList';
 import { mockChatMessages } from './data/chatMessages';
-import { info } from './data/candidateInfo';
 import { mockCandidateData } from './data/candidateData';
 import { CandidateUpdateRequest } from '@/types/candidate';
 
@@ -87,15 +86,6 @@ export const handlers = [
     });
   }),
 
-  http.get('vote/12/detail', async () => {
-    return HttpResponse.json(
-      {
-        msessage: '후보자 정보 가져오기 성공',
-        data: info,
-      },
-      { status: 200 }
-    );
-  }),
   // 후보자 정보 송수신 핸들러
   // GET 요청 처리
   http.get(`${baseURL}/candidate/:sessionId/:userId`, ({ params }) => {

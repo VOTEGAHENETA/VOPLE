@@ -5,49 +5,62 @@ import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { useVoteStore } from '@/stores/voteStore';
 import ModalPopup from './ModalPopUp';
-import { info } from '@/mocks/data/candidateInfo';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CandidateSessionData } from '@/types/voteSession';
+import { getVoteDetail } from '@/services/election';
 
 function VoteTemplate() {
   const { selectedCandidates, isModalOpen, chooseCandidate, setModalOpen } =
     useVoteStore();
   const [isVoting, setIsVoting] = useState(true);
   const navigate = useNavigate();
+  const [voteData, setVoteData] = useState<CandidateSessionData | null>(null);
+  const sessionId = 3;
 
-  // 투표 버튼 누르면 언마운트 되고, 투표 완료 페이지로 이동
+  // API 데이터 페칭
   useEffect(() => {
-    if (!isVoting) {
-      navigate(`/elections/${info.sessionId}/result/`);
+    const fetchData = async () => {
+      try {
+        const response = await getVoteDetail(sessionId);
+        setVoteData(response);
+      } catch (error) {
+        console.error('투표 데이터 로딩 실패:', error);
+      }
+    };
+    fetchData();
+  }, [sessionId]); // sessionId 변경 시 재요청
+
+  // 네비게이션 처리
+  useEffect(() => {
+    if (!isVoting && voteData?.sessionId) {
+      navigate(`/elections/${voteData.sessionId}/result/`);
     }
-  }, [isVoting, navigate]);
+  }, [isVoting, voteData?.sessionId, navigate]);
 
-  // 투표 수
-  const totalCandidates = info.voteFindDtos.length;
-
-  // 객체의 key(예: voteTeamId)를 기준으로 선택된 후보 수 계산
+  // 투표 가능 여부 계산
+  const totalCandidates = voteData?.voteFindDtos.length || 0;
   const selectedCount = Object.keys(selectedCandidates).length;
   const allCandidatesSelected = selectedCount === totalCandidates;
 
-  const voteComplete = () => {
-    setIsVoting(false);
-  };
+  const voteComplete = () => setIsVoting(false);
 
-  // 투표 완료 후 VoteTemplate 페이지 언마운트
-  if (!isVoting) {
-    return null;
-  }
+  if (!isVoting) return null;
+  if (!voteData)
+    return <div className={styles.loading}>투표 정보 불러오는 중...</div>;
 
   return (
     <div className={styles.vote}>
-      <VotingBoard info={info} selectedCandidates={selectedCandidates} />
+      <VotingBoard info={voteData} selectedCandidates={selectedCandidates} />
+
       <div className={styles.gallery}>
         <CandidateGallery
-          info={info}
+          info={voteData}
           chooseCandidate={chooseCandidate}
           selectedCandidates={selectedCandidates}
         />
       </div>
+
       <div className={styles.btn}>
         <div className={styles.canceled}>
           <BaseButton
@@ -67,10 +80,7 @@ function VoteTemplate() {
                 : BASE_BUTTON_STATUS.DISABLE
             }
             type='button'
-            onClick={() => {
-              if (!allCandidatesSelected) return;
-              setModalOpen(true);
-            }}
+            onClick={() => allCandidatesSelected && setModalOpen(true)}
           >
             소중한 한표
           </BaseButton>
@@ -81,7 +91,7 @@ function VoteTemplate() {
         {isModalOpen && (
           <div className={styles.modalBackdrop}>
             <ModalPopup
-              voteSession={info}
+              voteSession={voteData}
               selectedCandidates={selectedCandidates}
               voteComplete={voteComplete}
             />
