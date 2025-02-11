@@ -4,6 +4,9 @@ import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.ChatRoomDto;
 import com.votegaheneta.chat.service.ChatService;
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.user.dto.UserDto;
+import com.votegaheneta.user.entity.Users;
+import com.votegaheneta.util.AuthenticationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -13,12 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-//@Tag(name = "Chat", description = "채팅 API")
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
@@ -29,7 +33,11 @@ public class ChatController {
   @SendTo("/api/room/{type}/{roomId}")
   public ChatDto SessionChat(@DestinationVariable String type,
                              @DestinationVariable Long roomId,
+                             @AuthenticationPrincipal OAuth2AuthenticationToken token,
                              ChatDto chatDto) {
+    Users user = AuthenticationUtil.getUserFromOauth2Token(token);
+    UserDto userDto = user.toDto();
+    chatDto.setUserInfo(userDto);
     chatService.saveChat(new ChatRoomDto(roomId, type), chatDto);
     return chatDto;
   }

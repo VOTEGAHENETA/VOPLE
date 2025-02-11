@@ -3,9 +3,11 @@ package com.votegaheneta.security.oauth2;
 import com.votegaheneta.user.entity.Users;
 import java.util.Collection;
 import java.util.Map;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+@Getter
 public class CustomOauth2User implements OAuth2User {
 
   private final OAuth2User oauth2User;
