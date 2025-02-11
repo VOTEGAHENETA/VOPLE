@@ -23,7 +23,6 @@ function CandidateRegisterTemplate({ sessionId, voteId, voteName }: Props) {
       setUserList(data.userList);
       setCandidateList(data.candidateList);
     }
-    console.log('List:', data);
   }, [data]);
 
   if (isError) {

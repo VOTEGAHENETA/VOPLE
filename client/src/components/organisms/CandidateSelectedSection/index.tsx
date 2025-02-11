@@ -4,6 +4,7 @@ import X from '@/assets/icons/x.svg';
 import CandidateTag from '@/components/molecules/CandidateTag';
 import { useCandidateStore } from '@/stores/candidateStore';
 import { CandidateList } from '@/types/user';
+import { useEffect } from 'react';
 
 interface Props {
   voteName: string;
@@ -11,11 +12,22 @@ interface Props {
 }
 
 function CandidateSelectedSection({ voteName, candidateList }: Props) {
-  const { setOpenCandidateModal, setActiveTeamId } = useCandidateStore();
+  const {
+    sendCandidates,
+    setSendCandidates,
+    setOpenCandidateModal,
+    setActiveTeamId,
+  } = useCandidateStore();
 
   function handleCloseModal() {
     setOpenCandidateModal(-1, '');
   }
+
+  useEffect(() => {
+    if (candidateList) {
+      setSendCandidates(candidateList);
+    }
+  }, [candidateList]);
 
   return (
     <div className={styles['selected-container']}>
@@ -42,15 +54,17 @@ function CandidateSelectedSection({ voteName, candidateList }: Props) {
       <div className={styles['selected-box']}>
         <div className={styles['selected-wrapper']}>
           {candidateList &&
-            Object.entries(candidateList).map(([teamId, candidates]) => (
-              <div
-                key={teamId}
-                className={styles['selected-item']}
-                onClick={() => setActiveTeamId(Number(teamId))}
-              >
-                <CandidateTag id={Number(teamId)} candidates={candidates} />
-              </div>
-            ))}
+            Object.entries(sendCandidates).map(([teamId, candidateList]) =>
+              Object.entries(candidateList).map(([groupKey, candidates]) => (
+                <div
+                  key={`${teamId}-${groupKey}`}
+                  className={styles['selected-item']}
+                  onClick={() => setActiveTeamId(Number(teamId))}
+                >
+                  <CandidateTag id={Number(teamId)} candidates={candidates} />
+                </div>
+              ))
+            )}
         </div>
       </div>
     </div>

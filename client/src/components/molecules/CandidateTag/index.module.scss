@@ -26,12 +26,15 @@
   }
 
   &-list {
+    width: 100%;
+    overflow: auto;
     display: flex;
     justify-content: start;
     gap: 2px;
   }
 
   &-name {
+    width: max-content;
     display: flex;
     justify-content: center;
     align-items: center;
