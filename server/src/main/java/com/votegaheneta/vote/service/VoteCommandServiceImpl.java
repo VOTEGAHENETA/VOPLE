@@ -6,7 +6,6 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
-import com.votegaheneta.vote.mapper.VoteInfoMapper;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
@@ -14,7 +13,6 @@ import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +26,6 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final VoteRepository voteRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
-  @Autowired
-  private VoteInfoMapper voteInfoMapper;
 
   @Override
   @Transactional
@@ -42,9 +38,8 @@ public class VoteCommandServiceImpl implements VoteCommandService {
         .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
         .forEach(vote::addVoteInfo);
     ;
-    voteInfoMapper.batchInsertVoteInfo(vote.getVoteInfos());
 //    voteRepository.batchInsertVoteInfoList(vote.getVoteInfos());
-//    voteInfoRepository.saveAll(vote.getVoteInfos());
+    voteInfoRepository.saveAll(vote.getVoteInfos());
   }
 
   @Override
