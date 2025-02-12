@@ -3,7 +3,11 @@ import {
   ISessionDetail,
   ElectionList,
 } from '@/types/election';
-import { CandidateSessionData, VoteResultsResponse } from '@/types/voteSession';
+import {
+  CandidateSessionData,
+  ElectionResponse,
+  VoteResultsResponse,
+} from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
 import instance from './api';
 import { VoteRequest } from '@/types/vote';
@@ -43,6 +47,12 @@ export const getElectionDetail = async (
 
 export const getElectionList = async (): Promise<ElectionList> => {
   return await instance.get(`/election`);
+};
+
+export const getElectionSession = async (
+  sessionId: number
+): Promise<ElectionResponse> => {
+  return await instance.get(`/election/${sessionId}`);
 };
 
 // 투표하기 (POST 요청)

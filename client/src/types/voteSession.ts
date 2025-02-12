@@ -51,3 +51,13 @@ export interface VoteResultsResponse {
   wholeVoterPercent: number;
   voteResults: VoteResult[];
 }
+
+export interface ElectionResponse {
+  sessionId: number;
+  hostId: number;
+  sessionName: string;
+  startTime: Date;
+  endTime: Date;
+  voteResults: VoteResult[];
+  wholeVoterPercent: number;
+}

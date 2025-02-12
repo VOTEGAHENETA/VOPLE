@@ -3,7 +3,6 @@ package com.votegaheneta.vote.service;
 import com.votegaheneta.common.component.SearchComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.common.repository.RedisRepository;
-import com.votegaheneta.vote.dto.CandidateSearchDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
@@ -13,6 +12,7 @@ import com.votegaheneta.vote.dto.SessionResultFindDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
 import com.votegaheneta.vote.dto.VoteDetailDto;
+import com.votegaheneta.vote.dto.VoteInfoDto;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
@@ -66,21 +66,19 @@ public class VoteFindServiceImpl implements VoteFindService {
   }
 
   @Override
-  public CandidateSearchDto findSearchCandidates(Long sessionId, Long voteId, String keyword, Pageable pageable) {
+  public List<VoteInfoDto> findSearchCandidates(Long voteId, String keyword, Pageable pageable) {
     // 찾아올때 어떤 데이터를 들고와야할까?
     StringBuilder sb = new StringBuilder();
     for (String word : keyword.split("")) {
       sb.append(searchComponent.searchWordReSetting(word));
     }
-    
-    return null;
+    return customCandidateRepository.findSearchCandidatesBySessionId(voteId, sb.toString(), pageable);
   }
 
   @Override
   public SessionFindDto findVoteBySessionId(Long sessionId) {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
-
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
     List<Long> voteIds = votes.stream().map(Vote::getId).toList();
     List<VoteTeam> voteTeams = voteTeamRepository.findByVote_IdIn(voteIds);
@@ -90,7 +88,6 @@ public class VoteFindServiceImpl implements VoteFindService {
           .toList();
       return VoteFindDto.from(vote, matchTeams);
     }).toList();
-
     return new SessionFindDto(
         electionSession.getId(),
         electionSession.getSessionName(),
