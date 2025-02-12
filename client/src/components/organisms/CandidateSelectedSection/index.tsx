@@ -24,7 +24,6 @@ function CandidateSelectedSection({ voteName, candidateList }: Props) {
   useEffect(() => {
     if (candidateList) {
       setSendCandidates(candidateList);
-      console.log('selected sendCandidate: ', sendCandidates);
     }
   }, [candidateList]);
 

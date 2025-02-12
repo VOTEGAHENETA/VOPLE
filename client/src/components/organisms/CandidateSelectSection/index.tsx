@@ -4,7 +4,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Candidate, User } from '@/types/user';
 import VoterNameCard from '@/components/molecules/VoterNameCard';
 import { useCandidateStore } from '@/stores/candidateStore';
-import { useInfiniteUserList } from '@/services/hooks/useUserList';
+import {
+  useInfiniteSearchUserList,
+  useInfiniteUserList,
+} from '@/services/hooks/useUserList';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface Props {
   sessionId: number;
@@ -18,31 +22,66 @@ const errMsgs = [
 ];
 
 function CandidateSelectSection({ sessionId, voteId }: Props) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteUserList(sessionId, voteId);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const debounceSearchValue = useDebounce<string>(searchValue);
   const { activeTeamId, addCandidate, removeCandidate, sendCandidates } =
     useCandidateStore();
-  const [searchValue, setSearchValue] = useState<string>('');
+
   const [errMsg, setErrMsg] = useState<string>('');
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    console.log('현재 선택된 팀:', activeTeamId);
-  }, [activeTeamId]);
+  const {
+    data: userData,
+    fetchNextPage: userFetchNextPage,
+    hasNextPage: userHasNextPage,
+    isFetchingNextPage: userIsFetchingNextPage,
+  } = useInfiniteUserList(sessionId, voteId, !debounceSearchValue);
+  const {
+    data: searchData,
+    fetchNextPage: searchFetchNextPage,
+    hasNextPage: searchHasNextPage,
+    isFetchingNextPage: searchIsFetchingNextPage,
+  } = useInfiniteSearchUserList(sessionId, voteId, debounceSearchValue);
 
   useEffect(() => {
-    if (data) {
-      const newUsers = data.pages.flatMap((page) => page.userList);
-      setAllUsers((prevUsers) => {
-        const uniqueUsers = new Map(prevUsers.map((u) => [u.userId, u]));
-        newUsers.forEach((user) => uniqueUsers.set(user.userId, user));
-        return Array.from(uniqueUsers.values());
-      });
+    setAllUsers([]);
+    if (debounceSearchValue) {
+      if (searchData && searchData.pages) {
+        const newUsers = searchData.pages.flatMap((page) => page);
+        if (newUsers.length === 0) {
+          return;
+        }
+        setAllUsers(() => {
+          const uniqueUsers = new Map(
+            newUsers.map((u) => {
+              return [u.userId, u];
+            })
+          );
+          return Array.from(uniqueUsers.values());
+        });
+      }
+    } else {
+      if (userData) {
+        if (userData && userData.pages) {
+          const newUsers = userData.pages.flatMap((page) => page.userList);
+          if (newUsers.length === 0) {
+            return;
+          }
+          setAllUsers(() => {
+            const uniqueUsers = new Map(newUsers.map((u) => [u.userId, u]));
+            return Array.from(uniqueUsers.values());
+          });
+        }
+      }
     }
-  }, [data]);
+  }, [userData, searchData, debounceSearchValue]);
 
-  useEffect(() => {
+  const setupObserver = (
+    fetchNextPage: () => void,
+    hasNextPage: boolean,
+    isFetchingNextPage: boolean
+  ) => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
@@ -61,7 +100,32 @@ function CandidateSelectSection({ sessionId, voteId }: Props) {
         observer.unobserve(observerRef.current);
       }
     };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  };
+
+  useEffect(() => {
+    const cleanupUserObserver = setupObserver(
+      userFetchNextPage,
+      userHasNextPage,
+      userIsFetchingNextPage
+    );
+    const cleanupSearchObserver = setupObserver(
+      searchFetchNextPage,
+      searchHasNextPage,
+      searchIsFetchingNextPage
+    );
+
+    return () => {
+      cleanupUserObserver();
+      cleanupSearchObserver();
+    };
+  }, [
+    userFetchNextPage,
+    userHasNextPage,
+    userIsFetchingNextPage,
+    searchFetchNextPage,
+    searchHasNextPage,
+    searchIsFetchingNextPage,
+  ]);
 
   const handleCandidateClick = (user: User) => {
     if (activeTeamId === null) {
@@ -113,26 +177,30 @@ function CandidateSelectSection({ sessionId, voteId }: Props) {
         />
       </div>
       <div className={styles['select-wrapper']}>
-        {allUsers.map((user) => {
-          const teamKey = String(activeTeamId);
-          const isSelected =
-            activeTeamId !== null &&
-            sendCandidates[activeTeamId]?.[teamKey]?.some(
-              (candidate: Candidate) => candidate.userId === user.userId
-            );
+        {allUsers.length > 0 ? (
+          allUsers.map((user) => {
+            const teamKey = String(activeTeamId);
+            const isSelected =
+              activeTeamId !== null &&
+              sendCandidates[activeTeamId]?.[teamKey]?.some(
+                (candidate: Candidate) => candidate.userId === user.userId
+              );
 
-          return (
-            <div key={user.userId} onClick={() => handleCandidateClick(user)}>
-              <VoterNameCard
-                status={isSelected}
-                kakaoNickname={user.username}
-                nickname={user.nickname}
-              />
-            </div>
-          );
-        })}
+            return (
+              <div key={user.userId} onClick={() => handleCandidateClick(user)}>
+                <VoterNameCard
+                  status={isSelected}
+                  kakaoNickname={user.username}
+                  nickname={user.nickname}
+                />
+              </div>
+            );
+          })
+        ) : debounceSearchValue ? (
+          <div className={styles['no-result']}>일치하는 인원이 없어요.</div>
+        ) : null}
         <div ref={observerRef} style={{ height: '20px' }}>
-          {isFetchingNextPage && <span>Loading...</span>}
+          {userIsFetchingNextPage && <span>Loading...</span>}
         </div>
       </div>
     </div>

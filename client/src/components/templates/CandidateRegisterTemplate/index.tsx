@@ -33,7 +33,8 @@ function CandidateRegisterTemplate({ sessionId, voteId, voteName }: Props) {
   if (isError) {
     return (
       <div>
-        데이터를 불러오는 도중 오류가 발생했습니다. 창을 닫고 다시 접속해주세요.
+        데이터를 불러오는 도중 오류가 발생했습니다. <br />
+        창을 닫고 다시 접속해주세요.
       </div>
     );
   }
