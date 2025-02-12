@@ -25,4 +25,6 @@ public interface SessionService {
   String getQrcode(Long sessionId);
 
   SessionEditDto getSessionEdit(Long sessionId);
+
+  boolean validateQuestion(Long sessionId, Long userId, String answer);
 }

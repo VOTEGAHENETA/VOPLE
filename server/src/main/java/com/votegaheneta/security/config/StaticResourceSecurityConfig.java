@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class StaticResuorceSecurityConfig {
+public class StaticResourceSecurityConfig {
 
   @Order(1)
   @Bean

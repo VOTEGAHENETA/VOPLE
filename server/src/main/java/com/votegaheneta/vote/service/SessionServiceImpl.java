@@ -164,6 +164,12 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
+  public boolean validateQuestion(Long sessionId, Long userId, String answer) {
+
+    return true;
+  }
+
+  @Override
   public USER_TYPE judgeUserType(Long sessionId, Long userId) {
     Long count = sessionRepository.judgeUserType(sessionId, userId);
     System.out.println("count = " + count);
