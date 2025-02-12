@@ -12,7 +12,7 @@ interface Props {
 }
 
 function VotingBoard({ info, selectedCandidates }: Props) {
-  const voteData = info.voteFindDto;
+  const voteData = info.voteFindDtos;
   return (
     <div className={styles.board}>
       <Text size='xs' weight='bold' color='#777777'>

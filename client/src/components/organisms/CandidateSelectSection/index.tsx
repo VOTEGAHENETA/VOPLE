@@ -1,7 +1,7 @@
 import InputField from '@/components/molecules/InputField';
 import styles from './index.module.scss';
 import React, { useEffect, useRef, useState } from 'react';
-import { User } from '@/types/user';
+import { Candidate, User } from '@/types/user';
 import VoterNameCard from '@/components/molecules/VoterNameCard';
 import { useCandidateStore } from '@/stores/candidateStore';
 import { useInfiniteUserList } from '@/services/hooks/useUserList';
@@ -20,7 +20,7 @@ const errMsgs = [
 function CandidateSelectSection({ sessionId, voteId }: Props) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteUserList(sessionId, voteId);
-  const { activeTeamId, addCandidate, removeCandidate, selectedCandidates } =
+  const { activeTeamId, addCandidate, removeCandidate, sendCandidates } =
     useCandidateStore();
   const [searchValue, setSearchValue] = useState<string>('');
   const [errMsg, setErrMsg] = useState<string>('');
@@ -69,14 +69,30 @@ function CandidateSelectSection({ sessionId, voteId }: Props) {
       return;
     }
 
-    const isAlreadySelected = selectedCandidates[activeTeamId]?.some(
+    const teamKey = String(activeTeamId);
+    const existingCandidates = sendCandidates[activeTeamId]?.[teamKey] || [];
+
+    const isAlreadySelected = existingCandidates.some(
       (candidate) => candidate.userId === user.userId
     );
 
+    const isAlreadyInOtherGroup = Object.entries(sendCandidates)
+      .filter(([teamId]) => Number(teamId) !== activeTeamId)
+      .some(([, candidateList]) =>
+        Object.values(candidateList).some((candidates) =>
+          candidates.some((candidate) => candidate.userId === user.userId)
+        )
+      );
+
+    if (isAlreadyInOtherGroup) {
+      alert('이 사용자는 이미 다른 후보 그룹에 추가되었습니다.');
+      return;
+    }
+
     if (isAlreadySelected) {
-      removeCandidate(voteId, user.userId);
+      removeCandidate(user.userId);
     } else {
-      addCandidate(voteId, user);
+      addCandidate(user);
     }
   };
 
@@ -97,14 +113,24 @@ function CandidateSelectSection({ sessionId, voteId }: Props) {
         />
       </div>
       <div className={styles['select-wrapper']}>
-        {allUsers.map((user) => (
-          <div key={user.userId} onClick={() => handleCandidateClick(user)}>
-            <VoterNameCard
-              kakaoNickname={user.username}
-              nickname={user.nickname}
-            />
-          </div>
-        ))}
+        {allUsers.map((user) => {
+          const teamKey = String(activeTeamId);
+          const isSelected =
+            activeTeamId !== null &&
+            sendCandidates[activeTeamId]?.[teamKey]?.some(
+              (candidate: Candidate) => candidate.userId === user.userId
+            );
+
+          return (
+            <div key={user.userId} onClick={() => handleCandidateClick(user)}>
+              <VoterNameCard
+                status={isSelected}
+                kakaoNickname={user.username}
+                nickname={user.nickname}
+              />
+            </div>
+          );
+        })}
         <div ref={observerRef} style={{ height: '20px' }}>
           {isFetchingNextPage && <span>Loading...</span>}
         </div>

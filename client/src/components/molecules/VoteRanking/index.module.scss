@@ -1,0 +1,25 @@
+.ranking {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 95px;
+  border-radius: 10px;
+  background-color: white;
+  padding: 16px 14px;
+  max-width: 318px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.percent {
+  display: flex;
+}

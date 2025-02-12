@@ -337,8 +337,6 @@ values (1, 1, 1, 'CANDIDATE', false),
        (108, 28, 3, 'VOTER', false),
        (109, 29, 3, 'VOTER', false),
        (110, 30, 3, 'VOTER', false),
-
-       -- vote_id 4인 30명
        (111, 1, 4, 'VOTER', false),
        (112, 2, 4, 'VOTER', false),
        (113, 3, 4, 'VOTER', false),
