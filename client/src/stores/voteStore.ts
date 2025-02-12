@@ -1,13 +1,10 @@
-import { info } from '@/mocks/data/candidateInfo';
-import { CandidateSessionData } from '@/types/voteSession';
 import { create } from 'zustand';
 
-interface VoteState {
+interface VoteClientState {
   selectedCandidates: {
     [voteId: number]: { candidateId: number; userName: string };
   };
   isModalOpen: boolean;
-  voteSession: CandidateSessionData;
   chooseCandidate: (
     voteId: number,
     candidate: { candidateId: number; userName: string }
@@ -15,10 +12,9 @@ interface VoteState {
   setModalOpen: (isOpen: boolean) => void;
 }
 
-export const useVoteStore = create<VoteState>((set) => ({
+export const useVoteStore = create<VoteClientState>((set) => ({
   selectedCandidates: {},
   isModalOpen: false,
-  voteSession: info, // mockdata 사용
   chooseCandidate: (voteId, candidate) =>
     set((state) => ({
       selectedCandidates: {

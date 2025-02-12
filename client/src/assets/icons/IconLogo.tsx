@@ -1,8 +1,13 @@
-function IconLogo() {
+interface Props {
+  width?: number;
+  height?: number;
+}
+
+function IconLogo({ width = 124, height = 28 }: Props) {
   return (
     <svg
-      width='124'
-      height='28'
+      width={width}
+      height={height}
       viewBox='0 0 124 28'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
