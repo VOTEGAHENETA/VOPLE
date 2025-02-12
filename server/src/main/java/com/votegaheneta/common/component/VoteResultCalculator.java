@@ -61,7 +61,6 @@ public class VoteResultCalculator {
    */
     public List<VoteResult> calculateVoteResult(Long sessionId) {
       List<VoteResultProjection> voteResultProjections = customVoteRepository.findVoteResultBySessionId(sessionId);
-
       // 1. null이 아닌 voteTeamId를 가진 항목만 그룹화
       Map<Long, Map<Long, List<VoteResultProjection>>> voteMap = voteResultProjections.stream()
           .filter(projection -> projection.getVoteTeamId() != null)
@@ -76,7 +75,6 @@ public class VoteResultCalculator {
                 .map(VoteResultProjection::getVoteName)
                 .findFirst()
                 .orElse("");
-
             // voteId에 해당하는 팀 결과가 있는 경우에만 처리
             List<TeamResult> teamResults = voteMap.containsKey(voteId)
                 ? voteMap.get(voteId).values().stream()
