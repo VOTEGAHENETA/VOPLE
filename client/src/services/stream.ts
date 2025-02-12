@@ -1,18 +1,20 @@
-import axios from 'axios';
-const { VITE_RTMP_API_URL } = import.meta.env;
+import instance from './api';
 
-export const sendStreamData = async (data: Blob) => {
-  const formData = new FormData();
-  formData.append('stream', data);
+interface IStream {
+  streamId: number;
+  streamingUrl: string;
+  isStreaming: boolean;
+}
 
-  try {
-    const response = await axios.post(VITE_RTMP_API_URL, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log('Stream data sent successfully:', response.data);
-  } catch (error) {
-    console.error('Error sending stream data:', error);
-  }
+export const sendStreamData = async (
+  streamId: number,
+  isStreaming: boolean
+) => {
+  return await instance.put(
+    `/live/${streamId}/status?isStreaming=${isStreaming}`
+  );
+};
+
+export const getStreamData = async (streamId: number): Promise<IStream> => {
+  return await instance.get(`/live/${streamId}`);
 };
