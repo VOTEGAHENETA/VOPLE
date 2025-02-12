@@ -4,7 +4,7 @@ import Text from '@/components/atoms/Text';
 import Introduction from './Introduction';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
-import { TeamResult } from '@/types/election';
+import { TeamResult } from '@/types/voteSession';
 
 interface Props {
   team: TeamResult;
@@ -42,8 +42,8 @@ function CandidateSection({ team, onClick }: Props) {
             ))}
           </div>
         </div>
-        {team.candidateStatement ? (
-          <Introduction candidateStatement={team.candidateStatement} />
+        {team.candidate_statement ? (
+          <Introduction candidateStatement={team.candidate_statement} />
         ) : (
           <Text
             size='xs'
