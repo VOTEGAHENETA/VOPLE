@@ -39,8 +39,21 @@ function CandidateRegisterTemplate({ sessionId, voteId, voteName }: Props) {
     );
   }
 
+  function isCheckNoUserGroup() {
+    return Object.values(sendCandidates).some((candidateList) =>
+      Object.values(candidateList).every(
+        (candidates) => candidates.length === 0
+      )
+    );
+  }
+
   const postTeam = usePostVoteTeam();
   function handleSubmitTeam() {
+    if (isCheckNoUserGroup()) {
+      alert('모든 그룹에 후보자가 선택되어야 제출할 수 있습니다.');
+      return;
+    }
+
     postTeam.mutate({
       sessionId: sessionId,
       voteId: voteId,
