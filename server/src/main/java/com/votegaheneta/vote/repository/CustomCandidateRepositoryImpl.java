@@ -42,7 +42,7 @@ public class CustomCandidateRepositoryImpl implements CustomCandidateRepository 
         .fetch();
     Pattern pattern = Pattern.compile(regex);
     return allResults.stream()
-        .filter(dto -> pattern.matcher(dto.getUserName()).find())
+        .filter(dto -> pattern.matcher(dto.getUsername()).find())
         .skip(pageable.getOffset())
         .limit(pageable.getPageSize())
         .toList();
