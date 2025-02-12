@@ -10,7 +10,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    min-height: 400px;
-    max-height: 700px;
+    min-height: 100px;
+    max-height: 250px;
+    overflow: auto;
   }
 }

@@ -14,11 +14,9 @@ interface Props {
 function CandidateSection({ team, onClick }: Props) {
   return (
     <div className={styles.candidate} onClick={onClick}>
-      <Poster
-        size='xs'
-        src={team.poster}
-        className={styles['candidate-poster']}
-      />
+      <div className={styles['candidate-poster']}>
+        <Poster size='xs' src={team.poster} />
+      </div>
       <div className={styles['candidate-content']}>
         <div className={styles['candidate-information']}>
           <div className={styles['candidate-information-prefix']}>

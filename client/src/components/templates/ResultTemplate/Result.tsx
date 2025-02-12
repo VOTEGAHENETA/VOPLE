@@ -1,9 +1,9 @@
-import ChatBoard from '@/components/organisms/ChatBoard';
+import ResultChatContainer from '@/components/organisms/ResultChatContainer';
 
 const Result = () => {
   return (
     <div>
-      <ChatBoard type='session' theme='light' userId={1} sessionId={1} />
+      <ResultChatContainer sessionId={1} userId={1} />
     </div>
   );
 };

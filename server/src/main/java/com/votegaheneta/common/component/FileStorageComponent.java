@@ -19,9 +19,9 @@ public class FileStorageComponent {
 
   private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
   // 윈도우 개발 환경용 경로
-  private static final String UPLOAD_URL = "C:/app/uploads";  // 또는 "C:\\app\\uploads"
+  //private static final String UPLOAD_URL = "C:/app/uploads";  // 또는 "C:\\app\\uploads"
   // 리눅스 배포 환경용 경로
-  // private static final String UPLOAD_URL = "/app/uploads";
+  private static final String UPLOAD_URL = "/app/uploads";
   private static final String FILE_URL_PREFIX = "/media";
   private static final String DATE_PATTERN = "yyyy/MM/dd";
 

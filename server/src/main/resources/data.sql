@@ -3,87 +3,86 @@
 
 -- Users table
 INSERT INTO users (id, username, nickname, kakao_id)
-VALUES
-    (1, 'user1', 'nickname1', 1),
-    (2, 'user2', 'nickname2', 2),
-    (3, 'user3', 'nickname3', 3),
-    (4, 'user4', 'nickname4', 4),
-    (5, 'user5', 'nickname5', 5),
-    (6, 'user6', 'nickname6', 6),
-    (7, 'user7', 'nickname7', 7),
-    (8, 'user8', 'nickname8', 8),
-    (9, 'user9', 'nickname9', 9),
-    (10, 'user10', 'nickname10', 10),
-    (11, 'user11', 'nickname11', 11),
-    (12, 'user12', 'nickname12', 12),
-    (13, 'user13', 'nickname13', 13),
-    (14, 'user14', 'nickname14', 14),
-    (15, 'user15', 'nickname15', 15),
-    (16, 'user16', 'nickname16', 16),
-    (17, 'user17', 'nickname17', 17),
-    (18, 'user18', 'nickname18', 18),
-    (19, 'user19', 'nickname19', 19),
-    (20, 'user20', 'nickname20', 20),
-    (21, 'user21', 'nickname21', 21),
-    (22, 'user22', 'nickname22', 22),
-    (23, 'user23', 'nickname23', 23),
-    (24, 'user24', 'nickname24', 24),
-    (25, 'user25', 'nickname25', 25),
-    (26, 'user26', 'nickname26', 26),
-    (27, 'user27', 'nickname27', 27),
-    (28, 'user28', 'nickname28', 28),
-    (29, 'user29', 'nickname29', 29),
-    (30, 'user30', 'nickname30', 30),
-    (31, 'user31', 'nickname31', 31),
-    (32, 'user32', 'nickname32', 32),
-    (33, 'user33', 'nickname33', 33),
-    (34, 'user34', 'nickname34', 34),
-    (35, 'user35', 'nickname35', 35),
-    (36, 'user36', 'nickname36', 36),
-    (37, 'user37', 'nickname37', 37),
-    (38, 'user38', 'nickname38', 38),
-    (39, 'user39', 'nickname39', 39),
-    (40, 'user40', 'nickname40', 40),
-    (41, 'user41', 'nickname41', 41),
-    (42, 'user42', 'nickname42', 42),
-    (43, 'user43', 'nickname43', 43),
-    (44, 'user44', 'nickname44', 44),
-    (45, 'user45', 'nickname45', 45),
-    (46, 'user46', 'nickname46', 46),
-    (47, 'user47', 'nickname47', 47),
-    (48, 'user48', 'nickname48', 48),
-    (49, 'user49', 'nickname49', 49),
-    (50, 'user50', 'nickname50', 50),
-    (51, 'user51', 'nickname51', 51),
-    (52, 'user52', 'nickname52', 52),
-    (53, 'user53', 'nickname53', 53),
-    (54, 'user54', 'nickname54', 54),
-    (55, 'user55', 'nickname55', 55),
-    (56, 'user56', 'nickname56', 56),
-    (57, 'user57', 'nickname57', 57),
-    (58, 'user58', 'nickname58', 58),
-    (59, 'user59', 'nickname59', 59),
-    (60, 'user60', 'nickname60', 60),
-    (61, 'user61', 'nickname61', 61),
-    (62, 'user62', 'nickname62', 62),
-    (63, 'user63', 'nickname63', 63),
-    (64, 'user64', 'nickname64', 64),
-    (65, 'user65', 'nickname65', 65),
-    (66, 'user66', 'nickname66', 66),
-    (67, 'user67', 'nickname67', 67),
-    (68, 'user68', 'nickname68', 68),
-    (69, 'user69', 'nickname69', 69),
-    (70, 'user70', 'nickname70', 70),
-    (71, 'user71', 'nickname71', 71),
-    (72, 'user72', 'nickname72', 72),
-    (73, 'user73', 'nickname73', 73),
-    (74, 'user74', 'nickname74', 74),
-    (75, 'user75', 'nickname75', 75),
-    (76, 'user76', 'nickname76', 76),
-    (77, 'user77', 'nickname77', 77),
-    (78, 'user78', 'nickname78', 78),
-    (79, 'user79', 'nickname79', 79),
-    (80, 'user80', 'nickname80', 80);
+VALUES (1, 'user1', 'nickname1', 1),
+       (2, 'user2', 'nickname2', 2),
+       (3, 'user3', 'nickname3', 3),
+       (4, 'user4', 'nickname4', 4),
+       (5, 'user5', 'nickname5', 5),
+       (6, 'user6', 'nickname6', 6),
+       (7, 'user7', 'nickname7', 7),
+       (8, 'user8', 'nickname8', 8),
+       (9, 'user9', 'nickname9', 9),
+       (10, 'user10', 'nickname10', 10),
+       (11, 'user11', 'nickname11', 11),
+       (12, 'user12', 'nickname12', 12),
+       (13, 'user13', 'nickname13', 13),
+       (14, 'user14', 'nickname14', 14),
+       (15, 'user15', 'nickname15', 15),
+       (16, 'user16', 'nickname16', 16),
+       (17, 'user17', 'nickname17', 17),
+       (18, 'user18', 'nickname18', 18),
+       (19, 'user19', 'nickname19', 19),
+       (20, 'user20', 'nickname20', 20),
+       (21, 'user21', 'nickname21', 21),
+       (22, 'user22', 'nickname22', 22),
+       (23, 'user23', 'nickname23', 23),
+       (24, 'user24', 'nickname24', 24),
+       (25, 'user25', 'nickname25', 25),
+       (26, 'user26', 'nickname26', 26),
+       (27, 'user27', 'nickname27', 27),
+       (28, 'user28', 'nickname28', 28),
+       (29, 'user29', 'nickname29', 29),
+       (30, 'user30', 'nickname30', 30),
+       (31, 'user31', 'nickname31', 31),
+       (32, 'user32', 'nickname32', 32),
+       (33, 'user33', 'nickname33', 33),
+       (34, 'user34', 'nickname34', 34),
+       (35, 'user35', 'nickname35', 35),
+       (36, 'user36', 'nickname36', 36),
+       (37, 'user37', 'nickname37', 37),
+       (38, 'user38', 'nickname38', 38),
+       (39, 'user39', 'nickname39', 39),
+       (40, 'user40', 'nickname40', 40),
+       (41, 'user41', 'nickname41', 41),
+       (42, 'user42', 'nickname42', 42),
+       (43, 'user43', 'nickname43', 43),
+       (44, 'user44', 'nickname44', 44),
+       (45, 'user45', 'nickname45', 45),
+       (46, 'user46', 'nickname46', 46),
+       (47, 'user47', 'nickname47', 47),
+       (48, 'user48', 'nickname48', 48),
+       (49, 'user49', 'nickname49', 49),
+       (50, 'user50', 'nickname50', 50),
+       (51, 'user51', 'nickname51', 51),
+       (52, 'user52', 'nickname52', 52),
+       (53, 'user53', 'nickname53', 53),
+       (54, 'user54', 'nickname54', 54),
+       (55, 'user55', 'nickname55', 55),
+       (56, 'user56', 'nickname56', 56),
+       (57, 'user57', 'nickname57', 57),
+       (58, 'user58', 'nickname58', 58),
+       (59, 'user59', 'nickname59', 59),
+       (60, 'user60', 'nickname60', 60),
+       (61, 'user61', 'nickname61', 61),
+       (62, 'user62', 'nickname62', 62),
+       (63, 'user63', 'nickname63', 63),
+       (64, 'user64', 'nickname64', 64),
+       (65, 'user65', 'nickname65', 65),
+       (66, 'user66', 'nickname66', 66),
+       (67, 'user67', 'nickname67', 67),
+       (68, 'user68', 'nickname68', 68),
+       (69, 'user69', 'nickname69', 69),
+       (70, 'user70', 'nickname70', 70),
+       (71, 'user71', 'nickname71', 71),
+       (72, 'user72', 'nickname72', 72),
+       (73, 'user73', 'nickname73', 73),
+       (74, 'user74', 'nickname74', 74),
+       (75, 'user75', 'nickname75', 75),
+       (76, 'user76', 'nickname76', 76),
+       (77, 'user77', 'nickname77', 77),
+       (78, 'user78', 'nickname78', 78),
+       (79, 'user79', 'nickname79', 79),
+       (80, 'user80', 'nickname80', 80);
 ALTER TABLE users ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 81);
 
 -- Election_session table
@@ -93,20 +92,30 @@ INSERT INTO election_session (id, host_id, qr_code, session_name, whole_voter, v
 VALUES (1, 1, 'QR_CODE_1', 'Session 1', 100, 50, 'Question 1', 'Answer 1', '2023-01-01 10:00:00',
         '2023-01-01 11:00:00', '2023-01-01 12:00:00'),
        (2, 2, 'QR_CODE_2', 'Session 2', 200, 150, 'Question 2', 'Answer 2', '2023-02-01 10:00:00',
-        '2023-02-01 11:00:00', '2023-02-01 12:00:00');
-ALTER TABLE election_session ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 3);
+        '2023-02-01 11:00:00', '2023-02-01 12:00:00'),
+       (3, 2, 'QR003', '12대 총학생회 선거', 100, 0, '우리학교 이름은?', 'SSAFY 중학교', '2025-02-11 15:45:00',
+        '2025-02-11 15:45:00', '2025-02-20 15:45:00');
+ALTER TABLE election_session ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 4);
 
 -- Vote Table
 insert into vote (id, session_id, vote_name)
 values (1, 1, 'test'),
-       (2, 1, 'test2');
-ALTER TABLE vote ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 3);
+       (2, 1, 'test2'),
+       (3, 3, '학생회장 선거'),
+       (4, 3, '부학생회장 선거');
+ALTER TABLE vote ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 5);
 
 -- Vote_team table
 insert into vote_team (id, vote_id, poll_cnt, candidate_statement, poster, prefix)
 values (1, 1, 0, 'statement1', 'poster1', 'prefix1'),
-       (2, 1, 0, 'statement2', 'poster2', 'prefix2');
-ALTER TABLE vote_team ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 3);
+       (2, 1, 0, 'statement2', 'poster2', 'prefix2'),
+       (3, 3, 0, '회똘', '1번후보포스터.img', '잘부탁드립니다.'),
+       (4, 3, 0, '회혁', '2번후보포스터.img', '잘부탁드립니다.'),
+       (5, 3, 0, '회KTX', '3번후보포스터.img', '빠른 소통.'),
+       (6, 4, 0, '부똘', '1번후보포스터.img', '잘부탁드립니다.'),
+       (7, 4, 0, '부혁', '2번후보포스터.img', '잘부탁드립니다.'),
+       (8, 4, 0, '부K', '3번후보포스터.img', '빠른 소통.');
+ALTER TABLE vote_team ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 9);
 
 -- Session_user_info table
 insert into session_user_info (id, user_id, session_id)
@@ -189,8 +198,32 @@ values (1, 1, 1),
        (77, 77, 1),
        (78, 78, 1),
        (79, 79, 1),
-       (80, 80, 1);
-ALTER TABLE session_user_info ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 81);
+       (80, 80, 1),
+       (81, 1, 3),
+       (82, 2, 3),
+       (83, 3, 3),
+       (84, 4, 3),
+       (85, 5, 3),
+       (86, 6, 3),
+       (87, 7, 3),
+       (89, 8, 3),
+       (90, 9, 3),
+       (91, 10, 3),
+       (92, 11, 3),
+       (93, 12, 3),
+       (94, 13, 3),
+       (95, 14, 3),
+       (96, 15, 3),
+       (97, 16, 3),
+       (98, 17, 3),
+       (99, 18, 3),
+       (100, 19, 3),
+       (101, 20, 3),
+       (102, 21, 3),
+       (103, 22, 3),
+       (104, 23, 3),
+       (105, 24, 3);
+ALTER TABLE session_user_info ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 106);
 
 -- Vote_info table
 insert into vote_info (id, user_id, vote_id, user_type, has_select)
@@ -273,16 +306,83 @@ values (1, 1, 1, 'CANDIDATE', false),
        (77, 77, 1, 'VOTER', false),
        (78, 78, 1, 'VOTER', false),
        (79, 79, 1, 'VOTER', false),
-       (80, 80, 1, 'VOTER', false);
-ALTER TABLE vote_info ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 81);
+       (80, 80, 1, 'VOTER', false),
+       (81, 1, 3, 'CANDIDATE', false),
+       (82, 2, 3, 'CANDIDATE', false),
+       (83, 3, 3, 'CANDIDATE', false),
+       (84, 4, 3, 'VOTER', false),
+       (85, 5, 3, 'VOTER', false),
+       (86, 6, 3, 'VOTER', false),
+       (87, 7, 3, 'VOTER', false),
+       (88, 8, 3, 'VOTER', false),
+       (89, 9, 3, 'VOTER', false),
+       (90, 10, 3, 'VOTER', false),
+       (91, 11, 3, 'VOTER', false),
+       (92, 12, 3, 'VOTER', false),
+       (93, 13, 3, 'VOTER', false),
+       (94, 14, 3, 'VOTER', false),
+       (95, 15, 3, 'VOTER', false),
+       (96, 16, 3, 'VOTER', false),
+       (97, 17, 3, 'VOTER', false),
+       (98, 18, 3, 'VOTER', false),
+       (99, 19, 3, 'VOTER', false),
+       (100, 20, 3, 'VOTER', false),
+       (101, 21, 3, 'VOTER', false),
+       (102, 22, 3, 'VOTER', false),
+       (103, 23, 3, 'VOTER', false),
+       (104, 24, 3, 'VOTER', false),
+       (105, 25, 3, 'VOTER', false),
+       (106, 26, 3, 'VOTER', false),
+       (107, 27, 3, 'VOTER', false),
+       (108, 28, 3, 'VOTER', false),
+       (109, 29, 3, 'VOTER', false),
+       (110, 30, 3, 'VOTER', false),
+
+       -- vote_id 4인 30명
+       (111, 1, 4, 'VOTER', false),
+       (112, 2, 4, 'VOTER', false),
+       (113, 3, 4, 'VOTER', false),
+       (114, 4, 4, 'CANDIDATE', false),
+       (115, 5, 4, 'CANDIDATE', false),
+       (116, 6, 4, 'CANDIDATE', false),
+       (117, 7, 4, 'VOTER', false),
+       (118, 8, 4, 'VOTER', false),
+       (119, 9, 4, 'VOTER', false),
+       (120, 10, 4, 'VOTER', false),
+       (121, 11, 4, 'VOTER', false),
+       (122, 12, 4, 'VOTER', false),
+       (123, 13, 4, 'VOTER', false),
+       (124, 14, 4, 'VOTER', false),
+       (125, 15, 4, 'VOTER', false),
+       (126, 16, 4, 'VOTER', false),
+       (127, 17, 4, 'VOTER', false),
+       (128, 18, 4, 'VOTER', false),
+       (129, 19, 4, 'VOTER', false),
+       (130, 20, 4, 'VOTER', false),
+       (131, 21, 4, 'VOTER', false),
+       (132, 22, 4, 'VOTER', false),
+       (133, 23, 4, 'VOTER', false),
+       (134, 24, 4, 'VOTER', false),
+       (135, 25, 4, 'VOTER', false),
+       (136, 26, 4, 'VOTER', false),
+       (137, 27, 4, 'VOTER', false),
+       (138, 28, 4, 'VOTER', false),
+       (139, 29, 4, 'VOTER', false),
+       (140, 30, 4, 'VOTER', false);
+ALTER TABLE vote_info ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 141);
 
 -- Candidate Table
 insert into candidate (id, user_id, vote_team_id)
-values
-    (1, 2, 1),
-    (2, 3, 2),
-    (3, 1, 2);
-ALTER TABLE candidate ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 4);
+values (1, 2, 1),
+       (2, 3, 2),
+       (3, 1, 2),
+       (4, 1, 3),
+       (5, 2, 4),
+       (6, 3, 5),
+       (7, 4, 6),
+       (8, 5, 7),
+       (9, 6, 8);
+ALTER TABLE candidate ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 10);
 
 -- Pledge table
 insert into pledge (id, vote_team_id, content)
@@ -293,105 +393,205 @@ values (1, 1, 'content1'),
 ALTER TABLE pledge ALTER COLUMN id INT GENERATED BY DEFAULT AS IDENTITY (START WITH 4);
 
 -- Animal Table
-INSERT INTO Animal (id, animal_name) VALUES (1, '사자');
-INSERT INTO Animal (id, animal_name) VALUES (2, '호랑이');
-INSERT INTO Animal (id, animal_name) VALUES (3, '코끼리');
-INSERT INTO Animal (id, animal_name) VALUES (4, '기린');
-INSERT INTO Animal (id, animal_name) VALUES (5, '여우');
-INSERT INTO Animal (id, animal_name) VALUES (6, '늑대');
-INSERT INTO Animal (id, animal_name) VALUES (7, '판다');
-INSERT INTO Animal (id, animal_name) VALUES (8, '캥거루');
-INSERT INTO Animal (id, animal_name) VALUES (9, '고양이');
-INSERT INTO Animal (id, animal_name) VALUES (10, '강아지');
-INSERT INTO Animal (id, animal_name) VALUES (11, '곰');
-INSERT INTO Animal (id, animal_name) VALUES (12, '치타');
-INSERT INTO Animal (id, animal_name) VALUES (13, '다람쥐');
-INSERT INTO Animal (id, animal_name) VALUES (14, '토끼');
-INSERT INTO Animal (id, animal_name) VALUES (15, '오리');
-INSERT INTO Animal (id, animal_name) VALUES (16, '독수리');
-INSERT INTO Animal (id, animal_name) VALUES (17, '부엉이');
-INSERT INTO Animal (id, animal_name) VALUES (18, '참새');
-INSERT INTO Animal (id, animal_name) VALUES (19, '까마귀');
-INSERT INTO Animal (id, animal_name) VALUES (20, '돼지');
-INSERT INTO Animal (id, animal_name) VALUES (21, '닭');
-INSERT INTO Animal (id, animal_name) VALUES (22, '양');
-INSERT INTO Animal (id, animal_name) VALUES (23, '염소');
-INSERT INTO Animal (id, animal_name) VALUES (24, '소');
-INSERT INTO Animal (id, animal_name) VALUES (25, '말');
-INSERT INTO Animal (id, animal_name) VALUES (26, '고래');
-INSERT INTO Animal (id, animal_name) VALUES (27, '돌고래');
-INSERT INTO Animal (id, animal_name) VALUES (28, '상어');
-INSERT INTO Animal (id, animal_name) VALUES (29,'문어');
-INSERT INTO Animal (id, animal_name) VALUES (30, '코알라');
-INSERT INTO Animal (id, animal_name) VALUES (31, '하마');
-INSERT INTO Animal (id, animal_name) VALUES (32, '악어');
-INSERT INTO Animal (id, animal_name) VALUES (33, '오랑우탄');
-INSERT INTO Animal (id, animal_name) VALUES (34, '고슴도치');
-INSERT INTO Animal (id, animal_name) VALUES (35, '말미잘');
-INSERT INTO Animal (id, animal_name) VALUES (36, '해파리');
-INSERT INTO Animal (id, animal_name) VALUES (37, '복어');
-INSERT INTO Animal (id, animal_name) VALUES (38, '미어캣');
-INSERT INTO Animal (id, animal_name) VALUES (39, '스컹크');
-INSERT INTO Animal (id, animal_name) VALUES (40, '두더지');
-INSERT INTO Animal (id, animal_name) VALUES (41, '개구리');
-INSERT INTO Animal (id, animal_name) VALUES (42, '물개');
-INSERT INTO Animal (id, animal_name) VALUES (43, '펭귄');
-INSERT INTO Animal (id, animal_name) VALUES (44, '타조');
-INSERT INTO Animal (id, animal_name) VALUES (45, '물소');
-INSERT INTO Animal (id, animal_name) VALUES (46, '카멜레온');
-INSERT INTO Animal (id, animal_name) VALUES (47, '앵무새');
-INSERT INTO Animal (id, animal_name) VALUES (48, '비버');
-INSERT INTO Animal (id, animal_name) VALUES (49, '플라밍고');
-INSERT INTO Animal (id, animal_name) VALUES (50, '나비');
+INSERT INTO Animal (id, animal_name)
+VALUES (1, '사자');
+INSERT INTO Animal (id, animal_name)
+VALUES (2, '호랑이');
+INSERT INTO Animal (id, animal_name)
+VALUES (3, '코끼리');
+INSERT INTO Animal (id, animal_name)
+VALUES (4, '기린');
+INSERT INTO Animal (id, animal_name)
+VALUES (5, '여우');
+INSERT INTO Animal (id, animal_name)
+VALUES (6, '늑대');
+INSERT INTO Animal (id, animal_name)
+VALUES (7, '판다');
+INSERT INTO Animal (id, animal_name)
+VALUES (8, '캥거루');
+INSERT INTO Animal (id, animal_name)
+VALUES (9, '고양이');
+INSERT INTO Animal (id, animal_name)
+VALUES (10, '강아지');
+INSERT INTO Animal (id, animal_name)
+VALUES (11, '곰');
+INSERT INTO Animal (id, animal_name)
+VALUES (12, '치타');
+INSERT INTO Animal (id, animal_name)
+VALUES (13, '다람쥐');
+INSERT INTO Animal (id, animal_name)
+VALUES (14, '토끼');
+INSERT INTO Animal (id, animal_name)
+VALUES (15, '오리');
+INSERT INTO Animal (id, animal_name)
+VALUES (16, '독수리');
+INSERT INTO Animal (id, animal_name)
+VALUES (17, '부엉이');
+INSERT INTO Animal (id, animal_name)
+VALUES (18, '참새');
+INSERT INTO Animal (id, animal_name)
+VALUES (19, '까마귀');
+INSERT INTO Animal (id, animal_name)
+VALUES (20, '돼지');
+INSERT INTO Animal (id, animal_name)
+VALUES (21, '닭');
+INSERT INTO Animal (id, animal_name)
+VALUES (22, '양');
+INSERT INTO Animal (id, animal_name)
+VALUES (23, '염소');
+INSERT INTO Animal (id, animal_name)
+VALUES (24, '소');
+INSERT INTO Animal (id, animal_name)
+VALUES (25, '말');
+INSERT INTO Animal (id, animal_name)
+VALUES (26, '고래');
+INSERT INTO Animal (id, animal_name)
+VALUES (27, '돌고래');
+INSERT INTO Animal (id, animal_name)
+VALUES (28, '상어');
+INSERT INTO Animal (id, animal_name)
+VALUES (29, '문어');
+INSERT INTO Animal (id, animal_name)
+VALUES (30, '코알라');
+INSERT INTO Animal (id, animal_name)
+VALUES (31, '하마');
+INSERT INTO Animal (id, animal_name)
+VALUES (32, '악어');
+INSERT INTO Animal (id, animal_name)
+VALUES (33, '오랑우탄');
+INSERT INTO Animal (id, animal_name)
+VALUES (34, '고슴도치');
+INSERT INTO Animal (id, animal_name)
+VALUES (35, '말미잘');
+INSERT INTO Animal (id, animal_name)
+VALUES (36, '해파리');
+INSERT INTO Animal (id, animal_name)
+VALUES (37, '복어');
+INSERT INTO Animal (id, animal_name)
+VALUES (38, '미어캣');
+INSERT INTO Animal (id, animal_name)
+VALUES (39, '스컹크');
+INSERT INTO Animal (id, animal_name)
+VALUES (40, '두더지');
+INSERT INTO Animal (id, animal_name)
+VALUES (41, '개구리');
+INSERT INTO Animal (id, animal_name)
+VALUES (42, '물개');
+INSERT INTO Animal (id, animal_name)
+VALUES (43, '펭귄');
+INSERT INTO Animal (id, animal_name)
+VALUES (44, '타조');
+INSERT INTO Animal (id, animal_name)
+VALUES (45, '물소');
+INSERT INTO Animal (id, animal_name)
+VALUES (46, '카멜레온');
+INSERT INTO Animal (id, animal_name)
+VALUES (47, '앵무새');
+INSERT INTO Animal (id, animal_name)
+VALUES (48, '비버');
+INSERT INTO Animal (id, animal_name)
+VALUES (49, '플라밍고');
+INSERT INTO Animal (id, animal_name)
+VALUES (50, '나비');
 
 -- Status table
-INSERT INTO Attribute (id, describing) VALUES (1, '활발한');
-INSERT INTO Attribute (id, describing) VALUES (2, '조용한');
-INSERT INTO Attribute (id, describing) VALUES (3, '날렵한');
-INSERT INTO Attribute (id, describing) VALUES (4, '느긋한');
-INSERT INTO Attribute (id, describing) VALUES (5, '영리한');
-INSERT INTO Attribute (id, describing) VALUES (6, '강인한');
-INSERT INTO Attribute (id, describing) VALUES (7, '귀여운');
-INSERT INTO Attribute (id, describing) VALUES (8, '호기심 많은');
-INSERT INTO Attribute (id, describing) VALUES (9, '침착한');
-INSERT INTO Attribute (id, describing) VALUES (10, '용감한');
-INSERT INTO Attribute (id, describing) VALUES (11, '민첩한');
-INSERT INTO Attribute (id, describing) VALUES (12, '우아한');
-INSERT INTO Attribute (id, describing) VALUES (13, '사나운');
-INSERT INTO Attribute (id, describing) VALUES (14, '평화로운');
-INSERT INTO Attribute (id, describing) VALUES (15, '똑똑한');
-INSERT INTO Attribute (id, describing) VALUES (16, '장난스러운');
-INSERT INTO Attribute (id, describing) VALUES (17, '온순한');
-INSERT INTO Attribute (id, describing) VALUES (18, '끈질긴');
-INSERT INTO Attribute (id, describing) VALUES (19, '강렬한');
-INSERT INTO Attribute (id, describing) VALUES (20, '예민한');
-INSERT INTO Attribute (id, describing) VALUES (21, '활기찬');
-INSERT INTO Attribute (id, describing) VALUES (22, '고요한');
-INSERT INTO Attribute (id, describing) VALUES (23, '튼튼한');
-INSERT INTO Attribute (id, describing) VALUES (24, '재빠른');
-INSERT INTO Attribute (id, describing) VALUES (25, '유연한');
-INSERT INTO Attribute (id, describing) VALUES (26, '거대한');
-INSERT INTO Attribute (id, describing) VALUES (27, '작은');
-INSERT INTO Attribute (id, describing) VALUES (28, '느린');
-INSERT INTO Attribute (id, describing) VALUES (29,'영롱한');
-INSERT INTO Attribute(id ,describing )VALUES(30,'화려한');
-INSERT INTO Attribute(id ,describing )VALUES(31,'힘센');
-INSERT INTO Attribute(id ,describing )VALUES(32,'부드러운');
-INSERT INTO Attribute(id ,describing )VALUES(33,'차가운');
-INSERT INTO Attribute(id ,describing )VALUES(34,'따뜻한');
-INSERT INTO Attribute(id ,describing )VALUES(35,'무서운');
-INSERT INTO Attribute(id ,describing )VALUES(36,'사랑스러운');
-INSERT INTO Attribute(id ,describing )VALUES(37,'영웅적인');
-INSERT INTO Attribute(id ,describing )VALUES(38,'친근한');
-INSERT INTO Attribute(id ,describing )VALUES(39,'신비로운');
-INSERT INTO Attribute(id ,describing )VALUES(40,'매혹적인');
-INSERT INTO Attribute(id ,describing )VALUES(41,'단단한');
-INSERT INTO Attribute(id ,describing )VALUES(42,'섬세한');
-INSERT INTO Attribute(id ,describing )VALUES(43,'정직한');
-INSERT INTO Attribute(id ,describing )VALUES(44,'우스꽝스러운');
-INSERT INTO Attribute(id ,describing )VALUES(45,'풍부한');
-INSERT INTO Attribute(id ,describing )VALUES(46,'독특한');
-INSERT INTO Attribute(id ,describing )VALUES(47,'탄력적인');
-INSERT INTO Attribute(id ,describing )VALUES(48,'미끄러운');
-INSERT INTO Attribute(id ,describing )VALUES(49,'활기넘치는');
-INSERT INTO Attribute(id ,describing )VALUES(50,'대담한');
+INSERT INTO Attribute (id, describing)
+VALUES (1, '활발한');
+INSERT INTO Attribute (id, describing)
+VALUES (2, '조용한');
+INSERT INTO Attribute (id, describing)
+VALUES (3, '날렵한');
+INSERT INTO Attribute (id, describing)
+VALUES (4, '느긋한');
+INSERT INTO Attribute (id, describing)
+VALUES (5, '영리한');
+INSERT INTO Attribute (id, describing)
+VALUES (6, '강인한');
+INSERT INTO Attribute (id, describing)
+VALUES (7, '귀여운');
+INSERT INTO Attribute (id, describing)
+VALUES (8, '호기심 많은');
+INSERT INTO Attribute (id, describing)
+VALUES (9, '침착한');
+INSERT INTO Attribute (id, describing)
+VALUES (10, '용감한');
+INSERT INTO Attribute (id, describing)
+VALUES (11, '민첩한');
+INSERT INTO Attribute (id, describing)
+VALUES (12, '우아한');
+INSERT INTO Attribute (id, describing)
+VALUES (13, '사나운');
+INSERT INTO Attribute (id, describing)
+VALUES (14, '평화로운');
+INSERT INTO Attribute (id, describing)
+VALUES (15, '똑똑한');
+INSERT INTO Attribute (id, describing)
+VALUES (16, '장난스러운');
+INSERT INTO Attribute (id, describing)
+VALUES (17, '온순한');
+INSERT INTO Attribute (id, describing)
+VALUES (18, '끈질긴');
+INSERT INTO Attribute (id, describing)
+VALUES (19, '강렬한');
+INSERT INTO Attribute (id, describing)
+VALUES (20, '예민한');
+INSERT INTO Attribute (id, describing)
+VALUES (21, '활기찬');
+INSERT INTO Attribute (id, describing)
+VALUES (22, '고요한');
+INSERT INTO Attribute (id, describing)
+VALUES (23, '튼튼한');
+INSERT INTO Attribute (id, describing)
+VALUES (24, '재빠른');
+INSERT INTO Attribute (id, describing)
+VALUES (25, '유연한');
+INSERT INTO Attribute (id, describing)
+VALUES (26, '거대한');
+INSERT INTO Attribute (id, describing)
+VALUES (27, '작은');
+INSERT INTO Attribute (id, describing)
+VALUES (28, '느린');
+INSERT INTO Attribute (id, describing)
+VALUES (29, '영롱한');
+INSERT INTO Attribute(id, describing)
+VALUES (30, '화려한');
+INSERT INTO Attribute(id, describing)
+VALUES (31, '힘센');
+INSERT INTO Attribute(id, describing)
+VALUES (32, '부드러운');
+INSERT INTO Attribute(id, describing)
+VALUES (33, '차가운');
+INSERT INTO Attribute(id, describing)
+VALUES (34, '따뜻한');
+INSERT INTO Attribute(id, describing)
+VALUES (35, '무서운');
+INSERT INTO Attribute(id, describing)
+VALUES (36, '사랑스러운');
+INSERT INTO Attribute(id, describing)
+VALUES (37, '영웅적인');
+INSERT INTO Attribute(id, describing)
+VALUES (38, '친근한');
+INSERT INTO Attribute(id, describing)
+VALUES (39, '신비로운');
+INSERT INTO Attribute(id, describing)
+VALUES (40, '매혹적인');
+INSERT INTO Attribute(id, describing)
+VALUES (41, '단단한');
+INSERT INTO Attribute(id, describing)
+VALUES (42, '섬세한');
+INSERT INTO Attribute(id, describing)
+VALUES (43, '정직한');
+INSERT INTO Attribute(id, describing)
+VALUES (44, '우스꽝스러운');
+INSERT INTO Attribute(id, describing)
+VALUES (45, '풍부한');
+INSERT INTO Attribute(id, describing)
+VALUES (46, '독특한');
+INSERT INTO Attribute(id, describing)
+VALUES (47, '탄력적인');
+INSERT INTO Attribute(id, describing)
+VALUES (48, '미끄러운');
+INSERT INTO Attribute(id, describing)
+VALUES (49, '활기넘치는');
+INSERT INTO Attribute(id, describing)
+VALUES (50, '대담한');

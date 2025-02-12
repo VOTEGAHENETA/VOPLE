@@ -3,7 +3,7 @@ import {
   ISessionDetail,
   ElectionList,
 } from '@/types/election';
-import { CandidateSessionData } from '@/types/voteSession';
+import { CandidateSessionData, VoteResultsResponse } from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
 import instance from './api';
 import { VoteRequest } from '@/types/vote';
@@ -55,4 +55,10 @@ export const postVote = async ({
 }) => {
   const response = await instance.post(`/vote/${sessionId}/castvote`, payload);
   return response.data;
+};
+
+export const getResultCurrent = async (
+  sessionId: number
+): Promise<VoteResultsResponse> => {
+  return await instance.get(`/vote/${sessionId}/result/current`);
 };

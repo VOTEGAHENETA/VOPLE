@@ -1,59 +1,135 @@
-import { User } from '@/types/user';
+import { CandidateList, User } from '@/types/user';
 import { create } from 'zustand';
 
 interface CandidateStore {
-  selectedCandidates: Record<number, User[]>;
+  sendCandidates: Record<number, CandidateList>;
   activeTeamId: number | null;
   openCandidateModal: { voteId: number; voteName: string } | null;
+  setSendCandidates: (candidateList: CandidateList) => void;
   setOpenCandidateModal: (voteId: number, voteName: string) => void;
   setActiveTeamId: (teamId: number) => void;
-  addCandidate: (teamId: number, candidate: User) => void;
-  removeCandidate: (teamId: number, candidateId: number) => void;
-  resetCandidates: () => void;
+  addCandidate: (candidate: User) => void;
+  removeCandidate: (candidateId: number) => void;
+  resetCandidate: () => void;
+  addGroup: () => void;
 }
 
 export const useCandidateStore = create<CandidateStore>((set) => ({
-  selectedCandidates: {},
+  sendCandidates: {},
   activeTeamId: null,
   openCandidateModal: null,
+
+  setSendCandidates: (candidateList) =>
+    set(() => {
+      const updatedSendCandidates: Record<number, CandidateList> = {};
+
+      Object.entries(candidateList).forEach(([, candidates]) => {
+        candidates.forEach((candidate) => {
+          const teamId = candidate.voteTeamId;
+          const teamKey = String(teamId);
+
+          if (!updatedSendCandidates[teamId]) {
+            updatedSendCandidates[teamId] = {};
+          }
+
+          if (!updatedSendCandidates[teamId][teamKey]) {
+            updatedSendCandidates[teamId][teamKey] = [];
+          }
+
+          updatedSendCandidates[teamId][teamKey].push(candidate);
+        });
+      });
+
+      return { sendCandidates: updatedSendCandidates };
+    }),
 
   setOpenCandidateModal: (voteId, voteName) => {
     if (voteId === -1) {
       return set({ openCandidateModal: null });
     }
-    return set({ openCandidateModal: { voteId: voteId, voteName: voteName } });
+    return set({ openCandidateModal: { voteId, voteName } });
   },
 
   setActiveTeamId: (teamId) => set({ activeTeamId: teamId }),
 
-  addCandidate: (teamId, candidate) =>
+  addCandidate: (user) =>
     set((state) => {
-      const existingTeam = state.selectedCandidates[teamId] || [];
-      if (existingTeam.find((user) => user.userId === candidate.userId)) {
-        alert('이미 선택된 후보입니다.');
-        return state;
-      }
+      const teamId = state.activeTeamId;
+      if (teamId === null) return state;
+
+      const teamKey = String(teamId);
+      const existingCandidates = state.sendCandidates[teamId]?.[teamKey] || [];
+
       return {
-        selectedCandidates: {
-          ...state.selectedCandidates,
-          [teamId]: [...existingTeam, candidate],
+        sendCandidates: {
+          ...state.sendCandidates,
+          [teamId]: {
+            ...state.sendCandidates[teamId],
+            [teamKey]: [
+              ...existingCandidates,
+              {
+                voteTeamId: teamId,
+                userId: user.userId,
+                username: user.username,
+              },
+            ],
+          },
         },
       };
     }),
 
-  removeCandidate: (teamId, candidateId) =>
+  removeCandidate: (candidateId) =>
     set((state) => {
-      if (!window.confirm('정말로 이 후보를 삭제하시겠습니까?')) {
-        return state;
-      }
-      const existingTeam = state.selectedCandidates[teamId] || [];
+      const teamId = state.activeTeamId;
+      if (teamId === null) return state;
+
+      const teamKey = String(teamId);
+      const existingCandidates = state.sendCandidates[teamId]?.[teamKey] || [];
+
       return {
-        selectedCandidates: {
-          ...state.selectedCandidates,
-          [teamId]: existingTeam.filter((user) => user.userId !== candidateId),
+        sendCandidates: {
+          ...state.sendCandidates,
+          [teamId]: {
+            ...state.sendCandidates[teamId],
+            [teamKey]: existingCandidates.filter(
+              (candidate) => candidate.userId !== candidateId
+            ),
+          },
         },
       };
     }),
 
-  resetCandidates: () => set({ selectedCandidates: {}, activeTeamId: null }),
+  resetCandidate: () =>
+    set((state) => {
+      const teamId = state.activeTeamId;
+      if (teamId === null) return state;
+
+      const updatedSendCandidates = { ...state.sendCandidates };
+      delete updatedSendCandidates[teamId];
+
+      return { sendCandidates: updatedSendCandidates };
+    }),
+
+  addGroup: () =>
+    set((state) => {
+      const lastIdx = Object.keys(state.sendCandidates).length;
+      const newTeamId =
+        Number(Object.keys(state.sendCandidates)[lastIdx - 1]) + 1;
+      const newTeamKey = String(newTeamId);
+
+      const updatedCandidates = {
+        ...state.sendCandidates,
+        [newTeamId]: {
+          [newTeamKey]: [],
+        },
+      };
+      console.log();
+
+      console.log('update candi:', updatedCandidates);
+
+      return {
+        sendCandidates: updatedCandidates,
+        activeTeamId: newTeamId,
+      };
+    }),
 }));

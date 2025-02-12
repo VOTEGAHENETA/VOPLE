@@ -9,34 +9,31 @@ import { useCandidateStore } from '@/stores/candidateStore';
 import { Candidate } from '@/types/user';
 
 interface Props {
+  idx: number;
   id: number;
   candidates: Candidate[];
 }
 
-function CandidateTag({ id, candidates }: Props) {
-  const { activeTeamId, setActiveTeamId, removeCandidate, resetCandidates } =
+function CandidateTag({ idx, id, candidates }: Props) {
+  const { activeTeamId, setActiveTeamId, removeCandidate, resetCandidate } =
     useCandidateStore();
   const isChecked = activeTeamId === id;
 
-  // molecules에서도 동작하고, organism에서도 동작하는 checked
   const handlerCheckCandidate = () => {
     setActiveTeamId(id);
   };
 
   const handleDeleteCandidate = (userId: number) => {
-    console.log('개별 삭제');
-    removeCandidate(id, userId);
+    removeCandidate(userId);
   };
 
   const handleClearSection = () => {
-    console.log('후보 삭제');
-    resetCandidates();
+    resetCandidate();
   };
 
   return (
     <div className={clsx(styles['tag-all'], styles[`tag-select-${isChecked}`])}>
       <div className={styles['tag-title']} onClick={handlerCheckCandidate}>
-        {/* 후보자 태그 영역 선택 ex) 후보1 or 후보2 */}
         <div className={styles['tag-subtitle']}>
           <div
             className={`${styles['tag-mini-check']} ${isChecked ? styles.checked : ''}`}
@@ -49,7 +46,7 @@ function CandidateTag({ id, candidates }: Props) {
             color='#111111'
             className={styles['tag-candidate']}
           >
-            후보{id}
+            후보{idx}
           </Text>
         </div>
         <div onClick={handleClearSection}>
@@ -59,7 +56,6 @@ function CandidateTag({ id, candidates }: Props) {
         </div>
       </div>
 
-      {/* 후보자 목데이터 출력 및 제거 */}
       <div className={styles['tag-list']}>
         {candidates.map((candidate) => (
           <div
