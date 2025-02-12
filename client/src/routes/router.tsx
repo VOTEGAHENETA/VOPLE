@@ -1,6 +1,6 @@
 import App from '@/App';
-import Result from '@/components/organisms/Result/Result';
 import ElectionListTemplate from '@/components/templates/ElectionListTemplate';
+import ResultCurrentTemplate from '@/components/templates/ResultCurrentTemplate';
 import VoteTemplate from '@/components/templates/VoteTemplate';
 import Channel from '@/pages/Channel';
 import Create from '@/pages/Election/Create';
@@ -36,10 +36,6 @@ export const router = createBrowserRouter([
         path: 'elections/:election_id/manage',
         element: <Manage />,
       },
-      {
-        path: 'elections/:election_id/result/',
-        element: <Result />,
-      },
       { path: 'elections/:election_id/vote', element: <VoteTemplate /> },
       {
         path: 'candidate/:sessionId/:userId',
@@ -51,7 +47,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/elections/:election_id/result',
-        element: <Result />,
+        element: <ResultCurrentTemplate />,
       },
       {
         path: '/elections/list',
