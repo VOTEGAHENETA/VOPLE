@@ -7,6 +7,7 @@ import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
 import com.votegaheneta.vote.repository.SessionRepository;
+import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -23,13 +24,21 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final VoteTeamRepository voteTeamRepository;
   private final SessionRepository sessionRepository;
   private final VoteRepository voteRepository;
+  private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
   @Transactional
   public void createVote(Long sessionId, String voteName) {
     ElectionSession electionSession = sessionRepository.findSessionById(sessionId);
-    electionSession.addVote(new Vote(voteName));
-    // VoteInfo도 추가해줘야겠네, 배치 Insert
+    Vote vote = new Vote(voteName);
+    electionSession.addVote(vote);
+
+    sessionUserInfoRepository.findSessionUserInfosByElectionSessionId(sessionId)
+        .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
+        .forEach(vote::addVoteInfo);
+    ;
+//    voteRepository.batchInsertVoteInfoList(vote.getVoteInfos());
+    voteInfoRepository.saveAll(vote.getVoteInfos());
   }
 
   @Override
@@ -37,6 +46,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   public void deleteVote(Long voteId) {
     voteRepository.deleteById(voteId);
   }
+
 
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
@@ -52,9 +62,10 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
-      if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId)) {
+      if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId).equals("TRUE")) {
         throw new AlreadyVotedException("이미 투표를 진행했습니다.");
       }
+      System.out.println(voteInfoRepository.existsVoteInfoByUserId(voteId, userId).equals("TRUE"));
       VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       final Boolean TRUE = true;
@@ -65,4 +76,5 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     }
     electionSession.incrementVotedVoter();
   }
+
 }
