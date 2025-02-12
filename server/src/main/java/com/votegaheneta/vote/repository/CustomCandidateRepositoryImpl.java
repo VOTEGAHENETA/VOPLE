@@ -35,7 +35,7 @@ public class CustomCandidateRepositoryImpl implements CustomCandidateRepository 
   public List<VoteInfoDto> findSearchCandidatesBySessionId(Long voteId,
       String regex, Pageable pageable) {
     List<VoteInfoDto> allResults = queryFactory.select(Projections.constructor(VoteInfoDto.class,
-            users.id, users.username))
+            users.id, users.username, users.nickname))
         .from(voteInfo)
         .join(users).on(users.id.eq(voteInfo.user.id))
         .where((voteInfo.vote.id.eq(voteId)))

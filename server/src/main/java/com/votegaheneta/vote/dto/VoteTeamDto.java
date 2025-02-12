@@ -24,6 +24,7 @@ public class VoteTeamDto {
   }
 
   public VoteTeamDto(VoteTeam voteTeam) {
+    this.voteTeamId = voteTeam.getId();
     this.poster = voteTeam.getPoster();
     this.prefix = voteTeam.getPrefix();
     this.candidateStatement = voteTeam.getCandidateStatement();
