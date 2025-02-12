@@ -4,6 +4,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
@@ -17,7 +18,6 @@ import com.votegaheneta.vote.dto.SessionListDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
-import com.votegaheneta.vote.entity.VoteStatus;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,14 +35,15 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
+  @Value("${base_url}")
+  private String mediaUrl;
+
   private final VoteTeamRepository voteTeamRepository;
   private final VoteRepository voteRepository;
   private final SessionRepository sessionRepository;
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
-
-  private final String UPLOAD_DIR = "/app/uploads/";
-//  private final SessionService sessionService;
+  private final FileStorageComponent fileStorageComponent;
 
   @Transactional
   @Override
@@ -51,7 +53,7 @@ public class SessionServiceImpl implements SessionService {
     ElectionSession electionSession = sessionDto.toEntity(user);
     electionSession = sessionRepository.save(electionSession);
     // qr코드로 접속할 url
-    String url = "http://i12b102.p.ssafy.io/api/election/" + electionSession.getId();
+    String url = mediaUrl + "/api/election/" + electionSession.getId();
 
     int width = 400;
     int height = 400;
@@ -64,12 +66,13 @@ public class SessionServiceImpl implements SessionService {
       BufferedImage qrCodeImage = MatrixToImageWriter.toBufferedImage(encode);
 
       String fileName = "qrcode_" + electionSession.getId() + ".png";
+      String UPLOAD_DIR = "/uploads/";
       File qrCodeFile = new File(UPLOAD_DIR + "qrcode/", fileName);
 
       qrCodeFile.getParentFile().mkdirs();
       ImageIO.write(qrCodeImage, "png", qrCodeFile);
-      String relativePath = "/qrcode/" + fileName;
-      electionSession.setQrCode(relativePath);
+      String relativePath = mediaUrl + qrCodeFile.toString();
+      electionSession.setQrCode(fileStorageComponent.convertToRelativePath(relativePath));
       sessionRepository.save(electionSession);
     } catch (Exception e) {
       throw new IllegalArgumentException("QR코드 생성에 실패했습니다.", e);
@@ -91,17 +94,12 @@ public class SessionServiceImpl implements SessionService {
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
-    VoteStatus voteStatus = VoteStatus.IN_PROGRESS;
-    LocalDateTime now = LocalDateTime.now();
-    if (now.isBefore(electionSession.getVoteStartTime())) {
-      voteStatus = VoteStatus.BEFORE_START;
-    } else if (now.isAfter(electionSession.getVoteEndTime())) {
-      voteStatus = VoteStatus.FINISHED;
-    }
     return new SessionInitialInfoDto(
         electionSession.getId(),
         electionSession.getSessionName(),
-        voteStatus,
+        electionSession.getHostUser().getId(),
+        electionSession.getVoteStartTime(),
+        electionSession.getVoteEndTime(),
         voteResults,
         wholeVoterPercent
     );

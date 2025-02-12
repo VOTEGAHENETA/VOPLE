@@ -47,7 +47,7 @@ function ModalPopup({
   return (
     <ConfirmModal imgSrc={stamp} label='당신이 선택한 국가권력 멤버!'>
       <div className={styles.selectedCandidates}>
-        {voteSession.voteFindDto.map((vote) => {
+        {voteSession.voteFindDtos.map((vote) => {
           const candidate = selectedCandidates[vote.voteId];
           if (!candidate) return null;
 

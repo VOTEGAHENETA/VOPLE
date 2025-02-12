@@ -19,7 +19,7 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-#        show_sql: true
+        #        show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
         id:
@@ -29,6 +29,7 @@ spring:
   sql:
     init:
       mode: always
+#      mode: never
 
   data:
     redis:
@@ -37,8 +38,29 @@ spring:
     rtmp:
       host: rtmp://i12b102.p.ssafy.io:1935/live/
     hls:
-      host-prefix: http://i12b102.p.ssafy.io:8050/hls/
+      host-prefix: https://i12b102.p.ssafy.io/hls/
       host-postfix: .m3u8
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: c26c8ad4cf28c0e815b4024f01ca026c
+            client-secret: HofU5oCSTB9koEYkZ66HFT8nXTFEBj0N
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+            client-name: kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 
 paging:
   default-page-size: 10
@@ -47,6 +69,7 @@ paging:
 logging.level:
   org.hibernate.SQL: DEBUG
   org.springframework:
+    security: DEBUG
     web.socket: DEBUG
     messaging: DEBUG
 
@@ -56,4 +79,4 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
-
+base_url: http://localhost:8080

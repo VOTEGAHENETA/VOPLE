@@ -112,7 +112,6 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository {
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
         .fetch();
-
     for (Users user : users) {
       System.out.println("user = " + user);
     }

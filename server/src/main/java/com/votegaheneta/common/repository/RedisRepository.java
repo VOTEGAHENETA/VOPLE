@@ -1,5 +1,6 @@
 package com.votegaheneta.common.repository;
 
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,6 @@ public interface RedisRepository {
   boolean delete(String key);
   void saveVoteResults(String key, List<VoteResult> voteResults);
   List<VoteResult> getVoteResults(String key);
+  List<Elected> getElectedResults(String key);
+  void saveElectedResults(String key, List<Elected> electeds);
 }
