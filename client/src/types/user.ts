@@ -4,6 +4,11 @@ export interface User {
   username: string;
 }
 
+export interface UserInfoFormData {
+  nickname: string;
+  username: string;
+}
+
 export interface Candidate {
   voteTeamId: number;
   userId: number;
@@ -17,4 +22,9 @@ export interface CandidateList {
 export interface UserResponse {
   userList: User[];
   candidateList: CandidateList;
+}
+
+export interface CandidateInfoFormData {
+  prefix: string;
+  candidateStatement: string;
 }

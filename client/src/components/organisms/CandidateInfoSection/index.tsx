@@ -6,7 +6,7 @@ import TextAreaField from '@/components/molecules/TextAreaField';
 import X from '@/assets/icons/x.svg';
 import { ChangeEvent, RefObject, useState } from 'react';
 import styles from './index.module.scss';
-import { UserInfoFormData } from '@/types/candidate';
+import { CandidateInfoFormData } from '@/types/user';
 
 interface CandidateInfoSectionProps {
   prefix: string;
@@ -15,7 +15,7 @@ interface CandidateInfoSectionProps {
   posterSrc: string;
   fileInputRef: RefObject<HTMLInputElement>;
   onChangeField: <T extends HTMLInputElement | HTMLTextAreaElement>(
-    fieldName: keyof UserInfoFormData,
+    fieldName: keyof CandidateInfoFormData,
     e: ChangeEvent<T>
   ) => void;
   onUploadClick: () => void;
@@ -32,7 +32,7 @@ export default function CandidateInfoSection({
   posterSrc,
   fileInputRef,
   onChangeField,
-  onUploadClick, // 클릭 시 업로드창 뜨는 것
+  onUploadClick, // 클릭 시 업로드창
   onFileChange,
   handlePledgeChange,
   handleAddPledge,

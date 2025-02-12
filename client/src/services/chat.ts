@@ -9,6 +9,5 @@ export const fetchInitialChats = async (
   const response = await axios.get(
     `${VITE_PUBLIC_API_URL}/room/${type}/${roomId}`
   );
-  console.log('########## response.data : ', response.data);
   return response.data;
 };

@@ -3,15 +3,29 @@ import axios from 'axios';
 import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
 // import samplePoster from '@/assets/sample/sample.png';
-import UserInfoSection from '@/components/organisms/UserInfoSection';
+
 import CandidateInfoSection from '@/components/organisms/CandidateInfoSection';
-import { useUserInfoFormData } from '@/hooks/useUserInfoFormData';
 import { usePledges } from '@/hooks/usePledges';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { useParams } from 'react-router-dom';
-import { useGetCandidateInfo } from '@/services/hooks/useCandidateInfo';
+import { useCandidateInfo } from '@/services/hooks/useCandidateInfo';
+import { useCandidateInfoFormData } from '@/hooks/useCandidateInfoFormData';
 
 const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
+
+// ============
+// 타입 정의
+// ============
+interface VoteTeamInfoRequest {
+  voteTeam: {
+    voteTeamId: number;
+    prefix: string;
+    candidateStatement: string;
+  };
+  pledges: Array<{
+    content: string;
+  }>;
+}
 
 // const fetchCandidateInfo = async (sessionId: string, userId: string) => {
 //   const response = await axios.get(
@@ -22,8 +36,9 @@ const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
 
 export default function CandidateInfoUpdateTemplate() {
   const [imgPreview, setImgPreview] = useState<string>('');
-  const { sessionId = '', userId = '' } = useParams();
+  const { sessionId = '1', voteTeamId = '57' } = useParams();
 
+  // 공약 usePledges
   const {
     pledges,
     setPledges,
@@ -31,88 +46,88 @@ export default function CandidateInfoUpdateTemplate() {
     handleAddPledge,
     handleDeletePledge,
   } = usePledges();
+
+  // 파일 useFileUpload
   const { fileInputRef, handleUploadClick, handleFileChange, fileData } =
     useFileUpload({
       maxSize: 5,
       acceptedTypes: ['image/jpeg', 'image/png'],
       onSuccess: (file, preview) => {
+        setImgPreview(preview);
+        //file, preview
         // 파일 업로드 성공 시 처리
-        console.log('File upload success:', file);
-        console.log('File upload success preview:', preview);
+        alert('파일 업로드 성공! ');
       },
       onError: (message) => {
         alert(message);
       },
     });
 
-  const { UserInfoFormData, setUserInfoFormData, handleChange } =
-    useUserInfoFormData({
-      nickname: '',
-      username: '',
+  // 후보자 기본 정보
+  const { candidateInfoFormData, setCandidateInfoFormData, handleChange } =
+    useCandidateInfoFormData({
+      // nickname: '',
+      // username: '',
       prefix: '',
       candidateStatement: '',
     });
 
-  // 쿼리 훅 사용
-  const { data, error } = useGetCandidateInfo(sessionId, userId);
+  // 사용자 기본 정보
+  // const { UserInfoFormData, setUserInfoFormData, handleChange } =
+  //   useUserInfoFormData({
+  //     nickname: '',
+  //     username: '',
+  //     // prefix: '',
+  //     // candidateStatement: '',
+  //   });
 
-  // 데이터가 변경될 때마다 폼 초기화
+  // 쿼리 훅 사용하여 데이터 정보 받아옴
+
+  console.log('sessionId :' + sessionId + '/' + 'voteTeamId : ' + voteTeamId);
+  const { data, error } = useCandidateInfo(sessionId, voteTeamId);
+
+  //================================
+  // 후보자 정보 최초 폼 초기화
+  //================================
   useEffect(() => {
-    console.log('Candidate useEffect');
-    console.error('Candidate Data : ', data);
-    if (data?.data) {
-      const { user, voteTeam, pledges: fetchedPledges } = data.data;
+    if (data?.voteTeam) {
+      const { voteTeam, pledges } = data;
       // formData 초기화
-      setUserInfoFormData({
-        nickname: user.nickname,
-        username: user.username,
-        prefix: voteTeam.prefix,
-        candidateStatement: voteTeam.candidateStatement,
+      setCandidateInfoFormData({
+        prefix: voteTeam.prefix || '',
+        candidateStatement: voteTeam.candidateStatement || '',
       });
 
       // 이미지 미리보기 초기화
-      console.log('#####', voteTeam.poster);
-      setImgPreview(voteTeam.poster || '');
+      if (voteTeam.poster) {
+        setImgPreview(voteTeam.poster);
+      }
+      // setImgPreview(voteTeam.poster || '');
 
       // pledges 초기화
-      const initialPledges = fetchedPledges.map((pledge) => pledge.content);
+      const initialPledges = pledges.map((pledge) => pledge.content);
       setPledges(initialPledges);
     } else if (error) {
-      console.error(error);
+      console.error('후보자 정보 폼 초기화 에러 : ', error);
     }
   }, [data, error]);
 
-  interface VoteTeamInfoRequest {
-    user: {
-      userId: number;
-      username: string;
-    };
-    voteTeam: {
-      poster: string;
-      prefix: string;
-      candidateStatement: string;
-    };
-    pledges: Array<{
-      content: string;
-    }>;
-  }
-
+  //================================
+  // 후보자 정보 업데이트
+  //================================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      // 전송할 데이터 묶음
       const formData = new FormData();
 
       // VoteTeamInfoRequest DTO 생성
       const voteTeamInfoRequest: VoteTeamInfoRequest = {
-        user: {
-          userId: 1,
-          username: UserInfoFormData.username,
-        },
         voteTeam: {
-          poster: 'poster-url',
-          prefix: UserInfoFormData.prefix,
-          candidateStatement: UserInfoFormData.candidateStatement,
+          voteTeamId: 57, // voteTeamId 추가
+          prefix: candidateInfoFormData.prefix,
+          candidateStatement: candidateInfoFormData.candidateStatement,
         },
         pledges: pledges.map((pledge) => ({
           content: pledge,
@@ -121,7 +136,7 @@ export default function CandidateInfoUpdateTemplate() {
 
       // DTO를 FormData에 추가
       formData.append(
-        'voteTeamInfoRequest',
+        'data',
         new Blob([JSON.stringify(voteTeamInfoRequest)], {
           type: 'application/json',
         })
@@ -132,33 +147,41 @@ export default function CandidateInfoUpdateTemplate() {
         formData.append('file', fileData.file);
       }
 
-      // FormData 내용 확인을 위한 로깅
-      console.log('=== FormData 상세 내용 ===');
-      for (let [key, value] of formData.entries()) {
-        if (key === 'voteTeamInfoRequest') {
-          // Blob 데이터는 텍스트로 변환해서 확인
-          const blobText = await new Response(value as Blob).text();
-          console.log(`${key}:`, JSON.parse(blobText));
-        } else if (key === 'file') {
-          console.log('파일 정보:', {
-            이름: (value as File).name,
-            크기: (value as File).size,
-            타입: (value as File).type,
-            최종수정: new Date((value as File).lastModified).toLocaleString(),
+      // FormData 내용 확인
+      console.log('==== FormData 내용 확인 ====');
+      for (const pair of formData.entries()) {
+        if (pair[1] instanceof Blob) {
+          console.log('Blob 데이터:', pair[0], {
+            type: pair[1].type,
+            size: pair[1].size,
           });
+
+          // Blob 내용이 JSON인 경우 읽어서 출력
+          if (pair[1].type === 'application/json') {
+            const text = await pair[1].text();
+            console.log('JSON 내용:', JSON.parse(text));
+          }
         } else {
-          console.log(`${key}:`, value);
+          console.log(pair[0], pair[1]);
         }
       }
 
-      // 전체 키 목록 확인
-      console.log('=== FormData 키 목록 ===');
-      for (let key of formData.keys()) {
-        console.log('키:', key);
+      // 전송 데이터 확인
+      console.log('==== 전송할 요청 정보 ====');
+      console.log('URL:', `${API_URL}/candidate/${sessionId}/${voteTeamId}`);
+      console.log('VoteTeamInfoRequest:', voteTeamInfoRequest);
+      console.log('파일 존재 여부:', !!fileData.file);
+      if (fileData.file) {
+        console.log('파일 정보:', {
+          name: fileData.file.name,
+          type: fileData.file.type,
+          size: fileData.file.size,
+        });
       }
 
       const response = await axios.post(
-        `${API_URL}/candidate/${sessionId}`,
+        // `${API_URL}/candidate/${sessionId}/${voteTeamId}`,
+        `${API_URL}/candidate/${sessionId}/${voteTeamId}`,
         formData,
         {
           headers: {
@@ -178,15 +201,15 @@ export default function CandidateInfoUpdateTemplate() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <UserInfoSection
+      {/* <UserInfoSection
         nickname={UserInfoFormData.nickname}
         username={UserInfoFormData.username}
         onChangeField={handleChange}
-      />
+      /> */}
 
       <CandidateInfoSection
-        prefix={UserInfoFormData.prefix}
-        candidateStatement={UserInfoFormData.candidateStatement}
+        prefix={candidateInfoFormData.prefix}
+        candidateStatement={candidateInfoFormData.candidateStatement}
         pledges={pledges}
         // posterSrc={samplePoster}
         posterSrc={imgPreview}

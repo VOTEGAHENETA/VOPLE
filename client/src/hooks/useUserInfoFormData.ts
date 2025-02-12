@@ -1,11 +1,11 @@
-import { UserInfoFormData } from '@/types/candidate';
+import { UserInfoFormData } from '@/types/user';
 import { ChangeEvent, useState } from 'react';
 
 export const useUserInfoFormData = (initialData: UserInfoFormData) => {
-  const [UserInfoFormData, setUserInfoFormData] = useState(initialData);
+  const [userInfoFormData, setUserInfoFormData] = useState(initialData);
 
   const handleChange = <T extends HTMLInputElement | HTMLTextAreaElement>(
-    fieldName: keyof typeof UserInfoFormData,
+    fieldName: keyof typeof userInfoFormData,
     e: ChangeEvent<T>
   ) => {
     setUserInfoFormData((prev) => ({
@@ -14,5 +14,5 @@ export const useUserInfoFormData = (initialData: UserInfoFormData) => {
     }));
   };
 
-  return { UserInfoFormData, setUserInfoFormData, handleChange };
+  return { userInfoFormData, setUserInfoFormData, handleChange };
 };
