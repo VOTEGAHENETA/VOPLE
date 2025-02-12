@@ -52,7 +52,8 @@ public class StreamWebSocketHandler extends BinaryWebSocketHandler {
 
         // FFmpeg 프로세스 실행 (WebSocket → RTMP 변환)
         ProcessBuilder builder = new ProcessBuilder(
-                "ffmpeg", "-f", "webm", "-i", "pipe:0",
+                "ffmpeg", "-loglevel", "debug",
+                "-f", "webm", "-i", "pipe:0",
                 "-c:v", "libx264", "-preset", "ultrafast",
                 "-g", "15",
                 "-b:v", "3000k",

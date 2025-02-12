@@ -23,11 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
         .maxAge(3600);
   }
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(SessionInterceptor)
-        .addPathPatterns("/api/election/{sessionId}");
-  }
+//  @Override
+//  public void addInterceptors(InterceptorRegistry registry) {
+//    registry.addInterceptor(SessionInterceptor)
+//        .addPathPatterns("/api/election/{sessionId}");
+//  }
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
