@@ -9,14 +9,24 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 public class AuthenticationUtil {
 
   public static Users getUserFromOauth2Token(OAuth2AuthenticationToken token) {
-    CustomOauth2User customOauth2User = (CustomOauth2User) token.getPrincipal();
-    return customOauth2User.getUser();
+    CustomOauth2User principal = (CustomOauth2User) token.getPrincipal();
+    if (principal == null) {
+      return null;
+    }
+    return principal.getUser();
+  }
+
+  public static Users getUserFromOauth2User(CustomOauth2User oauth2User) {
+    return oauth2User.getUser();
   }
 
   public static Users getUserFromAuthentication() {
     Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext()
         .getAuthentication();
-    Users user = getUserFromOauth2Token((OAuth2AuthenticationToken) authentication);
-    return user;
+    if (authentication == null) {
+      return null;
+    }
+    CustomOauth2User oauth2User = (CustomOauth2User) authentication.getPrincipal();
+    return getUserFromOauth2User(oauth2User);
   }
 }

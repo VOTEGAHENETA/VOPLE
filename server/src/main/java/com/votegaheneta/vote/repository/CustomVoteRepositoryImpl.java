@@ -28,8 +28,12 @@ import com.votegaheneta.vote.entity.VoteInfo;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository("customVoteRepositoryImpl")  // 빈 이름 명시
@@ -44,10 +48,13 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository {
   private QCandidate qCandidate = candidate;
 
   private final JPAQueryFactory queryFactory;
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 
   public CustomVoteRepositoryImpl(EntityManager em) {
     this.queryFactory = new JPAQueryFactory(em);
   }
+
 
   private Map<Long, List<CandidateDto>> getCandidateList(Long sessionId, Long voteId) {
     List<CandidateDto> candidateList = queryFactory.select(
@@ -139,5 +146,31 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository {
         .where(qVote.electionSession.id.eq(sessionId))
         .orderBy(qVoteTeam.pollCnt.desc())
         .fetch();
+  }
+
+
+  /**
+   * JPA ID IDENTITY 전략과 Batch Insert는 양립 불가능
+   */
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public long batchInsertVoteInfoList(List<VoteInfo> voteInfoList) {
+//    String sql = "insert into vote_info (user_id, vote_id, user_type, has_select) values (?, ?, ?, ?)";
+//    jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+//      @Override
+//      public void setValues(PreparedStatement ps, int i) throws SQLException {
+//        VoteInfo voteInfo = voteInfoList.get(i);
+//        ps.setLong(1, voteInfo.getUser().getId());
+//        ps.setLong(2, voteInfo.getVote().getId());
+//        ps.setString(3, voteInfo.getUserType().name());
+//        ps.setBoolean(4, voteInfo.isHasSelect());
+//      }
+//
+//      @Override
+//      public int getBatchSize() {
+//        return voteInfoList.size();
+//      }
+//    });
+    return 0;
   }
 }
