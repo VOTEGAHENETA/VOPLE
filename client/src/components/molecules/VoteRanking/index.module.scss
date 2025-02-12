@@ -1,25 +1,53 @@
-.ranking {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 95px;
-  border-radius: 10px;
-  background-color: white;
-  padding: 16px 14px;
-  max-width: 318px;
-}
-
-.user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.userinfo {
+.container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-.percent {
+.participation {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-color: #f5f5f5;
+  padding: 20px 10px;
+  min-width: 230px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 16px;
+  background-color: #f2b705;
+  border-radius: 10px;
+  min-width: 311px;
+}
+
+.team {
+  display: flex;
+  width: 100%;
+  min-width: 270px;
+  padding: 14px 16px;
+  gap: 95px;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.candidate_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  min-width: 55px;
+  max-width: 55px;
+}
+
+.team_info {
+  display: flex;
+  gap: 10px;
 }
