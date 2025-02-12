@@ -7,29 +7,15 @@ import { useVoteStore } from '@/stores/voteStore';
 import ModalPopup from './ModalPopUp';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CandidateSessionData } from '@/types/voteSession';
-import { getVoteDetail } from '@/services/election';
+import { useVoteDetail } from '@/services/hooks/useVoteDetail';
 
 function VoteTemplate() {
   const { selectedCandidates, isModalOpen, chooseCandidate, setModalOpen } =
     useVoteStore();
   const [isVoting, setIsVoting] = useState(true);
   const navigate = useNavigate();
-  const [voteData, setVoteData] = useState<CandidateSessionData | null>(null);
   const sessionId = 3;
-
-  // API 데이터 페칭
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getVoteDetail(sessionId);
-        setVoteData(response);
-      } catch (error) {
-        console.error('투표 데이터 로딩 실패:', error);
-      }
-    };
-    fetchData();
-  }, [sessionId]); // sessionId 변경 시 재요청
+  const { data: voteData } = useVoteDetail(sessionId);
 
   // 네비게이션 처리
   useEffect(() => {

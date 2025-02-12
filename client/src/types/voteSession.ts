@@ -22,22 +22,7 @@ export interface CandidateSessionData {
   voteFindDtos: Vote[];
 }
 
-export type VoteDataProps = {
-  data?: CandidateSessionData;
-  selectedCandidates: {
-    [voteId: number]: { candidateId: number; userName: string } | undefined;
-  };
-};
-
-// 투표 결과
-export interface ElectionSessionDto {
-  sessionId: number;
-  sessionName: string;
-  wholeVoter: number;
-  votedVoter: number;
-  voteStartTime: string;
-  voteEndTime: string;
-}
+// 현재 투표 상황 데이터 가져오기
 
 export interface VoteCandidateDto {
   candidateId: number;
@@ -51,34 +36,18 @@ export interface TeamResult {
   pollCnt: number;
   voteCandidateDtos: VoteCandidateDto[];
   poster: string;
-  candidate_statement: string;
+  candidate_statement: string; // 언더스코어 표기 유지
   teamVotePercent: number;
 }
 
-export interface VoteFinalResult {
+export interface VoteResult {
   voteId: number;
   voteName: string;
   teamResults: TeamResult[];
 }
 
-export interface CandidateResult {
-  candidateId: number;
-  userId: number;
-  userName: string;
-}
-
-export interface Elected {
-  voteId: number;
-  voteName: string;
-  voteTeamId: number;
-  prefix: string;
-  poster: string;
-  candidateResults: CandidateResult[];
-}
-
-export interface VoteResult {
-  electionSessionDto: ElectionSessionDto;
-  wholeVoterPercent: number; // 전체 유권자 비율
-  voteFinalResults: VoteFinalResult[];
-  electedList: Elected[];
+export interface VoteResultsResponse {
+  sessionName: string;
+  wholeVoterPercent: number;
+  voteResults: VoteResult[];
 }
