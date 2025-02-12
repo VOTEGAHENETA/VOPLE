@@ -6,12 +6,15 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
+import com.votegaheneta.vote.mapper.VoteInfoMapper;
 import com.votegaheneta.vote.repository.SessionRepository;
+import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +26,25 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final VoteTeamRepository voteTeamRepository;
   private final SessionRepository sessionRepository;
   private final VoteRepository voteRepository;
+  private final SessionUserInfoRepository sessionUserInfoRepository;
+
+  @Autowired
+  private VoteInfoMapper voteInfoMapper;
 
   @Override
   @Transactional
   public void createVote(Long sessionId, String voteName) {
     ElectionSession electionSession = sessionRepository.findSessionById(sessionId);
-    electionSession.addVote(new Vote(voteName));
-    // VoteInfo도 추가해줘야겠네, 배치 Insert
+    Vote vote = new Vote(voteName);
+    electionSession.addVote(vote);
+
+    sessionUserInfoRepository.findSessionUserInfosByElectionSessionId(sessionId)
+        .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
+        .forEach(vote::addVoteInfo);
+    ;
+    voteInfoMapper.batchInsertVoteInfo(vote.getVoteInfos());
+//    voteRepository.batchInsertVoteInfoList(vote.getVoteInfos());
+//    voteInfoRepository.saveAll(vote.getVoteInfos());
   }
 
   @Override
