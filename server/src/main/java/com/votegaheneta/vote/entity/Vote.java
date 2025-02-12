@@ -44,6 +44,11 @@ public class Vote {
     this.voteName = voteName;
   }
 
+  public void addVoteInfo(VoteInfo voteInfo) {
+    voteInfos.add(voteInfo);
+    voteInfo.setVote(this);
+  }
+
   public void addVoteTeam(VoteTeam voteTeam) {
     voteTeams.add(voteTeam);
     voteTeam.setVote(this);

@@ -3,7 +3,6 @@ package com.votegaheneta.vote.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.votegaheneta.user.entity.QUsers;
-import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.vote.dto.VoteInfoDto;
 import com.votegaheneta.vote.entity.QCandidate;
 import com.votegaheneta.vote.entity.QElectionSession;
@@ -13,20 +12,19 @@ import com.votegaheneta.vote.entity.QVoteTeam;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CustomCandidateRepositoryImpl implements CustomCandidateRepository {
 
-  private QUsers users = QUsers.users;
-  private QVoteInfo voteInfo = QVoteInfo.voteInfo;
-  private QCandidate candidate = QCandidate.candidate;
-  private QElectionSession electionSession = QElectionSession.electionSession;
-  private QVote vote = QVote.vote;
-  private QVoteTeam voteTeam = QVoteTeam.voteTeam;
-  private JPAQueryFactory queryFactory;
+  private final QUsers users = QUsers.users;
+  private final QVoteInfo voteInfo = QVoteInfo.voteInfo;
+  private final QCandidate candidate = QCandidate.candidate;
+  private final QElectionSession electionSession = QElectionSession.electionSession;
+  private final QVote vote = QVote.vote;
+  private final QVoteTeam voteTeam = QVoteTeam.voteTeam;
+  private final JPAQueryFactory queryFactory;
 
   public CustomCandidateRepositoryImpl(EntityManager em) {
     this.queryFactory = new JPAQueryFactory(em);
@@ -40,13 +38,13 @@ public class CustomCandidateRepositoryImpl implements CustomCandidateRepository 
             users.id, users.username))
         .from(voteInfo)
         .join(users).on(users.id.eq(voteInfo.user.id))
-        .where(voteInfo.userType.eq(USER_TYPE.VOTER), (voteInfo.vote.id.eq(voteId)))
+        .where((voteInfo.vote.id.eq(voteId)))
         .fetch();
     Pattern pattern = Pattern.compile(regex);
     return allResults.stream()
         .filter(dto -> pattern.matcher(dto.getUserName()).find())
         .skip(pageable.getOffset())
         .limit(pageable.getPageSize())
-        .collect(Collectors.toList());
+        .toList();
   }
 }

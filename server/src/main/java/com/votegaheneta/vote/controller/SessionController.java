@@ -1,7 +1,10 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.oauth2.CustomOauth2User;
+import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
+import com.votegaheneta.util.AuthenticationUtil;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionEditDto;
@@ -14,8 +17,10 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,11 +37,17 @@ public class SessionController {
 
   private final SessionService sessionService;
 
-  @GetMapping("/question/{sessionId}")
-  public ApiResponse<Void> getQuestion(@PathVariable("sessionId") Long sessionId) {
-    System.out.println("redirecting");
-    return ApiResponse.success(HttpStatus.OK, "redirecting", null);
+  @PostMapping("/question/{sessionId}")
+  public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId, @RequestBody Map<String, String> payload,
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
+//    Users user = AuthenticationUtil.getUserFromAuthentication();
+//    System.out.println("oauth2User = " + oauth2User);
+    Users user = AuthenticationUtil.getUserFromOauth2User(oauth2User);
+    boolean result = sessionService.validateQuestion(sessionId, user.getId(), payload.get("answer"));
+    return result ? ApiResponse.success(HttpStatus.OK, "정답입니다.", true)
+        : ApiResponse.fail(HttpStatus.BAD_REQUEST, "틀렸습니다.");
   }
+
 
   @Operation(
       summary = "정보 수정 버튼을 눌렀을때 유권자 / 후보자 판별",
