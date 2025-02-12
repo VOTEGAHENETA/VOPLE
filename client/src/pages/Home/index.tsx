@@ -4,7 +4,7 @@ function Home() {
   return (
     <>
       <div>
-        <StreamReceiver streamId={1} />
+        <StreamReceiver streamId={23} />
       </div>
     </>
   );

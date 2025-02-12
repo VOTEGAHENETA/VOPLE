@@ -5,7 +5,10 @@ export function useStreamData(streamId: number) {
   return useQuery({
     queryKey: ['stream', streamId],
     queryFn: () => getStreamData(streamId),
-    select: (res) => res.data.data, // 응답 데이터 정리
+    select: (res) => {
+      console.log('getStreamData:', res);
+      return res;
+    }, // 응답 데이터 정리
   });
 }
 

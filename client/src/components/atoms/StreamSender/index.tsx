@@ -10,7 +10,7 @@ function StreamSender({ streamId }: Props) {
   const { data: streamData } = useStreamData(streamId);
   const { mutate: updateStreamStatus } = useStreamControl();
   const { videoRef, startStream, stopStream } = useMediaStream({
-    streamKey: streamData?.streamingUrl?.split('/').pop() || null,
+    streamKey: streamData?.streamId,
   });
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
 

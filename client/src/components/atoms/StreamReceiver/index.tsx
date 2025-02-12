@@ -9,24 +9,27 @@ interface Props {
 function StreamReceiver({ streamId }: Props) {
   const hlsPlayerRef = useRef<HTMLVideoElement | null>(null);
   const { data: streamData } = useStreamData(streamId);
-  const streamKey = streamData?.streamingUrl?.split('/').pop() || null;
-
+  console.log('streaming:', streamData?.streamingUrl);
   useEffect(() => {
-    if (!streamKey || !hlsPlayerRef.current) return;
-
-    const hls = new Hls();
-    hls.loadSource(`http://i12b102.p.ssafy.io:8050/hls/${streamKey}.m3u8`);
+    if (!streamData || !hlsPlayerRef.current) return;
+    const hls = new Hls({ debug: true });
+    hls.loadSource(streamData.streamingUrl);
     hls.attachMedia(hlsPlayerRef.current);
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
       hlsPlayerRef.current
         ?.play()
         .catch((err) => console.error('📡 HLS 재생 오류:', err));
     });
+    hls.on(Hls.Events.ERROR, (event, data) => {
+      console.error('HLS.js 오류 발생:', data);
+    });
+
+    console.log('hls:', hls);
 
     return () => {
       hls.destroy();
     };
-  }, [streamKey]);
+  }, [streamData]);
 
   return (
     <div>

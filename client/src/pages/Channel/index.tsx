@@ -3,7 +3,7 @@ import StreamSender from '@/components/atoms/StreamSender';
 function Channel() {
   return (
     <div>
-      <StreamSender streamId={1} />
+      <StreamSender streamId={23} />
     </div>
   );
 }
