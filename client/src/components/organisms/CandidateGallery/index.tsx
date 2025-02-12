@@ -19,7 +19,7 @@ function CandidateGallery({
   chooseCandidate,
   selectedCandidates,
 }: Props) {
-  const voteData = info.voteFindDto;
+  const voteData = info.voteFindDtos;
 
   return (
     <div className={styles.main}>

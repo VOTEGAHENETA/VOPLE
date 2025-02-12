@@ -4,7 +4,7 @@ import { CandidateSessionData } from '@/types/voteSession';
 export const info: CandidateSessionData = {
   sessionId: 12,
   sessionName: '제 12대 싸피 회장선거',
-  voteFindDto: [
+  voteFindDtos: [
     {
       voteId: 1,
       voteName: '회장 선거',
