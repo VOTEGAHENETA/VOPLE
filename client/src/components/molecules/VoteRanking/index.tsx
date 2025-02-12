@@ -11,10 +11,7 @@ interface Props {
 }
 
 function VoteRanking({ teamResults = [], wholeVoterPercent = 0 }: Props) {
-  const sortedTeams = [...teamResults].sort(
-    (a, b) => b.teamVotePercent - a.teamVotePercent
-  );
-  const topThree = sortedTeams.slice(0, 3);
+  const topThree = teamResults.slice(0, 3);
 
   return (
     <div className={styles.container}>
