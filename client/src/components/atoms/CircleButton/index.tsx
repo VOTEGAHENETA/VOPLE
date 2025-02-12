@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Text from '@/components/atoms/Text';
 import IconRefresh from '@/assets/icons/IconRefresh';
 import clsx from 'clsx';
+import { useElectionStore } from '@/stores/election';
 
 type VoteButtonLabel = '투표하기' | '투표시작전' | '선·관·위' | null;
 
@@ -16,18 +17,13 @@ interface Props {
 }
 
 // API 연동을 시작하면 바꿀 예정
-// const sessionId = '123';
-const currentUserId = 123444;
-const electionData = {
-  sessionId: '456',
-  hostId: 1234,
-  voteStartTime: '2025-02-04T09:12:30',
-  voteEndTime: '2025-02-04T18:00:00',
-};
+const currentUserId = 12;
 
 /** 메인화면 footer에 적용될 Router 버튼 입니다. */
 function CircleButton({ type = 'button', onClick }: Props) {
-  const isHost = currentUserId === electionData.hostId;
+  const { election } = useElectionStore();
+  const [isHost, setIsHost] = useState(false);
+
   const [state, setState] = useState({
     status: true,
     buttonLabel: '선·관·위' as VoteButtonLabel,
@@ -37,16 +33,20 @@ function CircleButton({ type = 'button', onClick }: Props) {
   });
 
   useEffect(() => {
-    updateButtonState();
-  }, []);
+    if (election) {
+      setIsHost(currentUserId === election.hostId);
+      updateButtonState();
+    }
+  }, [election]);
 
   function updateButtonState() {
+    if (!election) return;
     if (isHost) return; // 선거 호스트인 경우 로직 작동 불필요
 
-    if (currentUserId !== electionData.hostId) {
+    if (currentUserId !== election.hostId) {
       const now = new Date();
-      const startTime = new Date(electionData.voteStartTime);
-      const endTime = new Date(electionData.voteEndTime);
+      const startTime = new Date(election.startTime);
+      const endTime = new Date(election.endTime);
       const newStatus = startTime <= now && now <= endTime;
 
       setState((prev) => ({
@@ -78,7 +78,7 @@ function CircleButton({ type = 'button', onClick }: Props) {
     }
   }
 
-  const timeLeft = isHost ? null : useTimer(state.deadLine);
+  const timeLeft = useTimer(isHost ? new Date() : state.deadLine);
   useEffect(() => {
     if (!isHost && !state.status && timeLeft === '00:00:00') {
       setState((prev) => ({
@@ -91,7 +91,10 @@ function CircleButton({ type = 'button', onClick }: Props) {
 
   return (
     <div className={styles['btn-container']}>
-      <Text size='sm' color={state.status ? '#F58420' : '#333333'}>
+      <Text
+        size='sm'
+        color={state.status ? 'var(--color-main-orange)' : 'var(--color-black)'}
+      >
         {state.onlyRefresh ? '새로고침!!' : timeLeft}
       </Text>
       <button

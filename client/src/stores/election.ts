@@ -1,7 +1,12 @@
 import { create } from 'zustand';
-import { ElectionSection } from '@/types/election';
+import { ElectionResponse } from '@/types/voteSession';
 
-export const useElectionStore = create((set) => ({
-  election: {},
-  getElection: () => set((state: ElectionSection) => ({ election: state })),
+interface electionStore {
+  election: ElectionResponse | null;
+  setElection: (state: ElectionResponse) => void;
+}
+
+export const useElectionStore = create<electionStore>((set) => ({
+  election: null,
+  setElection: (state: ElectionResponse) => set({ election: state }),
 }));

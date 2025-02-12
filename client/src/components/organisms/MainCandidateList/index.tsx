@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
-import { VoteResult } from '@/types/election';
 import Text from '@/components/atoms/Text';
 import CandidateSection from '@/components/molecules/CandidateSection';
 import medal from '@/assets/icons/medal.svg';
 import crown from '@/assets/icons/crown.svg';
 import silverCrown from '@/assets/icons/silverCrown.svg';
 import { useNavigate } from 'react-router-dom';
+import { VoteResult } from '@/types/voteSession';
 
 interface Props {
+  index: number;
   vote: VoteResult;
 }
 
-function MainCandidateList({ vote }: Props) {
-  const [currentIndex, setCurrentIndex] = useState(1);
+function MainCandidateList({ index, vote }: Props) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [canSlide, setCanSlide] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,6 +28,7 @@ function MainCandidateList({ vote }: Props) {
 
   // [0, 1, 2] => [2, 0, 1, 2, 0] 으로 만들기
   function getItems() {
+    if (vote.teamResults.length === 0) return []; // 후보자가 없는 경우
     return isSingleItem
       ? vote.teamResults
       : [
@@ -140,12 +142,12 @@ function MainCandidateList({ vote }: Props) {
   return (
     <div className={styles['vote-main']}>
       <div className={styles['vote-title']}>
-        {vote.voteId === 1 ? (
-          <img src={crown} alt='회장 후보' />
-        ) : vote.voteId === 2 ? (
-          <img src={silverCrown} alt='부회장 후보' />
+        {index === 0 ? (
+          <img src={crown} alt='후보' />
+        ) : index === 1 ? (
+          <img src={silverCrown} alt='후보' />
         ) : (
-          <img src={medal} alt='기타 후보' />
+          <img src={medal} alt='후보' />
         )}
         <Text weight='bold'>{vote.voteName} 후보</Text>
       </div>
@@ -160,13 +162,24 @@ function MainCandidateList({ vote }: Props) {
           role='region'
           aria-label='후보 목록'
         >
-          {items.map((team, index) => (
-            <CandidateSection
-              key={`${team.teamId}-${index}`}
-              team={team}
-              onClick={() => handleRouteChannel(team.teamId)}
-            />
-          ))}
+          {items ? (
+            items.map((team, index) => {
+              if (!team || team.teamId === undefined) {
+                return <div key={index}>후보자 X</div>;
+              }
+              return (
+                <CandidateSection
+                  key={`${team.teamId}-${index}`}
+                  team={team}
+                  onClick={() => handleRouteChannel(team.teamId)}
+                />
+              );
+            })
+          ) : (
+            <div style={{ width: '100%', height: '100%' }}>
+              아직 후보자가 등록되지 않았어요
+            </div>
+          )}
         </div>
       </div>
 
@@ -177,7 +190,7 @@ function MainCandidateList({ vote }: Props) {
               key={index}
               size='xl'
               color={
-                currentIndex === index + 1
+                currentIndex === index
                   ? 'var(--color-main-orange)'
                   : 'var(--color-gray-light)'
               }
