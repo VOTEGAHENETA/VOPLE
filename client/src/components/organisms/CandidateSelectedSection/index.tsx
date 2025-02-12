@@ -7,7 +7,6 @@ import { CandidateList } from '@/types/user';
 import { useEffect } from 'react';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
-
 interface Props {
   voteName: string;
   candidateList: CandidateList | undefined;
@@ -25,6 +24,7 @@ function CandidateSelectedSection({ voteName, candidateList }: Props) {
   useEffect(() => {
     if (candidateList) {
       setSendCandidates(candidateList);
+      console.log('selected sendCandidate: ', sendCandidates);
     }
   }, [candidateList]);
 
