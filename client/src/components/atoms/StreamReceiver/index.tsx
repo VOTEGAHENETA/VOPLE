@@ -20,7 +20,7 @@ function StreamReceiver({ streamId }: Props) {
         ?.play()
         .catch((err) => console.error('📡 HLS 재생 오류:', err));
     });
-    hls.on(Hls.Events.ERROR, (event, data) => {
+    hls.on(Hls.Events.ERROR, (_, data) => {
       console.error('HLS.js 오류 발생:', data);
     });
 
