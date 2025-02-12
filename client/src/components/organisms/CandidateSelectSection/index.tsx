@@ -197,7 +197,7 @@ function CandidateSelectSection({ sessionId, voteId }: Props) {
             );
           })
         ) : debounceSearchValue ? (
-          <div className={styles['no-result']}>일치하는 인원이 없어요.</div>
+          <div className={styles['no-result']}>{errMsgs[1]}</div>
         ) : null}
         <div ref={observerRef} style={{ height: '20px' }}>
           {userIsFetchingNextPage && <span>Loading...</span>}
