@@ -39,14 +39,6 @@ export const router = createBrowserRouter([
         element: <Manage />,
       },
       {
-        path: 'elections/:election_id/result/',
-        element: <Result />,
-      },
-      { 
-        path: 'elections/:election_id/vote',
-        element: <VoteTemplate />
-      },
-      {
         path: 'elections/:election_id/vote',
         element: <VoteTemplate />,
       },
