@@ -14,7 +14,9 @@ interface Props {
 }
 
 function MainCandidateList({ index, vote }: Props) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(
+    vote.teamResults.length === 1 ? 0 : 1
+  );
   const [transitioning, setTransitioning] = useState(false);
   const [canSlide, setCanSlide] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
