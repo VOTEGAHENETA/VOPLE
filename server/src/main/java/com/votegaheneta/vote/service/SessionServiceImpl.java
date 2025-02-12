@@ -97,6 +97,7 @@ public class SessionServiceImpl implements SessionService {
     return new SessionInitialInfoDto(
         electionSession.getId(),
         electionSession.getSessionName(),
+        electionSession.getHostUser().getId(),
         electionSession.getVoteStartTime(),
         electionSession.getVoteEndTime(),
         voteResults,
