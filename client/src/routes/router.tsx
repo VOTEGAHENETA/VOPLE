@@ -1,5 +1,6 @@
 import App from '@/App';
 import ElectionListTemplate from '@/components/templates/ElectionListTemplate';
+import Login from '@/components/templates/LoginTemplate';
 import ResultCurrentTemplate from '@/components/templates/ResultCurrentTemplate';
 import VoteTemplate from '@/components/templates/VoteTemplate';
 import Channel from '@/pages/Channel';
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
       {
         path: '/elections/list',
         element: <ElectionListTemplate />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],
