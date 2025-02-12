@@ -107,7 +107,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   public void updateVoteTeamInfo(Long sessionId, VoteTeamInfoRequest request, MultipartFile file) {
     try {
       UserDto userDto = request.getUser();
-      // 특정 id의 후보자 리스트 가져옴
+      // 회원 id는 로그인으로 들어오니까 상관없을듯
       Candidate candidate = getCandidate(sessionId, userDto.getUserId());
       Users user = candidate.getUser();
       VoteTeam voteTeam = candidate.getVoteTeam();
@@ -120,7 +120,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
       pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
       Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
     } catch(Exception e) {
-      e.printStackTrace();
+      throw  new IllegalArgumentException("후보자 수정중 오류 발생", e);
     }
   }
 

@@ -1,10 +1,12 @@
 package com.votegaheneta.common.component;
 
 import com.votegaheneta.vote.dto.CandidateResultDto;
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
 import com.votegaheneta.vote.dto.VoteResultProjection;
 import com.votegaheneta.vote.repository.CustomVoteRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,12 +17,44 @@ import org.springframework.stereotype.Component;
 public class VoteResultCalculator {
 
   private final CustomVoteRepository customVoteRepository;
-  public VoteResultCalculator(@Qualifier("customVoteRepositoryImpl") CustomVoteRepository customVoteRepository) {
+
+  public VoteResultCalculator(
+      @Qualifier("customVoteRepositoryImpl") CustomVoteRepository customVoteRepository) {
     this.customVoteRepository = customVoteRepository;
+  }
+
+  public List<Elected> electionListResult(List<VoteResult> voteResults) {
+    List<Elected> electedList = new ArrayList<>();
+    for (VoteResult voteResult : voteResults) {
+      List<TeamResult> maxTeamResultList = new ArrayList<>();
+      int max = -1;
+      for (TeamResult teamResult : voteResult.getTeamResults()) {
+        if (teamResult.getPollCnt() == max) {
+          maxTeamResultList.add(teamResult);
+        } else if (teamResult.getPollCnt() > max) {
+          max = teamResult.getPollCnt();
+          maxTeamResultList.clear();
+          maxTeamResultList.add(teamResult);
+        }
+      }
+      electedList.addAll(maxTeamResultList.stream().map(
+          teamResult -> {
+            return new Elected(
+                voteResult.getVoteId(),
+                voteResult.getVoteName(),
+                teamResult.getTeamId(),
+                teamResult.getPrefix(),
+                teamResult.getPoster(),
+                teamResult.getVoteCandidateDtos()
+            );
+          }).toList());
+    }
+    return electedList;
   }
 
   /**
    * 투표 결과 집계 로직
+   *
    * @param sessionId
    * @return List<VoteResult>
    */
@@ -37,25 +71,25 @@ public class VoteResultCalculator {
           Long voteId = voteEntry.getKey();
           Map<Long, List<VoteResultProjection>> teamEntry = voteEntry.getValue();
           List<TeamResult> teamResults = teamEntry.values().stream().map(
-              teamResultProjection -> {
-                VoteResultProjection firstVoteResult = teamResultProjection.get(0);
-                List<CandidateResultDto> candidateResultDtos = teamResultProjection.stream().map(
-                    candidate ->
-                        new CandidateResultDto(
-                            candidate.getCandidateId(),
-                            candidate.getUserId(),
-                            candidate.getUserName()
-                        )).toList();
-                return new TeamResult(
-                    firstVoteResult.getVoteTeamId(),
-                    firstVoteResult.getPrefix(),
-                    firstVoteResult.getPollCnt(),
-                    candidateResultDtos,
-                    firstVoteResult.getPoster(),
-                    firstVoteResult.getCandidateStatement(),
-                    firstVoteResult.getTeamVotePercent()
-                );
-              }).sorted((a, b) -> b.getPollCnt().compareTo(a.getPollCnt()))
+                  teamResultProjection -> {
+                    VoteResultProjection firstVoteResult = teamResultProjection.get(0);
+                    List<CandidateResultDto> candidateResultDtos = teamResultProjection.stream().map(
+                        candidate ->
+                            new CandidateResultDto(
+                                candidate.getCandidateId(),
+                                candidate.getUserId(),
+                                candidate.getUserName()
+                            )).toList();
+                    return new TeamResult(
+                        firstVoteResult.getVoteTeamId(),
+                        firstVoteResult.getPrefix(),
+                        firstVoteResult.getPollCnt(),
+                        candidateResultDtos,
+                        firstVoteResult.getPoster(),
+                        firstVoteResult.getCandidateStatement(),
+                        firstVoteResult.getTeamVotePercent()
+                    );
+                  }).sorted((a, b) -> b.getPollCnt().compareTo(a.getPollCnt()))
               .toList();
           float teamVotetotalCount = 0.0f;
           for (TeamResult teamResult : teamResults) {
