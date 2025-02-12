@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class SessionInitialInfoDto {
   private Long sessionId;
   private String sessionName;
+  private Long hostId;
   private LocalDateTime startTime;
   private LocalDateTime endTime;
   private List<VoteResult> voteResults;
