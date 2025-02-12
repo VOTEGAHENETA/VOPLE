@@ -2,15 +2,15 @@ import styles from './index.module.scss';
 import IconBlurChart from '@/assets/icons/IconBlurChart';
 import IconFire from '@/assets/icons/IconFire';
 import Text from '@/components/atoms/Text';
-import { ElectionSection } from '@/types/election';
+import { ElectionResponse } from '@/types/voteSession';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
 interface Props {
-  data: ElectionSection;
+  election: ElectionResponse;
 }
 
-function Turnout({ data }: Props) {
+function Turnout({ election }: Props) {
   const [curIndex, setCurIndex] = useState<number>(0);
   const [isVisible, setIsVisible] = useState<boolean>(true);
 
@@ -19,7 +19,7 @@ function Turnout({ data }: Props) {
       setIsVisible(false);
 
       setTimeout(() => {
-        setCurIndex((prev) => (prev + 1) % data.voteResults.length);
+        setCurIndex((prev) => (prev + 1) % election.voteResults.length);
         setIsVisible(true);
       }, 3000);
     }, 3000);
@@ -48,7 +48,8 @@ function Turnout({ data }: Props) {
                 isVisible ? styles['fade-in'] : styles['fade-out']
               )}
             >
-              {data.voteResults[curIndex].voteName}
+              {election?.voteResults[curIndex].voteName ||
+                '선거 정보 불러오는 중...'}
             </Text>
           </div>
           &nbsp;] 은 누구?!
@@ -60,7 +61,7 @@ function Turnout({ data }: Props) {
         </div>
         <div className={styles['main-turnout-chart-percent']}>
           <IconFire />
-          {data.wholeVoterPercent}%
+          {election.wholeVoterPercent + '%' || '투표율 집계 중...'}
         </div>
       </div>
     </div>

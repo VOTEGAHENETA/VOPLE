@@ -1,6 +1,7 @@
 import App from '@/App';
-import Result from '@/components/organisms/Result/Result';
 import ElectionListTemplate from '@/components/templates/ElectionListTemplate';
+import Login from '@/components/templates/LoginTemplate';
+import ResultCurrentTemplate from '@/components/templates/ResultCurrentTemplate';
 import VoteTemplate from '@/components/templates/VoteTemplate';
 import Channel from '@/pages/Channel';
 import Create from '@/pages/Election/Create';
@@ -37,12 +38,11 @@ export const router = createBrowserRouter([
         element: <Manage />,
       },
       {
-        path: 'elections/:election_id/result/',
-        element: <Result />,
+        path: 'elections/:election_id/vote',
+        element: <VoteTemplate />,
       },
-      { path: 'elections/:election_id/vote', element: <VoteTemplate /> },
       {
-        path: 'candidate/:sessionId/:userId',
+        path: 'candidate/:session_id/:vote_team_id',
         element: <Candidate />,
       },
       {
@@ -51,11 +51,15 @@ export const router = createBrowserRouter([
       },
       {
         path: '/elections/:election_id/result',
-        element: <Result />,
+        element: <ResultCurrentTemplate />,
       },
       {
         path: '/elections/list',
         element: <ElectionListTemplate />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],

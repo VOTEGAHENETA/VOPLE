@@ -93,6 +93,9 @@ public class SessionController {
   )
   @GetMapping
   public ApiResponse<SessionResponse> getSessions() {
+    // 세션 에서 꺼내온 userId로 바꾸기
+    //(HttpSession session)
+    // Long userId = session.getAttribute("userId");
     Long userId = 1L;
     SessionResponse result = sessionService.getSessions(userId);
     if (result.getManagedSessions().isEmpty() && result.getInvolvedSessions().isEmpty()) {

@@ -85,7 +85,7 @@ export default function CandidateInfoUpdateTemplate() {
 
       // 파일이 있는 경우에만 추가
       if (fileData.file) {
-        formData.append('poster', fileData.file);
+        formData.append('file', fileData.file);
       }
 
       // JSON 데이터를 문자열로 변환하여 추가
