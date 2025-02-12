@@ -29,4 +29,5 @@ public class UserController {
     userService.updateUser(userId, userDto);
     return ApiResponse.success(HttpStatus.OK, "유저 수정 성공", null);
   }
+
 }

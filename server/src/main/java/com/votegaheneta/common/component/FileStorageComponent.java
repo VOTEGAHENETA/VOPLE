@@ -24,14 +24,14 @@ public class FileStorageComponent {
   @Value("${base_url}")
   private String mediaUrl;
 
-  public String localSave(MultipartFile file, String type) {
+  public String fileSave(MultipartFile file, String type) {
     if (file != null) {
       validateFile(file);
       try {
         String subDirectory = createSubDirectory(type);
         String fileName = createFileName(file.getOriginalFilename());
-        String fullFileName = saveFile(file, subDirectory, fileName);
-        return mediaUrl + convertToRelativePath(fullFileName);
+        String fullFileName = mediaUrl + saveFile(file, subDirectory, fileName);
+        return  convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {
         throw new IllegalArgumentException("파일 처리중 오류가 발생했습니다", e);
       }

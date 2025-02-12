@@ -4,7 +4,6 @@ import com.votegaheneta.common.component.SearchComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.common.repository.RedisRepository;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
-import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
@@ -114,30 +113,25 @@ public class VoteFindServiceImpl implements VoteFindService {
   @Transactional
   @Override
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
-    String sessionRedisKey = "session:vote:result:"+sessionId;
-    String electedRedisKey = "session:vote:result:elected:"+sessionId;
+//    String sessionRedisKey = "session:vote:result:"+sessionId;
     List<VoteResult> voteResults = new ArrayList<>();
-    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
-    List<Elected> electeds = redisRepository.getList(electedRedisKey);
-    if(electeds.isEmpty()) {
-      electeds = voteResultCalculator.electionListResult(voteResults);
-      redisRepository.saveElectedResults(electedRedisKey, electeds);
-    }
+//    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
-    if(redisVoteResults.isEmpty()) {
-      voteResults = voteResultCalculator.calculateVoteResult(sessionId);
-      redisRepository.saveVoteResults(sessionRedisKey, voteResults);
-    }else {
-      voteResults = redisVoteResults;
-    }
+//    if(redisVoteResults.isEmpty()) {
+//      voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+//      redisRepository.saveVoteResults(sessionRedisKey, voteResults);
+//    }else {
+//      voteResults = redisVoteResults;
+//    }
+    voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
     return new SessionFinalResultFindDto(
         ElectionSessionDto.from(electionSession),
         wholeVoterPercent,
         voteResults,
-        electeds
+        voteResultCalculator.electionListResult(voteResults)
     );
   }
 }
