@@ -1,7 +1,5 @@
 .container {
   position: absolute;
-  // left: 0;
-  // bottom: 0;
   padding: 10px 10px 0; 
   min-width: 500px;
   width: 100%;
@@ -14,7 +12,6 @@
   box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
   border: 1px solid #eee;
 
-
   &.slideDown {
     transform: translateY(330px);
     .slideButton {
@@ -23,9 +20,7 @@
       }
     }
   }
-  .ChatBoard {
-    height: 200px!important;
-  }
+
 }
 
 .slideButton {

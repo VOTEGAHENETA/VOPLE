@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
-import samplePoster from '@/assets/sample/sample.png';
+// import samplePoster from '@/assets/sample/sample.png';
 import UserInfoSection from '@/components/organisms/UserInfoSection';
 import CandidateInfoSection from '@/components/organisms/CandidateInfoSection';
 import { useUserInfoFormData } from '@/hooks/useUserInfoFormData';
@@ -21,7 +21,9 @@ const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
 // };
 
 export default function CandidateInfoUpdateTemplate() {
+  const [imgPreview, setImgPreview] = useState<string>('');
   const { sessionId = '', userId = '' } = useParams();
+
   const {
     pledges,
     setPledges,
@@ -67,6 +69,10 @@ export default function CandidateInfoUpdateTemplate() {
         prefix: voteTeam.prefix,
         candidateStatement: voteTeam.candidateStatement,
       });
+
+      // 이미지 미리보기 초기화
+      console.log('#####', voteTeam.poster);
+      setImgPreview(voteTeam.poster || '');
 
       // pledges 초기화
       const initialPledges = fetchedPledges.map((pledge) => pledge.content);
@@ -182,7 +188,8 @@ export default function CandidateInfoUpdateTemplate() {
         prefix={UserInfoFormData.prefix}
         candidateStatement={UserInfoFormData.candidateStatement}
         pledges={pledges}
-        posterSrc={samplePoster}
+        // posterSrc={samplePoster}
+        posterSrc={imgPreview}
         fileInputRef={fileInputRef}
         onChangeField={handleChange}
         onUploadClick={handleUploadClick}

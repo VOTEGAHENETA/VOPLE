@@ -2,6 +2,11 @@
 @use 'reset';
 @use 'fonts';
 
+#root {
+  background-color: #fff;
+  height: 100vh;
+}
+
 body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-black);

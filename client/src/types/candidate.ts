@@ -5,6 +5,17 @@ export interface UserInfoFormData {
   candidateStatement: string;
 }
 
+// }
+// export interface BaseUserFormData {
+//   nickname: string;
+//   username: string;
+// }
+
+// export interface CandidateInfoFormData extends BaseUserFormData {
+//   prefix: string;
+//   candidateStatement: string;
+// }
+
 export interface ProfileResponse {
   httpStatus: number;
   message: string;

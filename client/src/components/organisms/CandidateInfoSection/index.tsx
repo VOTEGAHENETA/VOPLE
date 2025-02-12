@@ -137,15 +137,17 @@ export default function CandidateInfoSection({
           </div>
 
           <div className={styles.btn_wrap}>
-            <BaseButton
-              customClass={styles.add__btn}
-              type='button'
-              kind='chip'
-              status='fill'
-              onClick={handleAddPledge}
-            >
-              + 추가
-            </BaseButton>
+            {pledges.length < 5 && (
+              <BaseButton
+                customClass={styles.add__btn}
+                type='button'
+                kind='chip'
+                status='fill'
+                onClick={handleAddPledge}
+              >
+                + 추가
+              </BaseButton>
+            )}
           </div>
         </div>
       </div>

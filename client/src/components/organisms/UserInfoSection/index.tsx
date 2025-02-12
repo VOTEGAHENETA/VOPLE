@@ -1,4 +1,3 @@
-// components/molecules/ProfileInfoSection/index.tsx
 import Text from '@/components/atoms/Text';
 import InputField from '@/components/molecules/InputField';
 import { ChangeEvent } from 'react';

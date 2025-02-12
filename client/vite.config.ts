@@ -12,6 +12,7 @@ export default defineConfig({
     proxy: {
       '/ws': {
         target: 'http://i12b102.p.ssafy.io:8000', // 스프링 부트 서버 주소
+        // target: 'https://i12b102.p.ssafy.io', // 스프링 부트 서버 주소
         ws: true, // WebSocket 프록시 활성화
       },
       '/api': {
