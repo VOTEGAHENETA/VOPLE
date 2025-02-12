@@ -50,22 +50,22 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
-    Long userId = 1L;
+    Long userId = voteCastRequest.getUserId();
     ElectionSession electionSession = sessionRepository.findById(sessionId)
-        .orElseThrow(() ->  new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
+        .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
     LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
-      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
-    }
+//    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
+//      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
+//    }
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
-      if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId).equals("TRUE")) {
+      Boolean exists = voteInfoRepository.existsVoteInfoByUserId(voteId, userId);
+      if (exists != null && exists) {
         throw new AlreadyVotedException("이미 투표를 진행했습니다.");
       }
-      System.out.println(voteInfoRepository.existsVoteInfoByUserId(voteId, userId).equals("TRUE"));
       VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       final Boolean TRUE = true;

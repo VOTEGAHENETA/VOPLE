@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin("*")
 public class VoteCastRequest {
 
+  private Long userId;
+
   @NotEmpty
   private List<VoteSelection> voteSelections;
 
