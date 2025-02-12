@@ -67,8 +67,6 @@ public class VoteInfo {
     user.getVoteInfos().add(this);
   }
 
-
-
   public void setHasSelect(boolean hasSelect) {
     this.hasSelect = hasSelect;
   }

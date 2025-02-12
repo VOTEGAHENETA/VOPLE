@@ -3,6 +3,7 @@ package com.votegaheneta.user.entity;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.VoteInfo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,6 +36,9 @@ public class Users {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Candidate> candidates = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user")
+  private List<SessionUserInfo> sessionUserInfos = new ArrayList<>();
+
   @Column(unique = true)
   private Long kakaoId;
 
@@ -55,6 +59,11 @@ public class Users {
   public void addCandidate(Candidate candidate) {
     candidates.add(candidate);
     candidate.setUser(this);
+  }
+
+  public void addSessionUserInfo(SessionUserInfo sessionUserInfo) {
+    sessionUserInfos.add(sessionUserInfo);
+    sessionUserInfo.setUser(this);
   }
 
   public void setId(Long id) {

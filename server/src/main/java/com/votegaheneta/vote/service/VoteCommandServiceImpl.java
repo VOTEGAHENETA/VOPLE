@@ -26,7 +26,6 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final VoteRepository voteRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
-
   @Override
   @Transactional
   public void createVote(Long sessionId, String voteName) {
