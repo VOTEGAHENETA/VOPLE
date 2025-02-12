@@ -35,14 +35,14 @@ public class CustomCandidateRepositoryImpl implements CustomCandidateRepository 
   public List<VoteInfoDto> findSearchCandidatesBySessionId(Long voteId,
       String regex, Pageable pageable) {
     List<VoteInfoDto> allResults = queryFactory.select(Projections.constructor(VoteInfoDto.class,
-            users.id, users.username))
+            users.id, users.username, users.nickname))
         .from(voteInfo)
         .join(users).on(users.id.eq(voteInfo.user.id))
         .where((voteInfo.vote.id.eq(voteId)))
         .fetch();
     Pattern pattern = Pattern.compile(regex);
     return allResults.stream()
-        .filter(dto -> pattern.matcher(dto.getUserName()).find())
+        .filter(dto -> pattern.matcher(dto.getUsername()).find())
         .skip(pageable.getOffset())
         .limit(pageable.getPageSize())
         .toList();

@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface VoteInfoRepository extends JpaRepository<VoteInfo, Long> {
 
-  @Query("select vi.hasSelect from VoteInfo vi where vi.vote.id = :voteId and vi.user.id = :userId and vi.hasSelect = true")
-  String existsVoteInfoByUserId(@Param("voteId") Long voteId, @Param("userId") Long userId);
+  @Query("select vi.hasSelect from VoteInfo vi where vi.vote.id = :voteId and vi.user.id = :userId")
+  Boolean existsVoteInfoByUserId(@Param("voteId") Long voteId, @Param("userId") Long userId);
 
   @Query("select vi from VoteInfo vi where vi.vote.id = :voteId and vi.user.id = :userId")
   Optional<VoteInfo> findVoteInfoByVoteIdAndUserId(@Param("voteId") Long voteId, @Param("userId") Long userId);
