@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class VoteInfoDto {
   private Long userId;
   private String userName;
+  private String nickname;
 }

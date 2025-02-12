@@ -72,14 +72,11 @@ public class VoteTeamController {
       @RequestPart(name = "voteTeamInfoRequest") VoteTeamInfoRequest voteTeamInfoRequest,
       @RequestPart(name = "file", required = false) MultipartFile file) {
     try {
-    System.out.println(voteTeamInfoRequest.getVoteTeam().getVoteTeamId());
-    System.out.println(file);
       voteTeamService.updateVoteTeamInfo(voteTeamInfoRequest, file);
       return ApiResponse.success(HttpStatus.OK, "투표팀 정보 수정 성공", null);
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new IllegalArgumentException("투표 팀 정보 수정 실패");
     }
-    return null;
   }
 
   @Parameters({
@@ -94,6 +91,5 @@ public class VoteTeamController {
   // 투표팀 조회는 포스터, 공약
 
   // 회원 조회는
-
 
 }
