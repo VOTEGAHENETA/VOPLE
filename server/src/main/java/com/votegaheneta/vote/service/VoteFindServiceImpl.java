@@ -54,7 +54,7 @@ public class VoteFindServiceImpl implements VoteFindService {
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
-        vote -> voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId));
+        vote -> (voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId)).equals("TRUE")) ;
     return hasVoted;
   }
 
