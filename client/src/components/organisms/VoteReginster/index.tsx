@@ -18,10 +18,11 @@ interface Props {
 function VoteReginster({ sessionId, sessionName, votes }: Props) {
   const [voteName, setVoteName] = useState<string>('');
   const [voteList, setVoteList] = useState<TVoteEdit[]>(votes);
-  let lastId = voteList[voteList.length - 1].voteId + 1;
+  let lastId = 0;
 
   useEffect(() => {
     setVoteList(votes);
+    lastId = voteList[voteList.length - 1].voteId + 1;
   }, [votes]);
 
   function handleChangeVoteName(e: React.ChangeEvent<HTMLInputElement>) {
