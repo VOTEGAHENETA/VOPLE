@@ -28,16 +28,15 @@ public class SecurityConfig {
         .cors(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-//            .requestMatchers("/login", "/logout", "/chat", "/api/**", "/ws/**", "/stream/**", "/hls/**").permitAll()
+            .anyRequest().permitAll()
+//            .requestMatchers("/api/login", "/api/logout").permitAll()
 //            .anyRequest().authenticated()
-                .anyRequest().permitAll()
         )
-//         .oauth2Login(oauth2 -> oauth2
-//             .loginPage("/api/login")
-//             .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-// //            .successHandler(oauth2AuthenticationSuccessHandler)
-//         )
-            ;
+        .oauth2Login(oauth2 -> oauth2
+            .loginPage("/api/login")
+            .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+//            .successHandler(oauth2AuthenticationSuccessHandler)
+        );
     return http.build();
   }
 }
