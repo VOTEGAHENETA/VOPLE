@@ -3,6 +3,7 @@ import InputField from '@/components/molecules/InputField';
 import { ChangeEvent } from 'react';
 import styles from './index.module.scss';
 import { UserInfoFormData } from '@/types/candidate';
+import BaseButton from '@/components/atoms/BaseButton';
 
 interface UserInfoSectionProps {
   nickname: string;
@@ -37,6 +38,9 @@ export default function UserInfoSection({
           label='내 이름'
           placeholder='다른 투표자들에게 보여질 내 이름을 적어주세요🍀'
         />
+        <BaseButton kind='base' type='submit' status='fill'>
+          수정하기
+        </BaseButton>
       </div>
     </section>
   );

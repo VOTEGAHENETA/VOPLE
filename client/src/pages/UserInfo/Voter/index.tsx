@@ -1,11 +1,7 @@
 import UserInfoUpdateTemplate from '@/components/templates/UserInfoUpdateTemplate';
 
 function Voter() {
-  return (
-    <div>
-      <UserInfoUpdateTemplate></UserInfoUpdateTemplate>
-    </div>
-  );
+  return <UserInfoUpdateTemplate></UserInfoUpdateTemplate>;
 }
 
 export default Voter;

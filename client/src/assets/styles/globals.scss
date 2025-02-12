@@ -5,6 +5,7 @@
 #root {
   background-color: #fff;
   height: 100vh;
+  overflow-y: scroll;
 }
 
 body {
@@ -28,8 +29,6 @@ button {
 * {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
-
-  
 }
 
 *,
