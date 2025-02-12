@@ -47,6 +47,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     voteRepository.deleteById(voteId);
   }
 
+
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
     Long userId = 1L;
@@ -61,9 +62,10 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
-      if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId)) {
+      if (voteInfoRepository.existsVoteInfoByUserId(voteId, userId).equals("TRUE")) {
         throw new AlreadyVotedException("이미 투표를 진행했습니다.");
       }
+      System.out.println(voteInfoRepository.existsVoteInfoByUserId(voteId, userId).equals("TRUE"));
       VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
           .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
       final Boolean TRUE = true;
@@ -74,4 +76,5 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     }
     electionSession.incrementVotedVoter();
   }
+
 }
