@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,9 +26,11 @@ public class UserController {
   }
 
   @PutMapping("/{userId}")
-  public ApiResponse<UserDto> updateUser(@PathVariable("userId") Long userId, UserDto userDto) {
-    userService.updateUser(userId, userDto);
-    return ApiResponse.success(HttpStatus.OK, "유저 수정 성공", null);
+  public ApiResponse<UserDto> updateUser(@PathVariable("userId") Long userId,@RequestBody UserDto userDto) {
+    System.out.println(userDto.getUserId());
+    System.out.println(userDto.getUsername());
+    UserDto result = userService.updateUser(userId, userDto);
+    return ApiResponse.success(HttpStatus.OK, "유저 수정 성공", result);
   }
 
 }

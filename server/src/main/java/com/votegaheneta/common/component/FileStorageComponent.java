@@ -16,7 +16,7 @@ public class FileStorageComponent {
 
   private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
   // 리눅스 배포 환경용 경로
-  private static final String UPLOAD_URL = "/uploads";
+  private static final String UPLOAD_URL = "C:/app/uploads";
 
   @Value("${base_url}")
   private String mediaUrl;
@@ -28,7 +28,6 @@ public class FileStorageComponent {
         String subDirectory = createSubDirectory(type);
         String fileName = createFileName(file.getOriginalFilename());
         String f = saveFile(file, subDirectory, fileName);
-        System.out.println(mediaUrl + "/uploads" + f);
         String fullFileName = mediaUrl + "/uploads" + f;
         return  convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {

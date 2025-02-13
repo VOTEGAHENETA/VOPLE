@@ -106,6 +106,7 @@ public class VoteFindServiceImpl implements VoteFindService {
     return new SessionResultFindDto(
         electionSession.getSessionName(),
         wholeVoterPercent,
+        electionSession.getVoteEndTime(),
         voteResults
     );
   }
