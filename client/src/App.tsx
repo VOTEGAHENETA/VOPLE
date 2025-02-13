@@ -9,6 +9,7 @@ function App() {
   const nonHeaderLocation = [
     /^\/login$/,
     /^\/elections\/\d+\/candidates\/\d+$/,
+    /^\/elections\/\d+\/question$/,
     /^\/live\/\d+$/,
   ];
 

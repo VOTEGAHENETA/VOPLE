@@ -33,13 +33,27 @@ function CandidateRegisterTemplate({ sessionId, voteId, voteName }: Props) {
   if (isError) {
     return (
       <div>
-        데이터를 불러오는 도중 오류가 발생했습니다. 창을 닫고 다시 접속해주세요.
+        데이터를 불러오는 도중 오류가 발생했습니다. <br />
+        창을 닫고 다시 접속해주세요.
       </div>
+    );
+  }
+
+  function isCheckNoUserGroup() {
+    return Object.values(sendCandidates).some((candidateList) =>
+      Object.values(candidateList).every(
+        (candidates) => candidates.length === 0
+      )
     );
   }
 
   const postTeam = usePostVoteTeam();
   function handleSubmitTeam() {
+    if (isCheckNoUserGroup()) {
+      alert('모든 그룹에 후보자가 선택되어야 제출할 수 있습니다.');
+      return;
+    }
+
     postTeam.mutate({
       sessionId: sessionId,
       voteId: voteId,

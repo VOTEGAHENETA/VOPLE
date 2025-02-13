@@ -44,7 +44,7 @@ const ElectionListItem = ({
     {
       id: 1,
       label: '선거 관리',
-      path: `/elections/${id}/register`,
+      path: `/elections/${id}/manage`,
     },
     {
       id: 2,
