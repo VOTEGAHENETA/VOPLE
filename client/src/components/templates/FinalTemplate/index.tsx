@@ -12,7 +12,6 @@ import { VoteResultsResponse } from '@/types/voteSession';
 
 function FinalTemplate() {
   const sessionId = 1;
-  // const { data } = useFinalResult(sessionId);
   const [finalData, setFinalData] = useState<ElectionResult | null>(null);
   const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
     null
