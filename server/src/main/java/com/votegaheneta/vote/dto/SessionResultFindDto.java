@@ -3,6 +3,7 @@ package com.votegaheneta.vote.dto;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class SessionResultFindDto {
   private final String sessionName;
   @Schema(description = "wholeVoterPercent(총투표자 퍼센트)")
   private final Float wholeVoterPercent;
+  private final LocalDateTime endDate;
   @Schema(description = "voteResults(투표결과 리스트)")
   private final List<VoteResult> voteResults;
 
