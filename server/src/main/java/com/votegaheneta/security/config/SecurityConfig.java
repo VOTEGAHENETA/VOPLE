@@ -38,9 +38,9 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
-           .anyRequest().permitAll()
+          //  .anyRequest().permitAll()
 //                                   .requestMatchers("/api/login", "/api/logout").permitAll()
-                                  //  .anyRequest().authenticated()
+                                   .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
                          .loginPage(BASE_URL + "/login")
