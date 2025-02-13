@@ -18,6 +18,7 @@ function QuestionSection() {
 
   function handleChangeAnswer(e: React.ChangeEvent<HTMLInputElement>) {
     setAnswer(e.target.value);
+    setErrMsg('');
   }
 
   const mutation = useQuestionPost();
