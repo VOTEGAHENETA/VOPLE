@@ -6,7 +6,7 @@ import TextAreaField from '@/components/molecules/TextAreaField';
 import X from '@/assets/icons/x.svg';
 import { ChangeEvent, RefObject } from 'react';
 import styles from './index.module.scss';
-import { CandidateInfoFormData } from '@/types/user';
+import { VoteTeamInfoFormData } from '@/types/user';
 
 interface CandidateInfoSectionProps {
   prefix: string;
@@ -15,7 +15,7 @@ interface CandidateInfoSectionProps {
   posterSrc: string;
   fileInputRef: RefObject<HTMLInputElement>;
   onChangeField: <T extends HTMLInputElement | HTMLTextAreaElement>(
-    fieldName: keyof CandidateInfoFormData,
+    fieldName: keyof VoteTeamInfoFormData,
     e: ChangeEvent<T>
   ) => void;
   onUploadClick: () => void;
@@ -92,7 +92,7 @@ export default function CandidateInfoSection({
         />
         <TextAreaField
           id='candidateStatement-input'
-          label='상태 메세지'
+          label='후보(팀) 소개'
           value={candidateStatement}
           onChange={(e) => onChangeField('candidateStatement', e)}
           maxLength={100}
