@@ -15,16 +15,20 @@ const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
 // 타입 정의
 // ============
 interface UserInfoRequest {
+  userId: number;
+  kakaoId: number;
   nickname: string;
   username: string;
 }
 
 export function UserInfoUpdateTemplate() {
-  const { userId = '' } = useParams();
+  const { user_id = '' } = useParams();
 
   // 후보자 기본 정보
   const { userInfoFormData, setUserInfoFormData, handleChange } =
     useUserInfoFormData({
+      userId: 0,
+      kakaoId: 0,
       nickname: '',
       username: '',
     });
@@ -33,15 +37,17 @@ export function UserInfoUpdateTemplate() {
   // 사용자 정보 최초 폼 초기화
   //================================
 
-  // 쿼리 훅 사용하여 데이터 정보 받아옴
-  const { data, error } = useUserInfo(userId);
+  // Query : 쿼리 훅 사용하여 데이터 정보 받아옴
+  const { data, error } = useUserInfo(user_id);
   useEffect(() => {
     if (data) {
-      const { nickname, username } = data;
+      const { userId, kakaoId, nickname, username } = data;
       // formData 초기화
       setUserInfoFormData({
-        nickname: nickname,
-        username: username,
+        userId: userId || 0,
+        kakaoId: kakaoId || 0,
+        nickname: nickname || '', // null 체크
+        username: username || '', // null 체크
       });
     } else if (error) {
       console.error('사용자 정보 폼 초기화 에러 : ', error);
@@ -60,19 +66,31 @@ export function UserInfoUpdateTemplate() {
 
       // VoteTeamInfoRequest DTO 생성
       const userInfoRequest: UserInfoRequest = {
+        userId: userInfoFormData.userId,
+        kakaoId: userInfoFormData.kakaoId,
         nickname: userInfoFormData.nickname,
         username: userInfoFormData.username,
       };
 
+      console.log('userInfoRequest : ', userInfoRequest);
       // DTO를 FormData에 추가
       formData.append(
-        'VoteTeamInfoRequest',
+        'data',
         new Blob([JSON.stringify(userInfoRequest)], {
           type: 'application/json',
         })
       );
 
-      const response = await axios.post(`${API_URL}/user/${userId}`, formData);
+      console.log('userInfoRequest ::::: ', userInfoRequest);
+      const response = await axios.put(
+        `${API_URL}/user/${user_id}`,
+        userInfoRequest, // FormData 대신 JSON 직접 전송
+        {
+          headers: {
+            'Content-Type': 'application/json', // JSON 형식으로 변경
+          },
+        }
+      );
 
       if (response.status === 200) {
         alert('수정이 완료되었습니다.');

@@ -5,27 +5,36 @@ const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
 
 // 후보자 정보 응답 데이터
 interface CandidateInfoResponse {
-  voteTeam: {
-    poster: string;
-    prefix: string;
-    candidateStatement: string;
+  data: {
+    voteTeam: {
+      voteTeamId: string;
+      poster: string;
+      prefix: string;
+      candidateStatement: string;
+    };
+    pledges: Array<{ content: string }>;
   };
-  pledges: Array<{ content: string }>;
 }
 
-export const useCandidateInfo = (sessionId: string, voteTeamId: string) => {
+export const useCandidateInfo = (sessionId: string, userId: string) => {
+  console.log('**************', sessionId, userId);
   return useQuery({
-    queryKey: ['candidateInfo', sessionId, voteTeamId],
+    queryKey: ['candidateInfo', sessionId, userId],
     queryFn: async () => {
       const response = await axios.get<CandidateInfoResponse>(
-        `${API_URL}/candidate/${sessionId}/${voteTeamId}`
+        `${API_URL}/candidate/${sessionId}/${userId}`
+      );
+      console.log('sessionId :' + sessionId + '/' + 'userId : ' + userId);
+      console.log(
+        'useCandidateInfo response.data.voteTeam : ',
+        response.data.data.voteTeam
       );
       console.log(
-        'sessionId :' + sessionId + '/' + 'voteTeamId : ' + voteTeamId
+        'useCandidateInfo response.data.voteTeam.voteTeamId : ',
+        response.data.data.voteTeam.voteTeamId
       );
-      console.log('useCandidateInfo Response : ', response);
-      return response.data;
+      return response.data.data;
     },
-    enabled: !!sessionId && !!voteTeamId,
+    enabled: !!sessionId && !!userId,
   });
 };

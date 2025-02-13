@@ -4,8 +4,12 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
 
 interface useUserInfoResponse {
-  nickname: string;
-  username: string;
+  data: {
+    userId: number;
+    kakaoId: number;
+    nickname: string;
+    username: string;
+  };
 }
 
 export const useUserInfo = (userId: string) => {
@@ -15,7 +19,8 @@ export const useUserInfo = (userId: string) => {
       const response = await axios.get<useUserInfoResponse>(
         `${API_URL}/user/${userId}`
       );
-      return response.data;
+      console.log('response.data.data : ', response.data.data);
+      return response.data.data;
     },
     enabled: !!userId,
   });

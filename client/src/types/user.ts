@@ -5,10 +5,13 @@ export interface User {
 }
 
 export interface UserInfoFormData {
+  userId: number;
+  kakaoId: number;
   nickname: string;
   username: string;
 }
 
+// 후보자 post Form
 export interface Candidate {
   voteTeamId: number;
   userId: number;
@@ -19,12 +22,14 @@ export interface CandidateList {
   [key: string]: Candidate[]; // 동적키
 }
 
-export interface UserResponse {
-  userList: User[];
-  candidateList: CandidateList;
-}
-
+// 후보자 post Form
 export interface CandidateInfoFormData {
   prefix: string;
   candidateStatement: string;
+  voteTeamId: number;
+}
+
+export interface UserResponse {
+  userList: User[];
+  candidateList: CandidateList;
 }

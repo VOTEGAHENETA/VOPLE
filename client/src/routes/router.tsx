@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
         element: <VoteTemplate />,
       },
       {
-        path: 'candidate/:session_id/:vote_team_id',
+        path: 'candidate/:session_id/:user_id',
         element: <Candidate />,
       },
       {
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'mypage',
+        path: 'mypage/:user_id',
         element: <Voter />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정

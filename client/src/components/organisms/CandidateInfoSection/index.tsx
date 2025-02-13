@@ -4,7 +4,7 @@ import Text from '@/components/atoms/Text';
 import InputField from '@/components/molecules/InputField';
 import TextAreaField from '@/components/molecules/TextAreaField';
 import X from '@/assets/icons/x.svg';
-import { ChangeEvent, RefObject, useState } from 'react';
+import { ChangeEvent, RefObject } from 'react';
 import styles from './index.module.scss';
 import { CandidateInfoFormData } from '@/types/user';
 
@@ -32,13 +32,13 @@ export default function CandidateInfoSection({
   posterSrc,
   fileInputRef,
   onChangeField,
-  onUploadClick, // 클릭 시 업로드창
+  onUploadClick,
   onFileChange,
   handlePledgeChange,
   handleAddPledge,
   handleDeletePledge,
 }: CandidateInfoSectionProps) {
-  const [previewImage, setPreviewImage] = useState<string>(posterSrc);
+  // const [previewImage, setPreviewImage] = useState<string>(posterSrc);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -56,14 +56,6 @@ export default function CandidateInfoSection({
       return;
     }
 
-    // 이미지 프리뷰 생성
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPreviewImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-
-    // 부모 컴포넌트에 파일 전달
     onFileChange(file);
   };
   return (
@@ -73,7 +65,7 @@ export default function CandidateInfoSection({
       </Text>
       <div className={styles.section__wrap}>
         <div className={styles.poster__wrap}>
-          <Poster src={previewImage} size='m' />
+          <Poster src={posterSrc} size='m' />
         </div>
         <BaseButton
           customClass={styles.upload__btn}
