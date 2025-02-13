@@ -22,16 +22,15 @@ export interface CandidateList {
   [key: string]: Candidate[];
 }
 
-// 후보자 post Form
-export interface CandidateInfoFormData {
-  voteTeamId: number;
-  prefix: string;
-  candidateStatement: string;
-}
-
 export interface UserResponse {
   userList: User[];
   candidateList: CandidateList;
+}
+
+export interface VoteTeamInfoFormData {
+  voteTeamId: number;
+  prefix: string;
+  candidateStatement: string;
 }
 
 export interface VoteTeamInfoRequest {
@@ -45,7 +44,7 @@ export interface VoteTeamInfoRequest {
   }>;
 }
 
-export interface CandidateInfoResponse {
+export interface VoteTeamInfoResponse {
   voteTeam: {
     voteTeamId: string;
     poster: string;

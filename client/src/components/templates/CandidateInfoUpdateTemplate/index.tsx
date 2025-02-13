@@ -7,7 +7,7 @@ import CandidateInfoSection from '@/components/organisms/CandidateInfoSection';
 import { VoteTeamInfoRequest } from '@/types/user';
 import { usePledges } from '@/hooks/usePledges';
 import { useFileUpload } from '@/hooks/useFileUpload';
-import { useCandidateInfoFormData } from '@/hooks/useCandidateInfoFormData';
+import { useVoteTeamInfoFormData } from '@/hooks/useVoteTeamInfoFormData';
 import { useCandidateInfo } from '@/services/hooks/useCandidateInfo';
 import { useUpdateCandidateInfo } from '@/services/hooks/useUpdateCandidateInfo';
 
@@ -38,8 +38,8 @@ export default function CandidateInfoUpdateTemplate() {
     });
 
   // 후보자 기본 정보
-  const { candidateInfoFormData, setCandidateInfoFormData, handleChange } =
-    useCandidateInfoFormData({
+  const { voteTeamInfoFormData, setVoteTeamInfoFormData, handleChange } =
+    useVoteTeamInfoFormData({
       voteTeamId: 0,
       prefix: '',
       candidateStatement: '',
@@ -60,7 +60,7 @@ export default function CandidateInfoUpdateTemplate() {
     if (data?.voteTeam) {
       const { voteTeam, pledges } = data;
       // formData 초기화
-      setCandidateInfoFormData({
+      setVoteTeamInfoFormData({
         prefix: voteTeam.prefix || '',
         candidateStatement: voteTeam.candidateStatement || '',
         voteTeamId: Number(voteTeam.voteTeamId),
@@ -89,9 +89,9 @@ export default function CandidateInfoUpdateTemplate() {
     try {
       const voteTeamInfoRequest: VoteTeamInfoRequest = {
         voteTeam: {
-          voteTeamId: candidateInfoFormData.voteTeamId,
-          prefix: candidateInfoFormData.prefix,
-          candidateStatement: candidateInfoFormData.candidateStatement,
+          voteTeamId: voteTeamInfoFormData.voteTeamId,
+          prefix: voteTeamInfoFormData.prefix,
+          candidateStatement: voteTeamInfoFormData.candidateStatement,
         },
         pledges: pledges.map((pledge) => ({
           content: pledge,
@@ -131,8 +131,8 @@ export default function CandidateInfoUpdateTemplate() {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <CandidateInfoSection
-        prefix={candidateInfoFormData.prefix}
-        candidateStatement={candidateInfoFormData.candidateStatement}
+        prefix={voteTeamInfoFormData.prefix}
+        candidateStatement={voteTeamInfoFormData.candidateStatement}
         pledges={pledges}
         posterSrc={imgPreview}
         fileInputRef={fileInputRef}
