@@ -9,6 +9,7 @@ import RoleNameTag from '@/components/molecules/RoleNameTag';
 import { useState } from 'react';
 import Loading from './Loading';
 import { useVoteMutation } from '@/services/hooks/useVote';
+import Poster from '@/components/atoms/Poster';
 
 interface ModalPopupProps {
   voteSession: CandidateSessionData;
@@ -45,51 +46,55 @@ function ModalPopup({
   }
 
   return (
-    <ConfirmModal imgSrc={stamp} label='당신이 선택한 국가권력 멤버!'>
-      <div className={styles.selectedCandidates}>
-        {voteSession.voteFindDtos.map((vote) => {
-          const candidate = selectedCandidates[vote.voteId];
-          if (!candidate) return null;
+    <div className={styles.container}>
+      <ConfirmModal imgSrc={stamp} label='당신이 선택한 국가권력 멤버!'>
+        <div className={styles.selectedCandidates}>
+          {voteSession.voteFindDtos.map((vote) => {
+            const candidate = selectedCandidates[vote.voteId];
+            if (!candidate) return null;
 
-          // 후보자 정보와 일치하는 팀을 찾음
-          const team = vote.voteTeams.find((team) =>
-            team.candidates.some((c) => c.candidateId === candidate.candidateId)
-          );
-          if (!team || !team.poster) return null;
+            // 후보자 정보와 일치하는 팀을 찾음
+            const team = vote.voteTeams.find((team) =>
+              team.candidates.some(
+                (c) => c.candidateId === candidate.candidateId
+              )
+            );
+            if (!team || !team.poster) return null;
 
-          return (
-            <div className={styles.confirm} key={vote.voteId}>
-              <RoleNameTag
-                voteId={vote.voteId}
-                voteName={vote.voteName}
-                showUsername={false}
-              />
-              <div className={styles.candidate}>
-                <img src={team.poster} alt='후보자 포스터' />
+            return (
+              <div className={styles.confirm} key={vote.voteId}>
+                <RoleNameTag
+                  voteId={vote.voteId}
+                  voteName={vote.voteName}
+                  showUsername={false}
+                />
+                <div className={styles.candidate}>
+                  <Poster size='xs' src={team.poster} />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className={styles.btn}>
-        <BaseButton
-          type='button'
-          kind='base'
-          status={BASE_BUTTON_STATUS.OUTLINE}
-          onClick={() => setModalOpen(false)}
-        >
-          취소
-        </BaseButton>
-        <BaseButton
-          type='submit'
-          kind='base'
-          status={BASE_BUTTON_STATUS.FILL}
-          onClick={handleVoteSubmit}
-        >
-          투표
-        </BaseButton>
-      </div>
-    </ConfirmModal>
+            );
+          })}
+        </div>
+        <div className={styles.btn}>
+          <BaseButton
+            type='button'
+            kind='base'
+            status={BASE_BUTTON_STATUS.OUTLINE}
+            onClick={() => setModalOpen(false)}
+          >
+            취소
+          </BaseButton>
+          <BaseButton
+            type='submit'
+            kind='base'
+            status={BASE_BUTTON_STATUS.FILL}
+            onClick={handleVoteSubmit}
+          >
+            투표
+          </BaseButton>
+        </div>
+      </ConfirmModal>
+    </div>
   );
 }
 
