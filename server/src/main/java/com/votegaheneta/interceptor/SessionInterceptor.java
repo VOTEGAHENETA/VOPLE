@@ -32,7 +32,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     boolean exist = sessionUserInfoRepository.existsSessionUserInfoByElectionSessionIdAndUserId(sessionId, user.getId());
     if (!exist) {
-      String redirectURL = String.format("%s/election/%d/question", BASE_URL, sessionId);
+      String redirectURL = String.format("%s/elections/question/%d", BASE_URL, sessionId);
       response.sendRedirect(redirectURL);
       return false;
     }
