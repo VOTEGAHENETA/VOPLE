@@ -6,6 +6,7 @@ import VoteTemplate from '@/components/templates/VoteTemplate';
 import Channel from '@/pages/Channel';
 import Create from '@/pages/Election/Create';
 import Manage from '@/pages/Election/Manage';
+import Question from '@/pages/Election/Question';
 import Home from '@/pages/Home';
 import Main from '@/pages/Main';
 import Streaming from '@/pages/Streaming';
@@ -18,12 +19,16 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: 'home',
-        element: <Home />,
+        path: '/login',
+        element: <Login />,
       },
       {
-        path: 'channel',
-        element: <Channel />,
+        path: '/elections/:election_id/question',
+        element: <Question />,
+      },
+      {
+        path: '/elections/list',
+        element: <ElectionListTemplate />,
       },
       {
         path: 'elections/:election_id',
@@ -46,20 +51,20 @@ export const router = createBrowserRouter([
         element: <Candidate />,
       },
       {
-        path: 'live/:teamId',
-        element: <Streaming />,
-      },
-      {
         path: '/elections/:election_id/result',
         element: <ResultCurrentTemplate />,
       },
       {
-        path: '/elections/list',
-        element: <ElectionListTemplate />,
+        path: 'live/:teamId',
+        element: <Streaming />,
       },
       {
-        path: '/login',
-        element: <Login />,
+        path: 'home',
+        element: <Home />,
+      },
+      {
+        path: 'channel',
+        element: <Channel />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],

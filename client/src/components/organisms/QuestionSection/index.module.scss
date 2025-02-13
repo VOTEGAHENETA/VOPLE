@@ -1,0 +1,39 @@
+.question-container {
+  background-color: rgba($color: #ffffff, $alpha: 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .img-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .qna {
+    &-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    &-question {
+      width: 100%;
+    }
+
+    &-answer {
+      width: 100%;
+    }
+  }
+
+  .btn-seciton {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+}
