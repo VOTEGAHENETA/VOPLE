@@ -67,7 +67,7 @@ public class SessionServiceImpl implements SessionService {
       BufferedImage qrCodeImage = MatrixToImageWriter.toBufferedImage(encode);
 
       String fileName = "qrcode_" + electionSession.getId() + ".png";
-      String UPLOAD_DIR = "/uploads/";
+      String UPLOAD_DIR = "/app/uploads/";
       File qrCodeFile = new File(UPLOAD_DIR + "qrcode/", fileName);
 
       qrCodeFile.getParentFile().mkdirs();
