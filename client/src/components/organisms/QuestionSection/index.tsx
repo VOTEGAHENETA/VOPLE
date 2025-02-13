@@ -7,32 +7,22 @@ import React, { useState } from 'react';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { useQuestionGet, useQuestionPost } from '@/services/hooks/question';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function QuestionSection() {
   const { election_id } = useParams() as { election_id: string };
   const { data: questionData, isLoading } = useQuestionGet(Number(election_id));
   const [answer, setAnswer] = useState<string>('');
   const [errMsg, setErrMsg] = useState<string>('');
-  const navigate = useNavigate();
 
   function handleChangeAnswer(e: React.ChangeEvent<HTMLInputElement>) {
     setAnswer(e.target.value);
     setErrMsg('');
   }
 
-  const mutation = useQuestionPost();
+  const mutation = useQuestionPost(Number(election_id), setErrMsg);
   function handleSumbitAnswer() {
     mutation.mutate({ sessionId: Number(election_id), answer: answer });
-
-    const { data: response } = mutation;
-
-    if (response?.httpStatus === 200) {
-      navigate(`/election/${election_id}`);
-    } else {
-      // response.httpStatus === 400
-      setErrMsg('땡! 틀렸어요');
-    }
   }
 
   return (
