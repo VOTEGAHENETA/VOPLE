@@ -39,9 +39,9 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
                                    .requestMatchers("/login").permitAll()
-          //  .anyRequest().permitAll()
+           .anyRequest().permitAll()
 //                                   .requestMatchers("/api/login", "/api/logout").permitAll()
-                                   .anyRequest().authenticated()
+                                  //  .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
                          .loginPage(BASE_URL + "/login")
