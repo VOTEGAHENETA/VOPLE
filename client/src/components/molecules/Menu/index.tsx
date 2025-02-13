@@ -19,6 +19,7 @@ function Menu({ items, isOpen }: Props) {
   const navigate = useNavigate();
   function handleRoute(path: string) {
     navigate(path);
+    window.location.reload(); // 강제 리랜더링
   }
 
   const popupClasses = [styles.popup, styles[`is-open-${isOpen}`]].join(' ');

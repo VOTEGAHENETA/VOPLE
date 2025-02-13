@@ -7,6 +7,8 @@ const instance = axios.create({
   timeout: 5_000,
 });
 
+axios.defaults.withCredentials = true;
+
 instance.interceptors.response.use(
   (response) => {
     return response.data.data;

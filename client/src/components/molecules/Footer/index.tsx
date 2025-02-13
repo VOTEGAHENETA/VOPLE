@@ -9,7 +9,7 @@ function Footer() {
   const navigate = useNavigate();
 
   function handleHome() {
-    navigate('/elections');
+    navigate('/elections/list');
   }
 
   function handleMyPage() {
