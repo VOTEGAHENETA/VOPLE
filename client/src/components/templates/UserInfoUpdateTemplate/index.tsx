@@ -1,7 +1,6 @@
 import UserInfoSection from '@/components/organisms/UserInfoSection';
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
-import Users from '@/assets/images/Users.png';
 import { useParams } from 'react-router-dom';
 import { useUserInfoFormData } from '@/hooks/useUserInfoFormData';
 import { useGetUserInfo } from '@/services/hooks/useGetUserInfo';
@@ -9,6 +8,7 @@ import React, { useEffect } from 'react';
 import BaseButton from '@/components/atoms/BaseButton';
 import { UserInfoRequest } from '@/types/user';
 import { usePutUserInfo } from '@/services/hooks/usePostUserInfo';
+import IconUsers from '@/assets/icons/IconUsers';
 
 export function UserInfoUpdateTemplate() {
   const { user_id = '' } = useParams();
@@ -78,7 +78,7 @@ export function UserInfoUpdateTemplate() {
         수정하기
       </BaseButton>
       <div className={styles.img__box}>
-        <img src={Users} alt='사람들 아이콘' />
+        <IconUsers size={180}></IconUsers>
         <Text
           className={styles.img__text}
           size='lg'

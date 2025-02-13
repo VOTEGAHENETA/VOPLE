@@ -1,17 +1,27 @@
+// 일반 사용자
 export interface User {
   userId: number;
   nickname: string;
   username: string;
 }
 
-export interface UserInfoFormData {
+export interface UserResponse {
+  userList: User[];
+  candidateList: CandidateList;
+}
+
+export interface UserInfo {
   userId: number;
   kakaoId: number;
   nickname: string;
   username: string;
 }
 
-// 후보자 post Form
+export type UserInfoRequest = UserInfo;
+export type UserInfoResponse = UserInfo;
+export type UserInfoFormData = UserInfo;
+
+// 후보자 or 후보자 그룹
 export interface Candidate {
   voteTeamId: number;
   userId: number;
@@ -20,11 +30,6 @@ export interface Candidate {
 
 export interface CandidateList {
   [key: string]: Candidate[];
-}
-
-export interface UserResponse {
-  userList: User[];
-  candidateList: CandidateList;
 }
 
 export interface VoteTeamInfoFormData {
@@ -52,18 +57,4 @@ export interface VoteTeamInfoResponse {
     candidateStatement: string;
   };
   pledges: Array<{ content: string }>;
-}
-
-export interface UserInfoResponse {
-  userId: number;
-  kakaoId: number;
-  nickname: string;
-  username: string;
-}
-
-export interface UserInfoRequest {
-  userId: number;
-  kakaoId: number;
-  nickname: string;
-  username: string;
 }
