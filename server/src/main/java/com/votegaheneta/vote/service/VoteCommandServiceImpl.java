@@ -6,7 +6,7 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
-import com.votegaheneta.vote.repository.SessionRepository;
+import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
@@ -22,14 +22,14 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
   private final VoteInfoRepository voteInfoRepository;
   private final VoteTeamRepository voteTeamRepository;
-  private final SessionRepository sessionRepository;
+  private final ElectionRepository electionRepository;
   private final VoteRepository voteRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
   @Transactional
   public void createVote(Long sessionId, String voteName) {
-    ElectionSession electionSession = sessionRepository.findSessionById(sessionId);
+    ElectionSession electionSession = electionRepository.findSessionById(sessionId);
     Vote vote = new Vote(voteName);
     electionSession.addVote(vote);
 
@@ -44,6 +44,9 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   @Override
   @Transactional
   public void deleteVote(Long voteId) {
+    // vote와 연관된 voteInfo와 voteTeam 삭제
+    voteInfoRepository.deleteAllBatchByVoteId(voteId);
+    // voteTeam과 연관된 plege, candidate, stream 삭제
     voteRepository.deleteById(voteId);
   }
 
@@ -51,7 +54,7 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
     Long userId = voteCastRequest.getUserId();
-    ElectionSession electionSession = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
