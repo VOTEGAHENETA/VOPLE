@@ -36,6 +36,14 @@ export const postElection = async (createData: TCreateElection) => {
   return response;
 };
 
+export const deleteElection = async (sessionId: number) => {
+  return await instance.delete(`/election/${sessionId}`);
+};
+
+export const putElection = async (sessionId: number, data: TCreateElection) => {
+  return await instance.put(`/election/${sessionId}`, data);
+};
+
 export const getQRCode = async (sessionId: number): Promise<string> => {
   return await instance.get(`/election/${sessionId}/qrcode`);
 };
