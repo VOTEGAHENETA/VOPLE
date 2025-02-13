@@ -2,36 +2,36 @@ import VoteRanking from '@/components/molecules/VoteRanking';
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
 import IconButton from '@/components/atoms/IconButton';
-import { useVoteResult } from '@/services/hooks/useVoteResult';
 import { useState } from 'react';
+import { VoteResultsResponse } from '@/types/voteSession';
 
-const Result = () => {
-  const sessionId = 1;
-  const { data = { sessionName: '', wholeVoterPercent: 0, voteResults: [] } } =
-    useVoteResult(sessionId);
+interface Props {
+  currentData: VoteResultsResponse;
+}
 
+const Result = ({ currentData }: Props) => {
   const [selectedVoteIndex, setSelectedVoteIndex] = useState(0);
 
   const handlePrevSession = () => {
     setSelectedVoteIndex((prev) =>
-      prev > 0 ? prev - 1 : data.voteResults.length - 1
+      prev > 0 ? prev - 1 : currentData.voteResults.length - 1
     );
   };
 
   const handleNextSession = () => {
     setSelectedVoteIndex((prev) =>
-      prev < data.voteResults.length - 1 ? prev + 1 : 0
+      prev < currentData.voteResults.length - 1 ? prev + 1 : 0
     );
   };
 
-  const currentVote = data.voteResults[selectedVoteIndex] || {};
+  const currentVote = currentData.voteResults[selectedVoteIndex] || {};
   // const hasMultipleVotes = data.voteResults.length > 1;
 
   return (
     <div className={styles.container}>
       <div className={styles.voteinfo}>
         <Text size='m' weight='normal' color='#555555'>
-          {data.sessionName}
+          {currentData.sessionName}
         </Text>
         <div className={styles.select}>
           <IconButton
@@ -52,7 +52,7 @@ const Result = () => {
 
       <VoteRanking
         teamResults={currentVote.teamResults || []}
-        wholeVoterPercent={data.wholeVoterPercent}
+        wholeVoterPercent={currentData.wholeVoterPercent}
       />
     </div>
   );

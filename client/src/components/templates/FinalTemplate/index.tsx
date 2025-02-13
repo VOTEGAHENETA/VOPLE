@@ -3,11 +3,33 @@ import Result from '@/components/organisms/WaitResult';
 import FinalResult from '@/components/organisms/FinalResult';
 import people from '@/assets/icons/people.svg';
 import Text from '@/components/atoms/Text';
-import { useFinalResult } from '@/services/hooks/useFinalResult';
+import { getResultCurrent } from '@/services/election';
+import { getFinalResult } from '@/services/election';
+import { useEffect, useState } from 'react';
+import { ElectionResult } from '@/types/final';
+import { VoteResultsResponse } from '@/types/voteSession';
 
 function FinalTemplate() {
   const sessionId = 1;
-  const { data } = useFinalResult(sessionId);
+  // const { data } = useFinalResult(sessionId);
+  const [finalData, setFinalData] = useState<ElectionResult | null>(null);
+  const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
+    null
+  );
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const finalResponse = await getFinalResult(sessionId);
+        setFinalData(finalResponse);
+        const currentResponse = await getResultCurrent(sessionId);
+        setCurrentData(currentResponse);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [sessionId]);
 
   const formatDateTime = (isoString: string): string => {
     const date = new Date(isoString);
@@ -21,23 +43,25 @@ function FinalTemplate() {
     return `${year}.${month}.${day} ${hours}:${minutes}`;
   };
 
-  console.log(data.electionSessionDto);
+  if (!finalData || !currentData) {
+    return null;
+  }
 
   return (
     <div className={styles.container}>
       <div className={styles.voteInfo}>
         <img src={people} alt='' />
         <Text size='lg' weight='bold' color='#111111'>
-          {data.electionSessionDto?.sessionName}
+          {finalData.electionSessionDto?.sessionName}
         </Text>
         <Text size='s' weight='normal' color='#333333'>
-          {formatDateTime(data.electionSessionDto?.voteStartTime)} ~{' '}
-          {formatDateTime(data.electionSessionDto?.voteEndTime)}
+          {formatDateTime(finalData.electionSessionDto?.voteStartTime)} ~{' '}
+          {formatDateTime(finalData.electionSessionDto?.voteEndTime)}
         </Text>
       </div>
       <div className={styles.content}>
-        <FinalResult />
-        <Result />
+        <FinalResult finalData={finalData} />
+        <Result currentData={currentData} />
       </div>
     </div>
   );
