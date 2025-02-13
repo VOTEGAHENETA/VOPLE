@@ -10,6 +10,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface SessionRepository extends JpaRepository<ElectionSession, Long> {
 
+  @Query("SELECT s.entranceQuestion FROM ElectionSession s WHERE s.id = :sessionId")
+  String findEntranceQuestionById(Long sessionId);
+
   @Query("SELECT s FROM ElectionSession s join fetch s.hostUser WHERE s.id = :sessionId")
   ElectionSession findSessionById(Long sessionId);
 
