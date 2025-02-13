@@ -27,4 +27,6 @@ public interface SessionService {
   SessionEditDto getSessionEdit(Long sessionId);
 
   boolean validateQuestion(Long sessionId, Long userId, String answer);
+
+  String getQuestion(Long sessionId);
 }
