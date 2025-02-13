@@ -7,6 +7,7 @@ import { CandidateSessionData, VoteResultsResponse } from '@/types/voteSession';
 import { TCreateElection } from '@/types/election';
 import instance from './api';
 import { VoteRequest } from '@/types/vote';
+import { ElectionResult } from '@/types/final';
 
 /**
  *
@@ -61,4 +62,10 @@ export const getResultCurrent = async (
   sessionId: number
 ): Promise<VoteResultsResponse> => {
   return await instance.get(`/vote/${sessionId}/result/current`);
+};
+
+export const getFinalResult = async (
+  sessionId: number
+): Promise<ElectionResult> => {
+  return await instance.get(`/vote/${sessionId}/result/final`);
 };

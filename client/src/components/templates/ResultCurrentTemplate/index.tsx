@@ -1,4 +1,4 @@
-import Result from '@/components/organisms/Result';
+import Result from '@/components/organisms/WaitResult';
 import ResultChatContainer from '@/components/organisms/ResultChatContainer';
 import styles from './index.module.scss';
 
