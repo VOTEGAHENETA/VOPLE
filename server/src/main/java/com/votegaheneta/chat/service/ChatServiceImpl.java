@@ -9,7 +9,7 @@ import com.votegaheneta.common.repository.RedisRepository;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
-import com.votegaheneta.vote.repository.SessionRepository;
+import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class ChatServiceImpl implements ChatService {
   private final RedisRepository redisRepository;
   private final UsersRepository usersRepository;
 
-  private final SessionRepository sessionRepository;
+  private final ElectionRepository electionRepository;
   private final VoteTeamRepository voteTeamRepository;
 
   private static final int EXPIRATION_TIME = 3;
@@ -59,7 +59,7 @@ public class ChatServiceImpl implements ChatService {
 
     // DB에 실제 존재하는 채팅방인지 확인
     switch (type.toUpperCase()) {
-      case "SESSION" -> sessionRepository.findById(roomId)
+      case "SESSION" -> electionRepository.findById(roomId)
           .orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 세션입니다."));
       case "TEAM" -> voteTeamRepository.findById(roomId)
           .orElseThrow(() -> new InvalidChatRoomException("존재하지 않는 팀입니다."));

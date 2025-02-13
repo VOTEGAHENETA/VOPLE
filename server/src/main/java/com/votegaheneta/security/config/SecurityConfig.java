@@ -38,6 +38,7 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
+                                   .requestMatchers("/login").permitAll()
           //  .anyRequest().permitAll()
 //                                   .requestMatchers("/api/login", "/api/logout").permitAll()
                                    .anyRequest().authenticated()
@@ -47,6 +48,7 @@ public class SecurityConfig {
                          .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
 //                         .defaultSuccessUrl(BASE_URL)
                          .successHandler(oauth2AuthenticationSuccessHandler)
+                         .failureUrl(BASE_URL + "/login?error=true")
         );
     return http.build();
   }
