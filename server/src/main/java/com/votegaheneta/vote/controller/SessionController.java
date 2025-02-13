@@ -73,7 +73,7 @@ public class SessionController {
   })
   @PostMapping("/{sessionId}/question")
   public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId, @RequestBody Map<String, String> payload,
-      @AuthenticationPrincipal CustomOauth2User oauth2User) {
+                                               @AuthenticationPrincipal CustomOauth2User oauth2User) {
 //    Users user = AuthenticationUtil.getUserFromAuthentication();
 //    System.out.println("oauth2User = " + oauth2User);
     Users user = AuthenticationUtil.getUserFromOauth2User(oauth2User);
