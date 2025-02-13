@@ -11,6 +11,7 @@ import {
 import { TCreateElection } from '@/types/election';
 import instance from './api';
 import { VoteRequest } from '@/types/vote';
+import { ElectionResult } from '@/types/final';
 import { TPostResponse } from '@/types/api';
 
 /**
@@ -34,6 +35,14 @@ export const getVoteDetail = async (
 export const postElection = async (createData: TCreateElection) => {
   const response = await instance.post('/election', createData);
   return response;
+};
+
+export const deleteElection = async (sessionId: number) => {
+  return await instance.delete(`/election/${sessionId}`);
+};
+
+export const putElection = async (sessionId: number, data: TCreateElection) => {
+  return await instance.put(`/election/${sessionId}`, data);
 };
 
 export const getQRCode = async (sessionId: number): Promise<string> => {
@@ -74,6 +83,11 @@ export const getResultCurrent = async (
   return await instance.get(`/vote/${sessionId}/result/current`);
 };
 
+export const getFinalResult = async (
+  sessionId: number
+): Promise<ElectionResult> => {
+  return await instance.get(`/vote/${sessionId}/result/final`);
+};
 export const getQuestion = async (sessionId: number): Promise<string> => {
   return await instance.get(`/election/${sessionId}/question`);
 };
