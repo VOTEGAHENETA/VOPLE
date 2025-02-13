@@ -1,4 +1,5 @@
 import App from '@/App';
+import FinalTemplate from '@/components/templates/FinalTemplate';
 import ElectionListTemplate from '@/components/templates/ElectionListTemplate';
 import Login from '@/components/templates/LoginTemplate';
 import ResultCurrentTemplate from '@/components/templates/ResultCurrentTemplate';
@@ -6,6 +7,7 @@ import VoteTemplate from '@/components/templates/VoteTemplate';
 import Channel from '@/pages/Channel';
 import Create from '@/pages/Election/Create';
 import Manage from '@/pages/Election/Manage';
+import Question from '@/pages/Election/Question';
 import Home from '@/pages/Home';
 import Main from '@/pages/Main';
 import Streaming from '@/pages/Streaming';
@@ -19,12 +21,16 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: 'home',
-        element: <Home />,
+        path: '/login',
+        element: <Login />,
       },
       {
-        path: 'channel',
-        element: <Channel />,
+        path: '/elections/:election_id/question',
+        element: <Question />,
+      },
+      {
+        path: '/elections/list',
+        element: <ElectionListTemplate />,
       },
       {
         path: 'elections/:election_id',
@@ -47,20 +53,24 @@ export const router = createBrowserRouter([
         element: <Candidate />,
       },
       {
-        path: 'live/:teamId',
-        element: <Streaming />,
-      },
-      {
         path: '/elections/:election_id/result',
         element: <ResultCurrentTemplate />,
       },
       {
-        path: '/elections/list',
-        element: <ElectionListTemplate />,
+        path: 'live/:teamId',
+        element: <Streaming />,
       },
       {
-        path: '/login',
-        element: <Login />,
+        path: 'home',
+        element: <Home />,
+      },
+      {
+        path: 'channel',
+        element: <Channel />,
+      },
+      {
+        path: '/elections/:election_id/final',
+        element: <FinalTemplate />,
       },
       {
         path: 'mypage/:user_id',

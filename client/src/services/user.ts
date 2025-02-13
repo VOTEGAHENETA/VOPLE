@@ -1,4 +1,4 @@
-import { UserInfoRequest, UserResponse, UserInfoResponse } from '@/types/user';
+import { User, UserInfoRequest, UserResponse, UserInfoResponse } from '@/types/user';
 import instance from './api';
 
 export const getUserList = async (
@@ -7,6 +7,17 @@ export const getUserList = async (
   pgno: number
 ): Promise<UserResponse> => {
   return await instance.get(`/vote/${sessionId}/${voteId}?page=${pgno}`);
+};
+
+export const searchUser = async (
+  sessionId: number,
+  voteId: number,
+  keyword: string,
+  pgno: number
+): Promise<User[]> => {
+  return await instance.get(
+    `/vote/${sessionId}/${voteId}/search?keyword=${keyword}&page=${pgno}`
+  );
 };
 
 export const getUserInfo = async (

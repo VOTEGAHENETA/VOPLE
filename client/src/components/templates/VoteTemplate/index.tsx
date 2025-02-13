@@ -73,17 +73,15 @@ function VoteTemplate() {
         </div>
       </div>
 
-      <div className={styles.realmodal}>
-        {isModalOpen && (
-          <div className={styles.modalBackdrop}>
-            <ModalPopup
-              voteSession={voteData}
-              selectedCandidates={selectedCandidates}
-              voteComplete={voteComplete}
-            />
-          </div>
-        )}
-      </div>
+      {isModalOpen && (
+        <div className={styles.modalBackdrop}>
+          <ModalPopup
+            voteSession={voteData}
+            selectedCandidates={selectedCandidates}
+            voteComplete={voteComplete}
+          />
+        </div>
+      )}
     </div>
   );
 }
