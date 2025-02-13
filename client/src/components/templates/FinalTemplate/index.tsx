@@ -2,6 +2,7 @@ import styles from './index.module.scss';
 import Result from '@/components/organisms/WaitResult';
 import FinalResult from '@/components/organisms/FinalResult';
 import people from '@/assets/icons/people.svg';
+import crown from '@/assets/icons/3dcrown.svg';
 import Text from '@/components/atoms/Text';
 import { getResultCurrent } from '@/services/election';
 import { getFinalResult } from '@/services/election';
@@ -59,9 +60,20 @@ function FinalTemplate() {
           {formatDateTime(finalData.electionSessionDto?.voteEndTime)}
         </Text>
       </div>
-      <div className={styles.content}>
-        <FinalResult finalData={finalData} />
-        <Result currentData={currentData} />
+      <div className={styles.result}>
+        <div className={styles.text}>
+          <Text size='sm' weight='bold' color='#F58420'>
+            투표 결과
+          </Text>
+          <Text size='lg' weight='bold' color='#333333'>
+            모두의 한표, 과연 결과는?!
+          </Text>
+        </div>
+        <img src={crown} className={styles.crown} />
+        <div className={styles.content}>
+          <FinalResult finalData={finalData} />
+          <Result currentData={currentData} />
+        </div>
       </div>
     </div>
   );
