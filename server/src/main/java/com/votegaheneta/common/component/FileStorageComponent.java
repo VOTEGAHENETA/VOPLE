@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,7 +17,6 @@ public class FileStorageComponent {
   private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
   // 리눅스 배포 환경용 경로
   private static final String UPLOAD_URL = "/uploads";
-  private static final String DATE_PATTERN = "yyyy/MM/dd";
 
   @Value("${base_url}")
   private String mediaUrl;
@@ -30,7 +27,9 @@ public class FileStorageComponent {
       try {
         String subDirectory = createSubDirectory(type);
         String fileName = createFileName(file.getOriginalFilename());
-        String fullFileName = mediaUrl + saveFile(file, subDirectory, fileName);
+        String f = saveFile(file, subDirectory, fileName);
+        System.out.println(mediaUrl + "/uploads" + f);
+        String fullFileName = mediaUrl + "/uploads" + f;
         return  convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {
         throw new IllegalArgumentException("파일 처리중 오류가 발생했습니다", e);
@@ -40,15 +39,19 @@ public class FileStorageComponent {
   }
 
   public String convertToRelativePath(String fullFileName) {
-    return fullFileName.replace(UPLOAD_URL, "").replace("\\", "/");
+    return fullFileName.replace("\\", "/");
   }
 
   private String saveFile(MultipartFile file, String subDirectory, String fileName)
       throws IOException {
-    Path fullPath = Paths.get(subDirectory, fileName);
-    Files.createDirectories(fullPath.getParent());  // 부모 디렉토리가 없을 경우를 대비
-    file.transferTo(fullPath.toFile());
-    return fullPath.toString();
+    try {
+      Path fullPath = Paths.get(UPLOAD_URL, subDirectory, fileName);
+      Files.createDirectories(fullPath.getParent());
+      file.transferTo(fullPath.toFile());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return File.separator + subDirectory + fileName;
   }
 
   private String createFileName(String originalFilename) {
@@ -56,10 +59,14 @@ public class FileStorageComponent {
   }
 
   private String createSubDirectory(String type) throws IOException {
-    String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
-    File directory = new File(UPLOAD_URL, type + File.separator + datePath);
-    directory.mkdirs();
-    return directory.toString();
+    try {
+      File directory = new File(UPLOAD_URL, type);
+      directory.mkdirs();
+      return type;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   private void validateFile(MultipartFile file) {

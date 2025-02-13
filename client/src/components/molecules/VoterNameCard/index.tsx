@@ -11,7 +11,7 @@ interface Props {
 }
 
 function VoterNameCard({ status = false, kakaoNickname, nickname }: Props) {
-  const getFirstNickname = kakaoNickname.charAt(0);
+  const getFirstNickname = kakaoNickname ? kakaoNickname.charAt(0) : '';
 
   return (
     <div className={styles.card}>

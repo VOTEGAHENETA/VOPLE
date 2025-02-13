@@ -38,9 +38,9 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
-//            .anyRequest().permitAll()
+           .anyRequest().permitAll()
 //                                   .requestMatchers("/api/login", "/api/logout").permitAll()
-                                   .anyRequest().authenticated()
+                                  //  .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
                          .loginPage(BASE_URL + "/login")
@@ -54,7 +54,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // 프론트엔드 도메인
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://i12b102.p.ssafy.io")); // 프론트엔드 도메인
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("*"));
     configuration.setAllowCredentials(true);

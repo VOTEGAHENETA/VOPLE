@@ -6,6 +6,7 @@ import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -13,8 +14,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class SessionInterceptor implements HandlerInterceptor {
 
-//  @Value("${base_url}")
-  private final String BASE_URL = "http://localhost:8080";
+  @Value("${base_url}")
+  private String BASE_URL;
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
@@ -30,11 +31,11 @@ public class SessionInterceptor implements HandlerInterceptor {
     System.out.println("user = " + user);
 
     boolean exist = sessionUserInfoRepository.existsSessionUserInfoByElectionSessionIdAndUserId(sessionId, user.getId());
-//    if (!exist) {
-//      String redirectURL = String.format("%s/api/election/question/%d", BASE_URL, sessionId);
-//      response.sendRedirect(redirectURL);
-//      return false;
-//    }
+    if (!exist) {
+      String redirectURL = String.format("%s/election/%d/question", BASE_URL, sessionId);
+      response.sendRedirect(redirectURL);
+      return false;
+    }
     return true;
   }
 }
