@@ -1,4 +1,4 @@
-import { UserResponse } from '@/types/user';
+import { UserInfoRequest, UserResponse, UserInfoResponse } from '@/types/user';
 import instance from './api';
 
 export const getUserList = async (
@@ -7,4 +7,23 @@ export const getUserList = async (
   pgno: number
 ): Promise<UserResponse> => {
   return await instance.get(`/vote/${sessionId}/${voteId}?page=${pgno}`);
+};
+
+export const getUserInfo = async (
+  userId: string
+): Promise<UserInfoResponse> => {
+  return await instance.get(`/user/${userId}`);
+};
+
+export const putUserInfo = async (
+  userId: string,
+  data: UserInfoRequest
+): Promise<UserInfoRequest> => {
+  try {
+    const response = await instance.put(`/user/${userId}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('API 에러:', {});
+    throw error;
+  }
 };

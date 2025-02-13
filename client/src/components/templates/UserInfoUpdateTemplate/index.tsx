@@ -4,22 +4,11 @@ import Text from '@/components/atoms/Text';
 import Users from '@/assets/images/Users.png';
 import { useParams } from 'react-router-dom';
 import { useUserInfoFormData } from '@/hooks/useUserInfoFormData';
-import { useUserInfo } from '@/services/hooks/useUserInfo';
+import { useGetUserInfo } from '@/services/hooks/useGetUserInfo';
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import BaseButton from '@/components/atoms/BaseButton';
-
-const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
-
-// ============
-// 타입 정의
-// ============
-interface UserInfoRequest {
-  userId: number;
-  kakaoId: number;
-  nickname: string;
-  username: string;
-}
+import { UserInfoRequest } from '@/types/user';
+import { usePutUserInfo } from '@/services/hooks/usePostUserInfo';
 
 export function UserInfoUpdateTemplate() {
   const { user_id = '' } = useParams();
@@ -36,9 +25,8 @@ export function UserInfoUpdateTemplate() {
   //================================
   // 사용자 정보 최초 폼 초기화
   //================================
-
-  // Query : 쿼리 훅 사용하여 데이터 정보 받아옴
-  const { data, error } = useUserInfo(user_id);
+  // Query : 쿼리 훅 사용하여 데이터 정보 받아옴 param에서 받아온 user_id (로그인 구현 전)
+  const { data, error } = useGetUserInfo(user_id);
   useEffect(() => {
     if (data) {
       const { userId, kakaoId, nickname, username } = data;
@@ -57,14 +45,11 @@ export function UserInfoUpdateTemplate() {
   //================================
   // 사용자 정보 업데이트
   //================================
+  const putUserInfo = usePutUserInfo();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // 전송할 데이터 묶음
-      const formData = new FormData();
-
-      // VoteTeamInfoRequest DTO 생성
       const userInfoRequest: UserInfoRequest = {
         userId: userInfoFormData.userId,
         kakaoId: userInfoFormData.kakaoId,
@@ -72,29 +57,10 @@ export function UserInfoUpdateTemplate() {
         username: userInfoFormData.username,
       };
 
-      console.log('userInfoRequest : ', userInfoRequest);
-      // DTO를 FormData에 추가
-      formData.append(
-        'data',
-        new Blob([JSON.stringify(userInfoRequest)], {
-          type: 'application/json',
-        })
-      );
-
-      console.log('userInfoRequest ::::: ', userInfoRequest);
-      const response = await axios.put(
-        `${API_URL}/user/${user_id}`,
-        userInfoRequest, // FormData 대신 JSON 직접 전송
-        {
-          headers: {
-            'Content-Type': 'application/json', // JSON 형식으로 변경
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        alert('수정이 완료되었습니다.');
-      }
+      putUserInfo.mutate({
+        userId: user_id,
+        data: userInfoRequest,
+      });
     } catch (error) {
       console.error('수정 실패:', error);
       alert('수정에 실패했습니다.');

@@ -19,17 +19,52 @@ export interface Candidate {
 }
 
 export interface CandidateList {
-  [key: string]: Candidate[]; // 동적키
+  [key: string]: Candidate[];
 }
 
 // 후보자 post Form
 export interface CandidateInfoFormData {
+  voteTeamId: number;
   prefix: string;
   candidateStatement: string;
-  voteTeamId: number;
 }
 
 export interface UserResponse {
   userList: User[];
   candidateList: CandidateList;
+}
+
+export interface VoteTeamInfoRequest {
+  voteTeam: {
+    voteTeamId: number;
+    prefix: string;
+    candidateStatement: string;
+  };
+  pledges: Array<{
+    content: string;
+  }>;
+}
+
+export interface CandidateInfoResponse {
+  voteTeam: {
+    voteTeamId: string;
+    poster: string;
+    prefix: string;
+    candidateStatement: string;
+  };
+  pledges: Array<{ content: string }>;
+}
+
+export interface UserInfoResponse {
+  userId: number;
+  kakaoId: number;
+  nickname: string;
+  username: string;
+}
+
+export interface UserInfoRequest {
+  userId: number;
+  kakaoId: number;
+  nickname: string;
+  username: string;
 }
