@@ -30,7 +30,8 @@ public class FileStorageComponent {
       try {
         String subDirectory = createSubDirectory(type);
         String fileName = createFileName(file.getOriginalFilename());
-        String fullFileName = mediaUrl + saveFile(file, subDirectory, fileName);
+        System.out.println("여기는?");
+        String fullFileName = mediaUrl + "/uploads" + saveFile(file, subDirectory, fileName);
         return  convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {
         throw new IllegalArgumentException("파일 처리중 오류가 발생했습니다", e);
@@ -40,15 +41,19 @@ public class FileStorageComponent {
   }
 
   public String convertToRelativePath(String fullFileName) {
-    return fullFileName.replace(UPLOAD_URL, "").replace("\\", "/");
+    return fullFileName.replace(mediaUrl + "/uploads", "").replace("\\", "/");
   }
 
   private String saveFile(MultipartFile file, String subDirectory, String fileName)
       throws IOException {
-    Path fullPath = Paths.get(subDirectory, fileName);
-    Files.createDirectories(fullPath.getParent());  // 부모 디렉토리가 없을 경우를 대비
-    file.transferTo(fullPath.toFile());
-    return fullPath.toString();
+    try {
+      Path fullPath = Paths.get(UPLOAD_URL, subDirectory, fileName);
+      Files.createDirectories(fullPath.getParent());
+      file.transferTo(fullPath.toFile());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return File.separator + subDirectory + fileName;
   }
 
   private String createFileName(String originalFilename) {
@@ -59,7 +64,7 @@ public class FileStorageComponent {
     String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
     File directory = new File(UPLOAD_URL, type + File.separator + datePath);
     directory.mkdirs();
-    return directory.toString();
+    return type + File.separator + datePath;  // 상대 경로만 반환
   }
 
   private void validateFile(MultipartFile file) {
