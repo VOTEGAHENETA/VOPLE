@@ -59,9 +59,9 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
     LocalDateTime voteEndTime = electionSession.getVoteEndTime();
-//    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
-//      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
-//    }
+    if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
+      throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
+    }
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
       Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
