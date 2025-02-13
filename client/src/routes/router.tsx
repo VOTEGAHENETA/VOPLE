@@ -7,6 +7,7 @@ import VoteTemplate from '@/components/templates/VoteTemplate';
 import Channel from '@/pages/Channel';
 import Create from '@/pages/Election/Create';
 import Manage from '@/pages/Election/Manage';
+import Question from '@/pages/Election/Question';
 import Home from '@/pages/Home';
 import Main from '@/pages/Main';
 import Streaming from '@/pages/Streaming';
@@ -19,12 +20,16 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: 'home',
-        element: <Home />,
+        path: '/login',
+        element: <Login />,
       },
       {
-        path: 'channel',
-        element: <Channel />,
+        path: '/elections/:election_id/question',
+        element: <Question />,
+      },
+      {
+        path: '/elections/list',
+        element: <ElectionListTemplate />,
       },
       {
         path: 'elections/:election_id',
@@ -38,26 +43,29 @@ export const router = createBrowserRouter([
         path: 'elections/:election_id/manage',
         element: <Manage />,
       },
-      { path: 'elections/:election_id/vote', element: <VoteTemplate /> },
       {
-        path: 'candidate/:sessionId/:userId',
-        element: <Candidate />,
+        path: 'elections/:election_id/vote',
+        element: <VoteTemplate />,
       },
       {
-        path: 'live/:teamId',
-        element: <Streaming />,
+        path: 'candidate/:session_id/:vote_team_id',
+        element: <Candidate />,
       },
       {
         path: '/elections/:election_id/result',
         element: <ResultCurrentTemplate />,
       },
       {
-        path: '/elections/list',
-        element: <ElectionListTemplate />,
+        path: 'live/:teamId',
+        element: <Streaming />,
       },
       {
-        path: '/login',
-        element: <Login />,
+        path: 'home',
+        element: <Home />,
+      },
+      {
+        path: 'channel',
+        element: <Channel />,
       },
       {
         path: '/elections/:election_id/final',

@@ -25,21 +25,25 @@
         gap: 10px;
       }
 
-      .candidate-register {
+      .candidate-register-section {
+        width: 100%;
+      }
+
+      .candidate-register-add {
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: end;
         gap: 5px;
-      }
 
-      .register {
-        &-input {
-          width: 60%;
-        }
+        .register {
+          &-input {
+            width: 60%;
+          }
 
-        &-btn {
-          width: 40%;
+          &-btn {
+            width: 40%;
+          }
         }
       }
 

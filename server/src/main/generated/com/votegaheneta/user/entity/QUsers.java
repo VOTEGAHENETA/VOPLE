@@ -26,7 +26,11 @@ public class QUsers extends EntityPathBase<Users> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Long> kakaoId = createNumber("kakaoId", Long.class);
+
     public final StringPath nickname = createString("nickname");
+
+    public final ListPath<com.votegaheneta.vote.entity.SessionUserInfo, com.votegaheneta.vote.entity.QSessionUserInfo> sessionUserInfos = this.<com.votegaheneta.vote.entity.SessionUserInfo, com.votegaheneta.vote.entity.QSessionUserInfo>createList("sessionUserInfos", com.votegaheneta.vote.entity.SessionUserInfo.class, com.votegaheneta.vote.entity.QSessionUserInfo.class, PathInits.DIRECT2);
 
     public final StringPath username = createString("username");
 

@@ -1,5 +1,6 @@
 package com.votegaheneta.common.repository;
 
+import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,4 +119,29 @@ public class RedisRepositoryImpl implements RedisRepository {
         .map(item -> (VoteResult) item)
         .collect(Collectors.toList());
   }
+
+  // 당선된 사람 리스트 조회
+  public List<Elected> getElectedResults(String key) {
+    if (redisTemplate.opsForList().size(key) == 0) {
+      return new ArrayList<>();
+    }
+    return redisTemplate.opsForList().range(key, 0, - 1)
+        .stream()
+        .filter(Objects::nonNull)
+        .map(item -> (Elected) item)
+        .collect(Collectors.toList());
+  }
+
+  // 투표 결과값을 리스트형태로 저장
+  public void saveElectedResults(String key, List<Elected> electeds) {
+    if (electeds == null || electeds.isEmpty()) {
+      return;
+    }
+    for (Elected result : electeds) {
+      if (result != null) {
+        redisTemplate.opsForList().rightPush(key, result);
+      }
+    }
+  }
+  
 }

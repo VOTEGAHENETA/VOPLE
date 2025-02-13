@@ -9,21 +9,20 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-@AllArgsConstructor
 public class FileStorageComponent {
 
   private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
-  // 윈도우 개발 환경용 경로
-  private static final String UPLOAD_URL = "C:/app/uploads";  // 또는 "C:\\app\\uploads"
   // 리눅스 배포 환경용 경로
-  // private static final String UPLOAD_URL = "/app/uploads";
-  private static final String FILE_URL_PREFIX = "/media";
+  private static final String UPLOAD_URL = "/uploads";
   private static final String DATE_PATTERN = "yyyy/MM/dd";
+
+  @Value("${base_url}")
+  private String mediaUrl;
 
   public String localSave(MultipartFile file, String type) {
     if (file != null) {
@@ -32,7 +31,7 @@ public class FileStorageComponent {
         String subDirectory = createSubDirectory(type);
         String fileName = createFileName(file.getOriginalFilename());
         String fullFileName = saveFile(file, subDirectory, fileName);
-        return convertToRelativePath(fullFileName);
+        return mediaUrl + convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {
         throw new IllegalArgumentException("파일 처리중 오류가 발생했습니다", e);
       }
@@ -40,7 +39,7 @@ public class FileStorageComponent {
     return null;
   }
 
-  private String convertToRelativePath(String fullFileName) {
+  public String convertToRelativePath(String fullFileName) {
     return fullFileName.replace(UPLOAD_URL, "").replace("\\", "/");
   }
 
@@ -53,7 +52,7 @@ public class FileStorageComponent {
   }
 
   private String createFileName(String originalFilename) {
-    return "/" + UUID.randomUUID() + "_" + originalFilename;
+    return File.separator + UUID.randomUUID() + "_" + originalFilename;
   }
 
   private String createSubDirectory(String type) throws IOException {

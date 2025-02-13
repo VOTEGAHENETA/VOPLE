@@ -6,6 +6,7 @@ import com.votegaheneta.chat.service.ChatService;
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
+import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.util.AuthenticationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ChatController {
 
   private final ChatService chatService;
+  private final UsersRepository usersRepository;
 
   @MessageMapping("/{type}/{roomId}")
   @SendTo("/api/room/{type}/{roomId}")

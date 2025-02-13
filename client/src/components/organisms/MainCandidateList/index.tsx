@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
-import { VoteResult } from '@/types/election';
 import Text from '@/components/atoms/Text';
 import CandidateSection from '@/components/molecules/CandidateSection';
 import medal from '@/assets/icons/medal.svg';
 import crown from '@/assets/icons/crown.svg';
 import silverCrown from '@/assets/icons/silverCrown.svg';
 import { useNavigate } from 'react-router-dom';
+import { VoteResult } from '@/types/voteSession';
 
 interface Props {
+  index: number;
   vote: VoteResult;
 }
 
-function MainCandidateList({ vote }: Props) {
-  const [currentIndex, setCurrentIndex] = useState(1);
+function MainCandidateList({ index, vote }: Props) {
+  const [currentIndex, setCurrentIndex] = useState(
+    vote.teamResults.length === 1 ? 0 : 1
+  );
   const [transitioning, setTransitioning] = useState(false);
   const [canSlide, setCanSlide] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,6 +30,7 @@ function MainCandidateList({ vote }: Props) {
 
   // [0, 1, 2] => [2, 0, 1, 2, 0] 으로 만들기
   function getItems() {
+    if (vote.teamResults.length === 0) return []; // 후보자가 없는 경우
     return isSingleItem
       ? vote.teamResults
       : [
@@ -37,6 +41,13 @@ function MainCandidateList({ vote }: Props) {
   }
 
   useEffect(initSlideWidth, [currentIndex]);
+
+  function getRealIndex(index: number) {
+    if (isSingleItem) return 0;
+    if (index === 0) return vote.teamResults.length - 1;
+    if (index === items.length - 1) return 0;
+    return index - 1;
+  }
 
   function initSlideWidth() {
     const updateSlideWidth = () => {
@@ -84,6 +95,11 @@ function MainCandidateList({ vote }: Props) {
     } else {
       moveToSlide(currentIndex);
     }
+  }
+
+  function handleClickDot(index: number) {
+    if (isSingleItem) return;
+    moveToSlide(index + 1);
   }
 
   function moveToSlide(index: number) {
@@ -140,12 +156,12 @@ function MainCandidateList({ vote }: Props) {
   return (
     <div className={styles['vote-main']}>
       <div className={styles['vote-title']}>
-        {vote.voteId === 1 ? (
-          <img src={crown} alt='회장 후보' />
-        ) : vote.voteId === 2 ? (
-          <img src={silverCrown} alt='부회장 후보' />
+        {index === 0 ? (
+          <img src={crown} alt='후보' />
+        ) : index === 1 ? (
+          <img src={silverCrown} alt='후보' />
         ) : (
-          <img src={medal} alt='기타 후보' />
+          <img src={medal} alt='후보' />
         )}
         <Text weight='bold'>{vote.voteName} 후보</Text>
       </div>
@@ -160,30 +176,43 @@ function MainCandidateList({ vote }: Props) {
           role='region'
           aria-label='후보 목록'
         >
-          {items.map((team, index) => (
-            <CandidateSection
-              key={`${team.teamId}-${index}`}
-              team={team}
-              onClick={() => handleRouteChannel(team.teamId)}
-            />
-          ))}
+          {items ? (
+            items.map((team, index) => {
+              return (
+                <CandidateSection
+                  key={`${team.teamId}-${index}`}
+                  team={team}
+                  onClick={() => handleRouteChannel(team.teamId)}
+                />
+              );
+            })
+          ) : (
+            <div style={{ width: '100%', height: '100%' }}>
+              아직 후보자가 등록되지 않았어요
+            </div>
+          )}
         </div>
       </div>
 
       {!isSingleItem && (
         <div className={styles['vote-dots']}>
           {vote.teamResults.map((_, index) => (
-            <Text
+            <div
               key={index}
-              size='xl'
-              color={
-                currentIndex === index + 1
-                  ? 'var(--color-main-orange)'
-                  : 'var(--color-gray-light)'
-              }
+              onClick={() => handleClickDot(index)}
+              style={{ cursor: 'pointer' }}
             >
-              •
-            </Text>
+              <Text
+                size='xl'
+                color={
+                  getRealIndex(currentIndex) === index
+                    ? 'var(--color-main-orange)'
+                    : 'var(--color-gray-light)'
+                }
+              >
+                •
+              </Text>
+            </div>
           ))}
         </div>
       )}

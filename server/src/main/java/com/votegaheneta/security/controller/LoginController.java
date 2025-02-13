@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-  @GetMapping("/login")
+  @GetMapping("/api/login")
   public String login() {
     return "login";
   }
@@ -23,7 +23,7 @@ public class LoginController {
     return "index";
   }
 
-  @GetMapping("/logout")
+  @GetMapping("/api/logout")
   public String logout(HttpServletRequest request, HttpServletResponse response) {
     Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext()
         .getAuthentication();
@@ -31,7 +31,7 @@ public class LoginController {
     return "login";
   }
 
-  @GetMapping("/chat")
+  @GetMapping("/api/chat")
   public String chat() {
     return "chat";
   }

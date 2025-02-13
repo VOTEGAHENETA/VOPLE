@@ -18,6 +18,7 @@ interface Props {
 function VoteReginster({ sessionId, sessionName, votes }: Props) {
   const [voteName, setVoteName] = useState<string>('');
   const [voteList, setVoteList] = useState<TVoteEdit[]>(votes);
+  const [errMsg, setErrMsg] = useState<string>('');
   let lastId = 0;
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function VoteReginster({ sessionId, sessionName, votes }: Props) {
 
   function handleChangeVoteName(e: React.ChangeEvent<HTMLInputElement>) {
     setVoteName(e.target.value);
+    setErrMsg('');
   }
 
   const deleteVoteMutation = useElectionDetailDelete();
@@ -38,6 +40,10 @@ function VoteReginster({ sessionId, sessionName, votes }: Props) {
   const createVoteMutation = useCreateVote();
 
   function handleVoteRegister() {
+    if (!voteName) {
+      setErrMsg('투표 이름을 정해주세요.');
+      return;
+    }
     createVoteMutation.mutate({ sessionId: sessionId, voteName: voteName });
     const newVote = {
       sessionName: sessionName,
@@ -45,7 +51,7 @@ function VoteReginster({ sessionId, sessionName, votes }: Props) {
       voteName: voteName,
     };
     setVoteList([...voteList, newVote]);
-    console.log(voteName);
+    setVoteName('');
   }
 
   return (
@@ -57,25 +63,32 @@ function VoteReginster({ sessionId, sessionName, votes }: Props) {
       </div>
       <div className={styles['register-section-bottom']}>
         <div className={styles['register-section-bottom-wrapper']}>
-          <div className={styles['candidate-register']}>
-            <div className={styles['register-input']}>
-              <InputField
-                id='vote-name'
-                label='투표명'
-                placeholder='예) 회장'
-                value={voteName}
-                onChange={handleChangeVoteName}
-              />
+          <div className={styles['candidate-register-section']}>
+            <div className={styles['candidate-register-add']}>
+              <div className={styles['register-input']}>
+                <InputField
+                  id='vote-name'
+                  label='투표명'
+                  placeholder='예) 회장'
+                  value={voteName}
+                  onChange={handleChangeVoteName}
+                />
+              </div>
+              <div className={styles['register-btn']}>
+                <BaseButton
+                  type='button'
+                  kind='base'
+                  status={BASE_BUTTON_STATUS.OUTLINE}
+                  onClick={handleVoteRegister}
+                >
+                  <Text size='s'>투표 추가하기</Text>
+                </BaseButton>
+              </div>
             </div>
-            <div className={styles['register-btn']}>
-              <BaseButton
-                type='button'
-                kind='base'
-                status={BASE_BUTTON_STATUS.OUTLINE}
-                onClick={handleVoteRegister}
-              >
-                <Text size='s'>투표 추가하기</Text>
-              </BaseButton>
+            <div className={styles['candidate-register-err']}>
+              <Text size='xs' color='var(--color-error)'>
+                {errMsg}
+              </Text>
             </div>
           </div>
           <div className={styles['candidate-list']}>

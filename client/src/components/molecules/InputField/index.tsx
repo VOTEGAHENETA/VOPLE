@@ -52,12 +52,8 @@ export default function InputField({
   };
 
   // const showError = variant === 'error' && errorMessage;
-  const showError = variant === 'error' && Boolean(errorMessage);
+  const showError = Boolean(errorMessage);
   const showHelper = Boolean(helperText) && !showError;
-
-  const handleSearch = () => {
-    // 검색 로직 구현
-  };
 
   return (
     <div className={styles.inputfield}>
@@ -93,7 +89,6 @@ export default function InputField({
             <IconButton
               className={styles.search__icon}
               name={ICON_NAME.ORANGEBIGGER}
-              onClick={handleSearch}
             />
           </button>
         )}
