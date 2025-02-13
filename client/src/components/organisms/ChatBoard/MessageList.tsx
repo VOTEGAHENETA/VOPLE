@@ -32,9 +32,9 @@ export default function MessageList({ messages }: MessageListProps) {
           <Text className={styles.time} size='s'>
             [{message.createdTime.slice(0, 5)}]
           </Text>
-          {/* 닉네임 : 추후 id -> nickname 으로 수정 */}
+          {/* 닉네임*/}
           <Text className={styles.username} color={message.color} size='s'>
-            {message.userId}
+            {message.nickname}
           </Text>
           {/* 내용 */}
           <Text className={styles.content} size='s'>
