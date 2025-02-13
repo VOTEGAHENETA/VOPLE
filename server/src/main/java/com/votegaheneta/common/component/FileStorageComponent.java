@@ -16,7 +16,7 @@ public class FileStorageComponent {
 
   private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
   // 리눅스 배포 환경용 경로
-  private static final String UPLOAD_URL = "C:/app/uploads";
+  private static final String UPLOAD_URL = "/app/uploads";
 
   @Value("${base_url}")
   private String mediaUrl;
