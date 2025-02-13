@@ -108,7 +108,21 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     // voteTeamId 받기
     VoteTeam voteTeam = voteTeamRepository.findById(request.getVoteTeam().getVoteTeamId())
         .orElseThrow(() -> new IllegalArgumentException("후보를 찾을 수 없습니다."));
-    request.getVoteTeam().setPoster(fileStorageComponent.fileSave(file, POSTER_TYPE));
+    if (file != null && !file.isEmpty()) {
+      String fileName = fileStorageComponent.fileSave(file, POSTER_TYPE);
+      request.getVoteTeam().setPoster(fileName);
+    } else {
+      request.getVoteTeam().setPoster(voteTeam.getPoster());
+    }
+    // prefix(칭호)가 null이거나 빈 문자열이면 기존 값 유지
+    if (request.getVoteTeam().getPrefix() == null || request.getVoteTeam().getPrefix().trim().isEmpty()) {
+      request.getVoteTeam().setPrefix(voteTeam.getPrefix());
+    }
+
+    // candidateStatement(상태 메시지)가 null이거나 빈 문자열이면 기존 값 유지
+    if (request.getVoteTeam().getCandidateStatement() == null || request.getVoteTeam().getCandidateStatement().trim().isEmpty()) {
+      request.getVoteTeam().setCandidateStatement(voteTeam.getCandidateStatement());
+    }
     // 후보자 칭호, 상태 메세지, 포스터 바꿈
     request.getVoteTeam().updateVoteTeamInfo(voteTeam);
     // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
@@ -136,5 +150,4 @@ public class VoteTeamServiceImpl implements VoteTeamService {
         .map(PledgeDto::fromEntity).toList();
     return new VoteTeamInfoResponse(voteTeamDto, pledgeDtoList);
   }
-
 }

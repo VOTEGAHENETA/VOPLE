@@ -73,6 +73,11 @@ public class VoteTeam {
     stream.setVoteTeam(this);
   }
 
+  public void updatePoster(String poster) {
+    this.poster = poster;
+  }
+
+
   public void incrementPollCnt() {
     this.pollCnt++;
   }

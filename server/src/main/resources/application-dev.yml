@@ -80,4 +80,5 @@ springdoc:
     path: /v3/api-docs
 
 base_url: https://i12b102.p.ssafy.io
+#base_url: http://localhost:5173
 

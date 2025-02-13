@@ -17,8 +17,8 @@ import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.dto.SessionListDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
-import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.SessionUserInfo;
+import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -72,7 +72,7 @@ public class SessionServiceImpl implements SessionService {
 
       qrCodeFile.getParentFile().mkdirs();
       ImageIO.write(qrCodeImage, "png", qrCodeFile);
-      String relativePath = mediaUrl + qrCodeFile.toString();
+      String relativePath = mediaUrl + "/uploads" + "/qrcode/" + fileName;
       electionSession.setQrCode(fileStorageComponent.convertToRelativePath(relativePath));
       electionRepository.save(electionSession);
     } catch (Exception e) {

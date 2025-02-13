@@ -31,7 +31,7 @@ public class FileStorageComponent {
         String fullFileName = mediaUrl + "/uploads" + f;
         return  convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {
-        throw new IllegalArgumentException("파일 처리중 오류가 발생했습니다", e);
+        e.printStackTrace();
       }
     }
     return null;
