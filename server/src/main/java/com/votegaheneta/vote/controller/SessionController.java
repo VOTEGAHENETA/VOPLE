@@ -37,7 +37,13 @@ public class SessionController {
 
   private final SessionService sessionService;
 
-  @PostMapping("/question/{sessionId}")
+  @GetMapping("/{sessionId}/question")
+  public ApiResponse<String> getQuestion(@PathVariable Long sessionId) {
+    String result = sessionService.getQuestion(sessionId);
+    return ApiResponse.success(HttpStatus.OK, "질문 조회 성공", result);
+  }
+
+  @PostMapping("/{sessionId}/question")
   public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId, @RequestBody Map<String, String> payload,
       @AuthenticationPrincipal CustomOauth2User oauth2User) {
 //    Users user = AuthenticationUtil.getUserFromAuthentication();

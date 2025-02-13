@@ -186,4 +186,11 @@ public class SessionServiceImpl implements SessionService {
     System.out.println("count = " + count);
     return count == 1 ? USER_TYPE.CANDIDATE : USER_TYPE.VOTER;
   }
+
+  @Override
+  public String getQuestion(Long sessionId) {
+    String entranceQuestion = sessionRepository.findEntranceQuestionById(sessionId);
+    System.out.println("entranceQuestion = " + entranceQuestion);
+    return entranceQuestion;
+  }
 }
