@@ -49,6 +49,12 @@ public class VoteFindController {
 
 
   // ㄴ -> ㄴ이 들어간 모든 이름 조회
+  @Operation(
+      summary = "입후보자 지정화면에서 후보자 검색, 초성 검색 가능",
+      description = "FIGMA : 관리자 플로우 - [입후보자 조회/수정 화면]")
+  @Parameters({
+      @Parameter(name = "voteId", description = "투표 id", required = true, in = ParameterIn.PATH)
+  })
   @GetMapping("/{voteId}/search")
   public ApiResponse<List<VoteInfoDto>> searchVoteCandidate(
       @PathVariable("sessionId") Long sessionId,
