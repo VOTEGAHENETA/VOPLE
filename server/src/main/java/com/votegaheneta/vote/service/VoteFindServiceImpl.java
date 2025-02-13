@@ -113,17 +113,17 @@ public class VoteFindServiceImpl implements VoteFindService {
   @Transactional
   @Override
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
-//    String sessionRedisKey = "session:vote:result:"+sessionId;
+    String sessionRedisKey = "session:vote:result:"+sessionId;
     List<VoteResult> voteResults = new ArrayList<>();
-//    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
+    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
     ElectionSession electionSession = sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
-//    if(redisVoteResults.isEmpty()) {
-//      voteResults = voteResultCalculator.calculateVoteResult(sessionId);
-//      redisRepository.saveVoteResults(sessionRedisKey, voteResults);
-//    }else {
-//      voteResults = redisVoteResults;
-//    }
+    if(redisVoteResults.isEmpty()) {
+      voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+      redisRepository.saveVoteResults(sessionRedisKey, voteResults);
+    }else {
+      voteResults = redisVoteResults;
+    }
     voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
