@@ -84,6 +84,5 @@ public class Users {
   public void updateUser(UserDto userDto) {
     this.username = userDto.getUsername();
     this.nickname = userDto.getNickname();
-    this.kakaoId = userDto.getKakaoId();
   }
 }

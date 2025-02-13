@@ -118,24 +118,10 @@ public class VoteResultCalculator {
               if (teamVotetotalCount == 0 || teamResult.getPollCnt() == 0) {
                 teamResult.setTeamVotePercent(0.0f);
               } else {
-                teamResult.setTeamVotePercent((float) (Math.round(
-                    (teamResult.getPollCnt() / teamVotetotalCount) * 100 * 10) / 10));
+                float percent = (teamResult.getPollCnt() / teamVotetotalCount) * 100;
+                teamResult.setTeamVotePercent((float) (Math.round(percent * 10) / 10.0));
               }
             });
-            // 최종 조정
-            float voteTotalPercent = teamResults.stream()
-                .map(TeamResult::getTeamVotePercent)
-                .reduce(0.0f, Float::sum);
-            if (voteTotalPercent < 100f && !teamResults.isEmpty()) {
-              TeamResult maxTeamResult = teamResults.stream()
-                  .filter(team -> team.getPollCnt() > 0)
-                  .max(Comparator.comparing(TeamResult::getTeamVotePercent))
-                  .orElse(null);
-              if (maxTeamResult != null) {
-                float adjustment = 100f - voteTotalPercent;
-                maxTeamResult.adjustVoteTeamPercent(adjustment);
-              }
-            }
           }
           return new VoteResult(voteId, voteName, teamResults);
         })

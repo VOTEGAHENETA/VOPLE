@@ -23,12 +23,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto updateUser(Long userId, UserDto userDto) {
     Users user = userRepository.getUsersById(userId);
-    System.out.println(userDto.getUserId());
-    System.out.println(userDto.getUsername());
     user.updateUser(userDto);
-    System.out.println(user.getId());
-    System.out.println(user.getUsername());
-    System.out.println(user.getNickname());
     return new UserDto(
         user.getId(),
         user.getKakaoId(),
