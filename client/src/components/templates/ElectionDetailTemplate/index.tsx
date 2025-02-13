@@ -12,6 +12,10 @@ import { useElectionDetailGet } from '@/services/hooks/useElectionDetail';
 import QRModal from './QRModal';
 import CandidateRegisterTemplate from '../CandidateRegisterTemplate';
 import { useCandidateStore } from '@/stores/candidateStore';
+import {
+  useElectionDelete,
+  useElectionModify,
+} from '@/services/hooks/useElectionSession';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -22,7 +26,7 @@ function ElectionDetailTemplate() {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [state, setState] = useState<TSession>({
-    id: 0,
+    id: Number(election_id),
     hostId: 0,
     sessionName: '',
     wholeVoter: 0,
@@ -45,6 +49,8 @@ function ElectionDetailTemplate() {
     },
   ]);
   const [isModify, setIsModify] = useState<boolean>(true);
+  const putMutation = useElectionModify();
+  const deleteMutation = useElectionDelete();
 
   useEffect(() => {
     if (isLoading) {
@@ -151,6 +157,14 @@ function ElectionDetailTemplate() {
     setIsModify(!isModify);
   }
 
+  function handleDeleteElection() {
+    deleteMutation.mutate(Number(election_id));
+  }
+
+  function handleModifyElection() {
+    putMutation.mutate({ sessionId: Number(election_id), data: state });
+  }
+
   if (isLoading) {
     return <div>로딩중</div>;
   }
@@ -170,6 +184,7 @@ function ElectionDetailTemplate() {
                 type='button'
                 kind='mini-chip'
                 status={BASE_BUTTON_STATUS.OUTLINE}
+                onClick={handleDeleteElection}
               >
                 <Text size='xs'>삭제하기</Text>
               </BaseButton>
@@ -187,6 +202,7 @@ function ElectionDetailTemplate() {
                 type='button'
                 kind='mini-chip'
                 status={BASE_BUTTON_STATUS.OUTLINE}
+                onClick={handleChangeModify}
               >
                 수정취소
               </BaseButton>
@@ -194,7 +210,7 @@ function ElectionDetailTemplate() {
                 type='button'
                 kind='mini-chip'
                 status={BASE_BUTTON_STATUS.OUTLINE}
-                onClick={handleChangeModify}
+                onClick={handleModifyElection}
               >
                 수정완료
               </BaseButton>
