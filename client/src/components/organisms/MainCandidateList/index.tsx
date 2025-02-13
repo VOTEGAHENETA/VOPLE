@@ -42,6 +42,13 @@ function MainCandidateList({ index, vote }: Props) {
 
   useEffect(initSlideWidth, [currentIndex]);
 
+  function getRealIndex(index: number) {
+    if (isSingleItem) return 0;
+    if (index === 0) return vote.teamResults.length - 1;
+    if (index === items.length - 1) return 0;
+    return index - 1;
+  }
+
   function initSlideWidth() {
     const updateSlideWidth = () => {
       slideWidth.current =
@@ -88,6 +95,11 @@ function MainCandidateList({ index, vote }: Props) {
     } else {
       moveToSlide(currentIndex);
     }
+  }
+
+  function handleClickDot(index: number) {
+    if (isSingleItem) return;
+    moveToSlide(index + 1);
   }
 
   function moveToSlide(index: number) {
@@ -166,9 +178,6 @@ function MainCandidateList({ index, vote }: Props) {
         >
           {items ? (
             items.map((team, index) => {
-              if (!team || team.teamId === undefined) {
-                return <div key={index}>후보자 X</div>;
-              }
               return (
                 <CandidateSection
                   key={`${team.teamId}-${index}`}
@@ -188,17 +197,22 @@ function MainCandidateList({ index, vote }: Props) {
       {!isSingleItem && (
         <div className={styles['vote-dots']}>
           {vote.teamResults.map((_, index) => (
-            <Text
+            <div
               key={index}
-              size='xl'
-              color={
-                currentIndex === index
-                  ? 'var(--color-main-orange)'
-                  : 'var(--color-gray-light)'
-              }
+              onClick={() => handleClickDot(index)}
+              style={{ cursor: 'pointer' }}
             >
-              •
-            </Text>
+              <Text
+                size='xl'
+                color={
+                  getRealIndex(currentIndex) === index
+                    ? 'var(--color-main-orange)'
+                    : 'var(--color-gray-light)'
+                }
+              >
+                •
+              </Text>
+            </div>
           ))}
         </div>
       )}

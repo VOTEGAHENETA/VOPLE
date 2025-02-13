@@ -24,7 +24,7 @@ function Header() {
   }
 
   function handleHome() {
-    navigate('/elections');
+    navigate('/elections/list');
   }
 
   return (

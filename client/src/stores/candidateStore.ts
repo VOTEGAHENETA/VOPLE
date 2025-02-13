@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 interface CandidateStore {
   sendCandidates: Record<number, CandidateList>;
-  activeTeamId: number | null;
+  activeTeamId: number;
   openCandidateModal: { voteId: number; voteName: string } | null;
   setSendCandidates: (candidateList: CandidateList) => void;
   setOpenCandidateModal: (voteId: number, voteName: string) => void;
@@ -16,7 +16,7 @@ interface CandidateStore {
 
 export const useCandidateStore = create<CandidateStore>((set) => ({
   sendCandidates: {},
-  activeTeamId: null,
+  activeTeamId: 0,
   openCandidateModal: null,
 
   setSendCandidates: (candidateList) =>
@@ -112,10 +112,9 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
 
   addGroup: () =>
     set((state) => {
-      const lastIdx = Object.keys(state.sendCandidates).length;
-      const newTeamId =
-        Number(Object.keys(state.sendCandidates)[lastIdx - 1]) + 1;
+      const newTeamId = Math.floor(Math.random() * 100_000);
       const newTeamKey = String(newTeamId);
+      console.log('store teamId:', newTeamId);
 
       const updatedCandidates = {
         ...state.sendCandidates,
@@ -123,7 +122,6 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
           [newTeamKey]: [],
         },
       };
-      console.log();
 
       console.log('update candi:', updatedCandidates);
 

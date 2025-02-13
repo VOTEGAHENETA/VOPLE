@@ -17,7 +17,6 @@ import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.dto.SessionListDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.entity.ElectionSession;
-import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.repository.SessionRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
@@ -67,7 +66,7 @@ public class SessionServiceImpl implements SessionService {
       BufferedImage qrCodeImage = MatrixToImageWriter.toBufferedImage(encode);
 
       String fileName = "qrcode_" + electionSession.getId() + ".png";
-      String UPLOAD_DIR = "/uploads/";
+      String UPLOAD_DIR = "/app/uploads/";
       File qrCodeFile = new File(UPLOAD_DIR + "qrcode/", fileName);
 
       qrCodeFile.getParentFile().mkdirs();
@@ -164,21 +163,11 @@ public class SessionServiceImpl implements SessionService {
     );
   }
 
-  @Transactional
   @Override
   public boolean validateQuestion(Long sessionId, Long userId, String answer) {
-    ElectionSession electionSession = sessionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
-    Users user = usersRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
-    if (electionSession.getEntranceAnswer().equals(answer)) {
-      // ElectionSessionUserInfo에 유저정보 저장
-      SessionUserInfo sessionUserInfo = new SessionUserInfo();
-      electionSession.addSessionUserInfo(sessionUserInfo);
-      user.addSessionUserInfo(sessionUserInfo);
-      return true;
-    }
-    return false;
-  }
 
+    return true;
+  }
 
   @Override
   public USER_TYPE judgeUserType(Long sessionId, Long userId) {

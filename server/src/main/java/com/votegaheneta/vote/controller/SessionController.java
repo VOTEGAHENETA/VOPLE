@@ -37,12 +37,40 @@ public class SessionController {
 
   private final SessionService sessionService;
 
+  @Operation(
+      summary = "암구호 화면 입장 시 질문 조회",
+      description = "FIGMA : 투표자 플로우 - [로그인 후 암구호 입력]"
+  )
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
+  })
   @GetMapping("/{sessionId}/question")
   public ApiResponse<String> getQuestion(@PathVariable Long sessionId) {
     String result = sessionService.getQuestion(sessionId);
     return ApiResponse.success(HttpStatus.OK, "질문 조회 성공", result);
   }
 
+  @Operation(
+      summary = "암구호 질문에 대한 답변 검증",
+      description = "FIGMA : 투표자 플로우 - [로그인 후 암구호 입력]",
+      requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+          description = "답변 텍스트",
+          required = true,
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class),
+              examples = {
+                  @ExampleObject(
+                      name = "요청 데이터",
+                      value = """
+                          {
+                          "answer": "Answer 1",
+                          }
+                          """
+                  )
+              }))
+  )
+  @Parameters({
+      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
+  })
   @PostMapping("/{sessionId}/question")
   public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId, @RequestBody Map<String, String> payload,
       @AuthenticationPrincipal CustomOauth2User oauth2User) {
@@ -201,5 +229,4 @@ public class SessionController {
   public ApiResponse<String> getQrCode(@PathVariable("sessionId") Long sessionId) {
     return ApiResponse.success(HttpStatus.OK, "QR코드 조회 성공", sessionService.getQrcode(sessionId));
   }
-
 }

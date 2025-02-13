@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,8 +16,7 @@ public class FileStorageComponent {
 
   private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
   // 리눅스 배포 환경용 경로
-  private static final String UPLOAD_URL = "/uploads";
-  private static final String DATE_PATTERN = "yyyy/MM/dd";
+  private static final String UPLOAD_URL = "/app/uploads";
 
   @Value("${base_url}")
   private String mediaUrl;
@@ -30,8 +27,8 @@ public class FileStorageComponent {
       try {
         String subDirectory = createSubDirectory(type);
         String fileName = createFileName(file.getOriginalFilename());
-        System.out.println("여기는?");
-        String fullFileName = mediaUrl + "/uploads" + saveFile(file, subDirectory, fileName);
+        String f = saveFile(file, subDirectory, fileName);
+        String fullFileName = mediaUrl + "/uploads" + f;
         return  convertToRelativePath(fullFileName);
       } catch (IllegalStateException | IOException e) {
         throw new IllegalArgumentException("파일 처리중 오류가 발생했습니다", e);
@@ -41,7 +38,7 @@ public class FileStorageComponent {
   }
 
   public String convertToRelativePath(String fullFileName) {
-    return fullFileName.replace(mediaUrl + "/uploads", "").replace("\\", "/");
+    return fullFileName.replace("\\", "/");
   }
 
   private String saveFile(MultipartFile file, String subDirectory, String fileName)
@@ -61,10 +58,14 @@ public class FileStorageComponent {
   }
 
   private String createSubDirectory(String type) throws IOException {
-    String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
-    File directory = new File(UPLOAD_URL, type + File.separator + datePath);
-    directory.mkdirs();
-    return type + File.separator + datePath;  // 상대 경로만 반환
+    try {
+      File directory = new File(UPLOAD_URL, type);
+      directory.mkdirs();
+      return type;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   private void validateFile(MultipartFile file) {
