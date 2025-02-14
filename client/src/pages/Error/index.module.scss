@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  position: relative;
+  top: 200px;
+  left: 80px;
+  animation: float 2s ease-in-out infinite; /* 위아래로 움직이는 애니메이션 */
+}
+
+.text {
+  position: relative;
+  top: 470px;
+  right: 100px;
+}
+
+/* 그림자 추가 */
+.shadow {
+  position: relative; 
+  top: 250px;
+  left: 150px;
+  width: 100px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  animation: shadowScale 2s ease-in-out infinite; /* 크기 변화 애니메이션 */
+}
+
+/* 원형 이미지의 위아래 움직임 */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* 그림자의 크기 변화 */
+@keyframes shadowScale {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+}
+
+.btn {
+    position: absolute;
+    top: 700px;
+    width: 150px;
+}

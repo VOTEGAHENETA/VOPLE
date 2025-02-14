@@ -5,6 +5,7 @@ import Menu from '@/components/molecules/Menu';
 import { useNavigate } from 'react-router-dom';
 import { ElectionListDetail } from '@/types/election';
 import CommonLeftContent from '@/components/molecules/ElectionListItem/CommonLeftContent';
+import { useElectionStore } from '@/stores/election';
 
 interface ElectionListItemProps extends ElectionListDetail {
   status: 'created' | 'participating';
@@ -18,10 +19,12 @@ const ElectionListItem = ({
   isClosed = false,
   status,
 }: ElectionListItemProps) => {
+  const { setIsHost } = useElectionStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   // 참여 중인 선거 클릭 시, 해당 선거 isClosed에 따라 라우팅
   const handleItemClick = () => {
+    setIsHost(true);
     if (isClosed) {
       navigate(`/elections/${id}/result`);
     } else {

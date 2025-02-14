@@ -6,23 +6,23 @@ import Text from '@/components/atoms/Text';
 import IconRefresh from '@/assets/icons/IconRefresh';
 import clsx from 'clsx';
 import { useElectionStore } from '@/stores/election';
+import { useNavigate, useParams } from 'react-router-dom';
 
 type VoteButtonLabel = '투표하기' | '투표시작전' | '선·관·위' | null;
 
 interface Props {
   /** 버튼 타입 지정 (button, submit, reset) */
   type: 'button' | 'submit' | 'reset';
-  /** 버튼에 이벤트 지정 */
-  onClick?: () => void;
 }
 
 // API 연동을 시작하면 바꿀 예정
 const currentUserId = 12;
 
 /** 메인화면 footer에 적용될 Router 버튼 입니다. */
-function CircleButton({ type = 'button', onClick }: Props) {
-  const { election } = useElectionStore();
-  const [isHost, setIsHost] = useState(false);
+function CircleButton({ type = 'button' }: Props) {
+  const { election_id } = useParams() as { election_id: string };
+  const { election, isHost } = useElectionStore();
+  const navigate = useNavigate();
 
   const [state, setState] = useState({
     status: true,
@@ -34,7 +34,6 @@ function CircleButton({ type = 'button', onClick }: Props) {
 
   useEffect(() => {
     if (election) {
-      setIsHost(currentUserId === election.hostId);
       updateButtonState();
     }
   }, [election]);
@@ -73,8 +72,12 @@ function CircleButton({ type = 'button', onClick }: Props) {
           isLoading: false,
         }));
       }, 1000);
-    } else if (state.status && onClick) {
-      onClick();
+    } else {
+      if (isHost) {
+        navigate(`/elections/${election_id}/manage`);
+      } else {
+        navigate(`/elections/${election_id}/vote`);
+      }
     }
   }
 

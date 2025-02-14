@@ -1,11 +1,9 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
-import useApiInterceptor from './services/hooks/useApiInterceptor';
 import { useEffect } from 'react';
 
 function App() {
-  useApiInterceptor();
   const location = useLocation();
   const navigate = useNavigate();
 

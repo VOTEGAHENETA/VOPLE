@@ -9,9 +9,11 @@ import { getFinalResult } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { ElectionResult } from '@/types/final';
 import { VoteResultsResponse } from '@/types/voteSession';
+import { useParams } from 'react-router-dom';
 
 function FinalTemplate() {
-  const sessionId = 1;
+  const { election_id } = useParams<{ election_id: string }>();
+  const sessionId = Number(election_id);
   const [finalData, setFinalData] = useState<ElectionResult | null>(null);
   const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
     null
@@ -49,29 +51,40 @@ function FinalTemplate() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.voteInfo}>
-        <img src={people} alt='' />
-        <Text size='lg' weight='bold' color='#111111'>
-          {finalData.electionSessionDto?.sessionName}
-        </Text>
-        <Text size='s' weight='normal' color='#333333'>
-          {formatDateTime(finalData.electionSessionDto?.voteStartTime)} ~{' '}
-          {formatDateTime(finalData.electionSessionDto?.voteEndTime)}
-        </Text>
-      </div>
-      <div className={styles.result}>
-        <div className={styles.text}>
-          <Text size='sm' weight='bold' color='#F58420'>
-            투표 결과
-          </Text>
-          <Text size='lg' weight='bold' color='#333333'>
-            모두의 한표, 과연 결과는?!
-          </Text>
-        </div>
-        <img src={crown} className={styles.crown} />
-        <div className={styles.content}>
-          <FinalResult finalData={finalData} />
-          <Result currentData={currentData} />
+      <div className={styles.background} />
+      <div className={styles.main}>
+        <div className={styles.head}>
+          <div className={styles.voteInfo}>
+            <img src={people} alt='' />
+            <div className={styles.sessionInfo}>
+              <Text size='m' weight='bold' color='#111111'>
+                {finalData.electionSessionDto?.sessionName}
+              </Text>
+              <Text size='s' weight='normal' color='#333333'>
+                {formatDateTime(finalData.electionSessionDto?.voteStartTime)} ~{' '}
+                {formatDateTime(finalData.electionSessionDto?.voteEndTime)}
+              </Text>
+            </div>
+          </div>
+          <div className={styles.result}>
+            <div className={styles.text}>
+              <Text size='sm' weight='bold' color='#F58420'>
+                투표 결과
+              </Text>
+              <Text size='lg' weight='bold' color='#333333'>
+                모두의 한표, 과연 결과는?!
+              </Text>
+            </div>
+          </div>
+          <div className={styles.content}>
+            <img src={crown} className={styles.crown} />
+            <FinalResult finalData={finalData} />
+            <Result
+              currentData={currentData}
+              sessionId={sessionId}
+              showSessionName={false}
+            />
+          </div>
         </div>
       </div>
     </div>
