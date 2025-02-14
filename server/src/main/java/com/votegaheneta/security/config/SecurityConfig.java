@@ -2,12 +2,18 @@ package com.votegaheneta.security.config;
 
 import com.votegaheneta.security.oauth2.CustomOauth2UserService;
 import com.votegaheneta.security.oauth2.Oauth2AuthenticationSuccessHandler;
+import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -16,8 +22,14 @@ public class SecurityConfig {
   private final CustomOauth2UserService customOAuth2UserService;
   private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 
+  @Value("${kakao_login_url}")
+  private String KAKAO_LOGIN_URL;
+
+  @Value(("${base_url}"))
+  private String BASE_URL;
+
   public SecurityConfig(CustomOauth2UserService customOAuth2UserService,
-                        Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
+      Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
     this.customOAuth2UserService = customOAuth2UserService;
     this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
   }
@@ -25,18 +37,33 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .cors(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
-            .anyRequest().permitAll()
-//            .requestMatchers("/api/login", "/api/logout").permitAll()
-//            .anyRequest().authenticated()
+            .requestMatchers("/api/redirect/login").permitAll()
+            .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
-            .loginPage("/api/login")
+            .loginPage(BASE_URL + "/api/redirect/login")
             .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-//            .successHandler(oauth2AuthenticationSuccessHandler)
+            .successHandler(oauth2AuthenticationSuccessHandler)
         );
     return http.build();
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(
+        Arrays.asList("http://localhost:5173", "https://i12b102.p.ssafy.io")); // 프론트엔드 도메인
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 }

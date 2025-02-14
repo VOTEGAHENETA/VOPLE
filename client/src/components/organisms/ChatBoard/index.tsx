@@ -7,8 +7,6 @@ import { useWebSocket } from '@/hooks/useWebSocket';
 import Heart from './Heart';
 import { useChatMessages } from '@/services/hooks/useChatMessages';
 
-console.log('ChatBoard Rendered');
-
 type ThemeType = 'dark' | 'light';
 type roomType = 'session' | 'team';
 

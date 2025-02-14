@@ -73,7 +73,10 @@ public class VoteTeamServiceImpl implements VoteTeamService {
         .forEach(voteInfo -> voteInfo.setUserType(USER_TYPE.CANDIDATE));
   }
 
-  private void deleteAllVoteTeam(Long voteId) {
+  // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
+  public void deleteAllVoteTeam(Long voteId) {
+
+//    pledgeRepository.deleteAllPledgeByVoteTeamId();
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }
 
@@ -104,28 +107,26 @@ public class VoteTeamServiceImpl implements VoteTeamService {
 
   @Transactional
   @Override
-  public void updateVoteTeamInfo(Long sessionId, VoteTeamInfoRequest request, MultipartFile file) {
-    try {
-      UserDto userDto = request.getUser();
-      // 회원 id는 로그인으로 들어오니까 상관없을듯
-      Candidate candidate = getCandidate(sessionId, userDto.getUserId());
-      Users user = candidate.getUser();
-      VoteTeam voteTeam = candidate.getVoteTeam();
-      request.getVoteTeam().setPoster(fileStorageComponent.localSave(file, POSTER_TYPE));
-      // 사용자 이름 바꿈
-      user.setUsername(userDto.getUsername());
-      // 후보자 칭호, 상태 메세지, 포스터 바꿈
-      request.getVoteTeam().updateVoteTeamInfo(voteTeam);
-      // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
-      pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
-      Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
-    } catch(Exception e) {
-      throw  new IllegalArgumentException("후보자 수정중 오류 발생", e);
+  public void updateVoteTeamInfo(VoteTeamInfoRequest request, MultipartFile file) {
+    // voteTeamId 받기
+    VoteTeam voteTeam = voteTeamRepository.findById(request.getVoteTeam().getVoteTeamId())
+        .orElseThrow(() -> new IllegalArgumentException("후보를 찾을 수 없습니다."));
+    if (file != null && !file.isEmpty()) {
+      String fileName = fileStorageComponent.fileSave(file, POSTER_TYPE);
+      request.getVoteTeam().setPoster(fileName);
+    } else {
+      request.getVoteTeam().setPoster(voteTeam.getPoster());
     }
+    // 후보자 칭호, 상태 메세지, 포스터 바꿈
+    request.getVoteTeam().updateVoteTeamInfo(voteTeam);
+    // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
+    pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
+    Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
   }
 
   private Candidate getCandidate(Long sessionId, Long userId) {
-    List<Candidate> candidateList = candidateRepository.findCandidateAndUserAndVoteTeamByUserId(userId);
+    List<Candidate> candidateList = candidateRepository.findCandidateAndUserAndVoteTeamByUserId(
+        userId);
     // 특정 투표에 속한 후보자만 가져옴
     Candidate candidate = candidateList.stream()
         .filter(c -> Objects.equals(c.getVoteTeam().getVote().getElectionSession().getId(),
@@ -138,10 +139,9 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   @Override
   public VoteTeamInfoResponse getVoteTeamInfo(Long sessionId, Long userId) {
     Candidate candidate = getCandidate(sessionId, userId);
-    UserDto userDto = candidate.getUser().toDto();
     VoteTeamDto voteTeamDto = new VoteTeamDto(candidate.getVoteTeam());
     List<PledgeDto> pledgeDtoList = candidate.getVoteTeam().getPledges().stream()
         .map(PledgeDto::fromEntity).toList();
-    return new VoteTeamInfoResponse(userDto, voteTeamDto, pledgeDtoList);
+    return new VoteTeamInfoResponse(voteTeamDto, pledgeDtoList);
   }
 }

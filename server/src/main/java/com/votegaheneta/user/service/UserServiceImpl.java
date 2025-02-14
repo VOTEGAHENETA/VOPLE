@@ -21,8 +21,14 @@ public class UserServiceImpl implements UserService {
 
   @Transactional
   @Override
-  public void updateUser(Long userId, UserDto userDto) {
+  public UserDto updateUser(Long userId, UserDto userDto) {
     Users user = userRepository.getUsersById(userId);
     user.updateUser(userDto);
+    return new UserDto(
+        user.getId(),
+        user.getKakaoId(),
+        user.getNickname(),
+        user.getUsername()
+    );
   }
 }

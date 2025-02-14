@@ -27,7 +27,7 @@ export const useFileUpload = ({
     preview: '',
   });
 
-  // 업로드 버튼 클릭 시, 파일 선택창 뜨는 것
+  // 업로드 버튼 클릭 시, 파일 선택창 뜸
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };

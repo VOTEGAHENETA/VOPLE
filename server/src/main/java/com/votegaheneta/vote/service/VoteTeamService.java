@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface VoteTeamService {
   void modifyVoteTeam(Long sessionId, Long voteId, CandidateRequestDto candidateRequest);
-  void updateVoteTeamInfo(Long sessionId, VoteTeamInfoRequest voteTeamInfoRequest, MultipartFile file);
+  void updateVoteTeamInfo(VoteTeamInfoRequest voteTeamInfoRequest, MultipartFile file);
   VoteTeamInfoResponse getVoteTeamInfo(Long sessionId, Long userId);
 }

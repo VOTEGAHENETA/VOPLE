@@ -14,9 +14,22 @@
       }
   
       .poster__wrap {
+        width: 265px;
+        height: 375px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         border-radius: 10px;
         box-shadow: 0 0 14px rgba(0, 0, 0, 0.15);
         overflow: hidden;
+        div {
+          width: inherit;
+          img {
+            width: inherit;
+            height: auto;
+          }
+        }
       }
     }
   }

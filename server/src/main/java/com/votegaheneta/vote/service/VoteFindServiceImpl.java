@@ -4,7 +4,6 @@ import com.votegaheneta.common.component.SearchComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
 import com.votegaheneta.common.repository.RedisRepository;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
-import com.votegaheneta.vote.dto.SessionFinalResultFindDto.Elected;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto.ElectionSessionDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
@@ -16,7 +15,7 @@ import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.CustomCandidateRepository;
-import com.votegaheneta.vote.repository.SessionRepository;
+import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -38,7 +37,7 @@ public class VoteFindServiceImpl implements VoteFindService {
   private final VoteRepository voteRepository;
   private final VoteTeamRepository voteTeamRepository;
   private final VoteInfoRepository voteInfoRepository;
-  private final SessionRepository sessionRepository;
+  private final ElectionRepository electionRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final RedisRepository redisRepository;
   private final SearchComponent searchComponent;
@@ -51,7 +50,7 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   @Override
   public Boolean hasVoted(Long sessionId, Long userId) {
-    ElectionSession electionSession = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
         vote -> (voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId)).equals("TRUE")) ;
@@ -78,7 +77,7 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   @Override
   public SessionFindDto findVoteBySessionId(Long sessionId) {
-    ElectionSession electionSession = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
     List<Long> voteIds = votes.stream().map(Vote::getId).toList();
@@ -99,14 +98,15 @@ public class VoteFindServiceImpl implements VoteFindService {
   @Transactional(readOnly = true)
   @Override
   public SessionResultFindDto findVoteResultBySessionId(Long sessionId) {
-    ElectionSession electionSession = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
-        ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
+        ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     return new SessionResultFindDto(
         electionSession.getSessionName(),
         wholeVoterPercent,
+        electionSession.getVoteEndTime(),
         voteResults
     );
   }
@@ -115,15 +115,9 @@ public class VoteFindServiceImpl implements VoteFindService {
   @Override
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
     String sessionRedisKey = "session:vote:result:"+sessionId;
-    String electedRedisKey = "session:vote:result:elected:"+sessionId;
     List<VoteResult> voteResults = new ArrayList<>();
     List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
-    List<Elected> electeds = redisRepository.getList(electedRedisKey);
-    if(electeds.isEmpty()) {
-      electeds = voteResultCalculator.electionListResult(voteResults);
-      redisRepository.saveElectedResults(electedRedisKey, electeds);
-    }
-    ElectionSession electionSession = sessionRepository.findById(sessionId)
+    ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     if(redisVoteResults.isEmpty()) {
       voteResults = voteResultCalculator.calculateVoteResult(sessionId);
@@ -131,13 +125,14 @@ public class VoteFindServiceImpl implements VoteFindService {
     }else {
       voteResults = redisVoteResults;
     }
+    voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
-        ? ((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 100 : 0.0f;
+        ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
     return new SessionFinalResultFindDto(
         ElectionSessionDto.from(electionSession),
         wholeVoterPercent,
         voteResults,
-        electeds
+        voteResultCalculator.electionListResult(voteResults)
     );
   }
 }

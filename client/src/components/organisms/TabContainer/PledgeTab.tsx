@@ -1,8 +1,6 @@
 import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
 
-console.log('PledgeTab Rendered');
-
 interface PledgeTabProps {
   pledges?: string[];
 }

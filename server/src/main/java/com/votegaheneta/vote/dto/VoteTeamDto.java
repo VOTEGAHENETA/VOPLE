@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteTeamDto {
+  private Long voteTeamId;
   private String poster;
   private String prefix;
   private String candidateStatement;
@@ -23,8 +24,10 @@ public class VoteTeamDto {
   }
 
   public VoteTeamDto(VoteTeam voteTeam) {
+    this.voteTeamId = voteTeam.getId();
     this.poster = voteTeam.getPoster();
     this.prefix = voteTeam.getPrefix();
     this.candidateStatement = voteTeam.getCandidateStatement();
   }
+
 }

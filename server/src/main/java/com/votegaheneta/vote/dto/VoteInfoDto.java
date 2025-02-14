@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VoteInfoDto {
   private Long userId;
-  private String userName;
+  private String username;
+  private String nickname;
 }
