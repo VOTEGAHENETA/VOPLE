@@ -29,7 +29,7 @@ public class SecurityConfig {
   private String BASE_URL;
 
   public SecurityConfig(CustomOauth2UserService customOAuth2UserService,
-                        Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
+      Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
     this.customOAuth2UserService = customOAuth2UserService;
     this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
   }
@@ -39,18 +39,16 @@ public class SecurityConfig {
     http
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
-//                                   .requestMatchers("/login").permitAll()
-//           .anyRequest().permitAll()
-                                    .anyRequest().authenticated()
+            .requestMatchers("/api/redirect/login").permitAll()
+            .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
-                         .loginPage(BASE_URL + "/api/redirect/login")
-                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-//                         .defaultSuccessUrl(BASE_URL)
-                         .successHandler(oauth2AuthenticationSuccessHandler)
-//                         .failureUrl(BASE_URL + "/login?error=true")
+            .loginPage(BASE_URL + "/api/redirect/login")
+            .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+            .successHandler(oauth2AuthenticationSuccessHandler)
         );
     return http.build();
   }
@@ -58,7 +56,8 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://i12b102.p.ssafy.io")); // 프론트엔드 도메인
+    configuration.setAllowedOrigins(
+        Arrays.asList("http://localhost:5173", "https://i12b102.p.ssafy.io")); // 프론트엔드 도메인
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("*"));
     configuration.setAllowCredentials(true);
