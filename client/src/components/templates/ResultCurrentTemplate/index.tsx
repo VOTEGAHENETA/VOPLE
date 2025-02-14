@@ -5,14 +5,14 @@ import { getFinalResult, getResultCurrent } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { VoteResultsResponse } from '@/types/voteSession';
 import { ElectionResult } from '@/types/final';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const ResultCurrentTemplate = () => {
   const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
     null
   );
   const [finalData, setFinalData] = useState<ElectionResult | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const sessionId = 1;
 
   useEffect(() => {
@@ -31,20 +31,20 @@ const ResultCurrentTemplate = () => {
 
   console.log(finalData?.electionSessionDto.voteEndTime);
 
-  // 투표 종료되면 이동
-  useEffect(() => {
-    if (finalData?.electionSessionDto.voteEndTime) {
-      const voteEndTime = new Date(finalData.electionSessionDto.voteEndTime);
-      const now = new Date();
-      if (now >= voteEndTime) {
-        navigate(`/elections/${sessionId}/final`);
-      }
-    }
-  }, [finalData, navigate, sessionId]);
+  // // 투표 종료되면 이동
+  // useEffect(() => {
+  //   if (finalData?.electionSessionDto.voteEndTime) {
+  //     const voteEndTime = new Date(finalData.electionSessionDto.voteEndTime);
+  //     const now = new Date();
+  //     if (now >= voteEndTime) {
+  //       navigate(`/elections/${sessionId}/final`);
+  //     }
+  //   }
+  // }, [finalData, navigate, sessionId]);
 
   return (
     <div className={styles.result__container}>
-      {currentData && <Result currentData={currentData} />}
+      {currentData && <Result currentData={currentData} sessionId={1} />}
       <ResultChatContainer sessionId={1} userId={1} />
     </div>
   );

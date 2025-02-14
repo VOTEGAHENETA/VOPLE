@@ -2,36 +2,54 @@ import VoteRanking from '@/components/molecules/VoteRanking';
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
 import IconButton from '@/components/atoms/IconButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { VoteResultsResponse } from '@/types/voteSession';
+import useLiveVote from '@/hooks/useLiveVote';
 
 interface Props {
   currentData: VoteResultsResponse;
+  sessionId: number;
 }
 
-const Result = ({ currentData }: Props) => {
+const Result = ({ currentData, sessionId }: Props) => {
+  const [voteData, setVoteData] = useState<VoteResultsResponse>(currentData);
   const [selectedVoteIndex, setSelectedVoteIndex] = useState(0);
+
+  // currentData의 sessionId로 useLiveVote hook 호출
+  const { liveVote, connected, error } = useLiveVote({
+    sessionId: sessionId,
+  });
+
+  // liveVote가 업데이트되면 최신 투표 데이터로 voteData를 갱신
+  useEffect(() => {
+    if (liveVote.length > 0) {
+      setVoteData(liveVote[liveVote.length - 1]);
+    }
+  }, [liveVote]);
 
   const handlePrevSession = () => {
     setSelectedVoteIndex((prev) =>
-      prev > 0 ? prev - 1 : currentData.voteResults.length - 1
+      prev > 0 ? prev - 1 : voteData.voteResults.length - 1
     );
   };
 
   const handleNextSession = () => {
     setSelectedVoteIndex((prev) =>
-      prev < currentData.voteResults.length - 1 ? prev + 1 : 0
+      prev < voteData.voteResults.length - 1 ? prev + 1 : 0
     );
   };
 
-  const currentVote = currentData.voteResults[selectedVoteIndex] || {};
-  // const hasMultipleVotes = data.voteResults.length > 1;
+  const currentVote = voteData.voteResults[selectedVoteIndex] || {};
+
+  useEffect(() => {
+    console.log('voteData가 변경되었습니다:', voteData);
+  }, [voteData]);
 
   return (
     <div className={styles.container}>
       <div className={styles.voteinfo}>
         <Text size='m' weight='normal' color='#555555'>
-          {currentData.sessionName}
+          {voteData.sessionName}
         </Text>
         <div className={styles.select}>
           <IconButton
@@ -52,8 +70,20 @@ const Result = ({ currentData }: Props) => {
 
       <VoteRanking
         teamResults={currentVote.teamResults || []}
-        wholeVoterPercent={currentData.wholeVoterPercent}
+        wholeVoterPercent={voteData.wholeVoterPercent}
       />
+
+      <div>
+        {connected ? (
+          <Text size='m' weight='bold' color='green'>
+            Connected
+          </Text>
+        ) : (
+          <Text size='m' weight='bold' color='red'>
+            {error || 'Not connected'}
+          </Text>
+        )}
+      </div>
     </div>
   );
 };
