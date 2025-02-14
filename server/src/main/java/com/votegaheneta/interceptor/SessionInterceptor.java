@@ -5,6 +5,7 @@ import com.votegaheneta.util.AuthenticationUtil;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
   @Value("${base_url}")
   private String BASE_URL;
+  private final String REDIRECT = "redirect";
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
@@ -32,10 +34,18 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     boolean exist = sessionUserInfoRepository.existsSessionUserInfoByElectionSessionIdAndUserId(sessionId, user.getId());
     if (!exist) {
-      String redirectURL = String.format("%s/election/%d/question", BASE_URL, sessionId);
+      String redirectURL = String.format("%s/%s/elections/%d/question", BASE_URL, REDIRECT,sessionId);
       response.sendRedirect(redirectURL);
+      responseSetting(response);
       return false;
     }
     return true;
   }
+
+  public void responseSetting(HttpServletResponse response) throws IOException {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setContentType("application/json");
+    response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Missing or invalid token\"}");
+  }
+
 }

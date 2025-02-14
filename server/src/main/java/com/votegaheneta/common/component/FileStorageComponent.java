@@ -18,7 +18,7 @@ public class FileStorageComponent {
   // 리눅스 배포 환경용 경로
   private static final String UPLOAD_URL = "/app/uploads";
 
-  @Value("${base_url}")
+  @Value("${media_url}")
   private String mediaUrl;
 
   public String fileSave(MultipartFile file, String type) {

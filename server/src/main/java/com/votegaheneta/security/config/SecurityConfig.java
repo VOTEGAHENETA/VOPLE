@@ -22,8 +22,8 @@ public class SecurityConfig {
   private final CustomOauth2UserService customOAuth2UserService;
   private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 
-  @Value("${base_url}")
-  private String BASE_URL;
+  @Value("${kakao_login_url}")
+  private String KAKAO_LOGIN_URL;
 
   public SecurityConfig(CustomOauth2UserService customOAuth2UserService,
                         Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
@@ -44,11 +44,11 @@ public class SecurityConfig {
                                   //  .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
-                         .loginPage(BASE_URL + "/login")
+                         .loginPage(KAKAO_LOGIN_URL + "/login")
                          .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
 //                         .defaultSuccessUrl(BASE_URL)
                          .successHandler(oauth2AuthenticationSuccessHandler)
-                         .failureUrl(BASE_URL + "/login?error=true")
+//                         .failureUrl(BASE_URL + "/login?error=true")
         );
     return http.build();
   }

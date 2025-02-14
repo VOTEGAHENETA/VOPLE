@@ -73,7 +73,10 @@ public class VoteTeamServiceImpl implements VoteTeamService {
         .forEach(voteInfo -> voteInfo.setUserType(USER_TYPE.CANDIDATE));
   }
 
-  private void deleteAllVoteTeam(Long voteId) {
+  // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
+  public void deleteAllVoteTeam(Long voteId) {
+
+//    pledgeRepository.deleteAllPledgeByVoteTeamId();
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }
 
@@ -113,15 +116,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
       request.getVoteTeam().setPoster(fileName);
     } else {
       request.getVoteTeam().setPoster(voteTeam.getPoster());
-    }
-    // prefix(칭호)가 null이거나 빈 문자열이면 기존 값 유지
-    if (request.getVoteTeam().getPrefix() == null || request.getVoteTeam().getPrefix().trim().isEmpty()) {
-      request.getVoteTeam().setPrefix(voteTeam.getPrefix());
-    }
-
-    // candidateStatement(상태 메시지)가 null이거나 빈 문자열이면 기존 값 유지
-    if (request.getVoteTeam().getCandidateStatement() == null || request.getVoteTeam().getCandidateStatement().trim().isEmpty()) {
-      request.getVoteTeam().setCandidateStatement(voteTeam.getCandidateStatement());
     }
     // 후보자 칭호, 상태 메세지, 포스터 바꿈
     request.getVoteTeam().updateVoteTeamInfo(voteTeam);
