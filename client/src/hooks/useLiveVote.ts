@@ -28,20 +28,15 @@ const useLiveVote = ({ sessionId }: Props) => {
         setConnected(true);
         setError(null);
 
-        stompClient.current?.subscribe(
-          `/api/vote/${sessionId}/castvote`,
-          (message) => {
-            try {
-              const realTimeVote: VoteResultsResponse = JSON.parse(
-                message.body
-              );
-              setLiveVote((prev) => [...prev, realTimeVote]);
-              console.log('새로운 투표 데이터:', realTimeVote);
-            } catch (parseError) {
-              console.error('투표 파싱 에러:', parseError);
-            }
+        stompClient.current?.subscribe(`/api/vote/${sessionId}`, (message) => {
+          try {
+            const realTimeVote: VoteResultsResponse = JSON.parse(message.body);
+            setLiveVote((prev) => [...prev, realTimeVote]);
+            console.log('새로운 투표 데이터:', realTimeVote);
+          } catch (parseError) {
+            console.error('투표 파싱 에러:', parseError);
           }
-        );
+        });
       },
       (connectError) => {
         console.error('STOMP 에러:', connectError);
