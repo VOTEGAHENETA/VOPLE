@@ -7,14 +7,31 @@
     overflow: hidden;
   }
 
-  .buttons > {
+  .buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .buttons > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    background-color: #fff;
-    border: 1px solid #333;
-    padding: 14px;
     border-radius: 10px;
     width: 50px;
     height: 50px;
     border-radius: 25px;
+    
+    
+    &.startButton {
+      background-color: rgba(51, 51, 51, 0.5);
+    }
+
+    &.stopButton {
+      background-color: rgba(254, 63, 120, 0.565);
+    }
+
+    &.microphone {
+      background-color: #333;
+    }
   }
 }

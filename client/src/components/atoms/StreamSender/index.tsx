@@ -15,6 +15,7 @@ function StreamSender({ streamId }: Props) {
     streamKey: streamData?.streamId,
   });
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  console.log(isStreaming);
 
   function handleStart() {
     updateStreamStatus(
@@ -51,19 +52,21 @@ function StreamSender({ streamId }: Props) {
         style={{ width: '100%', maxHeight: '300px' }}
       />
       <div className={styles.buttons}>
-        {!isStreaming ? (
-          <IconButton
-            onClick={handleStart}
-            className={styles.startButton}
-            name='videoCall'
-          ></IconButton>
-        ) : (
-          <IconButton
-            onClick={handleStop}
-            className={styles.stopButton}
-            name='rectangle'
-          ></IconButton>
-        )}
+        <IconButton
+          onClick={handleStart}
+          className={styles.startButton}
+          name='videoCall'
+        />
+        <IconButton
+          onClick={handleStop}
+          className={styles.stopButton}
+          name='rectangle'
+        />
+        <IconButton
+          onClick={handleStop}
+          className={styles.microphone}
+          name='microphone'
+        />
       </div>
     </div>
   );

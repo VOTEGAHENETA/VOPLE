@@ -15,7 +15,11 @@ const Login = () => {
           <Text size='s' weight='normal' color='#999999'>
             세상을 바꾸는 사람들
           </Text>
-          <a href='/oauth2/authorization/kakao' className={styles.a}>
+          {/* <a href='/oauth2/authorization/kakao' className={styles.a}> */}
+          <a
+            href='https://i12b102.p.ssafy.io/oauth2/authorization/kakao'
+            className={styles.a}
+          >
             <img src={kakao} alt='' />
           </a>
         </div>
