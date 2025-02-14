@@ -164,6 +164,7 @@ public class SessionServiceImpl implements SessionService {
     );
   }
 
+  @Transactional
   @Override
   public boolean validateQuestion(Long sessionId, Long userId, String answer) {
     ElectionSession electionSession = electionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
