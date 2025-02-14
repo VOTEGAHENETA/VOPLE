@@ -105,10 +105,10 @@ export default function TabContainer({
         <QueryClientProvider client={queryClient}>
           <div style={{ display: activeTab === 'chat' ? 'block' : 'none' }}>
             <MemoizedChatBoard
+              userId={userId}
               sessionId={sessionId}
               theme={theme}
               type={type}
-              userId={userId}
               voteTeamId={voteTeamId}
             />
           </div>

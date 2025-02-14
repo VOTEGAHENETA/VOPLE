@@ -12,6 +12,7 @@ import Home from '@/pages/Home';
 import Main from '@/pages/Main';
 import Streaming from '@/pages/Streaming';
 import Candidate from '@/pages/UserInfo/Candidate';
+import Voter from '@/pages/UserInfo/Voter';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
         element: <VoteTemplate />,
       },
       {
-        path: 'candidate/:session_id/:vote_team_id',
+        path: 'candidate/:session_id/:user_id',
         element: <Candidate />,
       },
       {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: '/elections/:election_id/final',
         element: <FinalTemplate />,
+      },
+      {
+        path: 'mypage/:user_id',
+        element: <Voter />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],
