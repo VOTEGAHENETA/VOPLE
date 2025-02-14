@@ -1,5 +1,6 @@
 export interface User {
   userId: number;
+  kakaoId: number;
   nickname: string;
   username: string;
 }

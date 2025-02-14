@@ -24,8 +24,12 @@ export const useQuestionPost = (
       postQuestion(sessionId, answer),
     onSuccess: (data) => {
       console.log('정답!', data);
-      if (data) navigate(`/election/${sessionId}`);
-      else setErrMsg('땡! 틀렸어요');
+      if (data) {
+        navigate(`/elections/${sessionId}`);
+        window.location.reload();
+      } else {
+        setErrMsg('땡! 틀렸어요');
+      }
     },
     onError: (error) => {
       console.log('오류', error);
