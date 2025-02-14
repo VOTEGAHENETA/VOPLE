@@ -18,16 +18,16 @@ const ResultCurrentTemplate = () => {
   const sessionId = Number(election_id);
 
   // 뒤로가기(팝스테이트) 이벤트 막기
-  useEffect(() => {
-    window.history.pushState(null, '', window.location.href);
-    const handleBackButton = () => {
-      window.history.pushState(null, '', window.location.href);
-    };
-    window.addEventListener('popstate', handleBackButton);
-    return () => {
-      window.removeEventListener('popstate', handleBackButton);
-    };
-  }, []);
+  // useEffect(() => {
+  //   window.history.pushState(null, '', window.location.href);
+  //   const handleBackButton = () => {
+  //     window.history.pushState(null, '', window.location.href);
+  //   };
+  //   window.addEventListener('popstate', handleBackButton);
+  //   return () => {
+  //     window.removeEventListener('popstate', handleBackButton);
+  //   };
+  // }, []);
 
   useEffect(() => {
     async function fetchData() {

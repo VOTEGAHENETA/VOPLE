@@ -9,9 +9,10 @@ import useLiveVote from '@/hooks/useLiveVote';
 interface Props {
   currentData: VoteResultsResponse;
   sessionId: number;
+  showSessionName?: boolean;
 }
 
-const Result = ({ currentData, sessionId }: Props) => {
+const Result = ({ currentData, sessionId, showSessionName }: Props) => {
   const [voteData, setVoteData] = useState<VoteResultsResponse>(currentData);
   const [selectedVoteIndex, setSelectedVoteIndex] = useState(0);
 
@@ -48,9 +49,11 @@ const Result = ({ currentData, sessionId }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.voteinfo}>
-        <Text size='m' weight='normal' color='#555555'>
-          {voteData.sessionName}
-        </Text>
+        {showSessionName && (
+          <Text size='m' weight='normal' color='#555555'>
+            {voteData.sessionName}
+          </Text>
+        )}
         <div className={styles.select}>
           <IconButton
             name='left'
