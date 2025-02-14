@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
 import ElectionInfoSection from '@/components/organisms/ElectionInfoSection';
 import { TSession, TVoteEdit } from '@/types/election';
@@ -50,6 +50,10 @@ function ElectionDetailTemplate() {
     },
   ]);
   const [isModify, setIsModify] = useState<boolean>(true);
+  const originalState = useRef<{
+    session: TSession;
+    date: typeof dateState;
+  } | null>(null);
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
 
@@ -185,7 +189,23 @@ function ElectionDetailTemplate() {
   }
 
   function handleChangeModify() {
-    setIsModify(!isModify);
+    originalState.current = {
+      session: {
+        ...state,
+        startTime: new Date(state.startTime),
+        endTime: new Date(state.endTime),
+      },
+      date: { ...dateState },
+    };
+    setIsModify(false);
+  }
+
+  function handleCancelModify() {
+    if (originalState.current) {
+      setState(originalState.current.session);
+      setDateState(originalState.current.date);
+    }
+    setIsModify(true);
   }
 
   function handleDeleteElection() {
@@ -244,7 +264,7 @@ function ElectionDetailTemplate() {
                 type='button'
                 kind='mini-chip'
                 status={BASE_BUTTON_STATUS.OUTLINE}
-                onClick={handleChangeModify}
+                onClick={handleCancelModify}
               >
                 수정취소
               </BaseButton>
