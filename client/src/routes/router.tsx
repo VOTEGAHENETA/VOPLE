@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
         element: <VoteTemplate />,
       },
       {
-        path: 'candidate/:session_id/:vote_team_id',
+        path: 'candidates/:session_id/:vote_team_id',
         element: <Candidate />,
       },
       {

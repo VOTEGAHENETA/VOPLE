@@ -13,6 +13,9 @@ import dots from '@/assets/icons/dots.svg';
 import left from '@/assets/icons/left.svg';
 import leftLongWhite from '@/assets/icons/leftLongWhite.svg';
 import leftLongBlack from '@/assets/icons/leftLongBlack.svg';
+import microphone from '@/assets/icons/microphone.svg';
+import videoCall from '@/assets/icons/videoCall.svg';
+import rectangle from '@/assets/icons/rectangle.svg';
 
 type IconName =
   | 'mypage'
@@ -26,7 +29,9 @@ type IconName =
   | 'dots'
   | 'left'
   | 'leftLongWhite'
-  | 'leftLongBlack';
+  | 'microphone'
+  | 'videoCall'
+  | 'rectangle';
 
 const ICON_MAPPING = {
   mypage,
@@ -41,6 +46,9 @@ const ICON_MAPPING = {
   left,
   leftLongWhite,
   leftLongBlack,
+  microphone,
+  videoCall,
+  rectangle,
 };
 
 interface IconProps {

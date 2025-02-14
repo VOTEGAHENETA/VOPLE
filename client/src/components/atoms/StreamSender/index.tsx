@@ -2,6 +2,7 @@ import { useMediaStream } from '@/hooks/useMediaStream';
 import { useStreamControl, useStreamData } from '@/services/hooks/live';
 import { useState } from 'react';
 import styles from './index.module.scss';
+import IconButton from '../IconButton';
 
 interface Props {
   streamId: number;
@@ -49,13 +50,20 @@ function StreamSender({ streamId }: Props) {
         muted
         style={{ width: '100%', maxHeight: '300px' }}
       />
-      <div>
-        <button onClick={handleStart} disabled={isStreaming}>
-          방송 시작
-        </button>
-        <button onClick={handleStop} disabled={!isStreaming}>
-          방송 종료
-        </button>
+      <div className={styles.buttons}>
+        {!isStreaming ? (
+          <IconButton
+            onClick={handleStart}
+            className={styles.startButton}
+            name='videoCall'
+          ></IconButton>
+        ) : (
+          <IconButton
+            onClick={handleStop}
+            className={styles.stopButton}
+            name='rectangle'
+          ></IconButton>
+        )}
       </div>
     </div>
   );
