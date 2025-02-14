@@ -1,5 +1,6 @@
 **/resources/static/
 **/resources/*.yml
+server/src/test/resources/application-dev.yml
 
 HELP.md
 .gradle
