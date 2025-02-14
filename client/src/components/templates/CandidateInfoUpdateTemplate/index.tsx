@@ -30,6 +30,7 @@ export default function CandidateInfoUpdateTemplate() {
       maxSize: 5,
       acceptedTypes: ['image/jpeg', 'image/png'],
       onSuccess: (file, preview) => {
+        console.log(file);
         setImgPreview(preview);
       },
       onError: (message) => {
