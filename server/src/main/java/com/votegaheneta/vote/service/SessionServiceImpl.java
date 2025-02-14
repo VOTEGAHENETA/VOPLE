@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
-  @Value("${base_url}")
+  @Value("${media_url}")
   private String mediaUrl;
 
   private final VoteTeamRepository voteTeamRepository;
