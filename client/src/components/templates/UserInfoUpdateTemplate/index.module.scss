@@ -1,0 +1,30 @@
+:global {
+  #main-container {
+    height: 100%;
+  }
+}
+
+.content { 
+  padding: 20px 20px 0px 20px;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  .img__box{
+    height: 100%;
+    display: flex;
+    flex : 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap : 10px;
+
+    .img__text{
+      text-align: center;
+      line-height: 1.3;
+    }
+    img {
+      width: 180px;
+      height: 180px;
+    }
+  }
+}

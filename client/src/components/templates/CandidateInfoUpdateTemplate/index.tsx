@@ -1,27 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
-import samplePoster from '@/assets/sample/sample.png';
-import UserInfoSection from '@/components/organisms/UserInfoSection';
 import CandidateInfoSection from '@/components/organisms/CandidateInfoSection';
-import { useUserInfoFormData } from '@/hooks/useUserInfoFormData';
+import { VoteTeamInfoRequest } from '@/types/user';
 import { usePledges } from '@/hooks/usePledges';
 import { useFileUpload } from '@/hooks/useFileUpload';
-import { useParams } from 'react-router-dom';
-import { useGetCandidateInfo } from '@/services/hooks/useCandidateInfo';
-
-const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
-
-// const fetchCandidateInfo = async (sessionId: string, userId: string) => {
-//   const response = await axios.get(
-//     `${API_URL}/candidate/${sessionId}/${userId}`
-//   );
-//   return response.data;
-// };
+import { useVoteTeamInfoFormData } from '@/hooks/useVoteTeamInfoFormData';
+import { useCandidateInfo } from '@/services/hooks/useCandidateInfo';
+import { useUpdateCandidateInfo } from '@/services/hooks/useUpdateCandidateInfo';
 
 export default function CandidateInfoUpdateTemplate() {
-  const { sessionId = '', userId = '' } = useParams();
+  const [imgPreview, setImgPreview] = useState<string>('');
+  const { session_id, user_id } = useParams();
+
+  // 공약 usePledges
   const {
     pledges,
     setPledges,
@@ -29,134 +23,118 @@ export default function CandidateInfoUpdateTemplate() {
     handleAddPledge,
     handleDeletePledge,
   } = usePledges();
+
+  // 파일 useFileUpload
   const { fileInputRef, handleUploadClick, handleFileChange, fileData } =
     useFileUpload({
       maxSize: 5,
       acceptedTypes: ['image/jpeg', 'image/png'],
       onSuccess: (file, preview) => {
-        // 파일 업로드 성공 시 처리
-        console.log('File upload success:', file);
-        console.log('File upload success preview:', preview);
+        setImgPreview(preview);
       },
       onError: (message) => {
         alert(message);
       },
     });
 
-  const { UserInfoFormData, setUserInfoFormData, handleChange } =
-    useUserInfoFormData({
-      nickname: '',
-      username: '',
+  // 후보자 기본 정보
+  const { voteTeamInfoFormData, setVoteTeamInfoFormData, handleChange } =
+    useVoteTeamInfoFormData({
+      voteTeamId: 0,
       prefix: '',
       candidateStatement: '',
     });
 
-  // 쿼리 훅 사용
-  const { data, error } = useGetCandidateInfo(sessionId, userId);
+  // 값이 없는 경우 얼리 리턴
+  if (!session_id || !user_id) {
+    return <div>잘못된 접근입니다.</div>;
+  }
 
-  // 데이터가 변경될 때마다 폼 초기화
+  // 쿼리 훅
+  const { data, error } = useCandidateInfo(session_id, user_id);
+
+  //================================
+  // 후보자 정보 최초 폼 초기화
+  //================================
   useEffect(() => {
-    console.log('Candidate useEffect');
-    console.error('Candidate Data : ', data);
-    if (data?.data) {
-      const { user, voteTeam, pledges: fetchedPledges } = data.data;
+    if (data?.voteTeam) {
+      const { voteTeam, pledges } = data;
       // formData 초기화
-      setUserInfoFormData({
-        nickname: user.nickname,
-        username: user.username,
-        prefix: voteTeam.prefix,
-        candidateStatement: voteTeam.candidateStatement,
+      setVoteTeamInfoFormData({
+        prefix: voteTeam.prefix || '',
+        candidateStatement: voteTeam.candidateStatement || '',
+        voteTeamId: Number(voteTeam.voteTeamId),
       });
 
-      // pledges 초기화
-      const initialPledges = fetchedPledges.map((pledge) => pledge.content);
+      // 이미지 미리보기 초기화
+      if (voteTeam.poster) {
+        setImgPreview(voteTeam.poster);
+      }
+
+      const initialPledges = pledges.map((pledge) => pledge.content);
       setPledges(initialPledges);
     } else if (error) {
-      console.error(error);
+      console.error('후보자 정보 폼 초기화 에러 : ', error);
     }
   }, [data, error]);
+
+  //================================
+  // 후보자 정보 업데이트
+  //================================
+  const updateMutation = useUpdateCandidateInfo();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // FormData 생성
-      const formData = new FormData();
-
-      // 파일이 있는 경우에만 추가
-      if (fileData.file) {
-        formData.append('file', fileData.file);
-      }
-
-      // JSON 데이터를 문자열로 변환하여 추가
-      const jsonData = {
-        user: {
-          userId: userId,
-          username: UserInfoFormData.username,
-        },
+      const voteTeamInfoRequest: VoteTeamInfoRequest = {
         voteTeam: {
-          prefix: UserInfoFormData.prefix,
-          candidateStatement: UserInfoFormData.candidateStatement,
+          voteTeamId: voteTeamInfoFormData.voteTeamId,
+          prefix: voteTeamInfoFormData.prefix,
+          candidateStatement: voteTeamInfoFormData.candidateStatement,
         },
         pledges: pledges.map((pledge) => ({
           content: pledge,
         })),
       };
-
-      formData.append(
-        'data',
-        new Blob([JSON.stringify(jsonData)], {
-          type: 'application/json',
-        })
-      );
-
-      // 방법 1: FormData의 모든 key-value 쌍 출력
-      console.log('=== FormData 내용 확인 ===');
-      for (const pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
-      }
-
-      // 방법 2: JSON 데이터 내용 확인
-      console.log('=== JSON 데이터 확인 ===');
-      console.log('전송할 JSON 데이터:', jsonData);
-
-      // 방법 3: FormData에서 특정 키의 값 확인
-      console.log('=== 개별 필드 확인 ===');
-      console.log('poster:', formData.get('poster'));
-      console.log('data:', formData.get('data'));
-
-      const response = await axios.post(
-        `${API_URL}/candidate/${sessionId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        alert('수정이 완료되었습니다.');
-      }
+      updateMutation.mutate({
+        sessionId: session_id,
+        voteTeamInfoRequest,
+        file: fileData.file,
+      });
     } catch (error) {
-      console.error('수정 실패:', error);
-      alert('수정에 실패했습니다.');
+      if (axios.isAxiosError(error)) {
+        console.error('API 에러 상세:', {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          headers: error.response?.headers,
+          request: {
+            url: error.config?.url,
+            method: error.config?.method,
+            data: error.config?.data,
+          },
+        });
+
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          '요청이 실패했습니다.';
+
+        alert(`수정 실패: ${errorMessage}`);
+      } else {
+        console.error('알 수 없는 에러:', error);
+      }
     }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <UserInfoSection
-        nickname={UserInfoFormData.nickname}
-        username={UserInfoFormData.username}
-        onChangeField={handleChange}
-      />
-
       <CandidateInfoSection
-        prefix={UserInfoFormData.prefix}
-        candidateStatement={UserInfoFormData.candidateStatement}
+        prefix={voteTeamInfoFormData.prefix}
+        candidateStatement={voteTeamInfoFormData.candidateStatement}
         pledges={pledges}
-        posterSrc={samplePoster}
+        posterSrc={imgPreview}
         fileInputRef={fileInputRef}
         onChangeField={handleChange}
         onUploadClick={handleUploadClick}

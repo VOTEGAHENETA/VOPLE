@@ -4,9 +4,9 @@ import Text from '@/components/atoms/Text';
 import InputField from '@/components/molecules/InputField';
 import TextAreaField from '@/components/molecules/TextAreaField';
 import X from '@/assets/icons/x.svg';
-import { ChangeEvent, RefObject, useState } from 'react';
+import { ChangeEvent, RefObject } from 'react';
 import styles from './index.module.scss';
-import { UserInfoFormData } from '@/types/candidate';
+import { VoteTeamInfoFormData } from '@/types/user';
 
 interface CandidateInfoSectionProps {
   prefix: string;
@@ -15,7 +15,7 @@ interface CandidateInfoSectionProps {
   posterSrc: string;
   fileInputRef: RefObject<HTMLInputElement>;
   onChangeField: <T extends HTMLInputElement | HTMLTextAreaElement>(
-    fieldName: keyof UserInfoFormData,
+    fieldName: keyof VoteTeamInfoFormData,
     e: ChangeEvent<T>
   ) => void;
   onUploadClick: () => void;
@@ -32,13 +32,13 @@ export default function CandidateInfoSection({
   posterSrc,
   fileInputRef,
   onChangeField,
-  onUploadClick, // 클릭 시 업로드창 뜨는 것
+  onUploadClick,
   onFileChange,
   handlePledgeChange,
   handleAddPledge,
   handleDeletePledge,
 }: CandidateInfoSectionProps) {
-  const [previewImage, setPreviewImage] = useState<string>(posterSrc);
+  // const [previewImage, setPreviewImage] = useState<string>(posterSrc);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -56,14 +56,6 @@ export default function CandidateInfoSection({
       return;
     }
 
-    // 이미지 프리뷰 생성
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPreviewImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-
-    // 부모 컴포넌트에 파일 전달
     onFileChange(file);
   };
   return (
@@ -73,7 +65,7 @@ export default function CandidateInfoSection({
       </Text>
       <div className={styles.section__wrap}>
         <div className={styles.poster__wrap}>
-          <Poster src={previewImage} size='m' />
+          <Poster src={posterSrc} size='m' />
         </div>
         <BaseButton
           customClass={styles.upload__btn}
@@ -100,7 +92,7 @@ export default function CandidateInfoSection({
         />
         <TextAreaField
           id='candidateStatement-input'
-          label='상태 메세지'
+          label='후보(팀) 소개'
           value={candidateStatement}
           onChange={(e) => onChangeField('candidateStatement', e)}
           maxLength={100}
@@ -137,15 +129,17 @@ export default function CandidateInfoSection({
           </div>
 
           <div className={styles.btn_wrap}>
-            <BaseButton
-              customClass={styles.add__btn}
-              type='button'
-              kind='chip'
-              status='fill'
-              onClick={handleAddPledge}
-            >
-              + 추가
-            </BaseButton>
+            {pledges.length < 5 && (
+              <BaseButton
+                customClass={styles.add__btn}
+                type='button'
+                kind='chip'
+                status='fill'
+                onClick={handleAddPledge}
+              >
+                + 추가
+              </BaseButton>
+            )}
           </div>
         </div>
       </div>
