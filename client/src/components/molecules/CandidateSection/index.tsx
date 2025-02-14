@@ -5,6 +5,7 @@ import Introduction from './Introduction';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { TeamResult } from '@/types/voteSession';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   team: TeamResult;
@@ -12,6 +13,11 @@ interface Props {
 }
 
 function CandidateSection({ team, onClick }: Props) {
+  const navigate = useNavigate();
+  function handleMoveChannel() {
+    navigate(`/elections/:election_id/candidates/${team.teamId}`);
+  }
+
   return (
     <div className={styles.candidate} onClick={onClick}>
       <div className={styles['candidate-poster']}>
@@ -60,6 +66,7 @@ function CandidateSection({ team, onClick }: Props) {
           kind='chip'
           status={BASE_BUTTON_STATUS.OUTLINE}
           type='button'
+          onClick={handleMoveChannel}
         >
           채널바로가기
         </BaseButton>
