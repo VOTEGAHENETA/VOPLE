@@ -25,6 +25,7 @@
     flex-wrap: nowrap; // 1. 항목 줄바꿈 방지
     overflow-x: auto;  // 2. 가로 스크롤 활성화
     width: 100%;       // 3. 컨테이너 전체 너비 사용
+    gap: 20px;
 
 }
 
@@ -35,4 +36,8 @@
     justify-content: center;
     gap: 20px;
     
+}
+
+.poster > .poster {
+    border-radius: 10px;
 }

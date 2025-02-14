@@ -3,17 +3,34 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 50px;
   padding-bottom: 20px;
-  gap: 60px;
+  gap: 20px;
 }
 
+.sessionInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  max-height: 800px;
+  position: relative;
+  bottom: 290px;
+}
 
 .voteInfo {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.background {
+  position: relative;
+  background-color: #fff6dc;
+  width: 100%;
+  height: 300px;
+  z-index: -100px;
 }
 
 .sessionInfo {
@@ -24,14 +41,17 @@
 }
 
 .crown {
-  position: relative;
+  position: absolute;
   bottom: -30px;
+  width: 80px;
+  height: 80px;
+  top: 225px;
 }
 
 .result {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .text {
@@ -47,4 +67,10 @@
   justify-content: center;
   align-items: center;
   gap: 40px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 }

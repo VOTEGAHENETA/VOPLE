@@ -22,21 +22,23 @@ function Loading({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <ConfirmModal imgSrc={greenCheck}>
-      <div className={styles.loading}>
-        <div className={styles.complete}>
-          <Text size='s' weight='bold' color='#000000'>
-            투표가 완료 됐어요.
-          </Text>
-          <Text size='s' weight='bold' color='#000000'>
-            당신의 한 표가 세상을 만듭니다!
+    <div className={styles.loading}>
+      <ConfirmModal imgSrc={greenCheck}>
+        <div className={styles.loading}>
+          <div className={styles.complete}>
+            <Text size='s' weight='bold' color='#000000'>
+              투표가 완료 됐어요.
+            </Text>
+            <Text size='s' weight='bold' color='#000000'>
+              당신의 한 표가 세상을 만듭니다!
+            </Text>
+          </div>
+          <Text size='s' weight='normal' color='#777777'>
+            잠시후 투표 현황 페이지로 이동합니다 ... {count}
           </Text>
         </div>
-        <Text size='s' weight='normal' color='#777777'>
-          잠시후 투표 현황 페이지로 이동합니다 ... {count}
-        </Text>
-      </div>
-    </ConfirmModal>
+      </ConfirmModal>
+    </div>
   );
 }
 
