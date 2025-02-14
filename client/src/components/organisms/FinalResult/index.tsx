@@ -22,7 +22,9 @@ const FinalResult = ({ finalData }: Props) => {
         {finalData.electedList.map((result, outerIdx) =>
           result.candidateResults.map((candidate, innerIdx) => (
             <div key={`${outerIdx}-${innerIdx}`} className={styles.candidate}>
-              <Poster size='xs' src={result.poster} />
+              <div className={styles.poster}>
+                <Poster size='xs' src={result.poster} />
+              </div>
               {candidate.userName}
             </div>
           ))

@@ -14,11 +14,13 @@ import Streaming from '@/pages/Streaming';
 import Candidate from '@/pages/UserInfo/Candidate';
 import Voter from '@/pages/UserInfo/Voter';
 import { createBrowserRouter } from 'react-router-dom';
+import Error from '@/pages/Error';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <Error />,
     children: [
       {
         path: '/login',
