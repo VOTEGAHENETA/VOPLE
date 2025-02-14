@@ -5,23 +5,23 @@
 }
 
 .error {
-  position: absolute;
-  animation: float 2s ease-in-out infinite; /* 위아래로 움직이는 애니메이션 */
+  position: relative;
   top: 200px;
-  left: 100px;
+  left: 80px;
+  animation: float 2s ease-in-out infinite; /* 위아래로 움직이는 애니메이션 */
 }
 
 .text {
-  position: absolute;
-  top: 450px;
-  left: 125px;
+  position: relative;
+  top: 470px;
+  right: 100px;
 }
 
 /* 그림자 추가 */
 .shadow {
-  position: absolute;
-  top: 370px; /* 그림자 위치 조정 */
-  left: 170px; /* 중앙 정렬 */
+  position: relative; 
+  top: 250px;
+  left: 150px;
   width: 100px;
   height: 20px;
   background-color: rgba(0, 0, 0, 0.2);

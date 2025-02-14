@@ -12,7 +12,7 @@ const Error = () => {
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.realerror}>
         <img src={error} className={styles.error} />
         <div className={styles.shadow}></div> {/* 그림자 추가 */}
       </div>
