@@ -2,9 +2,18 @@ import IconLogo from '@/assets/icons/IconLogo';
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
 import kakao from '@/assets/icons/kakao.svg';
+import { useLoginCheck } from '@/services/hooks/useLoginCheck';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const { VITE_PUBLIC_OAUTH_URL } = import.meta.env;
+  const { data } = useLoginCheck();
+  if (data) {
+    // 이미 로그인 상태
+    navigate('/elections/list');
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.logo}>

@@ -38,6 +38,9 @@ instance.interceptors.response.use(
         window.location.href = newPath;
       } else if (status === 404) {
         console.log('리소스를 찾을 수 없습니다.');
+      } else if (status === 406) {
+        console.log('로그인을 진행해야 합니다.');
+        window.location.href = '/login';
       } else if (status === 500) {
         console.log('서버에 에러가 있습니다.');
       }
