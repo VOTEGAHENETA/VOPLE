@@ -11,12 +11,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "session_user_info")
+@NoArgsConstructor
 public class SessionUserInfo {
 
   @Id
@@ -31,4 +33,11 @@ public class SessionUserInfo {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private Users user;
+
+  public SessionUserInfo(Users user, ElectionSession electionSession) {
+    this.user = user;
+    user.getSessionUserInfos().add(this);
+    this.electionSession = electionSession;
+    electionSession.getSessionUserInfos().add(this);
+  }
 }

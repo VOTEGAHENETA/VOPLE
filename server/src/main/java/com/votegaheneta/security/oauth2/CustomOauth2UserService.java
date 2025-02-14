@@ -34,7 +34,11 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
     if (user.isPresent()) {
       return new CustomOauth2User(oAuth2User, user.get());
     }
-    Users newUser = new Users(username, nickname, kakaoId);
+    Users newUser = Users.builder()
+        .kakaoId(kakaoId)
+        .username(username)
+        .nickname(nickname)
+        .build();
     usersRepository.save(newUser);
 
     return new CustomOauth2User(oAuth2User, newUser);

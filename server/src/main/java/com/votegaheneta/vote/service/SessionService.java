@@ -1,5 +1,6 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
@@ -16,7 +17,7 @@ public interface SessionService {
 
   SessionResponse getSessions(Long userId);
 
-  Long saveSession(SessionDto sessionDto) throws RuntimeException;
+  Long saveSession(SessionDto sessionDto, UserDto userDto) throws RuntimeException;
 
   void updateSession(Long sessionId, SessionDto sessionDto);
 
