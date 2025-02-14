@@ -114,15 +114,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     } else {
       request.getVoteTeam().setPoster(voteTeam.getPoster());
     }
-    // prefix(칭호)가 null이거나 빈 문자열이면 기존 값 유지
-    if (request.getVoteTeam().getPrefix() == null || request.getVoteTeam().getPrefix().trim().isEmpty()) {
-      request.getVoteTeam().setPrefix(voteTeam.getPrefix());
-    }
-
-    // candidateStatement(상태 메시지)가 null이거나 빈 문자열이면 기존 값 유지
-    if (request.getVoteTeam().getCandidateStatement() == null || request.getVoteTeam().getCandidateStatement().trim().isEmpty()) {
-      request.getVoteTeam().setCandidateStatement(voteTeam.getCandidateStatement());
-    }
     // 후보자 칭호, 상태 메세지, 포스터 바꿈
     request.getVoteTeam().updateVoteTeamInfo(voteTeam);
     // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
