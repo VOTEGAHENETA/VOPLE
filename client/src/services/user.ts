@@ -1,4 +1,9 @@
-import { User, UserInfoRequest, UserResponse, UserInfoResponse } from '@/types/user';
+import {
+  User,
+  UserInfoRequest,
+  UserResponse,
+  UserInfoResponse,
+} from '@/types/user';
 import instance from './api';
 
 export const getUserList = async (
@@ -20,21 +25,12 @@ export const searchUser = async (
   );
 };
 
-export const getUserInfo = async (
-  userId: string
-): Promise<UserInfoResponse> => {
-  return await instance.get(`/user/${userId}`);
+export const getUserInfo = async (): Promise<UserInfoResponse> => {
+  return await instance.get('/user');
 };
 
 export const putUserInfo = async (
-  userId: string,
   data: UserInfoRequest
 ): Promise<UserInfoRequest> => {
-  try {
-    const response = await instance.put(`/user/${userId}`, data);
-    return response.data;
-  } catch (error) {
-    console.error('API 에러:', {});
-    throw error;
-  }
+  return await instance.put('/user', data);
 };
