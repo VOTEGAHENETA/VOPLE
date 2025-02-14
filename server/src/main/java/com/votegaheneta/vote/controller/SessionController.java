@@ -1,5 +1,6 @@
 package com.votegaheneta.vote.controller;
 
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.entity.Users;
@@ -165,7 +166,7 @@ public class SessionController {
   )
   @PostMapping
   public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto, @AuthenticationPrincipal CustomOauth2User oauth2User) {
-    Users user = oauth2User.getUser();
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     Long result = sessionService.saveSession(sessionDto, user.toDto());
     return ApiResponse.success(HttpStatus.CREATED, "세션 생성 성공", result);
   }
