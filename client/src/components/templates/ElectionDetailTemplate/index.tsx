@@ -225,6 +225,7 @@ function ElectionDetailTemplate() {
     };
 
     putMutation.mutate({ sessionId: Number(election_id), data: updateState });
+    setIsModify(true);
   }
 
   if (isLoading) {
