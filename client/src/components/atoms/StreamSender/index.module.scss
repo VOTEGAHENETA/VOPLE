@@ -1,0 +1,17 @@
+.container {
+  background-color: #eee;
+
+  .title {
+    text-indent: -9999px;
+    height: 0;
+    overflow: hidden;
+  }
+
+  button {
+    border: none;
+    background-color: #fff;
+    border: 1px solid #333;
+    padding: 14px;
+    border-radius: 10px;
+  }
+}

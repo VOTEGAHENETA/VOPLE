@@ -1,9 +1,17 @@
 .streaming__section {
   position: relative;
-  background-color: #111;
   width: 100%;
-  height: 100vh;
-  background: url(/src/assets/sample/streaming-sample.png) no-repeat center center ;
-  background-size: cover;
-  overflow: hidden;
+  flex:1;
+  display: flex;
+  flex-direction: column;
+  // background: url(/src/assets/sample/streaming-sample.png) no-repeat center center ;
+  // background-size: cover;
+  // overflow: hidden;
+
+  .tab__content {
+    position: absolute;
+    bottom: 0;
+    flex: 1;
+  }
+  
 }
