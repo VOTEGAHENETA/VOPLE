@@ -3,11 +3,10 @@
   border-radius: 16px;
   width: 100%;
   max-width: 600px;
-  // height: 300px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  // justify-content: space-between;
+  justify-content: space-between;
+  gap: 8px; 
 
   .chatWrapper {
     display: flex;
@@ -114,10 +113,13 @@
 // Heart
 // ==================
 
-.heartContainer {
+.heartBox {
   position: absolute;
-  right: 0px;
+  right: 0;
   top: -50px;
+}
+
+.heartContainer {
   display: inline-block;
 }
 

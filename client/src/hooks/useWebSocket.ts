@@ -29,10 +29,10 @@ export const useWebSocket = ({
       return;
     }
     // SockJS를 사용하여 WebSocket 연결 생성
-    // var socket = new SockJS('wss://i12b102.p.ssafy.io/ws', null, {
-    //   websocketOnly: true,
-    // });
-    const socket = new SockJS('/ws');
+    var socket = new SockJS('https://i12b102.p.ssafy.io/ws', null, {
+      // websocketOnly: true,
+    });
+    // const socket = new SockJS('/ws');
     stompClient.current = Stomp.over(socket);
 
     // 서버에 연결
