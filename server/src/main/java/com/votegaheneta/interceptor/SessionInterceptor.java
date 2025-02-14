@@ -17,7 +17,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
   @Value("${base_url}")
   private String BASE_URL;
-  private final String REDIRECT = "/api/redirect";
+  private final String REDIRECT = "api/redirect";
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
