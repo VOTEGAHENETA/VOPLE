@@ -5,20 +5,10 @@ import BaseButton from '@/components/atoms/BaseButton';
 import ChatBoard from '../ChatBoard';
 import PledgeTab from './PledgeTab';
 import PosterTab from './PosterTab';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
 import SAMPLE_POSTER from '@/assets/sample/sample.png';
-import IconButton from '@/components/atoms/IconButton';
+// import IconButton from '@/components/atoms/IconButton';
 
 const MOCK_PLEDGES = [
   '학생 자치회 예산 50% 증액 및 투명한 예산 사용 보고 시스템 도입',
@@ -62,26 +52,32 @@ export default function TabContainer({
 }: TabContainerProps) {
   const [activeTab, setActiveTab] = useState<TabType>('chat');
   // 슬라이드 상태 추가
-  const [isSlideDown, setIsSlideDown] = useState(false);
+  // const [isSlideDown, setIsSlideDown] = useState(false);
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
   };
 
   // 슬라이드 토글 함수 추가
-  const toggleSlide = () => {
-    setIsSlideDown((prev) => !prev);
-  };
+  // const toggleSlide = () => {
+  //   setIsSlideDown((prev) => !prev);
+  // };
 
   return (
     <div
-      className={clsx(styles.container, { [styles.slideDown]: isSlideDown })}
+      className={clsx(
+        styles.container,
+        'global-container'
+        //   {
+        //   [styles.slideDown]: isSlideDown,
+        // }
+      )}
     >
-      <IconButton
+      {/* <IconButton
         name='leftLongWhite'
         className={styles.slideButton}
         onClick={toggleSlide}
-      />
+      /> */}
       <div className={styles.tabNavigator}>
         <div className={styles.tabMenu}>
           {TABS.map(({ type, label }) => (
@@ -102,17 +98,15 @@ export default function TabContainer({
       </div>
       <div className={styles.tabContent}>
         {/* 탭 변경 시 채팅만 리렌더링 되지 않도록 설정*/}
-        <QueryClientProvider client={queryClient}>
-          <div style={{ display: activeTab === 'chat' ? 'block' : 'none' }}>
-            <MemoizedChatBoard
-              userId={userId}
-              sessionId={sessionId}
-              theme={theme}
-              type={type}
-              voteTeamId={voteTeamId}
-            />
-          </div>
-        </QueryClientProvider>
+        <div style={{ display: activeTab === 'chat' ? 'block' : 'none' }}>
+          <MemoizedChatBoard
+            sessionId={sessionId}
+            theme={theme}
+            type={type}
+            userId={userId}
+            voteTeamId={voteTeamId}
+          />
+        </div>
         {activeTab === 'notice' && <PledgeTab pledges={MOCK_PLEDGES} />}
         {activeTab === 'poster' && <PosterTab imageSrc={SAMPLE_POSTER} />}
       </div>
