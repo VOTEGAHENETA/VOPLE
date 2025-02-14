@@ -16,6 +16,7 @@ import {
   useElectionDelete,
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
+import { combineDateAndTime } from '@/utils/date';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -52,6 +53,11 @@ function ElectionDetailTemplate() {
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
 
+  function convertUTCToKST(utcString: Date) {
+    const data = new Date(utcString);
+    return new Date(data.getTime() + 9 * 60 * 60 * 1000); // 9시간 추가
+  }
+
   useEffect(() => {
     if (isLoading) {
       console.log('데이터 로딩 중...');
@@ -62,23 +68,48 @@ function ElectionDetailTemplate() {
     }
 
     if (data?.sessionDto) {
-      setState(data.sessionDto);
+      setState((prevState) => ({
+        ...prevState,
+        ...data.sessionDto,
+        startTime: new Date(data.sessionDto.startTime),
+        endTime: new Date(data.sessionDto.endTime),
+      }));
       setVoteState(data.voteEditInfos);
 
-      setDateState({
-        startDate: new Date(state.startTime).toISOString().split('T')[0],
-        startTime: new Date(state.startTime).toLocaleTimeString('en-US', {
+      const startTime = convertUTCToKST(data.sessionDto.startTime);
+      const endTime = convertUTCToKST(data.sessionDto.endTime);
+      setDateState(() => ({
+        startDate: startTime
+          .toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: 'Asia/Seoul',
+          })
+          .replace(/\. /g, '-')
+          .replace('.', ''), // YYYY-MM-DD 형식으로 변환
+        startTime: startTime.toLocaleTimeString('ko-KR', {
           hour12: false,
           hour: '2-digit',
           minute: '2-digit',
+          timeZone: 'Asia/Seoul',
         }),
-        endDate: new Date(state.endTime).toISOString().split('T')[0],
-        endTime: new Date(state.endTime).toLocaleTimeString('en-US', {
+        endDate: endTime
+          .toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: 'Asia/Seoul',
+          })
+          .replace(/\. /g, '-')
+          .replace('.', ''), // YYYY-MM-DD 형식으로 변환
+        endTime: endTime.toLocaleTimeString('ko-KR', {
           hour12: false,
           hour: '2-digit',
           minute: '2-digit',
+          timeZone: 'Asia/Seoul',
         }),
-      });
+      }));
     }
   }, [data]);
 
@@ -162,7 +193,18 @@ function ElectionDetailTemplate() {
   }
 
   function handleModifyElection() {
-    putMutation.mutate({ sessionId: Number(election_id), data: state });
+    const startTime = combineDateAndTime(
+      dateState.startDate,
+      dateState.startTime
+    );
+    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const updateState = {
+      ...state,
+      startTime,
+      endTime,
+    };
+
+    putMutation.mutate({ sessionId: Number(election_id), data: updateState });
   }
 
   if (isLoading) {

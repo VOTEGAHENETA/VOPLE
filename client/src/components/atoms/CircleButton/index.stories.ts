@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import CircleButton from '.';
 
 const meta = {
@@ -10,9 +9,6 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: {
-    onClick: fn(),
-  },
 } satisfies Meta<typeof CircleButton>;
 
 export default meta;

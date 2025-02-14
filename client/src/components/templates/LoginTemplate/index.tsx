@@ -4,6 +4,7 @@ import Text from '@/components/atoms/Text';
 import kakao from '@/assets/icons/kakao.svg';
 
 const Login = () => {
+  const { VITE_PUBLIC_OAUTH_URL } = import.meta.env;
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
@@ -16,7 +17,7 @@ const Login = () => {
             세상을 바꾸는 사람들
           </Text>
           <a
-            href='https://i12b102.p.ssafy.io/oauth2/authorization/kakao'
+            href={`${VITE_PUBLIC_OAUTH_URL}/authorization/kakao`}
             className={styles.a}
           >
             <img src={kakao} alt='' />
