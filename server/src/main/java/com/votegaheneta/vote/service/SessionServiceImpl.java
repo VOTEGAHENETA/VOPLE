@@ -6,6 +6,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
+import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.user.repository.UsersRepository;
@@ -20,6 +21,7 @@ import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.repository.ElectionRepository;
+import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.awt.image.BufferedImage;
@@ -42,17 +44,19 @@ public class SessionServiceImpl implements SessionService {
   private final VoteTeamRepository voteTeamRepository;
   private final VoteRepository voteRepository;
   private final ElectionRepository electionRepository;
+  private final SessionUserInfoRepository sessionUserInfoRepository;
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final FileStorageComponent fileStorageComponent;
 
   @Transactional
   @Override
-  public Long saveSession(SessionDto sessionDto) {
-    Users user = usersRepository.findById(sessionDto.getHostId())
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+  public Long saveSession(SessionDto sessionDto, UserDto userDto) {
+    Users user = UserDto.toEntity(userDto);
     ElectionSession electionSession = sessionDto.toEntity(user);
     electionSession = electionRepository.save(electionSession);
+    SessionUserInfo sessionUserInfo = new SessionUserInfo(user, electionSession);
+    sessionUserInfoRepository.save(sessionUserInfo);
     // qr코드로 접속할 url
     String url = mediaUrl + "/api/election/" + electionSession.getId();
 
