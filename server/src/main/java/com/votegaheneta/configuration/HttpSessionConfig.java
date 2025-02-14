@@ -18,7 +18,7 @@ public class HttpSessionConfig {
   public CookieSerializer cookieSerializer() {
     DefaultCookieSerializer serializer = new DefaultCookieSerializer();
     serializer.setSameSite("None");
-    // serializer.setUseSecureCookie(true);
+    serializer.setUseSecureCookie(true);
     serializer.setUseHttpOnlyCookie(true);
     serializer.setCookieMaxAge(60 * 60 * 3); // 쿠키의 유효시간 3시간
     return serializer;
