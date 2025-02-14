@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-  @Value("${base_url}")
-  private String BASE_URL;
+  @Value("${kakao_login_url}")
+  private String KAKAO_LOGIN_URL;
 
 
   @Override
@@ -44,7 +44,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
       response.sendRedirect(redirectUrl);
     }
 
-    response.sendRedirect(BASE_URL);
+    response.sendRedirect(KAKAO_LOGIN_URL);
 
 
     super.onAuthenticationSuccess(request, response, authentication);

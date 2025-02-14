@@ -73,7 +73,10 @@ public class VoteTeamServiceImpl implements VoteTeamService {
         .forEach(voteInfo -> voteInfo.setUserType(USER_TYPE.CANDIDATE));
   }
 
-  private void deleteAllVoteTeam(Long voteId) {
+  // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
+  public void deleteAllVoteTeam(Long voteId) {
+
+//    pledgeRepository.deleteAllPledgeByVoteTeamId();
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }
 
