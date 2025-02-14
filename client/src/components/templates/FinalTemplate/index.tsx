@@ -9,9 +9,11 @@ import { getFinalResult } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { ElectionResult } from '@/types/final';
 import { VoteResultsResponse } from '@/types/voteSession';
+import { useParams } from 'react-router-dom';
 
 function FinalTemplate() {
-  const sessionId = 1;
+  const { election_id } = useParams<{ election_id: string }>();
+  const sessionId = Number(election_id);
   const [finalData, setFinalData] = useState<ElectionResult | null>(null);
   const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
     null
@@ -71,7 +73,7 @@ function FinalTemplate() {
         <img src={crown} className={styles.crown} />
         <div className={styles.content}>
           <FinalResult finalData={finalData} />
-          <Result currentData={currentData} />
+          <Result currentData={currentData} sessionId={sessionId} />
         </div>
       </div>
     </div>

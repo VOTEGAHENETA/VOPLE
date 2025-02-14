@@ -16,7 +16,7 @@ const Result = ({ currentData, sessionId }: Props) => {
   const [selectedVoteIndex, setSelectedVoteIndex] = useState(0);
 
   // currentData의 sessionId로 useLiveVote hook 호출
-  const { liveVote, connected, error } = useLiveVote({
+  const { liveVote } = useLiveVote({
     sessionId: sessionId,
   });
 
@@ -72,18 +72,6 @@ const Result = ({ currentData, sessionId }: Props) => {
         teamResults={currentVote.teamResults || []}
         wholeVoterPercent={voteData.wholeVoterPercent}
       />
-
-      <div>
-        {connected ? (
-          <Text size='m' weight='bold' color='green'>
-            Connected
-          </Text>
-        ) : (
-          <Text size='m' weight='bold' color='red'>
-            {error || 'Not connected'}
-          </Text>
-        )}
-      </div>
     </div>
   );
 };

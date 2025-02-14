@@ -5,6 +5,7 @@ import { getFinalResult, getResultCurrent } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { VoteResultsResponse } from '@/types/voteSession';
 import { ElectionResult } from '@/types/final';
+import { useParams } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 
 const ResultCurrentTemplate = () => {
@@ -13,7 +14,8 @@ const ResultCurrentTemplate = () => {
   );
   const [finalData, setFinalData] = useState<ElectionResult | null>(null);
   // const navigate = useNavigate();
-  const sessionId = 1;
+  const { election_id } = useParams<{ election_id: string }>();
+  const sessionId = Number(election_id);
 
   useEffect(() => {
     async function fetchData() {
@@ -44,7 +46,9 @@ const ResultCurrentTemplate = () => {
 
   return (
     <div className={styles.result__container}>
-      {currentData && <Result currentData={currentData} sessionId={1} />}
+      {currentData && (
+        <Result currentData={currentData} sessionId={sessionId} />
+      )}
       <ResultChatContainer sessionId={1} userId={1} />
     </div>
   );
