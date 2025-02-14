@@ -25,6 +25,9 @@ public class SecurityConfig {
   @Value("${kakao_login_url}")
   private String KAKAO_LOGIN_URL;
 
+  @Value(("${base_url}"))
+  private String BASE_URL;
+
   public SecurityConfig(CustomOauth2UserService customOAuth2UserService,
                         Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
     this.customOAuth2UserService = customOAuth2UserService;
@@ -38,13 +41,12 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
-                                   .requestMatchers("/login").permitAll()
-           .anyRequest().permitAll()
-//                                   .requestMatchers("/api/login", "/api/logout").permitAll()
-                                  //  .anyRequest().authenticated()
+//                                   .requestMatchers("/login").permitAll()
+//           .anyRequest().permitAll()
+                                    .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
-                         .loginPage(KAKAO_LOGIN_URL + "/login")
+                         .loginPage(BASE_URL + "/api/redirect/login")
                          .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
 //                         .defaultSuccessUrl(BASE_URL)
                          .successHandler(oauth2AuthenticationSuccessHandler)

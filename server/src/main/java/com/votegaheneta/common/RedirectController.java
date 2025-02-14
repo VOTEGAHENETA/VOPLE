@@ -1,6 +1,5 @@
 package com.votegaheneta.common;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +13,11 @@ public class RedirectController {
 
   @GetMapping("/elections/{sessionId}/question")
   public ResponseEntity<Void> redirectQuestion(@PathVariable Long sessionId) {
-    HttpHeaders headers = new HttpHeaders();
-//    headers.setAccessControlAllowOrigin("http://localhost:5173");
-//    headers.setAccessControlRequestMethod(HttpMethod.GET);
-    String redirectURL = String.format("/elections/%d/question", sessionId);
-    return new ResponseEntity<>(headers, HttpStatus.FORBIDDEN);
+    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+  }
+
+  @GetMapping("/login")
+  public ResponseEntity<Void> redirectLogin() {
+    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
   }
 }
