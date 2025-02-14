@@ -21,6 +21,7 @@ instance.interceptors.response.use(
       console.error('에러 발생', data);
 
       if (status === 401) {
+        window.location.href = '/login';
         console.log('인증이 필요합니다.');
       } else if (status === 403) {
         console.log('접근 권한이 없습니다.');
