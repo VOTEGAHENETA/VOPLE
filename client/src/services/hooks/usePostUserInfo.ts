@@ -2,14 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import { putUserInfo } from '../user';
 import { UserInfoRequest } from '@/types/user';
 
-interface UserParams {
-  userId: string;
-  data: UserInfoRequest;
-}
-
 export const usePutUserInfo = () => {
   return useMutation({
-    mutationFn: ({ userId, data }: UserParams) => putUserInfo(userId, data),
+    mutationFn: (data: UserInfoRequest) => putUserInfo(data),
     onSuccess: (data) => {
       alert('수정이 완료되었습니다.');
       console.log(data);

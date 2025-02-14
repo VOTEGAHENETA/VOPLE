@@ -1,7 +1,6 @@
 import UserInfoSection from '@/components/organisms/UserInfoSection';
 import styles from './index.module.scss';
 import Text from '@/components/atoms/Text';
-import { useParams } from 'react-router-dom';
 import { useUserInfoFormData } from '@/hooks/useUserInfoFormData';
 import { useGetUserInfo } from '@/services/hooks/useGetUserInfo';
 import React, { useEffect } from 'react';
@@ -11,8 +10,6 @@ import { usePutUserInfo } from '@/services/hooks/usePostUserInfo';
 import IconUsers from '@/assets/icons/IconUsers';
 
 export function UserInfoUpdateTemplate() {
-  const { user_id = '' } = useParams();
-
   // 후보자 기본 정보
   const { userInfoFormData, setUserInfoFormData, handleChange } =
     useUserInfoFormData({
@@ -26,7 +23,7 @@ export function UserInfoUpdateTemplate() {
   // 사용자 정보 최초 폼 초기화
   //================================
   // Query : 쿼리 훅 사용하여 데이터 정보 받아옴 param에서 받아온 user_id (로그인 구현 전)
-  const { data, error } = useGetUserInfo(user_id);
+  const { data, error } = useGetUserInfo();
   useEffect(() => {
     if (data) {
       const { userId, kakaoId, nickname, username } = data;
@@ -57,10 +54,7 @@ export function UserInfoUpdateTemplate() {
         username: userInfoFormData.username,
       };
 
-      putUserInfo.mutate({
-        userId: user_id,
-        data: userInfoRequest,
-      });
+      putUserInfo.mutate(userInfoRequest);
     } catch (error) {
       console.error('수정 실패:', error);
       alert('수정에 실패했습니다.');
