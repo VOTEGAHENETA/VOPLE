@@ -4,7 +4,7 @@ WORKDIR /app
 # 소스 복사 및 빌드
 COPY . .
 
-RUN echo "VITE_PUBLIC_API_URL=https://i12b102.p.ssafy.io/api" > .env
+RUN printf "VITE_PUBLIC_API_URL=https://i12b102.p.ssafy.io/api\nVITE_PUBLIC_OAUTH_URL=https://i12b102.p.ssafy.io/oauth2\n" > .env
 
 RUN yarn install
 RUN yarn build

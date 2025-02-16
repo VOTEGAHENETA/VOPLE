@@ -34,3 +34,7 @@ export const putUserInfo = async (
 ): Promise<UserInfoRequest> => {
   return await instance.put('/user', data);
 };
+
+export const isLogin = async () => {
+  return await instance.get('/auth/login');
+};

@@ -48,7 +48,12 @@ function VoteRanking({ teamResults = [], wholeVoterPercent = 0 }: Props) {
             </div>
 
             {/* 득표율 */}
-            <Text size='xl' weight='bold' color='#555555'>
+            <Text
+              size='xl'
+              weight='bold'
+              color='#555555'
+              className={styles.text}
+            >
               {team.teamVotePercent}%
             </Text>
           </div>

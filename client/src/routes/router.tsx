@@ -14,11 +14,13 @@ import Streaming from '@/pages/Streaming';
 import Candidate from '@/pages/UserInfo/Candidate';
 import Voter from '@/pages/UserInfo/Voter';
 import { createBrowserRouter } from 'react-router-dom';
+import Error from '@/pages/Error';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <Error />,
     children: [
       {
         path: '/login',
@@ -69,11 +71,11 @@ export const router = createBrowserRouter([
         element: <Channel />,
       },
       {
-        path: '/elections/:election_id/final',
+        path: 'elections/:election_id/final',
         element: <FinalTemplate />,
       },
       {
-        path: 'mypage/:user_id',
+        path: 'mypage',
         element: <Voter />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정

@@ -92,7 +92,10 @@ export default function ChatBoard({
         theme={theme}
       />
       {/* 채팅 Heart */}
-      <div style={{ display: type === 'team' ? 'block' : 'none' }}>
+      <div
+        className={styles.heartBox}
+        style={{ display: type === 'team' ? 'block' : 'none' }}
+      >
         <Heart></Heart>
       </div>
     </div>

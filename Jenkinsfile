@@ -5,6 +5,8 @@ pipeline {
         DB_HOST = credentials('db-host')
         DB_PORT = credentials('db-port')
         REDIS_HOST = credentials('redis-host')
+        KAKAO_CLIENT_ID = credentials('kakao-client-id')
+        KAKAO_CLIENT_SECRET = credentials('kakao-client-secret')
         EC2_IP = credentials('ec2-ip')
         SPRING_PROFILES_ACTIVE = 'prod'
         WEBHOOK_URL = credentials('discord-webhook')
@@ -59,7 +61,6 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     defer-datasource-initialization: true
-    open-in-view: false
 
   sql:
     init:
@@ -72,13 +73,38 @@ spring:
     rtmp:
       host: rtmp://i12b102.p.ssafy.io:1935/live/
     hls:
-      host-prefix: http://i12b102.p.ssafy.io:8050/hls/
+      host-prefix: https://i12b102.p.ssafy.io/hls/
       host-postfix: .m3u8
+      
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: https://i12b102.p.ssafy.io/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+            client-name: kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 springdoc:
   swagger-ui:
     path: /index.html
   api-docs:
     path: /v3/api-docs
+
+base_url: https://i12b102.p.ssafy.io
+media_url: https://i12b102.p.ssafy.io
+kakao_login_url: http://localhost:5173
 """
                     }
                 }
