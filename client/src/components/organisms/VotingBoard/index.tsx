@@ -13,6 +13,9 @@ interface Props {
 
 function VotingBoard({ info, selectedCandidates }: Props) {
   const voteData = info.voteFindDtos;
+  // voteData를 voteId 기준 오름차순으로 정렬 (가장 낮은 아이디가 1위)
+  const sortedVotes = [...voteData].sort((a, b) => a.voteId - b.voteId);
+
   return (
     <div className={styles.board}>
       <Text size='xs' weight='bold' color='#777777'>
@@ -25,11 +28,14 @@ function VotingBoard({ info, selectedCandidates }: Props) {
       </div>
       <div className={styles.tag}>
         {voteData.map((vote) => {
-          // 해당 선거에서 후보가 선택되었으면 선택된 후보의 userName을 사용하고,
-          // 선택되지 않았다면 기본값(예: voteTeams[0].candidates[0]의 userName)을 사용
+          // 선택된 후보의 username 추출 (선택되지 않았다면 undefined)
           const candidateUserName = selectedCandidates[vote.voteId]
             ? selectedCandidates[vote.voteId]!.userName
             : undefined;
+          // 정렬된 배열에서 해당 vote의 인덱스를 통해 순위를 산출 (1부터 시작)
+          const rank =
+            sortedVotes.findIndex((v) => v.voteId === vote.voteId) + 1;
+
           return (
             <div key={vote.voteId} className={styles.tag}>
               <RoleNameTag
@@ -37,6 +43,7 @@ function VotingBoard({ info, selectedCandidates }: Props) {
                 voteName={vote.voteName}
                 username={candidateUserName}
                 showUsername={true}
+                rank={rank}
               />
             </div>
           );

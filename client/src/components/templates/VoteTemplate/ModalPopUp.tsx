@@ -18,6 +18,7 @@ interface ModalPopupProps {
   };
   voteComplete: () => void;
 }
+
 function ModalPopup({
   voteSession,
   selectedCandidates,
@@ -45,6 +46,11 @@ function ModalPopup({
     return <Loading onComplete={() => voteComplete()} />;
   }
 
+  // voteSession의 voteData를 voteId 기준으로 정렬하여 순위 계산에 사용
+  const sortedVotes = [...voteSession.voteFindDtos].sort(
+    (a, b) => a.voteId - b.voteId
+  );
+
   return (
     <div className={styles.container}>
       <ConfirmModal imgSrc={stamp} label='당신이 선택한 국가권력 멤버!'>
@@ -52,7 +58,6 @@ function ModalPopup({
           {voteSession.voteFindDtos.map((vote) => {
             const candidate = selectedCandidates[vote.voteId];
             if (!candidate) return null;
-
             // 후보자 정보와 일치하는 팀을 찾음
             const team = vote.voteTeams.find((team) =>
               team.candidates.some(
@@ -61,12 +66,17 @@ function ModalPopup({
             );
             if (!team || !team.poster) return null;
 
+            // sortedVotes에서 해당 vote의 순위를 계산 (1부터 시작)
+            const rank =
+              sortedVotes.findIndex((v) => v.voteId === vote.voteId) + 1;
+
             return (
               <div className={styles.confirm} key={vote.voteId}>
                 <RoleNameTag
                   voteId={vote.voteId}
                   voteName={vote.voteName}
                   showUsername={false}
+                  rank={rank}
                 />
                 <div className={styles.candidate}>
                   <Poster size='xs' src={team.poster} />

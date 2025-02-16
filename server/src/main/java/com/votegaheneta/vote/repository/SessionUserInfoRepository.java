@@ -15,4 +15,6 @@ public interface SessionUserInfoRepository extends JpaRepository<SessionUserInfo
   List<SessionUserInfo> findSessionUserInfosByElectionSessionId(Long sessionId);
 
   Optional<SessionUserInfo> findByElectionSessionIdAndUser(Long sessionId, Users user);
+
+  boolean existsByElectionSessionIdAndUser(Long sessionId, Users user);
 }

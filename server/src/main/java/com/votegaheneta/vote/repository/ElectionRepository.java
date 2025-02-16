@@ -36,4 +36,7 @@ public interface ElectionRepository extends JpaRepository<ElectionSession, Long>
   Long judgeUserType(Long sessionId, Long userId);
 
   boolean existsByIdAndHostUser(Long sessionId, Users hostUser);
+
+  @Query("select es.id from VoteTeam vt join vt.vote v join v.electionSession es where vt.id = :voteTeamId")
+  Long findSessionIdByVoteTeamId(Long voteTeamId);
 }

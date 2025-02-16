@@ -9,10 +9,8 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const ResultCurrentTemplate = () => {
-  const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
-    null
-  );
-  const [finalData, setFinalData] = useState<ElectionResult | null>(null);
+  const [currentData, setCurrentData] = useState<VoteResultsResponse | null>();
+  const [finalData, setFinalData] = useState<ElectionResult | null>();
   const navigate = useNavigate();
   const { election_id } = useParams<{ election_id: string }>();
   const sessionId = Number(election_id);
