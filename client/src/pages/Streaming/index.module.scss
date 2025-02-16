@@ -1,34 +1,13 @@
 .streaming__section {
   position: relative;
   width: 100%;
-  flex:1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #333;
   :global(.global-container) {
-    flex: 1;
+    height: 100%;
+    overflow-y: auto;
   }
-  // background: url(/src/assets/sample/streaming-sample.png) no-repeat center center ;
-  // background-size: cover;
-  // overflow: hidden;
-
-
-  // .tab__content {
-  //   position: absolute;
-  //   bottom: 0;
-  //   flex: 1;
-  // }
-  
 }
 
-// :global {
-//     .tab
-// }
-
-
-// global {
-//   .container {
-//     flex: 1;
-
-//   }
-// }

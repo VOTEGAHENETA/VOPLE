@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
         element: <ResultCurrentTemplate />,
       },
       {
-        path: 'live/:teamId',
+        path: 'live/:session_id/:team_id',
         element: <Streaming />,
       },
       {

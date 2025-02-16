@@ -15,9 +15,6 @@ interface Props {
   type: 'button' | 'submit' | 'reset';
 }
 
-// API 연동을 시작하면 바꿀 예정
-const currentUserId = 12;
-
 /** 메인화면 footer에 적용될 Router 버튼 입니다. */
 function CircleButton({ type = 'button' }: Props) {
   const { election_id } = useParams() as { election_id: string };
@@ -33,16 +30,28 @@ function CircleButton({ type = 'button' }: Props) {
   });
 
   useEffect(() => {
-    if (election) {
-      updateButtonState();
+    if (election && !isHost) {
+      const now = new Date();
+      const startTime = new Date(election.startTime);
+      const endTime = new Date(election.endTime);
+      const newStatus = startTime <= now && now <= endTime;
+
+      setState((prev) => ({
+        ...prev,
+        status: newStatus,
+        buttonLabel: newStatus ? '투표하기' : '투표시작전',
+        deadLine: newStatus ? endTime : startTime,
+        onlyRefresh: false,
+        isLoading: false,
+      }));
     }
-  }, [election]);
+  }, [election, isHost]);
 
   function updateButtonState() {
     if (!election) return;
     if (isHost) return; // 선거 호스트인 경우 로직 작동 불필요
 
-    if (currentUserId !== election.hostId) {
+    if (election && !isHost) {
       const now = new Date();
       const startTime = new Date(election.startTime);
       const endTime = new Date(election.endTime);

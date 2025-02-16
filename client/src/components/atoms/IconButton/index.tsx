@@ -73,7 +73,7 @@ const IconButton: React.FC<IconProps> = ({
   // 사용 예시: <Icon name='mypage' src={mypage}></Icon>
   return (
     <div className={IconClasses} onClick={onClick}>
-      <img src={ICON_MAPPING[name]} />
+      <img src={ICON_MAPPING[name]} alt='icon' />
       {children}
     </div>
   );
