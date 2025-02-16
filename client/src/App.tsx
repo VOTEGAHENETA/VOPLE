@@ -18,7 +18,7 @@ function App() {
     /^\/login$/,
     /^\/elections\/\d+\/candidates\/\d+$/,
     /^\/elections\/\d+\/question$/,
-    /^\/live\/\d+$/,
+    /^\/live\/\d+\/\d+$/,
   ];
 
   const showHeader = !nonHeaderLocation.some((regex) =>

@@ -27,20 +27,13 @@ export default function ResultChatContainer({
 
   return (
     <div className={styles.container}>
-      {/* <IconButton
-        name='leftLongBlack'
-        className={styles.slideButton}
-        onClick={toggleSlide}
-      /> */}
-      <div className={styles.chatContent}>
-        <ChatBoard
-          sessionId={sessionId}
-          type='session'
-          theme='light'
-          userId={userId}
-          voteTeamId={voteTeamId}
-        />
-      </div>
+      <ChatBoard
+        sessionId={sessionId}
+        type='session'
+        theme='light'
+        userId={userId}
+        voteTeamId={voteTeamId}
+      />
     </div>
   );
 }

@@ -80,10 +80,8 @@ export default function ChatBoard({
 
   return (
     <div className={`${styles.chatBoard} ${styles[theme]}`}>
-      <div className={styles.chatWrapper}>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-        <MessageList messages={messages} />
-      </div>
+      {error && <div className={styles.errorMessage}>{error}</div>}
+      <MessageList messages={messages} />
 
       <ChatBar
         onSendMessage={handleSendMessage}

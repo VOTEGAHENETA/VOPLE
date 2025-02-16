@@ -104,3 +104,12 @@ export const postQuestion = async (
     answer: answer,
   });
 };
+
+export const getUserRole = async (sessionId: number): Promise<string> => {
+  try {
+    return await instance.get(`/election/${sessionId}/status`);
+  } catch (error) {
+    console.error(error);
+    throw new Error('사용자 역할 조회 실패');
+  }
+};
