@@ -6,6 +6,7 @@ import com.votegaheneta.user.entity.QUsers;
 import com.votegaheneta.vote.dto.VoteInfoDto;
 import com.votegaheneta.vote.entity.QCandidate;
 import com.votegaheneta.vote.entity.QElectionSession;
+import com.votegaheneta.vote.entity.QSessionUserInfo;
 import com.votegaheneta.vote.entity.QVote;
 import com.votegaheneta.vote.entity.QVoteInfo;
 import com.votegaheneta.vote.entity.QVoteTeam;
@@ -23,6 +24,8 @@ public class CustomCandidateRepositoryImpl implements CustomCandidateRepository 
   private final QCandidate candidate = QCandidate.candidate;
   private final QElectionSession electionSession = QElectionSession.electionSession;
   private final QVote vote = QVote.vote;
+
+  private final QSessionUserInfo sessionUserInfo = QSessionUserInfo.sessionUserInfo;
   private final QVoteTeam voteTeam = QVoteTeam.voteTeam;
   private final JPAQueryFactory queryFactory;
 

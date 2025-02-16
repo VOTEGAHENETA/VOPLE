@@ -21,7 +21,7 @@ public class AuthenticationUtil {
     return oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
   }
 
-  public static Users getUserFromAuthentication() {
+  public static Users getUserFromAuthentication() throws EmptyOauthUserException {
     Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext()
         .getAuthentication();
     if (authentication == null) {
