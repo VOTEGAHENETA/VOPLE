@@ -1,5 +1,6 @@
 package com.votegaheneta.user.controller;
 
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 import com.votegaheneta.common.response.ApiResponse;
 import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.dto.UserDto;
@@ -32,7 +33,7 @@ public class UserController {
   @GetMapping
   public ApiResponse<UserDto> getUser(@AuthenticationPrincipal
       CustomOauth2User oauth2User) {
-    Users user = oauth2User.getUser();
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     UserDto userDto = userService.getUser(user.getId());
     return ApiResponse.success(HttpStatus.OK, "유저 조회 성공", userDto);
   }
@@ -61,7 +62,7 @@ public class UserController {
   )
   @PutMapping
   public ApiResponse<UserDto> updateUser(@AuthenticationPrincipal CustomOauth2User oauth2User,@RequestBody UserDto userDto) {
-    Users user = oauth2User.getUser();
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     System.out.println(userDto.getUserId());
     System.out.println(userDto.getUsername());
     UserDto result = userService.updateUser(user.getId(), userDto);
