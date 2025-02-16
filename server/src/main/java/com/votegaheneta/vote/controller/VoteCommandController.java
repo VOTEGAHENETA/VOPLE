@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -136,8 +137,9 @@ public class VoteCommandController {
   @PostMapping("/castvote")
   public ApiResponse<Void> castVote(
       @Positive @PathVariable("sessionId") Long sessionId,
-      @Valid @RequestBody VoteCastRequest voteCastRequest) {
-    voteCommandService.castVote(voteCastRequest, sessionId);
+      @Valid @RequestBody VoteCastRequest voteCastRequest, HttpSession loginSession) {
+    Long userId = (Long)loginSession.getAttribute("userId");
+    voteCommandService.castVote(voteCastRequest, sessionId, userId);
     messagingTemplate.convertAndSend("/api/vote/"+sessionId
         , voteFindService.findVoteResultBySessionId(sessionId));
     return ApiResponse.success(HttpStatus.OK, "투표 성공", null);

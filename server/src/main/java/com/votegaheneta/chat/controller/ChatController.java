@@ -4,6 +4,7 @@ import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.ChatRoomDto;
 import com.votegaheneta.chat.service.ChatService;
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.handler.AuthorizationExceptionHandler;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.HandleAuthorizationDenied;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -50,6 +53,8 @@ public class ChatController {
       @Parameter(name = "type", description = "채팅방 타입 : session or team", example = "session"),
       @Parameter(name = "roomId", description = "채팅방 ID", example = "1")
   })
+  @PreAuthorize("@chatAuth.isUserAuthorizedInChat(#type, #roomId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/api/room/{type}/{roomId}")
   @ResponseBody
   public ApiResponse<List<ChatDto>> getChatList(
