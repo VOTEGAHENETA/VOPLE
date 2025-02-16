@@ -60,9 +60,13 @@ export const getElectionList = async (): Promise<ElectionList> => {
 };
 
 export const getElectionSession = async (
-  sessionId: number
+  sessionId: number,
+  query: string
 ): Promise<ElectionResponse> => {
-  return await instance.get(`/election/${sessionId}`);
+  const url = query
+    ? `/election/${sessionId}${query}`
+    : `/election/${sessionId}`;
+  return await instance.get(url);
 };
 
 // 투표하기 (POST 요청)
