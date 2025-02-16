@@ -64,7 +64,7 @@ export const getElectionSession = async (
   query: string
 ): Promise<ElectionResponse> => {
   const url = query
-    ? `/election/${sessionId}${query}`
+    ? `/election/${sessionId}?${query}`
     : `/election/${sessionId}`;
   return await instance.get(url);
 };
