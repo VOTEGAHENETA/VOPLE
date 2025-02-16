@@ -57,7 +57,7 @@ export const router = createBrowserRouter([
         element: <ResultCurrentTemplate />,
       },
       {
-        path: 'live/:teamId',
+        path: 'live/:session_id/:team_id',
         element: <Streaming />,
       },
       {
@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
         element: <FinalTemplate />,
       },
       {
-        path: 'mypage/:user_id',
+        path: 'mypage',
         element: <Voter />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정

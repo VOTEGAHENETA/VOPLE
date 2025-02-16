@@ -21,7 +21,8 @@ function App() {
     /^\/login$/,
     /^\/elections\/\d+\/candidates\/\d+$/,
     /^\/elections\/\d+\/question$/,
-    /^\/live\/\d+$/,
+    // /^\/live\/\d+$/,
+    /^\/live\/\d+\/\d+$/, // live/{sessionId}/{userId} 패턴 추가
   ];
 
   const showHeader = !nonHeaderLocation.some((regex) =>

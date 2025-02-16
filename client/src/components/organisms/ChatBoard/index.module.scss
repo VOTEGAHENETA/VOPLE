@@ -5,18 +5,9 @@
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 8px; 
-
-  .chatWrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 200px;
-
-    .messageArea{
-      flex: 1;
-    }
-  }
+  height: 100%;
+  overflow-y: auto;
 
   &.dark {
     color: #fff;
@@ -65,10 +56,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 200px;
-  max-height: 200px;
-  overflow-y: auto;
-  padding: 10px 0;
+  height: calc(100% - 40px);
+  overflow-y: auto; // 세로 스크롤 활성화
   
   &::-webkit-scrollbar {
     width: 6px;
@@ -116,7 +105,7 @@
 .heartBox {
   position: absolute;
   right: 0;
-  top: -50px;
+  top: -30px;
 }
 
 .heartContainer {

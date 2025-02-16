@@ -2,6 +2,7 @@ import {
   ElectionSection,
   ISessionDetail,
   ElectionList,
+  UserRoleResponse,
 } from '@/types/election';
 import {
   CandidateSessionData,
@@ -99,4 +100,17 @@ export const postQuestion = async (
   return await instance.post(`/election/${sessionId}/question`, {
     answer: answer,
   });
+};
+
+// 유저 Role  확인
+export const getUserRole = async (sessionId: string) => {
+  try {
+    const response = await instance.get<UserRoleResponse>(
+      `/election/${sessionId}/status`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('사용자 역할 조회 실패');
+  }
 };

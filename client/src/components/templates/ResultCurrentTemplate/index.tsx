@@ -8,10 +8,8 @@ import { ElectionResult } from '@/types/final';
 import { useNavigate } from 'react-router-dom';
 
 const ResultCurrentTemplate = () => {
-  const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
-    null
-  );
-  const [finalData, setFinalData] = useState<ElectionResult | null>(null);
+  const [currentData, setCurrentData] = useState<VoteResultsResponse | null>();
+  const [finalData, setFinalData] = useState<ElectionResult | null>();
   const navigate = useNavigate();
   const sessionId = 1;
 
