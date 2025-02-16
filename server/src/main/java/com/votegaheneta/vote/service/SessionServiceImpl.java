@@ -58,7 +58,8 @@ public class SessionServiceImpl implements SessionService {
     SessionUserInfo sessionUserInfo = new SessionUserInfo(user, electionSession);
     sessionUserInfoRepository.save(sessionUserInfo);
     // qr코드로 접속할 url
-    String url = mediaUrl + "/elections/" + electionSession.getId();
+    String REQUEST_CACHE_QUERY = "?entrance";
+    String url = mediaUrl + "/elections/" + electionSession.getId() + REQUEST_CACHE_QUERY;
 
     int width = 400;
     int height = 400;
