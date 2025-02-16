@@ -165,7 +165,6 @@ public class CustomVoteRepositoryImpl implements CustomVoteRepository {
 //        ps.setString(3, voteInfo.getUserType().name());
 //        ps.setBoolean(4, voteInfo.isHasSelect());
 //      }
-//
 //      @Override
 //      public int getBatchSize() {
 //        return voteInfoList.size();

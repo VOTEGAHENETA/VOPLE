@@ -13,7 +13,7 @@ instance.interceptors.response.use(
     return response.data.data;
   },
   (error) => {
-    console.error('API 요청 에러:', error);
+    console.log('API 요청 에러:', error);
 
     // 에러로 응답이 발생한 경우
     if (error.response) {
@@ -21,11 +21,26 @@ instance.interceptors.response.use(
       console.error('에러 발생', data);
 
       if (status === 401) {
+        window.location.href = '/login';
         console.log('인증이 필요합니다.');
       } else if (status === 403) {
         console.log('접근 권한이 없습니다.');
+        const currentPath = window.location.pathname;
+        const regex = /^\/elections\/(\d+)$/;
+        const match = currentPath.match(regex);
+
+        let newPath = '/elections/list';
+        if (match) {
+          const electionId = match[1];
+          newPath = `/elections/${electionId}/question`;
+        }
+
+        window.location.href = newPath;
       } else if (status === 404) {
         console.log('리소스를 찾을 수 없습니다.');
+      } else if (status === 406) {
+        console.log('로그인을 진행해야 합니다.');
+        window.location.href = '/login';
       } else if (status === 500) {
         console.log('서버에 에러가 있습니다.');
       }

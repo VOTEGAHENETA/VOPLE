@@ -21,10 +21,12 @@ function Header() {
 
   function handleMyPage() {
     navigate('/mypage');
+    window.location.reload();
   }
 
   function handleHome() {
     navigate('/elections/list');
+    window.location.reload();
   }
 
   return (

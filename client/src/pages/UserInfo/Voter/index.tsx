@@ -1,13 +1,7 @@
-import Footer from '@/components/molecules/Footer';
-import ElectionMainTemplate from '@/components/templates/ElectionMainTemplate';
+import UserInfoUpdateTemplate from '@/components/templates/UserInfoUpdateTemplate';
 
 function Voter() {
-  return (
-    <div>
-      <ElectionMainTemplate />
-      <Footer />
-    </div>
-  );
+  return <UserInfoUpdateTemplate></UserInfoUpdateTemplate>;
 }
 
 export default Voter;

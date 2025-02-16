@@ -24,4 +24,13 @@ public class UserDto {
     this.username = user.getUsername();
     this.kakaoId = user.getKakaoId();
   }
+
+  public static Users toEntity(UserDto userDto) {
+    return Users.builder()
+        .userId(userDto.getUserId())
+        .kakaoId(userDto.getKakaoId())
+        .nickname(userDto.getNickname())
+        .username(userDto.getUsername())
+        .build();
+  }
 }

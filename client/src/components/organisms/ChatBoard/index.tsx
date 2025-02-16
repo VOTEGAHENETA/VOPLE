@@ -7,8 +7,6 @@ import { useWebSocket } from '@/hooks/useWebSocket';
 import Heart from './Heart';
 import { useChatMessages } from '@/services/hooks/useChatMessages';
 
-console.log('ChatBoard Rendered');
-
 type ThemeType = 'dark' | 'light';
 type roomType = 'session' | 'team';
 
@@ -94,7 +92,10 @@ export default function ChatBoard({
         theme={theme}
       />
       {/* 채팅 Heart */}
-      <div style={{ display: type === 'team' ? 'block' : 'none' }}>
+      <div
+        className={styles.heartBox}
+        style={{ display: type === 'team' ? 'block' : 'none' }}
+      >
         <Heart></Heart>
       </div>
     </div>

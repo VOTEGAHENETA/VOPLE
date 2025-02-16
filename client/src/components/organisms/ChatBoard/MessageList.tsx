@@ -17,6 +17,8 @@ export default function MessageList({ messages }: MessageListProps) {
     }
   }, [messages]);
 
+  console.log('******', messages);
+
   return (
     <div className={styles.messageArea} ref={messageAreaRef}>
       {messages.map((message, index) => (
@@ -30,7 +32,7 @@ export default function MessageList({ messages }: MessageListProps) {
           <Text className={styles.time} size='s'>
             [{message.createdTime.slice(0, 5)}]
           </Text>
-          {/* 닉네임 */}
+          {/* 닉네임*/}
           <Text className={styles.username} color={message.color} size='s'>
             {message.nickname}
           </Text>

@@ -41,7 +41,9 @@ function ElectionMainTemplate() {
             );
           })}
         </div>
-        {election && <Turnout election={election} />}
+        {election?.voteResults && election?.voteResults.length > 0 && (
+          <Turnout election={election} />
+        )}
       </div>
     </div>
   );

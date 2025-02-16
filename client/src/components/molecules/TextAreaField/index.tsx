@@ -7,7 +7,7 @@ import TextCounter from '../../atoms/TextCounter';
 export interface TextAreaFieldProps {
   id: string;
   label: string;
-  value: string;
+  value: string | null;
   onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   maxLength?: number;
@@ -26,6 +26,8 @@ export function TextAreaField({
   disabled = false,
   ...props
 }: TextAreaFieldProps) {
+  const currentLength = value?.length ?? 0;
+  const safeValue = value ?? '';
   return (
     <div className={styles.textAreaField}>
       {label && (
@@ -37,7 +39,7 @@ export function TextAreaField({
       )}
       <TextArea
         id={id}
-        value={value}
+        value={safeValue}
         onChange={onChange}
         placeholder={placeholder}
         maxLength={maxLength}
@@ -46,7 +48,7 @@ export function TextAreaField({
         {...props}
       />
       {maxLength && (
-        <TextCounter currentLength={value.length} maxLength={maxLength} />
+        <TextCounter currentLength={currentLength} maxLength={maxLength} />
       )}
     </div>
   );

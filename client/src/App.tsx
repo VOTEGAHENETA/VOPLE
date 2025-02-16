@@ -1,9 +1,18 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './App.scss';
 import Header from '@/components/molecules/Header';
+import { useEffect } from 'react';
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/elections/list', { replace: true });
+      window.location.reload();
+    }
+  }, [location.pathname, navigate]);
 
   // 헤더가 사용되지 않는 곳
   const nonHeaderLocation = [

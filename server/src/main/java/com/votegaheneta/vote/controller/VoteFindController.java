@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
@@ -62,7 +63,6 @@ public class VoteFindController {
       @RequestParam("keyword") String keyword,
       Pageable pageable) {
     List<VoteInfoDto> result = voteFindService.findSearchCandidates(voteId, keyword, pageable);
-    System.out.println(result.size());
     return ApiResponse.success(HttpStatus.OK, "후보자 리스트 검색 성공", result);
   }
 
@@ -131,8 +131,8 @@ public class VoteFindController {
   @GetMapping("/{userId}/hasVoted")
   public ApiResponse<Boolean> hasVoted(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId,
-      @Valid @Positive @PathVariable(name = "userId") Long userId) {
+      HttpSession loginSession) {
     return ApiResponse.success(HttpStatus.OK, "투표 완료 여부 확인",
-        voteFindService.hasVoted(sessionId, userId));
+        voteFindService.hasVoted(sessionId, (Long)loginSession.getAttribute("userId")));
   }
 }

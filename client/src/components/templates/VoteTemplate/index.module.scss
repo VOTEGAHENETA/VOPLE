@@ -90,5 +90,9 @@ main {
 }
 
 dialog {
-  padding: 20px 0px
+  padding: 20px 0px;
+}
+
+.loading > dialog {
+  min-width: 333px;
 }

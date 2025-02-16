@@ -7,6 +7,7 @@ import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import Text from '@/components/atoms/Text';
 import { useNavigate } from 'react-router-dom';
 import { useCreateElection } from '@/services/hooks/useCreateElection';
+import { combineDateAndTime } from '@/utils/date';
 
 function ElectionCreateTemplate() {
   const navigate = useNavigate();
@@ -91,17 +92,22 @@ function ElectionCreateTemplate() {
         break;
       }
     }
-
-    setState((prev) => ({
-      ...prev,
-    }));
   }
 
   const mutation = useCreateElection();
-
   function handleSubmit() {
-    console.log('election data:', state);
-    mutation.mutate(state);
+    const startTime = combineDateAndTime(
+      dateState.startDate,
+      dateState.startTime
+    );
+    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const updateState = {
+      ...state,
+      startTime,
+      endTime,
+    };
+
+    mutation.mutate(updateState);
     if (mutation.isSuccess) {
       navigate(`/elections/${mutation.data}`);
     }

@@ -6,15 +6,16 @@ import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { useVoteStore } from '@/stores/voteStore';
 import ModalPopup from './ModalPopUp';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useVoteDetail } from '@/services/hooks/useVoteDetail';
 
 function VoteTemplate() {
+  const { election_id } = useParams<{ election_id: string }>();
+  const sessionId = Number(election_id);
   const { selectedCandidates, isModalOpen, chooseCandidate, setModalOpen } =
     useVoteStore();
   const [isVoting, setIsVoting] = useState(true);
   const navigate = useNavigate();
-  const sessionId = 3;
   const { data: voteData } = useVoteDetail(sessionId);
 
   // 네비게이션 처리

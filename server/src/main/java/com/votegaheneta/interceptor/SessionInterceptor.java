@@ -16,6 +16,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
   @Value("${base_url}")
   private String BASE_URL;
+  private final String REDIRECT = "api/redirect";
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
@@ -32,7 +33,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     boolean exist = sessionUserInfoRepository.existsSessionUserInfoByElectionSessionIdAndUserId(sessionId, user.getId());
     if (!exist) {
-      String redirectURL = String.format("%s/election/%d/question", BASE_URL, sessionId);
+      String redirectURL = String.format("%s/%s/elections/%d/question", BASE_URL, REDIRECT,sessionId);
       response.sendRedirect(redirectURL);
       return false;
     }
