@@ -74,11 +74,3 @@ export interface ISessionDetail {
   sessionDto: TSession;
   voteEditInfos: TVoteEdit[];
 }
-
-export interface UserRoleResponse {
-  httpStatus: number;
-  message: string;
-  data: 'VOTER' | 'CANDIDATE';
-}
-
-export type UserRole = 'VOTER' | 'CANDIDATE';
