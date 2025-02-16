@@ -8,10 +8,12 @@ interface ModifyProps {
   data: TCreateElection;
 }
 
-export const useElectionSession = (sessionId: number) => {
+export const useElectionSession = (sessionId: number, isQuery: string) => {
+  const entrance = new URLSearchParams(isQuery).has('entrance');
+  const query = entrance ? 'entrance' : '';
   return useQuery({
-    queryKey: ['session', sessionId],
-    queryFn: () => getElectionSession(sessionId),
+    queryKey: ['session', sessionId, query],
+    queryFn: () => getElectionSession(sessionId, query),
     staleTime: 1000 * 60 * 5,
   });
 };
