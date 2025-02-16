@@ -113,3 +113,7 @@ export const getUserRole = async (sessionId: number): Promise<string> => {
     throw new Error('사용자 역할 조회 실패');
   }
 };
+
+export const getIsVoter = async (sessionId: number): Promise<string> => {
+  return await instance.get(`/election/${sessionId}/status`);
+};
