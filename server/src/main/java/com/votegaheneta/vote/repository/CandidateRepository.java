@@ -4,6 +4,7 @@ import com.votegaheneta.vote.dto.CandidateResultDto;
 import com.votegaheneta.vote.entity.Candidate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,4 +16,11 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
 
   @Query("select c from Candidate c join fetch c.user u join fetch c.voteTeam vt join fetch vt.vote v join fetch v.electionSession where u.id = :userId")
   List<Candidate> findCandidateAndUserAndVoteTeamByUserId(@Param("userId") Long userId);
+
+  @Query("select c.id from Candidate c where c.voteTeam.id in :voteTeamIds")
+  List<Long> findIdsByVoteTeamIds(@Param("voteTeamIds") List<Long> voteTeamIds);
+
+  @Modifying
+  @Query("DELETE FROM Candidate c WHERE c.voteTeam.vote.id = :voteId")
+  void deleteByVoteId(@Param("voteId") Long voteId);
 }

@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
-  @Value("${media_url}")
+  @Value("${base_url}")
   private String mediaUrl;
 
   private final VoteTeamRepository voteTeamRepository;
@@ -58,7 +58,7 @@ public class SessionServiceImpl implements SessionService {
     SessionUserInfo sessionUserInfo = new SessionUserInfo(user, electionSession);
     sessionUserInfoRepository.save(sessionUserInfo);
     // qr코드로 접속할 url
-    String url = mediaUrl + "/api/election/" + electionSession.getId();
+    String url = mediaUrl + "/elections/" + electionSession.getId();
 
     int width = 400;
     int height = 400;

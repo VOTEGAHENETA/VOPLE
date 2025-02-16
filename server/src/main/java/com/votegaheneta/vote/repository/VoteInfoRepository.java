@@ -23,4 +23,14 @@ public interface VoteInfoRepository extends JpaRepository<VoteInfo, Long> {
   @Modifying
   @Query("delete from VoteInfo vi where vi.vote.id = :voteId")
   void deleteAllBatchByVoteId(Long voteId);
+
+  @Query("select vi.id from VoteInfo vi where vi.vote.id = :voteId")
+  List<Long> findIdsByVoteId(@Param("voteId") Long voteId);
+
+
+
+  @Modifying
+  @Query("DELETE FROM VoteInfo vi WHERE vi.vote.id = :voteId")
+  void deleteByVoteId(@Param("voteId") Long voteId);
+
 }
