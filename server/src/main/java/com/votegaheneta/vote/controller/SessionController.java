@@ -164,8 +164,9 @@ public class SessionController {
               }))
   )
   @PostMapping
-  public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto) {
-    Long result = sessionService.saveSession(sessionDto);
+  public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto, @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser();
+    Long result = sessionService.saveSession(sessionDto, user.toDto());
     return ApiResponse.success(HttpStatus.CREATED, "세션 생성 성공", result);
   }
 

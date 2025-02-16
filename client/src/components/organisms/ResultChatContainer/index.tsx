@@ -7,7 +7,7 @@ import ChatBoard from '../ChatBoard';
 // import IconButton from '@/components/atoms/IconButton';
 
 type TabContainerProps = {
-  userId: number;
+  userId?: number;
   sessionId: number;
   voteTeamId?: number;
 };

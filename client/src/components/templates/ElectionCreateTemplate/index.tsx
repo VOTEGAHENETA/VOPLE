@@ -7,6 +7,11 @@ import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import Text from '@/components/atoms/Text';
 import { useNavigate } from 'react-router-dom';
 import { useCreateElection } from '@/services/hooks/useCreateElection';
+import {
+  combineDateAndTime,
+  getFormattedDate,
+  getFormattedTime,
+} from '@/utils/date';
 
 function ElectionCreateTemplate() {
   const navigate = useNavigate();
@@ -16,14 +21,16 @@ function ElectionCreateTemplate() {
     entranceAnswer: '',
     startTime: new Date(),
     endTime: new Date(),
-    wholeVoter: 0,
+    wholeVoter: 1,
     sessionName: '',
   });
   const [dateState, setDateState] = useState({
-    startDate: '',
-    startTime: '',
-    endDate: '',
-    endTime: '',
+    startDate: getFormattedDate(),
+    startTime: getFormattedTime(),
+    endDate: getFormattedDate(
+      new Date(new Date().setDate(new Date().getDate() + 1))
+    ),
+    endTime: getFormattedTime(),
   });
 
   function handleChangeLabel(e: React.ChangeEvent<HTMLInputElement>) {
@@ -34,6 +41,10 @@ function ElectionCreateTemplate() {
   }
 
   function handleChangeWholeVoter(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.valueAsNumber < 1) {
+      alert('인원을 다시 입력해주세요.');
+      return;
+    }
     setState((prev) => ({
       ...prev,
       wholeVoter: e.target.valueAsNumber,
@@ -59,49 +70,61 @@ function ElectionCreateTemplate() {
     field: 'date' | 'time',
     value: string
   ) {
-    const str = type.concat(field);
+    setDateState((prev) => {
+      const newState = {
+        ...prev,
+        [`${type}${field.charAt(0).toUpperCase() + field.slice(1)}`]: value,
+      };
 
-    switch (str) {
-      case 'startdate':
-        setDateState((prev) => ({
-          ...prev,
-          startDate: value,
-        }));
-        break;
-
-      case 'starttime':
-        setDateState((prev) => ({
-          ...prev,
-          startTime: value,
-        }));
-        break;
-
-      case 'enddate':
-        setDateState((prev) => ({
-          ...prev,
-          endDate: value,
-        }));
-        break;
-
-      case 'endtime': {
-        setDateState((prev) => ({
-          ...prev,
-          endTime: value,
-        }));
-        break;
+      // startDate와 endDate가 같고, endTime이 startTime보다 이전인 경우 조정
+      if (
+        newState.startDate === newState.endDate &&
+        newState.endTime < newState.startTime
+      ) {
+        const [hours, minutes] = newState.startTime.split(':').map(Number);
+        let newMinutes = minutes + 1;
+        let newHours = hours;
+        if (newMinutes >= 60) {
+          newHours = (newHours + 1) % 24;
+          newMinutes = 0;
+        }
+        newState.endTime = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
       }
-    }
 
-    setState((prev) => ({
-      ...prev,
-    }));
+      return newState;
+    });
   }
 
   const mutation = useCreateElection();
-
   function handleSubmit() {
-    console.log('election data:', state);
-    mutation.mutate(state);
+    const startTime = combineDateAndTime(
+      dateState.startDate,
+      dateState.startTime
+    );
+    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const updateState = {
+      ...state,
+      startTime,
+      endTime,
+    };
+
+    function isEmpty(s: string | number | Date) {
+      switch (typeof s) {
+        case 'string':
+          return s === '';
+        case 'number':
+          return Number.isNaN(s);
+      }
+    }
+
+    const a = Object.values(state).some(isEmpty);
+    console.log(state);
+    if (a) {
+      alert('필요한 정보를 모두 입력해주세요.');
+      return;
+    }
+
+    mutation.mutate(updateState);
     if (mutation.isSuccess) {
       navigate(`/elections/${mutation.data}`);
     }

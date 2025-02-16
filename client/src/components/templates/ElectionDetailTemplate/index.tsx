@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
 import ElectionInfoSection from '@/components/organisms/ElectionInfoSection';
 import { TSession, TVoteEdit } from '@/types/election';
@@ -16,6 +16,7 @@ import {
   useElectionDelete,
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
+import { combineDateAndTime } from '@/utils/date';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -49,8 +50,17 @@ function ElectionDetailTemplate() {
     },
   ]);
   const [isModify, setIsModify] = useState<boolean>(true);
+  const originalState = useRef<{
+    session: TSession;
+    date: typeof dateState;
+  } | null>(null);
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
+
+  function convertUTCToKST(utcString: Date) {
+    const data = new Date(utcString);
+    return new Date(data.getTime() + 9 * 60 * 60 * 1000); // 9시간 추가
+  }
 
   useEffect(() => {
     if (isLoading) {
@@ -62,23 +72,48 @@ function ElectionDetailTemplate() {
     }
 
     if (data?.sessionDto) {
-      setState(data.sessionDto);
+      setState((prevState) => ({
+        ...prevState,
+        ...data.sessionDto,
+        startTime: new Date(data.sessionDto.startTime),
+        endTime: new Date(data.sessionDto.endTime),
+      }));
       setVoteState(data.voteEditInfos);
 
-      setDateState({
-        startDate: new Date(state.startTime).toISOString().split('T')[0],
-        startTime: new Date(state.startTime).toLocaleTimeString('en-US', {
+      const startTime = convertUTCToKST(data.sessionDto.startTime);
+      const endTime = convertUTCToKST(data.sessionDto.endTime);
+      setDateState(() => ({
+        startDate: startTime
+          .toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: 'Asia/Seoul',
+          })
+          .replace(/\. /g, '-')
+          .replace('.', ''), // YYYY-MM-DD 형식으로 변환
+        startTime: startTime.toLocaleTimeString('ko-KR', {
           hour12: false,
           hour: '2-digit',
           minute: '2-digit',
+          timeZone: 'Asia/Seoul',
         }),
-        endDate: new Date(state.endTime).toISOString().split('T')[0],
-        endTime: new Date(state.endTime).toLocaleTimeString('en-US', {
+        endDate: endTime
+          .toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: 'Asia/Seoul',
+          })
+          .replace(/\. /g, '-')
+          .replace('.', ''), // YYYY-MM-DD 형식으로 변환
+        endTime: endTime.toLocaleTimeString('ko-KR', {
           hour12: false,
           hour: '2-digit',
           minute: '2-digit',
+          timeZone: 'Asia/Seoul',
         }),
-      });
+      }));
     }
   }, [data]);
 
@@ -154,7 +189,23 @@ function ElectionDetailTemplate() {
   }
 
   function handleChangeModify() {
-    setIsModify(!isModify);
+    originalState.current = {
+      session: {
+        ...state,
+        startTime: new Date(state.startTime),
+        endTime: new Date(state.endTime),
+      },
+      date: { ...dateState },
+    };
+    setIsModify(false);
+  }
+
+  function handleCancelModify() {
+    if (originalState.current) {
+      setState(originalState.current.session);
+      setDateState(originalState.current.date);
+    }
+    setIsModify(true);
   }
 
   function handleDeleteElection() {
@@ -162,7 +213,19 @@ function ElectionDetailTemplate() {
   }
 
   function handleModifyElection() {
-    putMutation.mutate({ sessionId: Number(election_id), data: state });
+    const startTime = combineDateAndTime(
+      dateState.startDate,
+      dateState.startTime
+    );
+    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const updateState = {
+      ...state,
+      startTime,
+      endTime,
+    };
+
+    putMutation.mutate({ sessionId: Number(election_id), data: updateState });
+    setIsModify(true);
   }
 
   if (isLoading) {
@@ -202,7 +265,7 @@ function ElectionDetailTemplate() {
                 type='button'
                 kind='mini-chip'
                 status={BASE_BUTTON_STATUS.OUTLINE}
-                onClick={handleChangeModify}
+                onClick={handleCancelModify}
               >
                 수정취소
               </BaseButton>

@@ -46,7 +46,8 @@ public class Users {
   private String nickname;
 
   @Builder
-  public Users(String username, String nickname, Long kakaoId) {
+  public Users(Long userId, String username, String nickname, Long kakaoId) {
+    this.id = userId;
     this.username = username;
     this.nickname = nickname;
     this.kakaoId = kakaoId;
