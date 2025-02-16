@@ -34,7 +34,7 @@ function Header() {
       <div className={isHidden || pathname === '/list' ? styles.hide : ''}>
         <IconButton name={ICON_NAME.DOODLEBACK} onClick={handleBack} />
       </div>
-      <div onClick={handleHome}>
+      <div className={styles.logo} onClick={handleHome}>
         <IconLogo />
       </div>
       <div
