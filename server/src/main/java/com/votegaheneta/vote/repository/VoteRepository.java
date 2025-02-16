@@ -7,6 +7,7 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -31,4 +32,11 @@ public interface VoteRepository extends JpaRepository<Vote, Long>, CustomVoteRep
                  + " where v.electionSession.id = :sessionId")
     List<VoteResultProjection> findVotesBySessionId(@Param("sessionId") Long sessionId);
 
+
+  @Modifying
+  @Query("DELETE FROM Vote v WHERE v.id = :voteId")
+  void deleteByIdWithoutSelect(@Param("voteId") Long voteId);
+
+  @Query("select v.id from Vote v where v.electionSession.id = :sessionId")
+  List<Long> findIdsBySessionId(@Param("sessionId") Long sessionId);
 }

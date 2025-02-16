@@ -28,8 +28,10 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     SavedRequest savedRequest = requestCache.getRequest(request, response);
     if (savedRequest != null) {
       String redirectUrl = savedRequest.getRedirectUrl();
+      String[] split = redirectUrl.split("/");
+      response.sendRedirect(String.format("%s/elections/%s", KAKAO_LOGIN_URL, split[split.length - 1]));
       System.out.println("redirectUrl = " + redirectUrl);
-      response.sendRedirect(redirectUrl);
+      return;
     }
 
     response.sendRedirect(KAKAO_LOGIN_URL + "/elections/list");

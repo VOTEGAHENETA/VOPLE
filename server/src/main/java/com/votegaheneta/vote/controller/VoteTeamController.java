@@ -1,6 +1,8 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.oauth2.CustomOauth2User;
+import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
 import com.votegaheneta.vote.controller.response.VoteTeamInfoResponse;
 import com.votegaheneta.vote.service.VoteTeamService;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,12 +83,18 @@ public class VoteTeamController {
     }
   }
 
+  @Operation(
+      summary = "입후보자 페이지 정보 조회",
+      description = "FIGMA : 관리자 플로우 - [입후보자 조회/수정 화면]")
+
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @GetMapping("/{userId}")
-  public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("userId") Long userId) {
-    VoteTeamInfoResponse voteTeamInfo = voteTeamService.getVoteTeamInfo(sessionId, userId);
+  @GetMapping
+  public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal
+                                                       CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    VoteTeamInfoResponse voteTeamInfo = voteTeamService.getVoteTeamInfo(sessionId, user.getId());
     return ApiResponse.success(HttpStatus.OK, "투표팀 정보 조회 성공", voteTeamInfo);
   }
 
