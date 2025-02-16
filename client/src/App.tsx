@@ -10,7 +10,6 @@ function App() {
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/elections/list', { replace: true });
-      window.location.reload();
     }
   }, [location.pathname, navigate]);
 
