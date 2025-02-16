@@ -1,9 +1,8 @@
 import { getUserRole } from '@/services/election';
-import { UserRoleResponse } from '@/types/election';
 import { useQuery } from '@tanstack/react-query';
 
-export const useUserRole = (sessionId: string) => {
-  return useQuery<UserRoleResponse>({
+export const useUserRole = (sessionId: number) => {
+  return useQuery<string>({
     queryKey: ['userRole', sessionId],
     queryFn: () => getUserRole(sessionId),
   });

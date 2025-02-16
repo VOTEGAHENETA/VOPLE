@@ -80,3 +80,5 @@ export interface UserRoleResponse {
   message: string;
   data: 'VOTER' | 'CANDIDATE';
 }
+
+export type UserRole = 'VOTER' | 'CANDIDATE';

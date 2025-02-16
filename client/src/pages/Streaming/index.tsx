@@ -22,7 +22,7 @@ export default function Streaming() {
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
 
-  const { data: response, isLoading, error } = useUserRole(session_id);
+  const { data: response, isLoading, error } = useUserRole(sessionId);
 
   console.log(error);
   // if (error) {
@@ -35,7 +35,7 @@ export default function Streaming() {
           <LoadingSpinner />
         ) : (
           <>
-            {response?.data !== 'CANDIDATE' ? (
+            {response !== 'CANDIDATE' ? (
               <StreamSender streamId={teamId} />
             ) : (
               <StreamReceiver streamId={teamId} />

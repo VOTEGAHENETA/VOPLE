@@ -1,4 +1,3 @@
-// components/atoms/LoadingSpinner/index.tsx
 import styles from './index.module.scss';
 
 function LoadingSpinner() {
