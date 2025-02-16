@@ -36,5 +36,5 @@ export const putUserInfo = async (
 };
 
 export const isLogin = async () => {
-  return await instance.put('/auth/login');
+  return await instance.get('/auth/login');
 };
