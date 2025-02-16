@@ -2,10 +2,10 @@ package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.exception.EmptyOauthUserException;
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.handler.AuthorizationExceptionHandler;
 import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
-import com.votegaheneta.util.AuthenticationUtil;
 import com.votegaheneta.vote.controller.response.SessionResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionEditDto;
@@ -21,6 +21,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.HandleAuthorizationDenied;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class SessionController {
 
   private final SessionService sessionService;
+
+  /**
+   * 현재 count 쿼리가 나가고있는데, 추후에 findFirst 쿼리로 최적화 요망
+   */
+  @Operation(
+      summary = "정보 수정 버튼을 눌렀을때 유권자 / 후보자 판별",
+      description = "FIGMA : 후보자 플로우 - [메인 페이지-후보자 등록 전]"
+  )
+  @GetMapping("/{sessionId}/status")
+  public ApiResponse<USER_TYPE> judgeUserType(@PathVariable("sessionId") Long sessionId,
+                                              @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    USER_TYPE userType = sessionService.judgeUserType(sessionId, user.getId());
+    return ApiResponse.success(HttpStatus.OK, "사용자 권한 조회 성공", userType);
+  }
 
   @Operation(
       summary = "암구호 화면 입장 시 질문 조회",
@@ -73,25 +90,14 @@ public class SessionController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PostMapping("/{sessionId}/question")
-  public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId, @RequestBody Map<String, String> payload,
+  public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId,
+                                               @RequestBody Map<String, String> payload,
                                                @AuthenticationPrincipal CustomOauth2User oauth2User) {
-//    Users user = AuthenticationUtil.getUserFromAuthentication();
-//    System.out.println("oauth2User = " + oauth2User);
-    Users user = AuthenticationUtil.getUserFromOauth2User(oauth2User);
-    boolean result = sessionService.validateQuestion(sessionId, user.getId(), payload.get("answer"));
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    boolean result = sessionService.validateQuestion(sessionId, user.getId(),
+                                                     payload.get("answer"));
     return result ? ApiResponse.success(HttpStatus.OK, "정답입니다.", true)
         : ApiResponse.fail(HttpStatus.BAD_REQUEST, "틀렸습니다.");
-  }
-
-  @Operation(
-      summary = "정보 수정 버튼을 눌렀을때 유권자 / 후보자 판별",
-      description = "FIGMA : 후보자 플로우 - [메인 페이지-후보자 등록 전]"
-  )
-  @GetMapping("/{sessionId}/{userId}")
-  public ApiResponse<USER_TYPE> judgeUserType(@PathVariable("sessionId") Long sessionId,
-      @PathVariable("userId") Long userId) {
-    USER_TYPE userType = sessionService.judgeUserType(sessionId, userId);
-    return ApiResponse.success(HttpStatus.OK, "사용자 권한 조회 성공", userType);
   }
 
   @Operation(
@@ -114,6 +120,8 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}/edit")
   public ApiResponse<SessionEditDto> getSessionForEdit(@PathVariable("sessionId") Long sessionId) {
     // 세션 dto + 내가 생성한 투표 리스트
@@ -165,7 +173,8 @@ public class SessionController {
               }))
   )
   @PostMapping
-  public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto, @AuthenticationPrincipal CustomOauth2User oauth2User) {
+  public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto,
+                                         @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     Long result = sessionService.saveSession(sessionDto, user.toDto());
     return ApiResponse.success(HttpStatus.CREATED, "세션 생성 성공", result);
@@ -200,8 +209,10 @@ public class SessionController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PutMapping("/{sessionId}")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   public ApiResponse<SessionDto> updateSession(@PathVariable Long sessionId,
-      @RequestBody SessionDto sessionDto) {
+                                               @RequestBody SessionDto sessionDto) {
     sessionService.updateSession(sessionId, sessionDto);
     return ApiResponse.success(HttpStatus.NO_CONTENT, "세션 수정 성공", null);
   }
@@ -213,6 +224,8 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @DeleteMapping("/{sessionId}")
   public ApiResponse deleteSession(@PathVariable Long sessionId) {
     boolean result = sessionService.deleteSession(sessionId);
@@ -227,6 +240,8 @@ public class SessionController {
   @Parameters(
       @Parameter(name = "sessionId", description = "세션id", required = true)
   )
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}/qrcode")
   public ApiResponse<String> getQrCode(@PathVariable("sessionId") Long sessionId) {
     return ApiResponse.success(HttpStatus.OK, "QR코드 조회 성공", sessionService.getQrcode(sessionId));

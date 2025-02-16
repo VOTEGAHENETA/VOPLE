@@ -2,6 +2,7 @@ package com.votegaheneta.vote.repository;
 
 import com.votegaheneta.vote.entity.VoteTeam;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +34,7 @@ public interface VoteTeamRepository extends JpaRepository<VoteTeam, Long> {
   @Modifying
   @Query("DELETE FROM VoteTeam vt WHERE vt.vote.id = :voteId")
   void deleteByVoteId(@Param("voteId") Long voteId);
+
+  @Query("select vt from VoteTeam vt join fetch vt.vote v join fetch v.electionSession es where vt.id = :voteTeamId")
+  Optional<VoteTeam> findVoteTeamWithVoteAndElection(Long voteTeamId);
 }

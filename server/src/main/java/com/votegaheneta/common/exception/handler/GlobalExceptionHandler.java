@@ -1,4 +1,4 @@
-package com.votegaheneta.common.exception;
+package com.votegaheneta.common.exception.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
