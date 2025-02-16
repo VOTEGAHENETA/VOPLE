@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import SockJS from 'sockjs-client';
-import Stomp, { Client } from 'stompjs';
+import Stomp, { Client, Message } from 'stompjs';
 import { ChatReceiveMessage } from '@/types/chat';
 
 type WebSocketProps = {
@@ -8,6 +8,36 @@ type WebSocketProps = {
   roomId: number;
   sessionId: number;
   userId: number;
+};
+
+const parseMessage = (message: Message): ChatReceiveMessage => {
+  try {
+    if (typeof message.body === 'string') {
+      // 시스템 메시지 여부 확인
+      if (message.body.includes('입장하였습니다')) {
+        return {
+          userId: 0, // 시스템 메시지용 ID
+          nickname: 'System',
+          text: message.body,
+          color: '#999999', // 시스템 메시지 색상
+          createdTime: new Date().toISOString(),
+        };
+      }
+      // 일반 메시지 파싱
+      return JSON.parse(message.body);
+    }
+    return message.body;
+  } catch (error) {
+    console.error('메시지 파싱 에러:', error);
+    // 파싱 실패 시 시스템 메시지 형태로 반환
+    return {
+      userId: 0,
+      nickname: 'System',
+      text: message.body,
+      color: '#999999',
+      createdTime: new Date().toISOString(),
+    };
+  }
 };
 
 export const useWebSocket = ({
@@ -52,12 +82,13 @@ export const useWebSocket = ({
           (message) => {
             try {
               // 받은 메시지를 JSON 형태로 파싱
-              const receivedMessage: ChatReceiveMessage = JSON.parse(
-                message.body
-              );
+              // const receivedMessage: ChatReceiveMessage = JSON.parse(
+              //   message.body
+              // );
+              const parsedMessage = parseMessage(message);
               // 받은 메시지를 상태에 추가
               setMessages((prev) => {
-                const newMessages = [...prev, receivedMessage];
+                const newMessages = [...prev, parsedMessage];
                 console.log('newMessages : ', newMessages);
                 return newMessages;
               });
