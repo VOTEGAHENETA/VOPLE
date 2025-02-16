@@ -113,7 +113,7 @@ function MainCandidateList({ index, vote }: Props) {
   }
 
   function handleRouteChannel(cadindateId: number) {
-    navigate(`/elections/${vote.voteId}/candidates/${cadindateId}`);
+    navigate(`/live/${vote.voteId}/${cadindateId}`);
   }
 
   useEffect(handleTransitionEndEffect, [currentIndex, transitioning]);

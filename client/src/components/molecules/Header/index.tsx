@@ -26,7 +26,6 @@ function Header() {
 
   function handleHome() {
     navigate('/elections/list');
-    window.location.reload();
   }
 
   return (

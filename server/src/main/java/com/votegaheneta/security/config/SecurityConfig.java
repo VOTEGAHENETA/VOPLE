@@ -42,7 +42,7 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/redirect/login").permitAll()
+            .requestMatchers("/api/redirect/login", "/api/auth/login").permitAll()
             .anyRequest().authenticated()
         )
         .oauth2Login(oauth2 -> oauth2
