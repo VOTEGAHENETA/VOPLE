@@ -21,6 +21,7 @@ public class VoteInfoJdbcRepository {
     Object[] params = new Object[voteIds.size() * 3];
     for (int i = 0; i < voteIds.size(); i++) {
       params[i * 3] = userId;
+
       params[i * 3 + 1] = voteIds.get(i);
       params[i * 3 + 2] = USER_TYPE.VOTER.name();
     }
