@@ -134,9 +134,10 @@ public class SessionController {
       description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
   )
   @GetMapping
-  public ApiResponse<SessionResponse> getSessions(@AuthenticationPrincipal CustomOauth2User oauth2User) {
-    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
-    SessionResponse result = sessionService.getSessions(user.getId());
+  public ApiResponse<SessionResponse> getSessions(/*@AuthenticationPrincipal CustomOauth2User oauth2User*/) {
+    // Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    Long userId = 1L;
+    SessionResponse result = sessionService.getSessions(/*user.getId()*/userId);
     if (result.getManagedSessions().isEmpty() && result.getInvolvedSessions().isEmpty()) {
       return ApiResponse.fail(HttpStatus.NO_CONTENT, "세션 목록이 없습니다.");
     }
