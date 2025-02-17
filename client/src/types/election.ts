@@ -36,6 +36,7 @@ export type ElectionListDetail = {
   startTime: string;
   endTime: string;
   isClosed: boolean;
+  hasVoted: boolean;
 };
 
 export type ElectionList = {

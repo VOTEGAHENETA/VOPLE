@@ -1,3 +1,4 @@
+import { convertUTCToKST } from '@/utils/date';
 import { useEffect, useState } from 'react';
 
 /**
@@ -27,7 +28,9 @@ function getLeftTime(targetTime: Date): number {
  *          targetTime이 바뀌면 새로운 타이머를 생성합니다.
  */
 function useTimer(targetTime: Date) {
-  const [left, setLeft] = useState<number>(getLeftTime(targetTime));
+  const [left, setLeft] = useState<number>(
+    getLeftTime(convertUTCToKST(targetTime))
+  );
 
   useEffect(() => {
     // deadline이 바뀌면 초기 남은 시간을 새로 계산합니다.
