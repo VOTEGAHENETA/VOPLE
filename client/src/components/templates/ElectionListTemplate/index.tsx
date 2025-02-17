@@ -25,7 +25,7 @@ function ElectionListTemplate() {
         status='participating'
       />
       <ElectionListBox
-        elections={electionList?.involvedSessions || []}
+        elections={electionList?.managedSessions || []}
         status='created'
       />
     </div>
