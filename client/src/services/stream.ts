@@ -18,3 +18,7 @@ export const sendStreamData = async (
 export const getStreamData = async (streamId: number): Promise<IStream> => {
   return await instance.get(`/live/${streamId}`);
 };
+
+export const getIsMine = async (streamId: number): Promise<boolean> => {
+  return await instance.get(`/live/${streamId}/status`);
+};

@@ -64,7 +64,7 @@ function ModalPopup({
                 (c) => c.candidateId === candidate.candidateId
               )
             );
-            if (!team || !team.poster) return null;
+            if (!team) return null;
 
             // sortedVotes에서 해당 vote의 순위를 계산 (1부터 시작)
             const rank =

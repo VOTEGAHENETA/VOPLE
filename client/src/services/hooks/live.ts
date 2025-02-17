@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getStreamData, sendStreamData } from '../stream';
+import { getIsMine, getStreamData, sendStreamData } from '../stream';
 
 export function useStreamData(streamId: number) {
   return useQuery({
@@ -26,5 +26,12 @@ export function useStreamControl() {
     onSuccess: (_, { streamId }) => {
       queryClient.invalidateQueries({ queryKey: ['stream', streamId] });
     },
+  });
+}
+
+export function useIsMine(streamId: number) {
+  return useQuery({
+    queryKey: ['mine', streamId],
+    queryFn: () => getIsMine(streamId),
   });
 }

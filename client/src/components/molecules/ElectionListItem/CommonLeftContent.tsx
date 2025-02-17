@@ -9,14 +9,14 @@ interface CommonLeftContentProps {
   isClosed?: boolean;
 }
 
-const formatPeriod = (
-  sd: string,
-  st: string,
-  ed: string,
-  et: string
-): string => {
-  const startDateTime = `${sd}(${st})`;
-  const endDateTime = `${ed} (${et})`;
+const formatPeriod = (st: string, et: string): string => {
+  const startDate = getFormattedDate(new Date(st));
+  const startTime = getFormattedTime(new Date(st));
+  const endDate = getFormattedDate(new Date(et));
+  const endTime = getFormattedTime(new Date(et));
+  console.log(startDate, startTime);
+  const startDateTime = `${startDate}(${startTime})`;
+  const endDateTime = `${endDate}(${endTime})`;
 
   const str = `${startDateTime} -
   ${endDateTime}`;
@@ -29,10 +29,6 @@ export const CommonLeftContent = ({
   endTime,
   isClosed = false,
 }: CommonLeftContentProps) => {
-  const sd = getFormattedDate(new Date(startTime));
-  const ed = getFormattedDate(new Date(startTime));
-  const st = getFormattedTime(new Date(endTime));
-  const et = getFormattedTime(new Date(endTime));
   return (
     <div className={styles.leftContent}>
       <div className={styles.title__wrap}>
@@ -55,7 +51,7 @@ export const CommonLeftContent = ({
           {sessionName}
         </Text>
       </div>
-      <p className={styles.period}>{formatPeriod(sd, st, ed, et)}</p>
+      <p className={styles.period}>{formatPeriod(startTime, endTime)}</p>
     </div>
   );
 };
