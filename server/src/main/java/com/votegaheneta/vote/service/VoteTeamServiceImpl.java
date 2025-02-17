@@ -4,7 +4,6 @@ import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.stream.entity.Stream;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
-import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.controller.request.CandidateRequestDto;
 import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
@@ -13,12 +12,10 @@ import com.votegaheneta.vote.dto.PledgeDto;
 import com.votegaheneta.vote.dto.VoteTeamDto;
 import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.Vote;
-import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.CandidateRepository;
 import com.votegaheneta.vote.repository.PledgeRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
-import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.ArrayList;
@@ -38,7 +35,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   private final VoteTeamRepository voteTeamRepository;
   private final VoteRepository voteRepository;
   private final UsersRepository usersRepository;
-  private final VoteInfoRepository voteInfoRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
   private final CandidateRepository candidateRepository;
   private final PledgeRepository pledgeRepository;
@@ -58,24 +54,20 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     deleteAllVoteTeam(voteId);
     List<VoteTeam> voteTeam = createVoteTeam(voteId, candidateRequest);
     createStream(voteId, voteTeam);
-    updateUserTypeInVoteInfo(voteId, candidateRequest);
+    updateUserTypeInSessionUserInfo(sessionId, candidateRequest);
   }
 
-  private void updateUserTypeInVoteInfo(Long voteId, CandidateRequestDto candidateRequest) {
-    List<VoteInfo> voteInfoList = voteInfoRepository.findAllByVoteId(voteId);
+  private void updateUserTypeInSessionUserInfo(Long sessionId,
+      CandidateRequestDto candidateRequest) {
     List<List<UserDto>> voteTeamList = candidateRequest.getVoteTeamList();
-    long[] candidateUserIds = voteTeamList.stream().flatMap(List::stream)
-        .mapToLong(UserDto::getUserId)
-        .sorted().toArray();
-    voteInfoList.forEach(voteInfo -> voteInfo.setUserType(USER_TYPE.VOTER));
-    voteInfoList.stream()
-        .filter(voteInfo -> Arrays.binarySearch(candidateUserIds, voteInfo.getUser().getId()) >= 0)
-        .forEach(voteInfo -> voteInfo.setUserType(USER_TYPE.CANDIDATE));
+    List<UserDto> userDtoList = voteTeamList.stream().flatMap(List::stream).toList();
+    List<Users> userList = userDtoList.stream().map(UserDto::toEntity).toList();
+    int updateCnt = sessionUserInfoRepository.updateUserTypeInSessionUserInfo(sessionId, userList);
+    System.out.println("updateCnt = " + updateCnt);
   }
 
   // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
   public void deleteAllVoteTeam(Long voteId) {
-//    pledgeRepository.deleteAllPledgeByVoteTeamId();
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }
 
