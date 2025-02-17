@@ -1,6 +1,10 @@
 import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
-import { getFormattedDate, getFormattedTime } from '@/utils/date';
+import {
+  convertUTCToKST,
+  getFormattedDate,
+  getFormattedTime,
+} from '@/utils/date';
 
 interface CommonLeftContentProps {
   sessionName: string;
@@ -10,11 +14,11 @@ interface CommonLeftContentProps {
 }
 
 const formatPeriod = (st: string, et: string): string => {
-  const startDate = getFormattedDate(new Date(st));
-  const startTime = getFormattedTime(new Date(st));
-  const endDate = getFormattedDate(new Date(et));
-  const endTime = getFormattedTime(new Date(et));
-  console.log(startDate, startTime);
+  const startDate = getFormattedDate(convertUTCToKST(new Date(st)));
+  const startTime = getFormattedTime(convertUTCToKST(new Date(st)));
+  const endDate = getFormattedDate(convertUTCToKST(new Date(et)));
+  const endTime = getFormattedTime(convertUTCToKST(new Date(et)));
+
   const startDateTime = `${startDate}(${startTime})`;
   const endDateTime = `${endDate}(${endTime})`;
 
