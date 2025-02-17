@@ -75,7 +75,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
 
   // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
   public void deleteAllVoteTeam(Long voteId) {
-
 //    pledgeRepository.deleteAllPledgeByVoteTeamId();
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }

@@ -18,4 +18,5 @@ public class SessionInitialInfoDto {
   private LocalDateTime endTime;
   private List<VoteResult> voteResults;
   private Float wholeVoterPercent;
+  private Boolean isHost;
 }

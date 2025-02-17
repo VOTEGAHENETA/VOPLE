@@ -108,8 +108,9 @@ public class SessionController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping("/{sessionId}")
-  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId) {
-    SessionInitialInfoDto result = sessionService.getSession(sessionId);
+  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    SessionInitialInfoDto result = sessionService.getSession(sessionId, user.getId());
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
   }
 

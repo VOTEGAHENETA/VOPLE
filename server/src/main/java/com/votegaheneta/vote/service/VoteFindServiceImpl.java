@@ -12,10 +12,12 @@ import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.VoteDetailDto;
 import com.votegaheneta.vote.dto.VoteInfoDto;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.CustomCandidateRepository;
 import com.votegaheneta.vote.repository.ElectionRepository;
+import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
@@ -42,6 +44,7 @@ public class VoteFindServiceImpl implements VoteFindService {
   private final RedisRepository redisRepository;
   private final SearchComponent searchComponent;
   private final CustomCandidateRepository customCandidateRepository;
+  private final SessionUserInfoRepository sessionUserInfoRepository;
 
   @Override
   public VoteDetailDto getVoteDetail(Long sessionId, Long voteId, Pageable pageable) {
@@ -50,11 +53,9 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   @Override
   public Boolean hasVoted(Long sessionId, Long userId) {
-    ElectionSession electionSession = electionRepository.findById(sessionId)
-        .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
-    Boolean hasVoted = electionSession.getVotes().stream().anyMatch(
-        vote -> (voteInfoRepository.existsVoteInfoByUserId(vote.getId(), userId)).equals("TRUE")) ;
-    return hasVoted;
+    SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("투표 회원의 정보를 찾을 수 없습니다."));
+    return sessionUserInfo.isHasVoted();
   }
 
   @Override
@@ -65,14 +66,13 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<VoteInfoDto> findSearchCandidates(Long voteId, String keyword, Pageable pageable) {
+  public List<VoteInfoDto> findSearchCandidates(Long sessionId, String keyword, Pageable pageable) {
     StringBuilder sb = new StringBuilder();
     keyword = keyword.trim();
     for (String word : keyword.split("")) {
       sb.append(searchComponent.searchWordReSetting(word));
     }
-    List<VoteInfoDto> voteInfoDtos = customCandidateRepository.findSearchCandidatesBySessionId(voteId, sb.toString(), pageable);
-    return voteInfoDtos;
+    return customCandidateRepository.findSearchCandidatesBySessionId(sessionId, sb.toString(), pageable);
   }
 
   @Override

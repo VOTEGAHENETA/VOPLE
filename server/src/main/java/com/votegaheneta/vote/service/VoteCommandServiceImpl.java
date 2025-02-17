@@ -2,6 +2,7 @@ package com.votegaheneta.vote.service;
 
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
 import com.votegaheneta.vote.entity.ElectionSession;
+import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
@@ -49,7 +50,6 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   @Override
   @Transactional
   public void deleteVote(Long voteId) {
-    voteInfoRepository.deleteByVoteId(voteId);
     candidateRepository.deleteByVoteId(voteId);
     pledgeRepository.deleteByVoteId(voteId);
     voteTeamRepository.deleteByVoteId(voteId);
@@ -67,17 +67,16 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     if (now.isBefore(voteStartTime) || now.isAfter(voteEndTime)) {
       throw  new IllegalArgumentException("지금은 투표를 진행할 수 없습니다.");
     }
+    final Boolean TRUE = true;
+    SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId).orElseThrow(
+        () -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다.")
+    );
+    if (sessionUserInfo.isHasVoted()) {
+      throw new AlreadyVotedException("이미 투표를 진행했습니다.");
+    }
+    sessionUserInfo.updateSessionInfoHasVoted(TRUE);
     for (VoteCastRequest.VoteSelection voteSelection : voteCastRequest.getVoteSelections()) {
-      Long voteId = voteSelection.getVoteId();
       Long voteTeamId = voteSelection.getVoteTeamId();
-      Boolean exists = voteInfoRepository.existsVoteInfoByUserId(voteId, userId);
-      if (exists != null && exists) {
-        throw new AlreadyVotedException("이미 투표를 진행했습니다.");
-      }
-      VoteInfo voteInfo = voteInfoRepository.findVoteInfoByVoteIdAndUserId(voteId, userId)
-          .orElseThrow(() -> new IllegalArgumentException("투표회원의 정보를 찾을 수 없습니다."));
-      final Boolean TRUE = true;
-      voteInfo.updateVoteInfo(TRUE);
       VoteTeam voteTeam = voteTeamRepository.findById(voteTeamId)
           .orElseThrow(() -> new IllegalArgumentException("해당 투표팀을 찾을 수 없습니다."));
       voteTeam.incrementPollCnt();

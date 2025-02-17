@@ -45,7 +45,7 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
       @Parameter(name = "sessionId", description = "투표id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("sessionAuth.isAdminInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{voteId}")
   public ApiResponse<VoteDetailDto> getVoteDetail(@PathVariable("sessionId") Long sessionId,
@@ -68,8 +68,7 @@ public class VoteFindController {
       @PathVariable("voteId") Long voteId,
       @RequestParam("keyword") String keyword,
       Pageable pageable) {
-    List<VoteInfoDto> result = voteFindService.findSearchCandidates(voteId, keyword, pageable);
-    System.out.println(result.size());
+    List<VoteInfoDto> result = voteFindService.findSearchCandidates(sessionId, keyword, pageable);
     return ApiResponse.success(HttpStatus.OK, "후보자 리스트 검색 성공", result);
   }
 
