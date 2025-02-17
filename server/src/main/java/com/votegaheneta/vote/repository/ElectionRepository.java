@@ -26,7 +26,7 @@ public interface ElectionRepository extends JpaRepository<ElectionSession, Long>
   @Query("select es.qrCode from ElectionSession es where es.id = :sessionId")
   Optional<String> findQrcodeById(@Param("sessionId") Long sessionId);
 
-  @Query("select es from ElectionSession es join fetch es.sessionUserInfos sui where sui.user.id = :userId")
+  @Query("select es from ElectionSession es join fetch es.sessionUserInfos sui where sui.user.id = :userId and es.hostUser.id != :userId")
   List<ElectionSession> findBySessionUserInfos_Id(@Param("userId") Long userId);
 
   @Query("select v from Vote v join v.electionSession es where es.id = :sessionId")
