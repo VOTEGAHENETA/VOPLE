@@ -5,9 +5,9 @@ import BaseButton from '@/components/atoms/BaseButton';
 import ChatBoard from '../ChatBoard';
 import PledgeTab from './PledgeTab';
 import PosterTab from './PosterTab';
+import SAMPLE_POSTER from '@/assets/sample/sample.png';
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
-import SAMPLE_POSTER from '@/assets/sample/sample.png';
 // import { useCandidateInfo } from '@/services/hooks/useCandidateInfo';
 // import { useParams } from 'react-router-dom';
 // import IconButton from '@/components/atoms/IconButton';
@@ -39,22 +39,21 @@ type ChatType = 'session' | 'team';
 type TabContainerProps = {
   type: ChatType;
   theme: ThemeType;
-  userId: number;
   sessionId: number;
   voteTeamId?: number;
 };
+
 const MemoizedChatBoard = memo(ChatBoard);
 
 export default function TabContainer({
   type = 'team',
   theme = 'dark',
-  userId,
   sessionId,
   voteTeamId,
 }: TabContainerProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('chat');
   // 슬라이드 상태 추가
   // const [isSlideDown, setIsSlideDown] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabType>('chat');
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
@@ -111,7 +110,6 @@ export default function TabContainer({
             sessionId={sessionId}
             theme={theme}
             type={type}
-            userId={userId}
             voteTeamId={voteTeamId}
           />
         </div>

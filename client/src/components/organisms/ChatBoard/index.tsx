@@ -13,7 +13,6 @@ type roomType = 'session' | 'team';
 type ChatBoardProps = {
   type: roomType;
   theme: ThemeType;
-  userId: number;
   sessionId: number;
   voteTeamId?: number;
 };
@@ -34,7 +33,6 @@ const enterMessage: ChatReceiveMessage = {
 export default function ChatBoard({
   type,
   theme,
-  userId,
   sessionId,
   voteTeamId,
 }: ChatBoardProps) {
@@ -42,7 +40,15 @@ export default function ChatBoard({
   // console.log('ChatBoard Rendered');
 
   // as 사용해야하는 케이스인가 재차 고려 필요
-  const roomId = type === 'session' ? sessionId : (voteTeamId as number);
+  // const roomId = type === 'session' ? sessionId : (voteTeamId as number);
+
+  // roomId를 계산하기 전에 타입 체크
+  if (type === 'team' && typeof voteTeamId === 'undefined') {
+    return <div className={styles.error}>팀 채팅에는 팀 ID가 필요합니다.</div>;
+  }
+
+  // 타입 체크 후에는 안전하게 할당 가능
+  const roomId = type === 'session' ? sessionId : voteTeamId!;
 
   const { data: initialChats, isError: chatError } = useChatMessages(
     type,
@@ -54,7 +60,6 @@ export default function ChatBoard({
       type: type,
       roomId,
       sessionId,
-      userId,
     });
 
   useEffect(() => {
