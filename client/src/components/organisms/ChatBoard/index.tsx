@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import styles from './index.module.scss';
 import { ChatBar } from '@/components/molecules/ChatBar';
 import MessageList from './MessageList';
-import { ChatSendMessage, ChatReceiveMessage } from '@/types/chat';
+import { ChatSendMessage } from '@/types/chat';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { useChatMessages } from '@/services/hooks/useChatMessages';
 import ChatHeart from '@/components/atoms/ChatHeart';
@@ -18,18 +18,18 @@ type ChatBoardProps = {
   voteTeamId?: number;
 };
 
-const enterMessage: ChatReceiveMessage = {
-  userId: 0, // userId가 0일 경우 시스템 메시지
-  nickname: 'System',
-  text: '[ 채팅방에 입장하셨습니다 ]',
-  color: '#fff',
-  createdTime: new Date().toLocaleTimeString('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  }),
-};
+// const enterMessage: ChatReceiveMessage = {
+//   userId: 0, // userId가 0일 경우 시스템 메시지
+//   nickname: 'System',
+//   text: '[ 채팅방에 입장하셨습니다 ]',
+//   color: '#fff',
+//   createdTime: new Date().toLocaleTimeString('ko-KR', {
+//     hour: '2-digit',
+//     minute: '2-digit',
+//     second: '2-digit',
+//     hour12: false,
+//   }),
+// };
 
 export default function ChatBoard({
   type,
@@ -63,9 +63,9 @@ export default function ChatBoard({
 
     if (initialChats) {
       if (initialChats.httpStatus === 200) {
-        setMessages([...initialChats.data.reverse(), enterMessage]);
+        setMessages([...initialChats.data.reverse()]);
       } else if (initialChats.httpStatus === 204) {
-        setMessages([enterMessage]);
+        setMessages([]);
       } else {
         setError(initialChats.message);
       }

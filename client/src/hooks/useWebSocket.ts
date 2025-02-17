@@ -8,7 +8,6 @@ type WebSocketProps = {
   type: string;
   roomId: number;
   sessionId: number;
-  // userId: number;
 };
 
 export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
