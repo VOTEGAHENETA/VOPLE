@@ -30,6 +30,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class StreamController {
     private final StreamService streamService;
 
+    @Operation(summary = "스트리밍 권한 조회", description = "참여자가 스트리밍을 할 수 있는지 권한 확인")
+    @Parameters({
+        @Parameter(name="streamId", description = "teamId와 streamId는 동일한 값", required = true)
+    })
+    @PreAuthorize("@streamAuth.hasStreamAuthority(#streamId)")
+    @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
+    @GetMapping("/{streamId}/status")
+    public ApiResponse<Map<String, Boolean>> checkPermission(@PathVariable Long streamId, @AuthenticationPrincipal
+    CustomOauth2User oauth2User) {
+        Users user = oauth2User.getUser().orElseThrow(EmptyStackException::new);
+        boolean permission = streamService.checkPermission(streamId, user.getId());
+        return ApiResponse.success(HttpStatus.OK, "스트리밍 정보 조회 성공", Map.of("isCandidate", permission));
+    }
+
     @Operation(summary = "스트리밍 시작/종료", description = "후보자의 스트리밍 시작, 종료 상태 변경")
     @Parameters({
             @Parameter(name="streamId", description = "teamId와 streamId는 동일한 값", required = true),

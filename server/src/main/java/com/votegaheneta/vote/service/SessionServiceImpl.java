@@ -88,13 +88,6 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public SessionDto getSessionById(Long sessionId) {
-    ElectionSession electionSession = electionRepository.findById(sessionId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
-    return SessionDto.fromEntity(electionSession);
-  }
-
-  @Override
   public SessionInitialInfoDto getSession(Long sessionId, Long userId) {
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("해당되는 세션 정보가 없습니다."));
@@ -191,14 +184,12 @@ public class SessionServiceImpl implements SessionService {
   @Override
   public USER_TYPE judgeUserType(Long sessionId, Long userId) {
     Long count = electionRepository.judgeUserType(sessionId, userId);
-    System.out.println("count = " + count);
     return count == 1 ? USER_TYPE.CANDIDATE : USER_TYPE.VOTER;
   }
 
   @Override
   public String getQuestion(Long sessionId) {
     String entranceQuestion = electionRepository.findEntranceQuestionById(sessionId);
-    System.out.println("entranceQuestion = " + entranceQuestion);
     return entranceQuestion;
   }
 }

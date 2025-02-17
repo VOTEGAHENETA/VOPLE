@@ -52,13 +52,6 @@ public class VoteFindServiceImpl implements VoteFindService {
   }
 
   @Override
-  public Boolean hasVoted(Long sessionId, Long userId) {
-    SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId)
-        .orElseThrow(() -> new IllegalArgumentException("투표 회원의 정보를 찾을 수 없습니다."));
-    return sessionUserInfo.isHasVoted();
-  }
-
-  @Override
   public List<VoteFindDto> getVoteList(Long sessionId) {
     List<Vote> votes = voteRepository.findVoteBySessionId(sessionId);
     return votes.stream().map(VoteFindDto::from).toList();

@@ -12,12 +12,11 @@ import lombok.NoArgsConstructor;
 public class StreamDto {
     private Long streamId;
     private String streamingUrl;
-    private boolean isCandidate;
 
     @JsonProperty("isStreaming")
     private boolean isStreaming;
 
-    public static StreamDto fromEntity(Stream stream, boolean isCandidate) {
-        return new StreamDto(stream.getId(), stream.getStreamingUrl(), stream.isStreaming(), isCandidate);
+    public static StreamDto fromEntity(Stream stream) {
+        return new StreamDto(stream.getId(), stream.getStreamingUrl(), stream.isStreaming());
     }
 }

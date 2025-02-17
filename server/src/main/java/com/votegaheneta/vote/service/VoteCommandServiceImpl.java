@@ -4,19 +4,16 @@ import com.votegaheneta.vote.controller.request.VoteCastRequest;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
-import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
 import com.votegaheneta.vote.repository.CandidateRepository;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.PledgeRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
-import com.votegaheneta.vote.repository.VoteInfoJdbcRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +29,6 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final CandidateRepository candidateRepository;
   private final PledgeRepository pledgeRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
-  private final VoteInfoJdbcRepository voteInfoJdbcRepository;
 
   @Override
   @Transactional
@@ -40,11 +36,11 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     ElectionSession electionSession = electionRepository.findSessionById(sessionId);
     Vote vote = new Vote(voteName);
     electionSession.addVote(vote);
-    sessionUserInfoRepository.findSessionUserInfosByElectionSessionId(sessionId)
-        .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
-        .forEach(vote::addVoteInfo);
-    ;
-    voteInfoRepository.saveAll(vote.getVoteInfos());
+//    sessionUserInfoRepository.findSessionUserInfosByElectionSessionId(sessionId)
+//        .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
+//        .forEach(vote::addVoteInfo);
+//    ;
+//    voteInfoRepository.saveAll(vote.getVoteInfos());
   }
 
   @Override
@@ -82,12 +78,5 @@ public class VoteCommandServiceImpl implements VoteCommandService {
       voteTeam.incrementPollCnt();
     }
     electionSession.incrementVotedVoter();
-  }
-
-  @Override
-  @Transactional
-  public long saveVoteUserInfo(Long sessionId, Long userId) {
-    List<Long> voteIds = voteRepository.findIdsBySessionId(sessionId);
-    return voteInfoJdbcRepository.bulkInsertUserInfoByVoteIds(userId, voteIds);
   }
 }
