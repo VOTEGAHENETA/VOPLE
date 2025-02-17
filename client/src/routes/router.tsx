@@ -51,7 +51,7 @@ export const router = createBrowserRouter([
         element: <VoteTemplate />,
       },
       {
-        path: 'candidate/:session_id/',
+        path: 'candidate/:session_id',
         element: <Candidate />,
       },
       {
