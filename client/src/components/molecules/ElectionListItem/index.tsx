@@ -13,10 +13,10 @@ interface ElectionListItemProps extends ElectionListDetail {
 
 const ElectionListItem = ({
   id,
-  sessionName = '선거 제목입니다.',
-  startTime = '2025.01.20',
-  endTime = '2025.01.25',
-  isClosed = false,
+  sessionName,
+  startTime,
+  endTime,
+  isClosed,
   status,
 }: ElectionListItemProps) => {
   const { setIsHost } = useElectionStore();
