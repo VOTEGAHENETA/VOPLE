@@ -58,6 +58,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "voteId", description = "투표 id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @GetMapping("/{voteId}/search")
   public ApiResponse<List<VoteInfoDto>> searchVoteCandidate(
       @PathVariable("sessionId") Long sessionId,
@@ -86,6 +87,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
   @GetMapping("/detail")
   public ApiResponse<SessionFindDto> findVoteBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
@@ -99,6 +101,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
   @GetMapping("/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
@@ -114,6 +117,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
   @GetMapping("/result/final")
   public ApiResponse<SessionFinalResultFindDto> findVoteFinalResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {

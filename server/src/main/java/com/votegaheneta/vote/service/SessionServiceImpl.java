@@ -116,12 +116,14 @@ public class SessionServiceImpl implements SessionService {
     List<ElectionSession> managedSessions = electionRepository.findByHostUser_Id(userId);
     return new SessionResponse(
         ParticipatingSessions.stream().map(participatingSession -> {
-          Boolean isClosed = LocalDateTime.now().isAfter(participatingSession.getVoteEndTime());
-          return SessionListDto.from(participatingSession, isClosed);
+          Boolean isClosed = !LocalDateTime.now().isBefore(participatingSession.getVoteEndTime());
+          Boolean hasVoted = sessionUserInfoRepository.findHasvotedBySessionId_userId(participatingSession.getId(), userId);
+          return SessionListDto.from(participatingSession, isClosed, hasVoted);
         }).toList(),
         managedSessions.stream().map(managedSession -> {
-          Boolean isClosed = LocalDateTime.now().isAfter(managedSession.getVoteEndTime());
-          return SessionListDto.from(managedSession, isClosed);
+          Boolean hasVoted = sessionUserInfoRepository.findHasvotedBySessionId_userId(managedSession.getId(), userId);
+          Boolean isClosed = !LocalDateTime.now().isBefore(managedSession.getVoteEndTime());
+          return SessionListDto.from(managedSession, isClosed, hasVoted);
         }).toList()
     );
   }
