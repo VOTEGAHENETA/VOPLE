@@ -19,9 +19,22 @@ export default function MessageList({ messages }: MessageListProps) {
 
   console.log('******', messages);
 
+  // messages가 undefined인 경우 빈 배열 반환
+  const safeMessages = Array.isArray(messages) ? messages : [];
+
+  // 시간 포맷팅 함수
+  const formatTime = (timeString?: string) => {
+    if (!timeString) return '';
+    try {
+      return timeString.slice(0, 5);
+    } catch (error) {
+      console.error('시간 형식 오류:', error);
+      return '';
+    }
+  };
   return (
     <div className={styles.messageArea} ref={messageAreaRef}>
-      {messages.map((message, index) => (
+      {safeMessages.map((message, index) => (
         <div
           key={`${message.userId}-${index}`}
           className={`${styles.messageRow} ${
@@ -30,15 +43,16 @@ export default function MessageList({ messages }: MessageListProps) {
         >
           {/* 시간 */}
           <Text className={styles.time} size='s'>
-            [{message.createdTime.slice(0, 5)}]
+            [{formatTime(message.createdTime)}]
+            {/* [{message.createdTime.slice(0, 5)}] */}
           </Text>
           {/* 닉네임*/}
           <Text className={styles.username} color={message.color} size='s'>
-            {message.nickname}
+            {message.nickname || '알 수 없음'}
           </Text>
           {/* 내용 */}
           <Text className={styles.content} size='s'>
-            {message.text}
+            {message.text || ''}
           </Text>
         </div>
       ))}
