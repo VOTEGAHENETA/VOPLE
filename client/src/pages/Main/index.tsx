@@ -14,6 +14,7 @@ function Main() {
     Number(election_id) || 0,
     location.search
   );
+
   const { setElection } = useElectionStore();
 
   // 자연수가 아닌 이상한 문자로 오는 경우 돌려보냄

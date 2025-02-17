@@ -27,10 +27,6 @@ const meta = {
       options: ['dark', 'light'],
       description: '테마',
     },
-    userId: {
-      control: 'number',
-      description: '유저 ID',
-    },
     sessionId: {
       control: 'number',
       description: '세션 ID',
@@ -49,7 +45,6 @@ export const Default: Story = {
   args: {
     type: 'team',
     theme: 'dark',
-    userId: 1,
     sessionId: 123,
     voteTeamId: 456,
   },
@@ -59,7 +54,6 @@ export const SessionChat: Story = {
   args: {
     type: 'session',
     theme: 'dark',
-    userId: 1,
     sessionId: 123,
   },
 };

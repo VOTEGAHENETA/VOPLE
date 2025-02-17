@@ -9,9 +9,8 @@ interface VoteDeleteParams {
 
 export const useElectionDetailGet = (electionId: number) => {
   return useQuery({
-    queryKey: ['session', electionId],
+    queryKey: ['session_detail', electionId],
     queryFn: () => getElectionDetail(electionId),
-    staleTime: 0,
   });
 };
 

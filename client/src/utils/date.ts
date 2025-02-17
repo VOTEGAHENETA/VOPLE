@@ -15,3 +15,8 @@ export const getFormattedTime = (now: Date = new Date()) => {
     minute: '2-digit',
   });
 };
+
+export function convertUTCToKST(utcString: Date) {
+  const data = new Date(utcString);
+  return new Date(data.getTime() + 9 * 60 * 60 * 1000); // 9시간 추가
+}

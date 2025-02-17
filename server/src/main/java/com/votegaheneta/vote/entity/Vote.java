@@ -32,9 +32,6 @@ public class Vote {
   private ElectionSession electionSession;
 
   @OneToMany(mappedBy = "vote", cascade = CascadeType.PERSIST, orphanRemoval = true)
-  private List<VoteInfo> voteInfos = new ArrayList<>();
-
-  @OneToMany(mappedBy = "vote", cascade = CascadeType.PERSIST, orphanRemoval = true)
   @BatchSize(size = 100)
   private List<VoteTeam> voteTeams = new ArrayList<>();
 
@@ -42,11 +39,6 @@ public class Vote {
 
   public Vote(String voteName) {
     this.voteName = voteName;
-  }
-
-  public void addVoteInfo(VoteInfo voteInfo) {
-    voteInfos.add(voteInfo);
-    voteInfo.setVote(this);
   }
 
   public void addVoteTeam(VoteTeam voteTeam) {

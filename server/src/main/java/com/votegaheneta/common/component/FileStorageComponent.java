@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileStorageComponent {
 
-  private static final int MAX_FILE_SIZE = 5 * 1024 * 1024;
+  private static final int MAX_FILE_SIZE = 5 * 1024 * 1024 * 100;
   // 리눅스 배포 환경용 경로
   private static final String UPLOAD_URL = "/app/uploads";
 

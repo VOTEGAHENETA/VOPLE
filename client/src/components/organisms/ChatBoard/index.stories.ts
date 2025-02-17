@@ -20,10 +20,6 @@ const meta = {
       options: ['dark', 'light'],
       description: '테마 설정',
     },
-    userId: {
-      control: 'number',
-      description: '사용자 ID',
-    },
     sessionId: {
       control: 'number',
       description: '세션 ID',
@@ -43,7 +39,6 @@ export const SessionChat: Story = {
   args: {
     type: 'session',
     theme: 'dark',
-    userId: 1,
     sessionId: 1234,
   },
 };
@@ -53,7 +48,6 @@ export const TeamChat: Story = {
   args: {
     type: 'team',
     theme: 'dark',
-    userId: 1,
     sessionId: 1234,
     voteTeamId: 5678,
   },
@@ -64,7 +58,6 @@ export const LightTheme: Story = {
   args: {
     type: 'session',
     theme: 'light',
-    userId: 1,
     sessionId: 1234,
   },
 };
@@ -74,7 +67,6 @@ export const WithError: Story = {
   args: {
     type: 'session',
     theme: 'dark',
-    userId: 1,
     sessionId: -1, // 잘못된 세션 ID로 에러 상황 재현
   },
 };

@@ -10,12 +10,13 @@ import { useNavigate } from 'react-router-dom';
 interface Props {
   team: TeamResult;
   onClick?: () => void;
+  sessionId: number;
 }
 
-function CandidateSection({ team, onClick }: Props) {
+function CandidateSection({ team, onClick, sessionId }: Props) {
   const navigate = useNavigate();
   function handleMoveChannel() {
-    navigate(`/elections/:election_id/candidates/${team.teamId}`);
+    navigate(`/live/${sessionId}/${team.teamId}`);
   }
 
   return (

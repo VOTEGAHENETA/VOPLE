@@ -5,6 +5,7 @@ import com.votegaheneta.vote.entity.SessionUserInfo;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -21,4 +22,8 @@ public interface SessionUserInfoRepository extends JpaRepository<SessionUserInfo
 
   @Query("select sui from SessionUserInfo sui where sui.electionSession.id = :sessionId and sui.user.id = :userId")
   Optional<SessionUserInfo> findBySessionIdAndUserId(@Param("sessionId") Long sessionId,@Param("userId") Long userId);
+
+  @Modifying
+  @Query("update SessionUserInfo sui set sui.userType = 'CANDIDATE' where sui.electionSession.id = :sessionId and sui.user in :userList")
+  int updateUserTypeInSessionUserInfo(Long sessionId, List<Users> userList);
 }

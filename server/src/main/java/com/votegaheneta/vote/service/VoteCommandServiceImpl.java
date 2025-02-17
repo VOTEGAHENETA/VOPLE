@@ -10,7 +10,6 @@ import com.votegaheneta.vote.repository.CandidateRepository;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.PledgeRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
-import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class VoteCommandServiceImpl implements VoteCommandService {
 
-  private final VoteInfoRepository voteInfoRepository;
   private final VoteTeamRepository voteTeamRepository;
   private final ElectionRepository electionRepository;
   private final VoteRepository voteRepository;
