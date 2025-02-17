@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import styles from './index.module.scss';
 import { ChatBar } from '@/components/molecules/ChatBar';
 import MessageList from './MessageList';
-import { ChatSendMessage } from '@/types/chat';
+import { ChatSendMessage, ChatReceiveMessage } from '@/types/chat';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { useChatMessages } from '@/services/hooks/useChatMessages';
 import ChatHeart from '@/components/atoms/ChatHeart';
@@ -13,23 +13,22 @@ type roomType = 'session' | 'team';
 type ChatBoardProps = {
   type: roomType;
   theme: ThemeType;
-  // userId: number;
   sessionId: number;
   voteTeamId?: number;
 };
 
-// const enterMessage: ChatReceiveMessage = {
-//   userId: 0, // userId가 0일 경우 시스템 메시지
-//   nickname: 'System',
-//   text: '[ 채팅방에 입장하셨습니다 ]',
-//   color: '#fff',
-//   createdTime: new Date().toLocaleTimeString('ko-KR', {
-//     hour: '2-digit',
-//     minute: '2-digit',
-//     second: '2-digit',
-//     hour12: false,
-//   }),
-// };
+const enterMessage: ChatReceiveMessage = {
+  userId: 0, // userId가 0일 경우 시스템 메시지
+  nickname: 'System',
+  text: '[ 채팅방에 입장하셨습니다 ]',
+  color: '#fff',
+  createdTime: new Date().toLocaleTimeString('ko-KR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }),
+};
 
 export default function ChatBoard({
   type,
@@ -41,7 +40,15 @@ export default function ChatBoard({
   // console.log('ChatBoard Rendered');
 
   // as 사용해야하는 케이스인가 재차 고려 필요
-  const roomId = type === 'session' ? sessionId : (voteTeamId as number);
+  // const roomId = type === 'session' ? sessionId : (voteTeamId as number);
+
+  // roomId를 계산하기 전에 타입 체크
+  if (type === 'team' && typeof voteTeamId === 'undefined') {
+    return <div className={styles.error}>팀 채팅에는 팀 ID가 필요합니다.</div>;
+  }
+
+  // 타입 체크 후에는 안전하게 할당 가능
+  const roomId = type === 'session' ? sessionId : voteTeamId!;
 
   const { data: initialChats, isError: chatError } = useChatMessages(
     type,
@@ -63,9 +70,9 @@ export default function ChatBoard({
 
     if (initialChats) {
       if (initialChats.httpStatus === 200) {
-        setMessages([...initialChats.data.reverse()]);
+        setMessages([...initialChats.data.reverse(), enterMessage]);
       } else if (initialChats.httpStatus === 204) {
-        setMessages([]);
+        setMessages([enterMessage]);
       } else {
         setError(initialChats.message);
       }

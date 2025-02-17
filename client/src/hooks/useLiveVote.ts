@@ -19,7 +19,7 @@ const useLiveVote = ({ sessionId }: Props) => {
     if (stompClient.current?.connected) {
       return;
     }
-    const socket = new SockJS('/ws');
+    const socket = new SockJS('https://i12b102.p.ssafy.io/ws', null, {});
     stompClient.current = Stomp.over(socket);
     stompClient.current?.connect(
       { sessionId },
