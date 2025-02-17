@@ -16,7 +16,7 @@ import {
   useElectionDelete,
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
-import { combineDateAndTime } from '@/utils/date';
+import { combineDateAndTimePut } from '@/utils/date';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -208,11 +208,11 @@ function ElectionDetailTemplate() {
   }
 
   function handleModifyElection() {
-    const startTime = combineDateAndTime(
+    const startTime = combineDateAndTimePut(
       dateState.startDate,
       dateState.startTime
     );
-    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const endTime = combineDateAndTimePut(dateState.endDate, dateState.endTime);
     const updateState = {
       ...state,
       startTime,
