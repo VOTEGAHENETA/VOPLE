@@ -1,6 +1,5 @@
 package com.votegaheneta.vote.service;
 
-import com.votegaheneta.chat.dto.ChatRoomDto;
 import com.votegaheneta.chat.service.ChatService;
 import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.stream.entity.Stream;
@@ -57,7 +56,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   @Override
   public void modifyVoteTeam(Long sessionId, Long voteId, CandidateRequestDto candidateRequest) {
     Vote vote = voteRepository.findVoteWithVoteTeamById(voteId).orElseThrow(() -> new IllegalArgumentException("투표가 존재하지 않습니다."));
-    vote.getVoteTeams().forEach(voteTeam -> chatService.deleteChatRoom(new ChatRoomDto(voteTeam.getId(), "TEAM")));
+//    vote.getVoteTeams().forEach(voteTeam -> chatService.deleteChatRoom(new ChatRoomDto(voteTeam.getId(), "TEAM")));
     streamRepository.deleteAllStreamByVoteTeam(vote.getVoteTeams());
     candidateRepository.deleteAllCandidateByVoteTeam(vote.getVoteTeams());
     pledgeRepository.deleteAllPledgeByVoteTeam(vote.getVoteTeams());
