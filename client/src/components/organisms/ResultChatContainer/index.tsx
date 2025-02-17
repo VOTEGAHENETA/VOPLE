@@ -9,13 +9,10 @@ import ChatBoard from '../ChatBoard';
 type TabContainerProps = {
   // userId?: number;
   sessionId: number;
-  voteTeamId?: number;
+  // voteTeamId?: number;
 };
 
-export default function ResultChatContainer({
-  sessionId,
-  voteTeamId = 1,
-}: TabContainerProps) {
+export default function ResultChatContainer({ sessionId }: TabContainerProps) {
   // 슬라이드 상태 추가
   // const [isSlideDown, setIsSlideDown] = useState(false);
 
@@ -26,12 +23,7 @@ export default function ResultChatContainer({
 
   return (
     <div className={styles.container}>
-      <ChatBoard
-        sessionId={sessionId}
-        type='session'
-        theme='light'
-        voteTeamId={voteTeamId}
-      />
+      <ChatBoard sessionId={sessionId} type='session' theme='light' />
     </div>
   );
 }
