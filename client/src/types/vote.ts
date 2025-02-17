@@ -4,6 +4,6 @@ export interface VoteSelection {
 }
 
 export interface VoteRequest {
-  userId: number;
+  // userId: number;
   voteSelections: VoteSelection[];
 }
