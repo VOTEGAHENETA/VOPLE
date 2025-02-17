@@ -78,10 +78,10 @@ export const router = createBrowserRouter([
         path: 'mypage',
         element: <Voter />,
       },
-      // {
-      //   path: 'error',
-      //   element: <Error />,
-      // },
+      {
+        path: 'error',
+        element: <Error />,
+      },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],
   },

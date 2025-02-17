@@ -21,7 +21,9 @@ public class WebSocketEventListener {
   private final SimpMessagingTemplate simpleMessagingTemplate;
   private final ConcurrentHashMap<String, ConcurrentHashMap<String, Boolean>> roomParticipants = new ConcurrentHashMap<>();
 
-  private final String ROOM_PREFIX = "/api/room/";
+  private final String DESTINATION_PREFIX = "/api";
+  private final String ROOM_PREFIX = "/room";
+  private final String VOTE_PREFIX = "/vote";
 
   @EventListener
   public void onSubscribe(SessionSubscribeEvent event) throws JsonProcessingException {
@@ -29,15 +31,16 @@ public class WebSocketEventListener {
     String destination = headerAccessor.getDestination();
     OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) headerAccessor.getUser();
     String sessionId = headerAccessor.getSessionId();
-    System.out.println("sessionId = " + sessionId);
 
     if (destination != null && sessionId != null) {
-      String roomKey = destination.substring(ROOM_PREFIX.length());
-      roomParticipants.computeIfAbsent(roomKey, key -> new ConcurrentHashMap<>()).put(sessionId, true);
-//      System.out.println("count = " + count);
-    }
+      String destinationPostFix = destination.substring(DESTINATION_PREFIX.length());
 
-    sendEntranceMessage(token, destination);
+      if (destinationPostFix.startsWith(ROOM_PREFIX)) {
+        String roomKey = destination.substring(ROOM_PREFIX.length());
+        roomParticipants.computeIfAbsent(roomKey, key -> new ConcurrentHashMap<>()).put(sessionId, true);
+        sendEntranceMessage(token, destination);
+      }
+    }
   }
 
   @EventListener
