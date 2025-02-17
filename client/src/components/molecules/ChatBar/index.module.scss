@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  padding: 10px 0;
+  // padding: 10px 0;
 
   .sendButton {
     display: flex;
@@ -26,6 +26,57 @@
 
     &:active {
       opacity: 0.5;
+    }
+  }
+}
+
+// ==================
+// Heart
+// ==================
+
+.heartBox {
+  position: absolute;
+  right: 0;
+  top: -40px;
+  z-index: 10;
+}
+
+.heartContainer {
+  display: inline-block;
+}
+
+.heartButton {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.floatingHeart {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  pointer-events: none;
+  animation: floatUp 1s ease-out forwards;
+  
+  @keyframes floatUp {
+    0% {
+      transform: translateX(-50%) translateY(0) scale(1);
+      opacity: 1;
+    }
+    
+    100% {
+      transform: translateX(var(--heart-x)) translateY(-100px) scale(0.3);
+      opacity: 0;
     }
   }
 }

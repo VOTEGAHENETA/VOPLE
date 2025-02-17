@@ -5,8 +5,7 @@ git pull origin master
 echo "🚀 Docker Compose 실행 중..."
 docker compose down client server --volumes
 docker compose up -d --build client
-docker compose up -d --build server
-docker compose up -d server client
+docker compose up -d server
 
 echo "서비스 시작 대기 중..."
 sleep 90

@@ -4,8 +4,8 @@ import { ChatBar } from '@/components/molecules/ChatBar';
 import MessageList from './MessageList';
 import { ChatSendMessage, ChatReceiveMessage } from '@/types/chat';
 import { useWebSocket } from '@/hooks/useWebSocket';
-import Heart from './Heart';
 import { useChatMessages } from '@/services/hooks/useChatMessages';
+import ChatHeart from '@/components/atoms/ChatHeart';
 
 type ThemeType = 'dark' | 'light';
 type roomType = 'session' | 'team';
@@ -80,10 +80,8 @@ export default function ChatBoard({
 
   return (
     <div className={`${styles.chatBoard} ${styles[theme]}`}>
-      <div className={styles.chatWrapper}>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-        <MessageList messages={messages} />
-      </div>
+      {error && <div className={styles.errorMessage}>{error}</div>}
+      <MessageList messages={messages} />
 
       <ChatBar
         onSendMessage={handleSendMessage}
@@ -96,7 +94,7 @@ export default function ChatBoard({
         className={styles.heartBox}
         style={{ display: type === 'team' ? 'block' : 'none' }}
       >
-        <Heart></Heart>
+        <ChatHeart></ChatHeart>
       </div>
     </div>
   );

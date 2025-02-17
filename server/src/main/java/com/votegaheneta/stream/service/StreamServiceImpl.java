@@ -3,6 +3,7 @@ package com.votegaheneta.stream.service;
 import com.votegaheneta.stream.dto.StreamDto;
 import com.votegaheneta.stream.entity.Stream;
 import com.votegaheneta.stream.repository.StreamRepository;
+import com.votegaheneta.vote.repository.CandidateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StreamServiceImpl implements StreamService {
 
     private final StreamRepository streamRepository;
+    private final CandidateRepository candidateRepository;
 
     @Transactional
     public String updateStreamingStatus(Long streamId, boolean isStreaming) {
@@ -20,9 +22,10 @@ public class StreamServiceImpl implements StreamService {
         stream.setIsStreaming(isStreaming);
         return stream.getStreamingUrl();
     }
-    public StreamDto getStreamInfo(Long streamId) {
+    public StreamDto getStreamInfo(Long streamId, Long userId) {
         Stream stream = streamRepository.findById(streamId)
                 .orElseThrow(() -> new IllegalArgumentException("스트리밍 정보를 얻어올 수 없습니다."));
-        return StreamDto.fromEntity(stream);
+        boolean isCandidate = candidateRepository.existsByVoteTeamIdAndUserId(streamId, userId);
+        return StreamDto.fromEntity(stream, isCandidate);
     }
 }

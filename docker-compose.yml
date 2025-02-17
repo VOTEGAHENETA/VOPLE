@@ -9,7 +9,6 @@ services:
       - "443:443"
     volumes:
       - ./client:/client
-      - ./client/.env:/app/.env
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
       - ./media/uploads:/app/uploads
@@ -26,6 +25,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     command: sh -c "
+        apk add --no-cache tzdata &&
+        ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime &&
+        export TZ=Asia/Seoul &&
+        date &&
         apk add --no-cache ffmpeg &&
         chmod +x /server/gradlew &&
         /server/gradlew clean build --stacktrace &&
@@ -41,7 +44,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-
+  
   nginx-rtmp:
     image: tiangolo/nginx-rtmp
     restart: always
@@ -55,17 +58,6 @@ services:
     volumes:
       - ./nginx/rtmp.conf:/etc/nginx/nginx.conf:ro
       - ./hls:/opt/data/hls
-      
-#  srs:
-#    image: ossrs/srs:latest
-#    container_name: srs
-#    ports:
-#      - "1935:1935"    # RTMP
-#      - "8050:8080"    # HTTP(HLS)
-#      - "1985:1985"    # HTTP API (Optional)
-#    volumes:
-#      - ./nginx/srs.conf:/usr/local/srs/conf/srs.conf:ro
-#    restart: always
 
   db:
     image: mysql:8.0.30

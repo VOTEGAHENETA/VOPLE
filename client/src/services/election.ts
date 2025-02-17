@@ -60,9 +60,13 @@ export const getElectionList = async (): Promise<ElectionList> => {
 };
 
 export const getElectionSession = async (
-  sessionId: number
+  sessionId: number,
+  query: string
 ): Promise<ElectionResponse> => {
-  return await instance.get(`/election/${sessionId}`);
+  const url = query
+    ? `/election/${sessionId}?${query}`
+    : `/election/${sessionId}`;
+  return await instance.get(url);
 };
 
 // 투표하기 (POST 요청)
@@ -99,4 +103,17 @@ export const postQuestion = async (
   return await instance.post(`/election/${sessionId}/question`, {
     answer: answer,
   });
+};
+
+export const getUserRole = async (sessionId: number): Promise<string> => {
+  try {
+    return await instance.get(`/election/${sessionId}/status`);
+  } catch (error) {
+    console.error(error);
+    throw new Error('사용자 역할 조회 실패');
+  }
+};
+
+export const getIsVoter = async (sessionId: number): Promise<string> => {
+  return await instance.get(`/election/${sessionId}/status`);
 };

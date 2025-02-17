@@ -8,7 +8,7 @@ interface AnimatedHeart {
   x: number; // 좌우 이동을 위한 x 좌표
 }
 
-export default function Heart() {
+export default function ChatHeart() {
   const heartCount = useRef(0);
   const [hearts, setHearts] = useState<AnimatedHeart[]>([]);
 

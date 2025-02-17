@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import styles from './index.module.scss';
 import IconButton from '@/components/atoms/IconButton';
+import { getFormattedDate, getFormattedTime } from '@/utils/date';
 
 interface DateTimeFieldProps {
   label: string;
@@ -15,18 +16,6 @@ interface DateTimeFieldProps {
   ) => void;
   disabled?: boolean;
 }
-
-const getFormattedDate = () => {
-  return new Date().toISOString().split('T')[0];
-};
-
-const getFormattedTime = () => {
-  return new Date().toLocaleTimeString('en-US', {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
 
 export function DateTimeField({
   label,
@@ -46,6 +35,25 @@ export function DateTimeField({
     inputRef.current?.showPicker();
   };
 
+  function getMaxStartTime() {
+    if (startDate === endDate) return endTime;
+    return '';
+  }
+
+  function getMinEndTime() {
+    if (startDate === endDate) {
+      const [hours, minutes] = startTime.split(':').map(Number);
+      let newMinutes = minutes + 1;
+      let newHours = hours;
+      if (newMinutes >= 60) {
+        newHours = (newHours + 1) % 24;
+        newMinutes = 0;
+      }
+      return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+    }
+    return '';
+  }
+
   return (
     <div className={styles.container}>
       <label className={styles.label}>{label}</label>
@@ -57,19 +65,23 @@ export function DateTimeField({
             ref={startDateRef}
             type='date'
             value={startDate}
+            max={endDate}
             onChange={(e) => onChange('start', 'date', e.target.value)}
             disabled={disabled}
             onClick={() => handleInputClick(startDateRef)}
             className={styles.dateInput}
+            required
           />
           <input
             ref={startTimeRef}
             type='time'
             value={startTime}
+            max={getMaxStartTime()}
             onChange={(e) => onChange('start', 'time', e.target.value)}
             disabled={disabled}
             onClick={() => handleInputClick(startTimeRef)}
             className={styles.timeInput}
+            required
           />
         </div>
 
@@ -82,19 +94,23 @@ export function DateTimeField({
             ref={endDateRef}
             type='date'
             value={endDate}
+            min={startDate}
             onChange={(e) => onChange('end', 'date', e.target.value)}
             disabled={disabled}
             onClick={() => handleInputClick(endDateRef)}
             className={styles.dateInput}
+            required
           />
           <input
             ref={endTimeRef}
             type='time'
             value={endTime}
+            min={getMinEndTime()}
             onChange={(e) => onChange('end', 'time', e.target.value)}
             disabled={disabled}
             onClick={() => handleInputClick(endTimeRef)}
             className={styles.timeInput}
+            required
           />
         </div>
       </div>

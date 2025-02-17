@@ -1,6 +1,10 @@
 package com.votegaheneta.vote.controller;
 
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.handler.AuthorizationExceptionHandler;
+import com.votegaheneta.security.oauth2.CustomOauth2User;
+import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.vote.controller.request.CandidateRequestDto;
 import com.votegaheneta.vote.controller.request.VoteCastRequest;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
@@ -20,6 +24,9 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.HandleAuthorizationDenied;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@Tag(name = "VoteCommand", description = "Vote 수정 작업 API")
 @RestController
 @RequestMapping("/api/vote/{sessionId}")
 @RequiredArgsConstructor
@@ -75,6 +81,8 @@ public class VoteCommandController {
       @Parameter(name = "voteId", description = "투표id", required = true, in = ParameterIn.PATH)
   })
   @PostMapping("/{voteId}")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   public ApiResponse modifyVoteTeam(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId, @RequestBody
       CandidateRequestDto candidateRequest) {
     voteTeamService.modifyVoteTeam(sessionId, voteId, candidateRequest);
@@ -103,6 +111,8 @@ public class VoteCommandController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @PostMapping
   public ApiResponse<Void> createVote(@PathVariable("sessionId") Long sessionId, @RequestBody
       VoteFindDto voteFindDto) {
@@ -118,6 +128,8 @@ public class VoteCommandController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
       @Parameter(name = "voteId", description = "투표id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @DeleteMapping("/{voteId}")
   public ApiResponse<Void> deleteVote(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId) {
     voteCommandService.deleteVote(voteId);
@@ -133,11 +145,15 @@ public class VoteCommandController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @PostMapping("/castvote")
   public ApiResponse<Void> castVote(
       @Positive @PathVariable("sessionId") Long sessionId,
-      @Valid @RequestBody VoteCastRequest voteCastRequest) {
-    voteCommandService.castVote(voteCastRequest, sessionId);
+      @Valid @RequestBody VoteCastRequest voteCastRequest,
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    voteCommandService.castVote(voteCastRequest, sessionId, user.getId());
     messagingTemplate.convertAndSend("/api/vote/"+sessionId
         , voteFindService.findVoteResultBySessionId(sessionId));
     return ApiResponse.success(HttpStatus.OK, "투표 성공", null);

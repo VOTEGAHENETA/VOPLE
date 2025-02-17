@@ -1,4 +1,4 @@
-package com.votegaheneta.common.exception;
+package com.votegaheneta.common.exception.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -17,34 +17,32 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
-  public ApiResponse<Void> handleNotFoundException(NotFoundException e) {
+  public ApiResponse<String> handleNotFoundException(NotFoundException e) {
     log.warn("NotFoundException | " + e.getMessage());
     return ApiResponse.fail(NOT_FOUND, e.getMessage());
   }
 
   @ExceptionHandler(BadRequestException.class)
-  public ApiResponse<Void> handleBadRequestException(BadRequestException e) {
+  public ApiResponse<String> handleBadRequestException(BadRequestException e) {
     log.warn("BadRequestException | " + e.getMessage());
     return ApiResponse.fail(BAD_REQUEST, e.getMessage());
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ApiResponse<Void> handleIllegalArgumentException(IllegalArgumentException e) {
+  public ApiResponse<String> handleIllegalArgumentException(IllegalArgumentException e) {
     log.warn("illegalArgumentException | " + e.getMessage());
     return ApiResponse.fail(BAD_REQUEST, e.getMessage());
   }
 
   @ExceptionHandler(RuntimeException.class)
-  public ApiResponse<Void> handleRuntimeException(RuntimeException e) {
+  public ApiResponse<String> handleRuntimeException(RuntimeException e) {
     log.error("", e);
-    return ApiResponse
-        .fail(INTERNAL_SERVER_ERROR, e.getMessage());
+    return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
-  public ApiResponse<Void> handleException(Exception e) {
+  public ApiResponse<String> handleException(Exception e) {
     log.error("", e);
-    return ApiResponse
-        .fail(INTERNAL_SERVER_ERROR, "서버에서 알 수 없는 오류가 발생했습니다. 잠시후 다시 시도해 주세요");
+    return ApiResponse.fail(INTERNAL_SERVER_ERROR, e.getMessage());
   }
 }

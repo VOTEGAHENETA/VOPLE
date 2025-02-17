@@ -4,6 +4,11 @@ export interface ChatReceiveMessage {
   text: string;
   color: string;
   createdTime: string;
+  type?: 'CHAT' | 'ENTER'; // 입장 메시지 판별 위한 타입
+}
+
+export interface NicknameResponse {
+  nickname: string;
 }
 
 export interface ChatSendMessage {

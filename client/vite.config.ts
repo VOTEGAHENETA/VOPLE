@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
-
+import { env } from 'process';
+// const { VITE_PUBLIC_URL } = import.meta.env;
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
@@ -11,21 +12,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/ws': {
-        // target: 'http://i12b102.p.ssafy.io:8000', // 스프링 부트 서버 주소
-        target: 'https://i12b102.p.ssafy.io', // 스프링 부트 서버 주소
+        target: env.VITE_PUBLIC_URL,
         ws: true, // WebSocket 프록시 활성화
       },
-      // '/api': {
-      //   target: 'https://i12b102.p.ssafy.io',
-      //   changeOrigin: true,
-      //   secure: false,
-      //   rewrite: (path) => path.replace(/^\/api/, ''),
-      // },
-      // '/api': {
-      //   target: 'http://i12b102.p.ssafy.io:8000',
-      //   changeOrigin: true,
-      //   rewrite: (path) => path.replace(/^\/api/, ''),
-      // },
     },
   },
 });

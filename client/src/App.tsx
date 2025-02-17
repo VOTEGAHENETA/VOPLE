@@ -10,7 +10,6 @@ function App() {
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/elections/list', { replace: true });
-      window.location.reload();
     }
   }, [location.pathname, navigate]);
 
@@ -19,7 +18,7 @@ function App() {
     /^\/login$/,
     /^\/elections\/\d+\/candidates\/\d+$/,
     /^\/elections\/\d+\/question$/,
-    /^\/live\/\d+$/,
+    /^\/live\/\d+\/\d+$/,
   ];
 
   const showHeader = !nonHeaderLocation.some((regex) =>

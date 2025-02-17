@@ -1,8 +1,10 @@
 package com.votegaheneta.security.oauth2;
 
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 import com.votegaheneta.user.entity.Users;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -11,11 +13,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class CustomOauth2User implements OAuth2User {
 
   private final OAuth2User oauth2User;
-  private final Users user;
+  private final Optional<Users> user;
 
   public CustomOauth2User(OAuth2User oauth2User, Users user) {
     this.oauth2User = oauth2User;
-    this.user = user;
+    this.user = Optional.of(user);
   }
 
   @Override
@@ -35,6 +37,6 @@ public class CustomOauth2User implements OAuth2User {
 
   @Override
   public String getName() {
-    return user.getUsername();
+    return user.orElseThrow(EmptyOauthUserException::new).getUsername();
   }
 }

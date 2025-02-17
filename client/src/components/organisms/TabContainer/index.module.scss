@@ -1,20 +1,16 @@
 .container {
-  padding-top: 10px;
-  min-width: 500px;
+  border-top: 1px solid #777;
+  padding-top: 20px;
   width: 100%;
-  // height: 370px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
   background-color: #333;
-  // background-color: rgba(0,0,0,0.7);
-  // border-radius: 20px 20px 0 0;
-  transition: transform 0.3s ease-in-out; 
+  transition: transform 0.3s ease-in-out;
 
   &.slideDown {
     transform: translateY(330px);
     .slideButton {
-      > img{
+      > img {
         transform: rotate(90deg);
       }
     }
@@ -27,11 +23,11 @@
   width: 100%;
   border: none;
   background: transparent;
-  > img{
+  > img {
     transform: rotate(-90deg);
   }
   cursor: pointer;
-  
+
   // 포커스 아웃라인 스타일
   &:focus {
     outline: none;
@@ -42,8 +38,8 @@
 .tabNavigator {
   display: flex;
   justify-content: space-between;
-  padding: 10px 16px 0;
-  
+  padding: 0 16px;
+
   .tabMenu {
     display: flex;
     gap: 8px;
@@ -54,44 +50,43 @@
       color: #fff;
       cursor: pointer;
       transition: all 0.2s ease;
-      background-color: rgba(255,255,255,0.7);
-    
+      background-color: rgba(255, 255, 255, 0.7);
+
       &.active {
         color: #fff;
-        background-color:var(--color-main-orange);
+        background-color: var(--color-main-orange);
       }
     }
   }
-  
 }
 
 .tabContent {
   flex: 1;
-  height: calc(350px - 100px);
-  padding: 0 16px 16px 16px;
-  margin-top: 16px;
+  height: calc(100% - 100px);
+  padding: 16px;
+  // margin-top: 16px;
 
-    // ChatBoard를 위한 특별 스타일
-    > div {
-      height: 100%; // 부모 높이를 모두 사용
-      
-      // ChatBoard 컴포넌트가 들어있는 div
-      &[style*="display: block"] {
+  // ChatBoard를 위한 특별 스타일
+  > div {
+    height: 100%; // 부모 높이를 모두 사용
+
+    // ChatBoard 컴포넌트가 들어있는 div
+    &[style*='display: block'] {
+      height: 100%;
+
+      // ChatBoard 컴포넌트 자체도 전체 높이 사용
+      > div {
         height: 100%;
-        
-        // ChatBoard 컴포넌트 자체도 전체 높이 사용
-        > div {
-          height: 100%;
-        }
       }
     }
+  }
 }
 
 // ======================
 // Common
 // ======================
 
-.emptyMessage{
+.emptyMessage {
   color: #999;
 }
 
@@ -110,9 +105,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
-  margin-top: 10px
+  margin-top: 10px;
 }
 
 .item {
@@ -121,13 +116,11 @@
   color: #ffffff;
   font-size: 16px;
   line-height: 1.5;
-  
+
   .bullet {
     margin-right: 8px;
   }
 }
-
-
 
 // ======================
 // PosterTab
@@ -151,7 +144,7 @@
     height: inherit;
   }
 
-  .poster{
+  .poster {
     width: 100%;
     height: inherit;
     position: relative;
@@ -162,7 +155,8 @@
       width: 100%;
       height: auto;
       position: absolute;
-      left: 0;top: 0;
+      left: 0;
+      top: 0;
     }
   }
 }
@@ -229,12 +223,10 @@
     background: #1a1a1a;
     border-radius: 12px;
     padding: 16px;
-  
-    .poster{
+
+    .poster {
       overflow: hidden;
       border-radius: 10px;
     }
   }
-
 }
-

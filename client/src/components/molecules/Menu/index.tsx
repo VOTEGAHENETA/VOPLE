@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,19 +14,36 @@ interface item {
 interface Props {
   items: item[];
   isOpen: boolean;
+  closeMenu: () => void;
 }
 
-function Menu({ items, isOpen }: Props) {
+function Menu({ items, isOpen, closeMenu }: Props) {
   const navigate = useNavigate();
+  const menuRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    function handleClickOutSide(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        closeMenu();
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutSide);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutSide);
+    };
+  });
+
   function handleRoute(path: string) {
     navigate(path);
-    window.location.reload(); // 강제 리랜더링
+    closeMenu();
   }
 
   const popupClasses = [styles.popup, styles[`is-open-${isOpen}`]].join(' ');
 
   return (
-    <ul className={popupClasses}>
+    <ul className={popupClasses} ref={menuRef}>
       {items.map((item) => (
         <li key={item.id} onClick={() => handleRoute(item.path)}>
           {item.label}

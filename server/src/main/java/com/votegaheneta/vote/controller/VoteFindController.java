@@ -1,6 +1,9 @@
 package com.votegaheneta.vote.controller;
 
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.handler.AuthorizationExceptionHandler;
+import com.votegaheneta.security.oauth2.CustomOauth2User;
+import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.vote.dto.SessionFinalResultFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto;
 import com.votegaheneta.vote.dto.SessionFindDto.VoteFindDto;
@@ -18,17 +21,19 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.HandleAuthorizationDenied;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 
-//@Tag(name = "VoteFind", description = "Vote 조회 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/vote/{sessionId}")
-//@Tag(name = "vote-find-controller", description = "vote-find-controller API")
 public class VoteFindController {
 
   private final VoteFindService voteFindService;
@@ -40,6 +45,8 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
       @Parameter(name = "sessionId", description = "투표id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{voteId}")
   public ApiResponse<VoteDetailDto> getVoteDetail(@PathVariable("sessionId") Long sessionId,
       @PathVariable("voteId") Long voteId, Pageable pageable) {
@@ -124,15 +131,12 @@ public class VoteFindController {
       summary = "회원의 투표 완료 여부 조회",
       description = "특정 회원이 특정 투표에 대해서 투표 진행을 했는지 여부를 반환"
   )
-  @Parameters({
-      @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
-      @Parameter(name = "userId", description = "사용자id", required = true, in = ParameterIn.PATH)
-  })
-  @GetMapping("/{userId}/hasVoted")
+  @GetMapping("/status")
   public ApiResponse<Boolean> hasVoted(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId,
-      @Valid @Positive @PathVariable(name = "userId") Long userId) {
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     return ApiResponse.success(HttpStatus.OK, "투표 완료 여부 확인",
-        voteFindService.hasVoted(sessionId, userId));
+        voteFindService.hasVoted(sessionId, user.getId()));
   }
 }

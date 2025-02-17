@@ -26,7 +26,6 @@ export const useQuestionPost = (
       console.log('정답!', data);
       if (data) {
         navigate(`/elections/${sessionId}`);
-        window.location.reload();
       } else {
         setErrMsg('땡! 틀렸어요');
       }

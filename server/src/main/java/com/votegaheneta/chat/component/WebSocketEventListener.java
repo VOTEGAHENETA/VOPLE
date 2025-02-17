@@ -1,5 +1,7 @@
 package com.votegaheneta.chat.component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.util.AuthenticationUtil;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +24,7 @@ public class WebSocketEventListener {
   private final String ROOM_PREFIX = "/api/room/";
 
   @EventListener
-  public void onSubscribe(SessionSubscribeEvent event) {
+  public void onSubscribe(SessionSubscribeEvent event) throws JsonProcessingException {
     StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
     String destination = headerAccessor.getDestination();
     OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) headerAccessor.getUser();
@@ -49,14 +51,17 @@ public class WebSocketEventListener {
 
   }
 
-  private void sendEntranceMessage(OAuth2AuthenticationToken token, String destination) {
+  private void sendEntranceMessage(OAuth2AuthenticationToken token, String destination)
+      throws JsonProcessingException {
     if (token != null) {
       Users user = AuthenticationUtil.getUserFromOauth2Token(token);
       System.out.println("Received a new subscription to " + destination);
       // /api/room/session/1
       if (destination != null && user != null) {
         String message = String.format("<%s 님이 입장하였습니다>", user.getNickname());
-        simpleMessagingTemplate.convertAndSend(destination, message);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("nickname", user.getNickname());
+        simpleMessagingTemplate.convertAndSend(destination, jsonObject.toString());
       }
     }
   }

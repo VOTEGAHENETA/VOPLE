@@ -10,6 +10,9 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   (response) => {
+    if (response.data.httpStatus === 403 || response.data.httpStatus === 404) {
+      window.location.href = '/error';
+    }
     return response.data.data;
   },
   (error) => {

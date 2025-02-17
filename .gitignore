@@ -3,3 +3,4 @@ aws/
 jenkins/*
 .env
 hls/*
+media/

@@ -36,7 +36,7 @@ export const useVoteMutation = ({
     return {
       sessionId: voteSession.sessionId,
       payload: {
-        userId: 0, // 실제 userId로 대체 필요
+        // userId: 0,
         voteSelections,
       },
     };

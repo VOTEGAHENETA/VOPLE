@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class SessionDto {
 
   private Long id;
-  private Long hostId;
+  private Long hostId; // 호스트 아이디 -> session에서 꺼내기
   private String sessionName;
   private String entranceQuestion;
   private String entranceAnswer;
