@@ -45,7 +45,7 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH),
       @Parameter(name = "sessionId", description = "투표id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("sessionAuth.isAdminInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{voteId}")
   public ApiResponse<VoteDetailDto> getVoteDetail(@PathVariable("sessionId") Long sessionId,
