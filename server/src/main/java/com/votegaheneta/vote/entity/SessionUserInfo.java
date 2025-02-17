@@ -50,4 +50,8 @@ public class SessionUserInfo {
     this.electionSession = electionSession;
     electionSession.getSessionUserInfos().add(this);
   }
+
+  public void updateSessionInfoHasVoted(Boolean aTrue) {
+    this.hasVoted = aTrue;
+  }
 }

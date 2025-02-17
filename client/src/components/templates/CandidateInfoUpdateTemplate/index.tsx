@@ -13,7 +13,7 @@ import { useUpdateCandidateInfo } from '@/services/hooks/useUpdateCandidateInfo'
 
 export default function CandidateInfoUpdateTemplate() {
   const [imgPreview, setImgPreview] = useState<string>('');
-  const { session_id, user_id } = useParams();
+  const { session_id } = useParams();
   const sessionId = Number(session_id);
   // 공약 usePledges
   const {

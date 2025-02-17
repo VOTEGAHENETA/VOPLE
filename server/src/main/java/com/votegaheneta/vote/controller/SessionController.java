@@ -108,8 +108,9 @@ public class SessionController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @GetMapping("/{sessionId}")
-  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId) {
-    SessionInitialInfoDto result = sessionService.getSession(sessionId);
+  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+    SessionInitialInfoDto result = sessionService.getSession(sessionId, user.getId());
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
   }
 
@@ -134,10 +135,10 @@ public class SessionController {
       description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
   )
   @GetMapping
-  public ApiResponse<SessionResponse> getSessions(/*@AuthenticationPrincipal CustomOauth2User oauth2User*/) {
-    // Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
-    Long userId = 1L;
-    SessionResponse result = sessionService.getSessions(/*user.getId()*/userId);
+  public ApiResponse<SessionResponse> getSessions(@AuthenticationPrincipal CustomOauth2User oauth2User) {
+     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+//    Long userId = 1L;
+    SessionResponse result = sessionService.getSessions(user.getId());
     if (result.getManagedSessions().isEmpty() && result.getInvolvedSessions().isEmpty()) {
       return ApiResponse.fail(HttpStatus.NO_CONTENT, "세션 목록이 없습니다.");
     }

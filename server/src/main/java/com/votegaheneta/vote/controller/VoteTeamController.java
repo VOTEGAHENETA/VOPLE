@@ -1,6 +1,8 @@
 package com.votegaheneta.vote.controller;
 
+import com.votegaheneta.common.exception.EmptyOauthUserException;
 import com.votegaheneta.common.response.ApiResponse;
+import com.votegaheneta.security.handler.AuthorizationExceptionHandler;
 import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
@@ -16,6 +18,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.method.HandleAuthorizationDenied;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.votegaheneta.common.exception.EmptyOauthUserException;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,6 +73,8 @@ public class VoteTeamController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@candidateAuth.isCandidateInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ApiResponse<Void> updateVoteTeam(
       @PathVariable("sessionId") Long sessionId,
@@ -84,12 +89,14 @@ public class VoteTeamController {
   }
 
   @Operation(
-      summary = "입후보자 페이지 정보 조회",
-      description = "FIGMA : 관리자 플로우 - [입후보자 조회/수정 화면]")
+      summary = "후보자 정보 조회",
+      description = "FIGMA : 후보자 플로우 - [후보자 - 내용변경]")
 
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@candidateAuth.isCandidateInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping
   public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal
                                                        CustomOauth2User oauth2User) {

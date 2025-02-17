@@ -48,6 +48,7 @@ public class SessionServiceImpl implements SessionService {
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final FileStorageComponent fileStorageComponent;
+  private final VoteCommandService voteCommandService;
 
   @Transactional
   @Override
@@ -94,7 +95,7 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public SessionInitialInfoDto getSession(Long sessionId) {
+  public SessionInitialInfoDto getSession(Long sessionId, Long userId) {
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("해당되는 세션 정보가 없습니다."));
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
@@ -107,7 +108,8 @@ public class SessionServiceImpl implements SessionService {
         electionSession.getVoteStartTime(),
         electionSession.getVoteEndTime(),
         voteResults,
-        wholeVoterPercent
+        wholeVoterPercent,
+        electionSession.getHostUser().getId().equals(userId)
     );
   }
 
@@ -175,7 +177,6 @@ public class SessionServiceImpl implements SessionService {
     ElectionSession electionSession = electionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
     Users user = usersRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     if (electionSession.getEntranceAnswer().equals(answer)) {
-      // ElectionSessionUserInfo에 유저정보 저장
       SessionUserInfo sessionUserInfo = new SessionUserInfo();
       electionSession.addSessionUserInfo(sessionUserInfo);
       user.addSessionUserInfo(sessionUserInfo);

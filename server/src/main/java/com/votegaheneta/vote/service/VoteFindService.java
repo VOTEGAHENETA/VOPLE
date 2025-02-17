@@ -23,5 +23,5 @@ public interface VoteFindService {
 
   List<VoteFindDto> getVoteList(Long sessionId);
 
-  List<VoteInfoDto> findSearchCandidates(Long voteId, String keyword, Pageable pageable);
+  List<VoteInfoDto> findSearchCandidates(Long sessionId, String keyword, Pageable pageable);
 }

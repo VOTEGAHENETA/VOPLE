@@ -36,6 +36,10 @@ function VoteTemplate() {
   if (!voteData)
     return <div className={styles.loading}>투표 정보 불러오는 중...</div>;
 
+  const moveToBack = () => {
+    navigate(`/elections/${voteData.sessionId}`);
+  };
+
   return (
     <div className={styles.vote}>
       <VotingBoard info={voteData} selectedCandidates={selectedCandidates} />
@@ -54,6 +58,7 @@ function VoteTemplate() {
             kind='base'
             status={BASE_BUTTON_STATUS.OUTLINE}
             type='button'
+            onClick={moveToBack}
           >
             취소
           </BaseButton>
