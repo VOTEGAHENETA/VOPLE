@@ -20,11 +20,11 @@ const ElectionListItem = ({
   status,
 }: ElectionListItemProps) => {
   const { setIsHost } = useElectionStore();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   // 참여 중인 선거 클릭 시, 해당 선거 isClosed에 따라 라우팅
   const handleItemClick = () => {
-    setIsHost(true);
+    setIsHost(false);
     if (isClosed) {
       navigate(`/elections/${id}/result`);
     } else {
@@ -41,6 +41,10 @@ const ElectionListItem = ({
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  function handleCloseMenu() {
+    setIsMenuOpen(false);
+  }
 
   // dots 버튼 Menu 구성 목록
   const menuItems = [
@@ -70,7 +74,11 @@ const ElectionListItem = ({
             name='dots'
             onClick={handleMenuToggle}
           />
-          <Menu items={menuItems} isOpen={isMenuOpen} />
+          <Menu
+            items={menuItems}
+            isOpen={isMenuOpen}
+            closeMenu={handleCloseMenu}
+          />
         </>
       );
     }

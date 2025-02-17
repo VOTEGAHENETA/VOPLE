@@ -1,13 +1,13 @@
-package com.votegaheneta.common.exception;
+package com.votegaheneta.common.exception.handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-import com.votegaheneta.common.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -17,34 +17,32 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
-  public ApiResponse<Void> handleNotFoundException(NotFoundException e) {
+  public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
     log.warn("NotFoundException | " + e.getMessage());
-    return ApiResponse.fail(NOT_FOUND, e.getMessage());
+    return new ResponseEntity<>(e.getMessage(), NOT_FOUND);
   }
 
   @ExceptionHandler(BadRequestException.class)
-  public ApiResponse<Void> handleBadRequestException(BadRequestException e) {
+  public ResponseEntity<String> handleBadRequestException(BadRequestException e) {
     log.warn("BadRequestException | " + e.getMessage());
-    return ApiResponse.fail(BAD_REQUEST, e.getMessage());
+    return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ApiResponse<Void> handleIllegalArgumentException(IllegalArgumentException e) {
+  public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
     log.warn("illegalArgumentException | " + e.getMessage());
-    return ApiResponse.fail(BAD_REQUEST, e.getMessage());
+    return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
   }
 
   @ExceptionHandler(RuntimeException.class)
-  public ApiResponse<Void> handleRuntimeException(RuntimeException e) {
+  public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
     log.error("", e);
-    return ApiResponse
-        .fail(INTERNAL_SERVER_ERROR, e.getMessage());
+    return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(Exception.class)
-  public ApiResponse<Void> handleException(Exception e) {
+  public ResponseEntity<String> handleException(Exception e) {
     log.error("", e);
-    return ApiResponse
-        .fail(INTERNAL_SERVER_ERROR, "서버에서 알 수 없는 오류가 발생했습니다. 잠시후 다시 시도해 주세요");
+    return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
   }
 }

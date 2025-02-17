@@ -64,7 +64,7 @@ export const getElectionSession = async (
   query: string
 ): Promise<ElectionResponse> => {
   const url = query
-    ? `/election/${sessionId}${query}`
+    ? `/election/${sessionId}?${query}`
     : `/election/${sessionId}`;
   return await instance.get(url);
 };
@@ -112,4 +112,8 @@ export const getUserRole = async (sessionId: number): Promise<string> => {
     console.error(error);
     throw new Error('사용자 역할 조회 실패');
   }
+};
+
+export const getIsVoter = async (sessionId: number): Promise<string> => {
+  return await instance.get(`/election/${sessionId}/status`);
 };

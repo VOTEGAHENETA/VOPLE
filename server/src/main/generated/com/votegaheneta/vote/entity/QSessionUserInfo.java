@@ -24,9 +24,13 @@ public class QSessionUserInfo extends EntityPathBase<SessionUserInfo> {
 
     public final QElectionSession electionSession;
 
+    public final BooleanPath hasVoted = createBoolean("hasVoted");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final com.votegaheneta.user.entity.QUsers user;
+
+    public final EnumPath<com.votegaheneta.user.enums.USER_TYPE> userType = createEnum("userType", com.votegaheneta.user.enums.USER_TYPE.class);
 
     public QSessionUserInfo(String variable) {
         this(SessionUserInfo.class, forVariable(variable), INITS);

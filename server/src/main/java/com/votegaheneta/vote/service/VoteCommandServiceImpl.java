@@ -6,12 +6,16 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteInfo;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.exception.AlreadyVotedException;
+import com.votegaheneta.vote.repository.CandidateRepository;
 import com.votegaheneta.vote.repository.ElectionRepository;
+import com.votegaheneta.vote.repository.PledgeRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
+import com.votegaheneta.vote.repository.VoteInfoJdbcRepository;
 import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +28,10 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final VoteTeamRepository voteTeamRepository;
   private final ElectionRepository electionRepository;
   private final VoteRepository voteRepository;
+  private final CandidateRepository candidateRepository;
+  private final PledgeRepository pledgeRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
+  private final VoteInfoJdbcRepository voteInfoJdbcRepository;
 
   @Override
   @Transactional
@@ -32,29 +39,27 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     ElectionSession electionSession = electionRepository.findSessionById(sessionId);
     Vote vote = new Vote(voteName);
     electionSession.addVote(vote);
-
     sessionUserInfoRepository.findSessionUserInfosByElectionSessionId(sessionId)
         .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
         .forEach(vote::addVoteInfo);
     ;
-//    voteRepository.batchInsertVoteInfoList(vote.getVoteInfos());
     voteInfoRepository.saveAll(vote.getVoteInfos());
   }
 
   @Override
   @Transactional
   public void deleteVote(Long voteId) {
-    // vote와 연관된 voteInfo와 voteTeam 삭제
-    voteInfoRepository.deleteAllBatchByVoteId(voteId);
-    // voteTeam과 연관된 plege, candidate, stream 삭제
+    voteInfoRepository.deleteByVoteId(voteId);
+    candidateRepository.deleteByVoteId(voteId);
+    pledgeRepository.deleteByVoteId(voteId);
+    voteTeamRepository.deleteByVoteId(voteId);
     voteRepository.deleteById(voteId);
   }
 
 
   @Transactional
-  public void castVote(VoteCastRequest voteCastRequest, Long sessionId) {
-    Long userId = voteCastRequest.getUserId();
-    ElectionSession electionSession = electionRepository.findById(sessionId)
+  public void castVote(VoteCastRequest voteCastRequest, Long sessionId, Long userId) {
+     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션 정보를 찾을 수 없습니다."));
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime voteStartTime = electionSession.getVoteStartTime();
@@ -80,4 +85,10 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     electionSession.incrementVotedVoter();
   }
 
+  @Override
+  @Transactional
+  public long saveVoteUserInfo(Long sessionId, Long userId) {
+    List<Long> voteIds = voteRepository.findIdsBySessionId(sessionId);
+    return voteInfoJdbcRepository.bulkInsertUserInfoByVoteIds(userId, voteIds);
+  }
 }
