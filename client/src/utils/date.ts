@@ -1,7 +1,8 @@
 export function combineDateAndTime(date: string, time: string): Date {
   const [year, month, day] = date.split('-').map(Number);
   const [hours, minutes] = time.split(':').map(Number);
-  return new Date(year, month - 1, day, hours, minutes);
+  const combine = new Date(year, month - 1, day, hours, minutes);
+  return new Date(combine.getTime() + 9 * 60 * 60 * 1000);
 }
 
 export const getFormattedDate = (now: Date = new Date()) => {
