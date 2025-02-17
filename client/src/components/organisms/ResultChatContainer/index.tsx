@@ -7,13 +7,12 @@ import ChatBoard from '../ChatBoard';
 // import IconButton from '@/components/atoms/IconButton';
 
 type TabContainerProps = {
-  userId?: number;
+  // userId?: number;
   sessionId: number;
   voteTeamId?: number;
 };
 
 export default function ResultChatContainer({
-  userId = 1,
   sessionId,
   voteTeamId = 1,
 }: TabContainerProps) {
@@ -31,7 +30,6 @@ export default function ResultChatContainer({
         sessionId={sessionId}
         type='session'
         theme='light'
-        userId={userId}
         voteTeamId={voteTeamId}
       />
     </div>
