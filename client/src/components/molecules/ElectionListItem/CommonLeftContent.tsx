@@ -1,5 +1,6 @@
 import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
+import { getFormattedDate, getFormattedTime } from '@/utils/date';
 
 interface CommonLeftContentProps {
   sessionName: string;
@@ -8,9 +9,18 @@ interface CommonLeftContentProps {
   isClosed?: boolean;
 }
 
-const formatPeriod = (startTime: string, endTime: string): string => {
-  // 기존의 formatPeriod 함수 구현을 여기에 추가하시면 됩니다.
-  return `${startTime} - ${endTime}`;
+const formatPeriod = (
+  sd: string,
+  st: string,
+  ed: string,
+  et: string
+): string => {
+  const startDateTime = `${sd}(${st})`;
+  const endDateTime = `${ed} (${et})`;
+
+  const str = `${startDateTime} -
+  ${endDateTime}`;
+  return str;
 };
 
 export const CommonLeftContent = ({
@@ -19,6 +29,10 @@ export const CommonLeftContent = ({
   endTime,
   isClosed = false,
 }: CommonLeftContentProps) => {
+  const sd = getFormattedDate(new Date(startTime));
+  const ed = getFormattedDate(new Date(startTime));
+  const st = getFormattedTime(new Date(endTime));
+  const et = getFormattedTime(new Date(endTime));
   return (
     <div className={styles.leftContent}>
       <div className={styles.title__wrap}>
@@ -41,7 +55,7 @@ export const CommonLeftContent = ({
           {sessionName}
         </Text>
       </div>
-      <p className={styles.period}>{formatPeriod(startTime, endTime)}</p>
+      <p className={styles.period}>{formatPeriod(sd, st, ed, et)}</p>
     </div>
   );
 };
