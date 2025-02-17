@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCandidateInfo } from '../candidate';
 import { getIsVoter } from '../election';
 
-export const useCandidateInfo = (sessionId: string) => {
+export const useCandidateInfo = (sessionId: number) => {
   return useQuery({
     queryKey: ['candidateInfo', sessionId],
     queryFn: async () => getCandidateInfo(sessionId),

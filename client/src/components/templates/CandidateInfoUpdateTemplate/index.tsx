@@ -14,7 +14,7 @@ import { useUpdateCandidateInfo } from '@/services/hooks/useUpdateCandidateInfo'
 export default function CandidateInfoUpdateTemplate() {
   const [imgPreview, setImgPreview] = useState<string>('');
   const { session_id } = useParams();
-
+  const sessionId = Number(session_id);
   // 공약 usePledges
   const {
     pledges,
@@ -47,12 +47,12 @@ export default function CandidateInfoUpdateTemplate() {
     });
 
   // 값이 없는 경우 얼리 리턴
-  if (!session_id) {
-    return <div>잘못된 접근입니다.</div>;
-  }
+  // if (!session_id) {
+  //   return <div>잘못된 접근입니다.</div>;
+  // }
 
   // 쿼리 훅
-  const { data, error } = useCandidateInfo(session_id);
+  const { data, error } = useCandidateInfo(sessionId);
 
   //================================
   // 후보자 정보 최초 폼 초기화
@@ -99,7 +99,7 @@ export default function CandidateInfoUpdateTemplate() {
         })),
       };
       updateMutation.mutate({
-        sessionId: session_id,
+        sessionId: sessionId,
         voteTeamInfoRequest,
         file: fileData.file,
       });
