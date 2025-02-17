@@ -125,17 +125,4 @@ public class VoteFindController {
         sessionId);
     return ApiResponse.success(HttpStatus.OK, "최종 투표 결과 조회 성공", sessionFinalResultFindDto);
   }
-
-  @Operation(
-      summary = "회원의 투표 완료 여부 조회",
-      description = "특정 회원이 특정 투표에 대해서 투표 진행을 했는지 여부를 반환"
-  )
-  @GetMapping("/status")
-  public ApiResponse<Boolean> hasVoted(
-      @Valid @Positive @PathVariable(name = "sessionId") Long sessionId,
-      @AuthenticationPrincipal CustomOauth2User oauth2User) {
-    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
-    return ApiResponse.success(HttpStatus.OK, "투표 완료 여부 확인",
-        voteFindService.hasVoted(sessionId, user.getId()));
-  }
 }

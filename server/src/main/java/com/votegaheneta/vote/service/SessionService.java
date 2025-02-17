@@ -11,8 +11,6 @@ public interface SessionService {
 
   USER_TYPE judgeUserType(Long sessionId, Long userId);
 
-  SessionDto getSessionById(Long sessionId);
-
   SessionInitialInfoDto getSession(Long sessionId, Long userId);
 
   SessionResponse getSessions(Long userId);

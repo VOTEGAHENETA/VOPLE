@@ -25,7 +25,10 @@ public class StreamServiceImpl implements StreamService {
     public StreamDto getStreamInfo(Long streamId, Long userId) {
         Stream stream = streamRepository.findById(streamId)
                 .orElseThrow(() -> new IllegalArgumentException("스트리밍 정보를 얻어올 수 없습니다."));
-        boolean isCandidate = candidateRepository.existsByVoteTeamIdAndUserId(streamId, userId);
-        return StreamDto.fromEntity(stream, isCandidate);
+        return StreamDto.fromEntity(stream);
+    }
+
+    public boolean checkPermission(Long streamId, Long userId) {
+        return candidateRepository.existsByVoteTeamIdAndUserId(streamId, userId);
     }
 }

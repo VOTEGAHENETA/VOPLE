@@ -88,17 +88,12 @@ public class SessionServiceImpl implements SessionService {
   }
 
   @Override
-  public SessionDto getSessionById(Long sessionId) {
-    ElectionSession electionSession = electionRepository.findById(sessionId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
-    return SessionDto.fromEntity(electionSession);
-  }
-
-  @Override
   public SessionInitialInfoDto getSession(Long sessionId, Long userId) {
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("해당되는 세션 정보가 없습니다."));
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+    SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("투표 회원의 정보를 찾을 수 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
     return new SessionInitialInfoDto(
@@ -109,7 +104,8 @@ public class SessionServiceImpl implements SessionService {
         electionSession.getVoteEndTime(),
         voteResults,
         wholeVoterPercent,
-        electionSession.getHostUser().getId().equals(userId)
+        electionSession.getHostUser().getId().equals(userId),
+        sessionUserInfo.isHasVoted()
     );
   }
 
@@ -188,14 +184,12 @@ public class SessionServiceImpl implements SessionService {
   @Override
   public USER_TYPE judgeUserType(Long sessionId, Long userId) {
     Long count = electionRepository.judgeUserType(sessionId, userId);
-    System.out.println("count = " + count);
     return count == 1 ? USER_TYPE.CANDIDATE : USER_TYPE.VOTER;
   }
 
   @Override
   public String getQuestion(Long sessionId) {
     String entranceQuestion = electionRepository.findEntranceQuestionById(sessionId);
-    System.out.println("entranceQuestion = " + entranceQuestion);
     return entranceQuestion;
   }
 }

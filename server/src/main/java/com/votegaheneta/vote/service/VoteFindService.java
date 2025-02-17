@@ -13,8 +13,6 @@ public interface VoteFindService {
 
   public VoteDetailDto getVoteDetail(Long sessionId, Long voteId, Pageable pageable);
 
-  public Boolean hasVoted(Long sessionId, Long userId);
-
   public SessionFindDto findVoteBySessionId(Long sessionId);
 
   public SessionResultFindDto findVoteResultBySessionId(Long sessionId);
