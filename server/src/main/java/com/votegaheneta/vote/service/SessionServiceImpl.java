@@ -183,13 +183,12 @@ public class SessionServiceImpl implements SessionService {
 
   @Override
   public USER_TYPE judgeUserType(Long sessionId, Long userId) {
-    Long count = electionRepository.judgeUserType(sessionId, userId);
-    return count == 1 ? USER_TYPE.CANDIDATE : USER_TYPE.VOTER;
+    SessionUserInfo sui = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId).orElseThrow(() -> new IllegalArgumentException("세션에 유저가 존재하지 않습니다"));
+    return sui.getUserType();
   }
 
   @Override
   public String getQuestion(Long sessionId) {
-    String entranceQuestion = electionRepository.findEntranceQuestionById(sessionId);
-    return entranceQuestion;
+    return electionRepository.findEntranceQuestionById(sessionId);
   }
 }

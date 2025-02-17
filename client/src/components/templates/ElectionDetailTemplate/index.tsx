@@ -16,7 +16,7 @@ import {
   useElectionDelete,
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
-import { combineDateAndTime } from '@/utils/date';
+import { combineDateAndTime, convertUTCToKST } from '@/utils/date';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -56,11 +56,6 @@ function ElectionDetailTemplate() {
   } | null>(null);
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
-
-  function convertUTCToKST(utcString: Date) {
-    const data = new Date(utcString);
-    return new Date(data.getTime() + 9 * 60 * 60 * 1000); // 9시간 추가
-  }
 
   useEffect(() => {
     if (isLoading) {

@@ -32,9 +32,6 @@ public interface ElectionRepository extends JpaRepository<ElectionSession, Long>
   @Query("select v from Vote v join v.electionSession es where es.id = :sessionId")
   List<Vote> findSessionEditById(@Param("sessionId") Long sessionId);
 
-  @Query("select count(vi) from VoteInfo vi join vi.vote v join v.electionSession es where es.id = :sessionId and vi.user.id = :userId and vi.userType = 'CANDIDATE'")
-  Long judgeUserType(Long sessionId, Long userId);
-
   @Query("select es.id from VoteTeam vt join vt.vote v join v.electionSession es where vt.id = :voteTeamId")
   Long findSessionIdByVoteTeamId(Long voteTeamId);
 

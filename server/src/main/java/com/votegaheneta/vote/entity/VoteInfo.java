@@ -59,12 +59,10 @@ public class VoteInfo {
 
   public void setVote(Vote vote) {
     this.vote = vote;
-    vote.getVoteInfos().add(this);
   }
 
   public void setUser(Users user) {
     this.user = user;
-    user.getVoteInfos().add(this);
   }
 
   public void setHasSelect(boolean hasSelect) {

@@ -12,13 +12,11 @@ import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
 import com.votegaheneta.vote.dto.VoteDetailDto;
 import com.votegaheneta.vote.dto.VoteInfoDto;
 import com.votegaheneta.vote.entity.ElectionSession;
-import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import com.votegaheneta.vote.repository.CustomCandidateRepository;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
-import com.votegaheneta.vote.repository.VoteInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   private final VoteRepository voteRepository;
   private final VoteTeamRepository voteTeamRepository;
-  private final VoteInfoRepository voteInfoRepository;
   private final ElectionRepository electionRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final RedisRepository redisRepository;
