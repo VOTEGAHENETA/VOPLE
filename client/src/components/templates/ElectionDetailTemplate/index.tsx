@@ -16,7 +16,7 @@ import {
   useElectionDelete,
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
-import { combineDateAndTime, convertUTCToKST } from '@/utils/date';
+import { combineDateAndTime } from '@/utils/date';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -75,8 +75,8 @@ function ElectionDetailTemplate() {
       }));
       setVoteState(data.voteEditInfos);
 
-      const startTime = convertUTCToKST(data.sessionDto.startTime);
-      const endTime = convertUTCToKST(data.sessionDto.endTime);
+      const startTime = new Date(data.sessionDto.startTime);
+      const endTime = new Date(data.sessionDto.endTime);
       setDateState(() => ({
         startDate: startTime
           .toLocaleDateString('ko-KR', {
