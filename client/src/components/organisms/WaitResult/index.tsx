@@ -23,9 +23,10 @@ const Result = ({ currentData, sessionId, showSessionName }: Props) => {
 
   // liveVote가 업데이트되면 최신 투표 데이터로 voteData를 갱신
   useEffect(() => {
-    if (liveVote.length > 0) {
-      setVoteData(liveVote[liveVote.length - 1]);
+    if (!liveVote || liveVote.length === 0) {
+      return;
     }
+    setVoteData(liveVote[liveVote.length - 1]);
   }, [liveVote]);
 
   const handlePrevSession = () => {
