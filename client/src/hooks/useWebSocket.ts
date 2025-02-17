@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SockJS from 'sockjs-client';
-import Stomp, { Client, Message } from 'stompjs';
+import Stomp, { Client } from 'stompjs';
+import { StompSubscription } from '@stomp/stompjs';
 import { ChatReceiveMessage } from '@/types/chat';
 
 type WebSocketProps = {
@@ -8,36 +9,6 @@ type WebSocketProps = {
   roomId: number;
   sessionId: number;
   userId: number;
-};
-
-const parseMessage = (message: Message): ChatReceiveMessage => {
-  try {
-    if (typeof message.body === 'string') {
-      // 시스템 메시지 여부 확인
-      if (message.body.includes('입장하였습니다')) {
-        return {
-          userId: 0, // 시스템 메시지용 ID
-          nickname: 'System',
-          text: message.body,
-          color: '#999999', // 시스템 메시지 색상
-          createdTime: new Date().toISOString(),
-        };
-      }
-      // 일반 메시지 파싱
-      return JSON.parse(message.body);
-    }
-    return message.body;
-  } catch (error) {
-    console.error('메시지 파싱 에러:', error);
-    // 파싱 실패 시 시스템 메시지 형태로 반환
-    return {
-      userId: 0,
-      nickname: 'System',
-      text: message.body,
-      color: '#999999',
-      createdTime: new Date().toISOString(),
-    };
-  }
 };
 
 export const useWebSocket = ({
@@ -50,55 +21,73 @@ export const useWebSocket = ({
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const stompClient = useRef<Client | null>(null);
+  const subscription = useRef<StompSubscription | null>(null); // 구독 추적용
 
   const isMounted = useRef(false);
 
+  // messages 업데이트 시 유효성 검사 추가
+  const updateMessages = (newMessage: ChatReceiveMessage) => {
+    setMessages((prev) => [...(Array.isArray(prev) ? prev : []), newMessage]);
+  };
+
   useEffect(() => {
     isMounted.current = true;
-    if (stompClient.current?.connected) {
-      return;
-    }
-    // SockJS를 사용하여 WebSocket 연결 생성
-    var socket = new SockJS('https://i12b102.p.ssafy.io/ws', null, {
-      // websocketOnly: true,
-    });
-    // const socket = new SockJS('/ws');
+
+    // 이미 연결되어 있으면 리턴
+    if (stompClient.current?.connected) return;
+
+    const socket = new SockJS('https://i12b102.p.ssafy.io/ws', null, {});
     stompClient.current = Stomp.over(socket);
 
-    // 서버에 연결
     stompClient.current.connect(
-      {
-        sessionId: sessionId,
-        roomId: roomId,
-      },
+      { sessionId, roomId },
       (frame) => {
+        if (!isMounted.current) return;
+
         console.log('Connected:', frame);
         setConnected(true);
         setError(null);
 
-        // 해당 채팅방의 메시지를 구독
-        stompClient.current?.subscribe(
+        // 기존 구독 해제
+        if (subscription.current) {
+          subscription.current.unsubscribe();
+        }
+
+        // 새로운 구독 설정
+        const newSubscription = stompClient.current?.subscribe(
           `/api/room/${type}/${roomId}`,
           (message) => {
+            if (!isMounted.current) return;
+
             try {
-              // 받은 메시지를 JSON 형태로 파싱
-              // const receivedMessage: ChatReceiveMessage = JSON.parse(
-              //   message.body
-              // );
-              const parsedMessage = parseMessage(message);
-              // 받은 메시지를 상태에 추가
-              setMessages((prev) => {
-                const newMessages = [...prev, parsedMessage];
-                console.log('newMessages : ', newMessages);
-                return newMessages;
-              });
+              const data = JSON.parse(message.body);
+              console.log('Received message:', data); // 디버깅용
+
+              if ('nickname' in data && Object.keys(data).length === 1) {
+                updateMessages({
+                  userId: 0,
+                  nickname: 'System',
+                  color: '#333',
+                  text: `${data.nickname}님이 입장하셨습니다.`,
+                  createdTime: new Date().toLocaleTimeString(),
+                  type: 'ENTER',
+                });
+                return;
+              }
+
+              updateMessages(data);
             } catch (error) {
               console.error('메시지 파싱 에러:', error);
             }
           }
         );
+
+        if (newSubscription) {
+          subscription.current = newSubscription;
+        }
       },
       (error) => {
+        if (!isMounted.current) return;
         console.error('STOMP 에러:', error);
         setError('연결에 실패했습니다.');
         setConnected(false);
@@ -106,17 +95,19 @@ export const useWebSocket = ({
     );
 
     return () => {
-      // 컴포넌트 언마운트 시 isMounted를 false로 설정
       isMounted.current = false;
-      // 연결이 되어 있다면 연결 해제
-      if (stompClient.current && stompClient.current.connected) {
+      if (subscription.current) {
+        subscription.current.unsubscribe();
+        subscription.current = null;
+      }
+      if (stompClient.current?.connected) {
         stompClient.current.disconnect(() => {
           console.log('Disconnected');
+          stompClient.current = null;
         });
       }
     };
   }, [sessionId, roomId, userId, type]);
-
   // 메시지 전송 함수
   const sendMessage = (text: string) => {
     // 메시지가 비어있지 않고 연결되어 있다면 메시지 전송

@@ -23,11 +23,11 @@ export default function Streaming() {
   const sessionId = Number(session_id);
 
   const { data: response, isLoading, error } = useUserRole(sessionId);
-
-  console.log(error);
-  // if (error) {
-  //   return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
-  // }
+  console.log('당신은 ' + response + ' 입니다.');
+  if (error) {
+    console.log(error);
+    return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
+  }
   return (
     <div className={styles.streaming__section}>
       <div className={styles.streamingContent}>
@@ -35,7 +35,7 @@ export default function Streaming() {
           <LoadingSpinner />
         ) : (
           <>
-            {response !== 'CANDIDATE' ? (
+            {response === 'CANDIDATE' ? (
               <StreamSender streamId={teamId} />
             ) : (
               <StreamReceiver streamId={teamId} />
