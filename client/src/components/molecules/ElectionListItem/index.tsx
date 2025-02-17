@@ -18,6 +18,7 @@ const ElectionListItem = ({
   endTime,
   status,
   isClosed,
+  hasVoted,
 }: ElectionListItemProps) => {
   const { setIsHost } = useElectionStore();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -27,6 +28,8 @@ const ElectionListItem = ({
     setIsHost(false);
 
     if (isClosed) {
+      navigate(`/elections/${id}/final`);
+    } else if (hasVoted) {
       navigate(`/elections/${id}/result`);
     } else {
       navigate(`/elections/${id}`);

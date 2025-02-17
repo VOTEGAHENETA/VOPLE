@@ -21,7 +21,7 @@ const Poster: React.FC<PosterProps> = ({ size = 'm', className = '', src }) => {
   return (
     <div className={src ? PosterClasses : styles.none}>
       {src ? (
-        <img src={src} alt='poster' className={PosterClasses} />
+        <img src={src} alt='poster' className={PosterClasses} loading='lazy' />
       ) : (
         <Text size='s' weight='normal' color='#999999'>
           아직 포스터가 <br />

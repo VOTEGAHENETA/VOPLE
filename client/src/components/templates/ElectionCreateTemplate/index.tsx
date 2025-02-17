@@ -8,7 +8,8 @@ import Text from '@/components/atoms/Text';
 import { useNavigate } from 'react-router-dom';
 import { useCreateElection } from '@/services/hooks/useCreateElection';
 import {
-  combineDateAndTime,
+  combineDateAndTimePost,
+  convertUTCToKST,
   getFormattedDate,
   getFormattedTime,
 } from '@/utils/date';
@@ -97,11 +98,13 @@ function ElectionCreateTemplate() {
 
   const mutation = useCreateElection();
   function handleSubmit() {
-    const startTime = combineDateAndTime(
-      dateState.startDate,
-      dateState.startTime
+    const startTime = convertUTCToKST(
+      combineDateAndTimePost(dateState.startDate, dateState.startTime)
     );
-    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const endTime = convertUTCToKST(
+      combineDateAndTimePost(dateState.endDate, dateState.endTime)
+    );
+
     const updateState = {
       ...state,
       startTime,

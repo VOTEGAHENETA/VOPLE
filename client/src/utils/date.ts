@@ -1,15 +1,23 @@
-export function combineDateAndTime(date: string, time: string): Date {
+export function combineDateAndTimePost(date: string, time: string): Date {
   const [year, month, day] = date.split('-').map(Number);
   const [hours, minutes] = time.split(':').map(Number);
   return new Date(year, month - 1, day, hours, minutes);
 }
 
+export function combineDateAndTimePut(date: string, time: string): Date {
+  const [year, month, day] = date.split('-').map(Number);
+  const [hours, minutes] = time.split(':').map(Number);
+  const combine = new Date(year, month - 1, day, hours, minutes);
+  return new Date(combine.getTime() + 9 * 60 * 60 * 1000);
+}
+
 export const getFormattedDate = (now: Date = new Date()) => {
-  return now.toISOString().split('T')[0];
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return kst.toISOString().split('T')[0];
 };
 
 export const getFormattedTime = (now: Date = new Date()) => {
-  return now.toLocaleTimeString('en-US', {
+  return now.toLocaleTimeString('ko-KR', {
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
