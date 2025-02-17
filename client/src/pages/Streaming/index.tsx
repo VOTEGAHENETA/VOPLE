@@ -6,6 +6,7 @@ import StreamReceiver from '@/components/atoms/StreamReceiver';
 import { useUserRole } from '@/services/hooks/useUserRole';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '@/components/atoms/LoadingSpinner';
+import { useIsMine } from '@/services/hooks/live';
 
 type StreamingParams = {
   session_id?: string; // optional로 변경
@@ -22,10 +23,10 @@ export default function Streaming() {
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
 
-  const { data: response, isLoading, error } = useUserRole(sessionId);
-  console.log('당신은 ' + response + ' 입니다.');
+  const { data: isCandidate } = useIsMine(teamId);
+  const { isLoading, error } = useUserRole(sessionId);
+
   if (error) {
-    console.log(error);
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
   return (
@@ -35,7 +36,7 @@ export default function Streaming() {
           <LoadingSpinner />
         ) : (
           <>
-            {response === 'CANDIDATE' ? (
+            {isCandidate ? (
               <StreamSender streamId={teamId} />
             ) : (
               <StreamReceiver streamId={teamId} />
