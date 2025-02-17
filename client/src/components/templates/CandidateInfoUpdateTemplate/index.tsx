@@ -14,7 +14,7 @@ import { useUpdateCandidateInfo } from '@/services/hooks/useUpdateCandidateInfo'
 export default function CandidateInfoUpdateTemplate() {
   const [imgPreview, setImgPreview] = useState<string>('');
   const { session_id, user_id } = useParams();
-
+  const sessionId = Number(session_id);
   // 공약 usePledges
   const {
     pledges,
@@ -52,7 +52,7 @@ export default function CandidateInfoUpdateTemplate() {
   }
 
   // 쿼리 훅
-  const { data, error } = useCandidateInfo(session_id, user_id);
+  const { data, error } = useCandidateInfo(sessionId, user_id);
 
   //================================
   // 후보자 정보 최초 폼 초기화

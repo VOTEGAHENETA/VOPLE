@@ -8,6 +8,8 @@ import PosterTab from './PosterTab';
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
 import SAMPLE_POSTER from '@/assets/sample/sample.png';
+// import { useCandidateInfo } from '@/services/hooks/useCandidateInfo';
+// import { useParams } from 'react-router-dom';
 // import IconButton from '@/components/atoms/IconButton';
 
 const MOCK_PLEDGES = [
@@ -62,6 +64,12 @@ export default function TabContainer({
   // const toggleSlide = () => {
   //   setIsSlideDown((prev) => !prev);
   // };
+
+  // 쿼리 훅
+  // const { session_id, user_id } = useParams();
+  // const { session_id, user_id } = useParams();
+
+  // const { data, error } = useCandidateInfo(sessionId, userId);
 
   return (
     <div

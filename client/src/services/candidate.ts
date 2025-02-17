@@ -2,7 +2,7 @@ import { VoteTeamInfoResponse, VoteTeamInfoRequest } from '@/types/user';
 import instance from './api';
 
 export const getCandidateInfo = async (
-  sessionId: string,
+  sessionId: number,
   userId: string
 ): Promise<VoteTeamInfoResponse> => {
   return await instance.get(`/candidate/${sessionId}/${userId}`);
