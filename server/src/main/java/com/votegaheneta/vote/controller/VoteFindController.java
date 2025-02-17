@@ -68,8 +68,7 @@ public class VoteFindController {
       @PathVariable("voteId") Long voteId,
       @RequestParam("keyword") String keyword,
       Pageable pageable) {
-    List<VoteInfoDto> result = voteFindService.findSearchCandidates(voteId, keyword, pageable);
-    System.out.println(result.size());
+    List<VoteInfoDto> result = voteFindService.findSearchCandidates(sessionId, keyword, pageable);
     return ApiResponse.success(HttpStatus.OK, "후보자 리스트 검색 성공", result);
   }
 
