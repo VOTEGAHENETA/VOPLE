@@ -99,6 +99,8 @@ public class SessionServiceImpl implements SessionService {
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("해당되는 세션 정보가 없습니다."));
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+    SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId)
+        .orElseThrow(() -> new IllegalArgumentException("투표 회원의 정보를 찾을 수 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
     return new SessionInitialInfoDto(
@@ -109,7 +111,8 @@ public class SessionServiceImpl implements SessionService {
         electionSession.getVoteEndTime(),
         voteResults,
         wholeVoterPercent,
-        electionSession.getHostUser().getId().equals(userId)
+        electionSession.getHostUser().getId().equals(userId),
+        sessionUserInfo.isHasVoted()
     );
   }
 
