@@ -40,6 +40,7 @@ const sampleElectionData: ElectionListDetail[] = [
     startTime: '2024-03-01T09:00:00',
     endTime: '2024-03-07T18:00:00',
     isClosed: false,
+    hasVoted: false,
   },
   {
     id: 2,
@@ -47,6 +48,7 @@ const sampleElectionData: ElectionListDetail[] = [
     startTime: '2024-03-15T09:00:00',
     endTime: '2024-03-20T18:00:00',
     isClosed: false,
+    hasVoted: false,
   },
 ];
 
@@ -69,6 +71,7 @@ export const Participating: Story = {
         startTime: '2024-02-20T09:00:00',
         endTime: '2024-02-25T18:00:00',
         isClosed: true,
+        hasVoted: false,
       },
       {
         id: 4,
@@ -76,6 +79,7 @@ export const Participating: Story = {
         startTime: '2024-03-10T09:00:00',
         endTime: '2024-03-15T18:00:00',
         isClosed: false,
+        hasVoted: false,
       },
     ],
   },
@@ -100,6 +104,7 @@ export const LongTitles: Story = {
         startTime: '2024-04-01T09:00:00',
         endTime: '2024-04-07T18:00:00',
         isClosed: false,
+        hasVoted: false,
       },
       {
         id: 6,
@@ -107,6 +112,7 @@ export const LongTitles: Story = {
         startTime: '2024-04-15T09:00:00',
         endTime: '2024-04-20T18:00:00',
         isClosed: false,
+        hasVoted: false,
       },
     ],
   },
