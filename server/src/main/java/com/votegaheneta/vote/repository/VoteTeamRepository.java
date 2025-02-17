@@ -19,7 +19,10 @@ public interface VoteTeamRepository extends JpaRepository<VoteTeam, Long> {
       " order by vt.pollCnt desc ")
   List<VoteTeam> findByVote_IdIn(@Param("voteIds")List<Long> voteIds);
 
+  @Modifying
+  @Query("delete from VoteTeam vt where vt.vote.id = :voteId")
   void deleteVoteTeamByVoteId(Long voteId);
+
   @Query("select vt "
       + " from VoteTeam vt "
       + " join fetch Candidate c "

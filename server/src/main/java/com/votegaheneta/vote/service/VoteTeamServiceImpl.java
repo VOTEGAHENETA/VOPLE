@@ -1,7 +1,10 @@
 package com.votegaheneta.vote.service;
 
+import com.votegaheneta.chat.dto.ChatRoomDto;
+import com.votegaheneta.chat.service.ChatService;
 import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.stream.entity.Stream;
+import com.votegaheneta.stream.repository.StreamRepository;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
@@ -38,6 +41,8 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   private final SessionUserInfoRepository sessionUserInfoRepository;
   private final CandidateRepository candidateRepository;
   private final PledgeRepository pledgeRepository;
+  private final ChatService chatService;
+  private final StreamRepository streamRepository;
   private final FileStorageComponent fileStorageComponent;
 
   @Value("${spring.data.hls.host-prefix}")
@@ -51,6 +56,11 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   @Transactional
   @Override
   public void modifyVoteTeam(Long sessionId, Long voteId, CandidateRequestDto candidateRequest) {
+    Vote vote = voteRepository.findVoteWithVoteTeamById(voteId).orElseThrow(() -> new IllegalArgumentException("투표가 존재하지 않습니다."));
+    vote.getVoteTeams().forEach(voteTeam -> chatService.deleteChatRoom(new ChatRoomDto(voteTeam.getId(), "TEAM")));
+    streamRepository.deleteAllStreamByVoteTeam(vote.getVoteTeams());
+    candidateRepository.deleteAllCandidateByVoteTeam(vote.getVoteTeams());
+    pledgeRepository.deleteAllPledgeByVoteTeam(vote.getVoteTeams());
     deleteAllVoteTeam(voteId);
     List<VoteTeam> voteTeam = createVoteTeam(voteId, candidateRequest);
     createStream(voteId, voteTeam);
@@ -63,7 +73,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     List<UserDto> userDtoList = voteTeamList.stream().flatMap(List::stream).toList();
     List<Users> userList = userDtoList.stream().map(UserDto::toEntity).toList();
     int updateCnt = sessionUserInfoRepository.updateUserTypeInSessionUserInfo(sessionId, userList);
-    System.out.println("updateCnt = " + updateCnt);
   }
 
   // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
@@ -78,11 +87,9 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     List<List<UserDto>> voteTeamList = request.getVoteTeamList();
     for (List<UserDto> userDtos : voteTeamList) {
       VoteTeam voteTeam = new VoteTeam();
-      for (UserDto userDto : userDtos) {
-        Users user = usersRepository.findById(userDto.getUserId())
-            .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
-        voteTeam.addCandidate(new Candidate(user));
-      }
+      List<Long> userIdList = userDtos.stream().map(UserDto::getUserId).toList();
+      List<Users> users = usersRepository.findAllById(userIdList);
+      users.forEach(user -> voteTeam.addCandidate(new Candidate(user)));
       vote.addVoteTeam(voteTeam);
       voteTeams.add(voteTeam);
     }
@@ -94,6 +101,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   private void createStream(Long voteTeamId, List<VoteTeam> voteTeams) {
     voteTeams.forEach(voteTeam -> voteTeam.setStream(
         new Stream(STREAMING_PREFIX + voteTeam.getId() + STREAMING_POSTFIX)));
+    voteTeamRepository.saveAll(voteTeams);
   }
 
   @Transactional
