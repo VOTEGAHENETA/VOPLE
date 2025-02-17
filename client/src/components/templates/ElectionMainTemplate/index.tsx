@@ -37,7 +37,12 @@ function ElectionMainTemplate() {
           {election?.voteResults?.map((vote, index) => {
             vote.teamResults.sort(() => Math.random() - 0.5);
             return (
-              <MainCandidateList key={vote.voteId} vote={vote} index={index} />
+              <MainCandidateList
+                key={vote.voteId}
+                sessionId={election.sessionId}
+                vote={vote}
+                index={index}
+              />
             );
           })}
         </div>

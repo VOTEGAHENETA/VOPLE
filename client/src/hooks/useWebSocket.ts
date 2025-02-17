@@ -8,15 +8,10 @@ type WebSocketProps = {
   type: string;
   roomId: number;
   sessionId: number;
-  userId: number;
+  // userId: number;
 };
 
-export const useWebSocket = ({
-  type,
-  roomId,
-  sessionId,
-  userId,
-}: WebSocketProps) => {
+export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
   const [messages, setMessages] = useState<ChatReceiveMessage[]>([]);
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -107,7 +102,7 @@ export const useWebSocket = ({
         });
       }
     };
-  }, [sessionId, roomId, userId, type]);
+  }, [sessionId, roomId, type]);
   // 메시지 전송 함수
   const sendMessage = (text: string) => {
     // 메시지가 비어있지 않고 연결되어 있다면 메시지 전송
@@ -119,7 +114,6 @@ export const useWebSocket = ({
           type: 'CHAT',
           roomId,
           sessionId,
-          userId,
           text,
         })
       );

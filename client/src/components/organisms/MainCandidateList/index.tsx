@@ -11,9 +11,10 @@ import { VoteResult } from '@/types/voteSession';
 interface Props {
   index: number;
   vote: VoteResult;
+  sessionId: number;
 }
 
-function MainCandidateList({ index, vote }: Props) {
+function MainCandidateList({ index, vote, sessionId }: Props) {
   const [currentIndex, setCurrentIndex] = useState(
     vote.teamResults.length === 1 ? 0 : 1
   );
@@ -112,8 +113,10 @@ function MainCandidateList({ index, vote }: Props) {
     setCurrentIndex(index);
   }
 
-  function handleRouteChannel(cadindateId: number) {
-    navigate(`/live/${vote.voteId}/${cadindateId}`);
+  function handleRouteChannel(teamId: number) {
+    // navigate(`/live/${vote.voteId}/${cadindateId}`);
+    console.log('sessionId' + sessionId + '/' + 'teamId' + teamId);
+    navigate(`/live/${sessionId}/${teamId}`);
   }
 
   useEffect(handleTransitionEndEffect, [currentIndex, transitioning]);

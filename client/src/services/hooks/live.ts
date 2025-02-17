@@ -32,6 +32,10 @@ export function useStreamControl() {
 export function useIsMine(streamId: number) {
   return useQuery({
     queryKey: ['mine', streamId],
-    queryFn: () => getIsMine(streamId),
+    queryFn: async () => {
+      const response = await getIsMine(streamId);
+      console.log('## useIsMine response:', response);
+      return response;
+    },
   });
 }

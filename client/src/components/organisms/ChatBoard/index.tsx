@@ -13,7 +13,7 @@ type roomType = 'session' | 'team';
 type ChatBoardProps = {
   type: roomType;
   theme: ThemeType;
-  userId: number;
+  // userId: number;
   sessionId: number;
   voteTeamId?: number;
 };
@@ -34,7 +34,6 @@ const enterMessage: ChatReceiveMessage = {
 export default function ChatBoard({
   type,
   theme,
-  userId,
   sessionId,
   voteTeamId,
 }: ChatBoardProps) {
@@ -54,7 +53,6 @@ export default function ChatBoard({
       type: type,
       roomId,
       sessionId,
-      userId,
     });
 
   useEffect(() => {
