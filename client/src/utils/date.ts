@@ -5,11 +5,12 @@ export function combineDateAndTime(date: string, time: string): Date {
 }
 
 export const getFormattedDate = (now: Date = new Date()) => {
-  return now.toISOString().split('T')[0];
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return kst.toISOString().split('T')[0];
 };
 
 export const getFormattedTime = (now: Date = new Date()) => {
-  return now.toLocaleTimeString('en-US', {
+  return now.toLocaleTimeString('ko-KR', {
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
