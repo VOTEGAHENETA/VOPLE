@@ -17,7 +17,7 @@ public class CandidateAuthorization {
 
   public boolean isCandidateInSession(Long sessionId) {
     Users user = AuthenticationUtil.getUserFromAuthentication();
-    Optional<SessionUserInfo> sui = sessionUserInfoRepository.findByElectionSessionIdAndUser(sessionId, user);
+    Optional<SessionUserInfo> sui = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, user.getId());
     return sui.map(SessionUserInfo::getUserType).filter(userType -> userType == USER_TYPE.CANDIDATE).isPresent();
   }
 }

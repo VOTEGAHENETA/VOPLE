@@ -3,7 +3,6 @@ import TabContainer from '@/components/organisms/TabContainer';
 import styles from './index.module.scss';
 import StreamSender from '@/components/atoms/StreamSender';
 import StreamReceiver from '@/components/atoms/StreamReceiver';
-import { useUserRole } from '@/services/hooks/useUserRole';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 import { useIsMine } from '@/services/hooks/live';
@@ -23,10 +22,9 @@ export default function Streaming() {
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
 
-  const { data: isCandidate } = useIsMine(teamId);
-  const { isLoading, error } = useUserRole(sessionId);
+  const { data: isCandidate, isLoading, isError } = useIsMine(teamId);
 
-  if (error) {
+  if (isError) {
     return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
   }
   return (
