@@ -12,6 +12,7 @@ export const useMediaStream = ({ streamKey }: Props) => {
   const ws = useRef<WebSocket | null>(null);
   const [facingMode, setFacingMode] = useState<FacingMode>('user');
   const [isMic, setIsMic] = useState<boolean>(true);
+  const { VITE_PUBLIC_SOCKET_URL } = import.meta.env;
 
   useEffect(() => {
     if (!streamKey) {
@@ -27,7 +28,7 @@ export const useMediaStream = ({ streamKey }: Props) => {
 
   function wsConnection() {
     ws.current = new WebSocket(
-      `wss://i12b102.p.ssafy.io/stream?streamKey=${streamKey}`
+      `${VITE_PUBLIC_SOCKET_URL}/stream?streamKey=${streamKey}`
     );
 
     ws.current.onopen = () => console.log('WebSocket 연결됨');
