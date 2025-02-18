@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.entity.Users;
-import com.votegaheneta.util.AuthenticationUtil;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -42,7 +41,7 @@ public class WebSocketEventListener {
 
       if (destinationPostFix.startsWith(ROOM_PREFIX)) {
         String roomKey = destination.substring(ROOM_PREFIX.length());
-        sendEntranceMessage(token, destination);
+//        sendEntranceMessage(token, destination);
 
         sessionChatRoomMap.put(optUser.get(), roomKey);
         long participantCount = roomParticipantsCount.computeIfAbsent(roomKey, key -> new AtomicLong(0)).incrementAndGet();
@@ -75,17 +74,17 @@ public class WebSocketEventListener {
     }
   }
 
-  private void sendEntranceMessage(OAuth2AuthenticationToken token, String destination)
-      throws JsonProcessingException {
-    if (token != null) {
-      Users user = AuthenticationUtil.getUserFromOauth2Token(token);
-      System.out.println("Received a new subscription to " + destination);
-      // /api/room/session/1
-      if (destination != null && user != null) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("nickname", user.getNickname());
-        simpleMessagingTemplate.convertAndSend(destination, jsonObject.toString());
-      }
-    }
-  }
+//  private void sendEntranceMessage(OAuth2AuthenticationToken token, String destination)
+//      throws JsonProcessingException {
+//    if (token != null) {
+//      Users user = AuthenticationUtil.getUserFromOauth2Token(token);
+//      System.out.println("Received a new subscription to " + destination);
+//      // /api/room/session/1
+//      if (destination != null && user != null) {
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.addProperty("nickname", user.getNickname());
+//        simpleMessagingTemplate.convertAndSend(destination, jsonObject.toString());
+//      }
+//    }
+//  }
 }
