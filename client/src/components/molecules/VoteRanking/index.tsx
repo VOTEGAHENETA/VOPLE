@@ -12,6 +12,12 @@ interface Props {
 
 function VoteRanking({ teamResults = [], wholeVoterPercent = 0 }: Props) {
   const topThree = teamResults.slice(0, 3);
+  console.log(
+    '투표 결과',
+    topThree.map((i) =>
+      i.voteCandidateDtos.map((find) => find.userName).join(' & ')
+    )
+  );
 
   return (
     <div className={styles.container}>
@@ -38,11 +44,22 @@ function VoteRanking({ teamResults = [], wholeVoterPercent = 0 }: Props) {
 
               {/* 팀 정보 */}
               <div className={styles.candidate_info}>
-                <Text size='s' weight='normal' color='#999999'>
+                <Text
+                  size='s'
+                  weight='normal'
+                  color='#999999'
+                  className={styles.prefix}
+                >
                   {team.prefix}
                 </Text>
-                <Text size='m' weight='bold' color='#555555'>
-                  {team.voteCandidateDtos[0]?.userName || '이름 없음'}
+                <Text
+                  size='m'
+                  weight='bold'
+                  color='#555555'
+                  className={styles.name}
+                >
+                  {team.voteCandidateDtos.map((c) => c.userName).join(' & ') ||
+                    '이름 없음'}
                 </Text>
               </div>
             </div>
