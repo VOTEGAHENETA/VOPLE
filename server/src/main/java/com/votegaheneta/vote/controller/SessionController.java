@@ -63,6 +63,8 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("!@sessionAuth.isUserInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}/question")
   public ApiResponse<String> getQuestion(@PathVariable Long sessionId) {
     String result = sessionService.getQuestion(sessionId);
@@ -80,6 +82,8 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("!@sessionAuth.isUserInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @PostMapping("/{sessionId}/question")
   public ApiResponse<SessionValidateResponse> validateQuestion(@PathVariable Long sessionId,
       @RequestBody Map<String, String> payload,

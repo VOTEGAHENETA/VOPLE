@@ -16,6 +16,7 @@ function App() {
   // 헤더가 사용되지 않는 곳
   const nonHeaderLocation = [
     /^\/login$/,
+    /^\/error$/,
     /^\/elections\/\d+\/candidates\/\d+$/,
     /^\/elections\/\d+\/question$/,
     /^\/live\/\d+\/\d+$/,

@@ -129,6 +129,11 @@
   right: 0;
   top: -42px;
 
+  &.sessionCnt {
+    top: 0px;
+    color: #333;
+  }
+
   span{
     &::after{
     content: "";
@@ -141,7 +146,7 @@
     top: 50%;
     transform: translateY(-50%);
     border-radius: 6px;
-    background-color: var(--color-gray-light);
+    background-color: var(--color-main-orange);
     }
   } 
 }
