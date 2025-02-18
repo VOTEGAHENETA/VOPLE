@@ -39,7 +39,6 @@ export default function ChatBoard({
 }: ChatBoardProps) {
   // 탭 변환 시 렌더링 확인용
   // console.log('ChatBoard Rendered');
-
   // const getEnterMessage = () => ({
   //   userId: 0,
   //   nickname: 'System',
@@ -114,8 +113,10 @@ export default function ChatBoard({
         disabled={!connected || !!error}
         theme={theme}
       />
-
-      <div className={styles.participantCount}>
+      {/* 채팅 인원 표시 */}
+      <div
+        className={`${styles.participantCount} ${type === 'session' ? styles.sessionCnt : ''}`}
+      >
         <Text size='xs'>{participantCount}명 참여 중</Text>
       </div>
 
