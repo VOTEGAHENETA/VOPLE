@@ -65,18 +65,4 @@ public class ChatController {
     else
       return ApiResponse.success(HttpStatus.OK, "채팅 목록 조회 성공", chatService.getChatList(new ChatRoomDto(roomId, type)));
   }
-
-  // 성능 테스트 1000개 채팅 -> 20ms 정도
-//  @GetMapping("/api/room/test/{type}/{roomId}")
-//  @ResponseBody
-//  public ResponseEntity test() {
-//    ChatRoomDto chatRoomDto = new ChatRoomDto(1L, "session");
-//    for (int i = 0 ; i < 100; i++) {
-//      ChatDto chatDto = new ChatDto();
-//      chatDto.setText("test" + i);
-//      chatDto.setNickname("test" + i);
-//      chatService2.saveChat(chatRoomDto, chatDto);
-//    }
-//    return ResponseEntity.ok().build();
-//  }
 }

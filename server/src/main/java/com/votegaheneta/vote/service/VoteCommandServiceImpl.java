@@ -28,26 +28,24 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   private final PledgeRepository pledgeRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
 
+  private final VoteTeamServiceImpl voteTeamServiceImpl;
+
   @Override
   @Transactional
   public void createVote(Long sessionId, String voteName) {
     ElectionSession electionSession = electionRepository.findSessionById(sessionId);
     Vote vote = new Vote(voteName);
     electionSession.addVote(vote);
-//    sessionUserInfoRepository.findSessionUserInfosByElectionSessionId(sessionId)
-//        .stream().map(sessionUserInfo -> new VoteInfo(vote, sessionUserInfo.getUser()))
-//        .forEach(vote::addVoteInfo);
-//    ;
-//    voteInfoRepository.saveAll(vote.getVoteInfos());
   }
 
   @Override
   @Transactional
   public void deleteVote(Long voteId) {
-    candidateRepository.deleteByVoteId(voteId);
-    pledgeRepository.deleteByVoteId(voteId);
-    voteTeamRepository.deleteByVoteId(voteId);
+    voteTeamServiceImpl.deleteAllVoteTeam(voteId);
     voteRepository.deleteById(voteId);
+//    candidateRepository.deleteByVoteId(voteId);
+//    pledgeRepository.deleteByVoteId(voteId);
+//    voteTeamRepository.deleteByVoteId(voteId);
   }
 
 

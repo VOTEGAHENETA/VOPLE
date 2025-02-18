@@ -22,8 +22,6 @@ import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
-import com.votegaheneta.vote.repository.VoteRepository;
-import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalDateTime;
@@ -41,14 +39,11 @@ public class SessionServiceImpl implements SessionService {
   @Value("${base_url}")
   private String mediaUrl;
 
-  private final VoteTeamRepository voteTeamRepository;
-  private final VoteRepository voteRepository;
   private final ElectionRepository electionRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final FileStorageComponent fileStorageComponent;
-  private final VoteCommandService voteCommandService;
 
   @Transactional
   @Override

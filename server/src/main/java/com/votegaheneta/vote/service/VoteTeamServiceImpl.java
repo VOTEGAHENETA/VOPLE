@@ -55,11 +55,10 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   @Transactional
   @Override
   public void modifyVoteTeam(Long sessionId, Long voteId, CandidateRequestDto candidateRequest) {
-    Vote vote = voteRepository.findVoteWithVoteTeamById(voteId).orElseThrow(() -> new IllegalArgumentException("투표가 존재하지 않습니다."));
-//    vote.getVoteTeams().forEach(voteTeam -> chatService.deleteChatRoom(new ChatRoomDto(voteTeam.getId(), "TEAM")));
-    streamRepository.deleteAllStreamByVoteTeam(vote.getVoteTeams());
-    candidateRepository.deleteAllCandidateByVoteTeam(vote.getVoteTeams());
-    pledgeRepository.deleteAllPledgeByVoteTeam(vote.getVoteTeams());
+//    Vote vote = voteRepository.findVoteWithVoteTeamById(voteId).orElseThrow(() -> new IllegalArgumentException("투표가 존재하지 않습니다."));
+//    streamRepository.deleteAllStreamByVoteTeam(vote.getVoteTeams());
+//    candidateRepository.deleteAllCandidateByVoteTeam(vote.getVoteTeams());
+//    pledgeRepository.deleteAllPledgeByVoteTeam(vote.getVoteTeams());
     deleteAllVoteTeam(voteId);
     List<VoteTeam> voteTeam = createVoteTeam(voteId, candidateRequest);
     createStream(voteId, voteTeam);
@@ -76,6 +75,10 @@ public class VoteTeamServiceImpl implements VoteTeamService {
 
   // VoteCommandServiceImpl에서 사용해서 public으로 넣어놈
   public void deleteAllVoteTeam(Long voteId) {
+    Vote vote = voteRepository.findVoteWithVoteTeamById(voteId).orElseThrow(() -> new IllegalArgumentException("투표가 존재하지 않습니다."));
+    streamRepository.deleteAllStreamByVoteTeam(vote.getVoteTeams());
+    candidateRepository.deleteAllCandidateByVoteTeam(vote.getVoteTeams());
+    pledgeRepository.deleteAllPledgeByVoteTeam(vote.getVoteTeams());
     voteTeamRepository.deleteVoteTeamByVoteId(voteId);
   }
 
