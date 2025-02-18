@@ -17,8 +17,6 @@ export default function MessageList({ messages }: MessageListProps) {
     }
   }, [messages]);
 
-  console.log('******', messages);
-
   // messages가 undefined인 경우 빈 배열 반환
   const safeMessages = Array.isArray(messages) ? messages : [];
 

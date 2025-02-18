@@ -7,14 +7,12 @@ import { ChatSendMessage } from '@/types/chat';
 type themeType = 'dark' | 'light';
 
 interface ChatBarProps {
-  roomId: number;
   onSendMessage?: (messageData: ChatSendMessage) => void;
   placeholder?: string;
   disabled?: boolean;
   theme?: themeType;
 }
 export function ChatBar({
-  roomId,
   onSendMessage,
   placeholder = '메세지를 입력해주세요.',
   disabled = false,
@@ -25,8 +23,6 @@ export function ChatBar({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-
-  console.log('roomId : ', roomId);
 
   const onSubmit = () => {
     if (inputValue.trim()) {

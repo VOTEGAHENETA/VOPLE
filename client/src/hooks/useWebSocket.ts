@@ -16,7 +16,7 @@ export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
   const [error, setError] = useState<string | null>(null);
   const stompClient = useRef<Client | null>(null);
   const subscription = useRef<StompSubscription | null>(null); // 구독 추적용
-
+  const [participantCount, setParticipantCount] = useState<number>(0); // 참여자 수
   const isMounted = useRef(false);
 
   // messages 업데이트 시 유효성 검사 추가
@@ -55,19 +55,25 @@ export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
 
             try {
               const data = JSON.parse(message.body);
-              console.log('Received message:', data); // 디버깅용
+              // console.log('Received message:', data); // 디버깅용
 
-              if ('nickname' in data && Object.keys(data).length === 1) {
-                updateMessages({
-                  userId: 0,
-                  nickname: 'System',
-                  color: '#333',
-                  text: `${data.nickname}님이 입장하셨습니다.`,
-                  createdTime: new Date().toLocaleTimeString(),
-                  type: 'ENTER',
-                });
+              // 참여자 수 메시지 처리
+              if ('participantCount' in data) {
+                setParticipantCount(data.participantCount);
                 return;
               }
+
+              // if ('nickname' in data && Object.keys(data).length === 1) {
+              //   updateMessages({
+              //     userId: 0,
+              //     nickname: 'System',
+              //     color: '#333',
+              //     text: `${data.nickname}님이 입장하셨습니다.`,
+              //     createdTime: new Date().toLocaleTimeString(),
+              //     type: 'ENTER',
+              //   });
+              //   return;
+              // }
 
               updateMessages(data);
             } catch (error) {
@@ -126,5 +132,6 @@ export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
     sendMessage,
     setMessages,
     setError,
+    participantCount,
   };
 };

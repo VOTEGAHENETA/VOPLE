@@ -123,8 +123,6 @@ export const useCandidateStore = create<CandidateStore>((set) => ({
         },
       };
 
-      console.log('update candi:', updatedCandidates);
-
       return {
         sendCandidates: updatedCandidates,
         activeTeamId: newTeamId,
