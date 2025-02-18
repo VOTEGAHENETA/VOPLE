@@ -43,9 +43,6 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   public void deleteVote(Long voteId) {
     voteTeamServiceImpl.deleteAllVoteTeam(voteId);
     voteRepository.deleteById(voteId);
-//    candidateRepository.deleteByVoteId(voteId);
-//    pledgeRepository.deleteByVoteId(voteId);
-//    voteTeamRepository.deleteByVoteId(voteId);
   }
 
 

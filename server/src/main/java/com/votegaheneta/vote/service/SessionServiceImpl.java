@@ -11,6 +11,7 @@ import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.controller.response.SessionResponse;
+import com.votegaheneta.vote.controller.response.SessionValidateResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionEditDto;
 import com.votegaheneta.vote.dto.SessionEditDto.VoteEditInfo;
@@ -166,16 +167,27 @@ public class SessionServiceImpl implements SessionService {
 
   @Transactional
   @Override
-  public boolean validateQuestion(Long sessionId, Long userId, String answer) {
+  public SessionValidateResponse validateQuestion(Long sessionId, Long userId, String answer) {
+    boolean isCorrect = false;
+    boolean isFull = false;
+
     ElectionSession electionSession = electionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
     Users user = usersRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     if (electionSession.getEntranceAnswer().equals(answer)) {
       SessionUserInfo sessionUserInfo = new SessionUserInfo();
       electionSession.addSessionUserInfo(sessionUserInfo);
       user.addSessionUserInfo(sessionUserInfo);
-      return true;
+      isCorrect = true;
     }
-    return false;
+    // 방이 꽉 찼는지 확인
+    int currentElectionPeopleCount = sessionUserInfoRepository.findCountByElectionSessionId(sessionId);
+    int wholeVoter = electionSession.getWholeVoter();
+
+    if (wholeVoter == currentElectionPeopleCount) {
+      isFull = true;
+    }
+
+    return new SessionValidateResponse(isCorrect, isFull);
   }
 
   @Override
