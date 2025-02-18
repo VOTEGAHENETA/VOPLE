@@ -8,6 +8,7 @@ import ChatBoard from '../ChatBoard';
 
 type TabContainerProps = {
   sessionId: number;
+  // voteTeamId?: number;
 };
 
 export default function ResultChatContainer({ sessionId }: TabContainerProps) {
@@ -21,6 +22,7 @@ export default function ResultChatContainer({ sessionId }: TabContainerProps) {
 
   return (
     <div className={styles.container}>
+      <ChatBoard sessionId={sessionId} type='session' theme='light' />
       <ChatBoard sessionId={sessionId} type='session' theme='light' />
     </div>
   );

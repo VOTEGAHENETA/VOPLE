@@ -97,6 +97,11 @@
   word-break: break-all;
 }
 
+
+// ====================
+// HEART
+// ====================
+
 .heartBox {
   width: 30px;
   height: 30px;
@@ -108,3 +113,41 @@
     height: 20px;
   }
 }
+
+
+// ====================
+// PARTICIPANT COUNT
+// ====================
+
+.participantCount {
+  border: 1px solid #555;
+  color: #eee;
+  padding: 6px 16px 6px 26px;
+  text-align: center;
+  position: absolute;
+  border-radius: 20px;
+  right: 0;
+  top: -42px;
+
+  span{
+    &::after{
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    margin-right: 10px;
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 6px;
+    background-color: var(--color-gray-light);
+    }
+  } 
+}
+
+
+
+
+
+

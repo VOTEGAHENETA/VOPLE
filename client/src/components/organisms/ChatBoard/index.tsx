@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import styles from './index.module.scss';
 import { ChatBar } from '@/components/molecules/ChatBar';
 import MessageList from './MessageList';
-import { ChatSendMessage, ChatReceiveMessage } from '@/types/chat';
+import { ChatReceiveMessage, ChatSendMessage } from '@/types/chat';
 import { useWebSocket } from '@/hooks/useWebSocket';
 import { useChatMessages } from '@/services/hooks/useChatMessages';
 import ChatHeart from '@/components/atoms/ChatHeart';
+import Text from '@/components/atoms/Text';
 
 type ThemeType = 'dark' | 'light';
 type roomType = 'session' | 'team';
@@ -39,8 +40,18 @@ export default function ChatBoard({
   // 탭 변환 시 렌더링 확인용
   // console.log('ChatBoard Rendered');
 
-  // as 사용해야하는 케이스인가 재차 고려 필요
-  // const roomId = type === 'session' ? sessionId : (voteTeamId as number);
+  // const getEnterMessage = () => ({
+  //   userId: 0,
+  //   nickname: 'System',
+  //   text: '[ 채팅방에 입장하셨습니다 ]',
+  //   color: '#fff',
+  //   createdTime: new Date().toLocaleTimeString('ko-KR', {
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit',
+  //     hour12: false,
+  //   }),
+  // });
 
   // roomId를 계산하기 전에 타입 체크
   if (type === 'team' && typeof voteTeamId === 'undefined') {
@@ -55,12 +66,19 @@ export default function ChatBoard({
     roomId
   );
 
-  const { messages, connected, error, sendMessage, setMessages, setError } =
-    useWebSocket({
-      type: type,
-      roomId,
-      sessionId,
-    });
+  const {
+    messages,
+    connected,
+    error,
+    sendMessage,
+    setMessages,
+    setError,
+    participantCount,
+  } = useWebSocket({
+    type: type,
+    roomId,
+    sessionId,
+  });
 
   useEffect(() => {
     if (chatError) {
@@ -68,8 +86,11 @@ export default function ChatBoard({
       return;
     }
 
+    console.log('initialChats : ', initialChats);
+    console.log('enterMessage : ', enterMessage);
     if (initialChats) {
       if (initialChats.httpStatus === 200) {
+        // const currentEnterMessage = getEnterMessage();
         setMessages([...initialChats.data.reverse(), enterMessage]);
       } else if (initialChats.httpStatus === 204) {
         setMessages([enterMessage]);
@@ -77,7 +98,7 @@ export default function ChatBoard({
         setError(initialChats.message);
       }
     }
-  }, [initialChats]);
+  }, [initialChats, chatError]);
 
   const handleSendMessage = (messageData: ChatSendMessage) => {
     sendMessage(messageData.text);
@@ -90,10 +111,14 @@ export default function ChatBoard({
 
       <ChatBar
         onSendMessage={handleSendMessage}
-        roomId={roomId}
         disabled={!connected || !!error}
         theme={theme}
       />
+
+      <div className={styles.participantCount}>
+        <Text size='xs'>{participantCount}명 참여 중</Text>
+      </div>
+
       {/* 채팅 Heart */}
       <div
         className={styles.heartBox}
