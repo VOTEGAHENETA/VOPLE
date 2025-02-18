@@ -9,7 +9,6 @@ interface Props {
 function StreamReceiver({ streamId }: Props) {
   const hlsPlayerRef = useRef<HTMLVideoElement | null>(null);
   const { data: streamData } = useStreamData(streamId);
-  console.log('streaming:', streamData?.streamingUrl);
   useEffect(() => {
     if (!streamData || !hlsPlayerRef.current) return;
     const hls = new Hls({ debug: true });
@@ -23,8 +22,6 @@ function StreamReceiver({ streamId }: Props) {
     hls.on(Hls.Events.ERROR, (_, data) => {
       console.error('HLS.js 오류 발생:', data);
     });
-
-    console.log('hls:', hls);
 
     return () => {
       hls.destroy();

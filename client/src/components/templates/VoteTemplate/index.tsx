@@ -21,7 +21,7 @@ function VoteTemplate() {
   // 네비게이션 처리
   useEffect(() => {
     if (!isVoting && voteData?.sessionId) {
-      navigate(`/elections/${voteData.sessionId}/result/`);
+      navigate(`/elections/${voteData.sessionId}/result`);
     }
   }, [isVoting, voteData?.sessionId, navigate]);
 

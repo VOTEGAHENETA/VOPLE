@@ -60,4 +60,6 @@ export interface ElectionResponse {
   endTime: Date;
   voteResults: VoteResult[];
   wholeVoterPercent: number;
+  isHost: boolean;
+  hasVoted: boolean;
 }
