@@ -15,14 +15,16 @@ public class SessionListDto {
   private LocalDateTime startTime;
   private LocalDateTime endTime;
   private Boolean isClosed;
+  private Boolean hasVoted;
 
-  public static SessionListDto from(ElectionSession electionSession, Boolean isClosed) {
+  public static SessionListDto from(ElectionSession electionSession, Boolean isClosed, Boolean hasVoted) {
     return new SessionListDto(
         electionSession.getId(),
         electionSession.getSessionName(),
         electionSession.getVoteStartTime(),
         electionSession.getVoteEndTime(),
-        isClosed
+        isClosed,
+        hasVoted
     );
   }
 

@@ -1,6 +1,7 @@
 package com.votegaheneta.vote.repository;
 
 import com.votegaheneta.vote.entity.Pledge;
+import com.votegaheneta.vote.entity.VoteTeam;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,4 +21,8 @@ public interface PledgeRepository extends JpaRepository<Pledge, Long> {
   @Modifying
   @Query("DELETE FROM Pledge p WHERE p.voteTeam.vote.id = :voteId")
   void deleteByVoteId(@Param("voteId") Long voteId);
+
+  @Modifying
+  @Query("DELETE FROM Pledge p WHERE p.voteTeam in :voteTeams")
+  void deleteAllPledgeByVoteTeam(List<VoteTeam> voteTeams);
 }

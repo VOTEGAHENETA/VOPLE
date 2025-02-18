@@ -105,8 +105,5 @@ public class VoteTeamController {
     return ApiResponse.success(HttpStatus.OK, "투표팀 정보 조회 성공", voteTeamInfo);
   }
 
-  // 투표팀 조회는 포스터, 공약
-
-  // 회원 조회는
 
 }

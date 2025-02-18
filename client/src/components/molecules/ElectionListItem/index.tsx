@@ -17,16 +17,19 @@ const ElectionListItem = ({
   startTime,
   endTime,
   status,
+  isClosed,
+  hasVoted,
 }: ElectionListItemProps) => {
   const { setIsHost } = useElectionStore();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   // 참여 중인 선거 클릭 시, 해당 선거 isClosed에 따라 라우팅
-  const isClosed =
-    new Date(startTime).getTime() === new Date(endTime).getTime();
   const handleItemClick = () => {
     setIsHost(false);
+
     if (isClosed) {
+      navigate(`/elections/${id}/final`);
+    } else if (hasVoted) {
       navigate(`/elections/${id}/result`);
     } else {
       navigate(`/elections/${id}`);
