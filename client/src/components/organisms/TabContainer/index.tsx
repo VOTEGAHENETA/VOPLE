@@ -1,24 +1,26 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 import BaseButton from '@/components/atoms/BaseButton';
 import ChatBoard from '../ChatBoard';
 import PledgeTab from './PledgeTab';
 import PosterTab from './PosterTab';
-import SAMPLE_POSTER from '@/assets/sample/sample.png';
+import { getVoteTeamInfo } from '@/services/candidate';
+import { LiveTeamInfoResponse } from '@/types/user';
 
 //  Mock-Data (samplePoster, MOCK_PLEDGES)
 // import { useCandidateInfo } from '@/services/hooks/useCandidateInfo';
 // import { useParams } from 'react-router-dom';
 // import IconButton from '@/components/atoms/IconButton';
 
-const MOCK_PLEDGES = [
-  '학생 자치회 예산 50% 증액 및 투명한 예산 사용 보고 시스템 도입',
-  '교내 카페테리아 운영시간 연장 및 메뉴 다양화 추진',
-  '분기별 학생-교사 간담회 정례화로 소통 강화',
-  '동아리실 시설 개선 및 신규 동아리 설립 지원 확대',
-  '교내 휴게공간 확충 및 현대화 사업 추진',
-];
+// import SAMPLE_POSTER from '@/assets/sample/sample.png';
+// const MOCK_PLEDGES = [
+//   '학생 자치회 예산 50% 증액 및 투명한 예산 사용 보고 시스템 도입',
+//   '교내 카페테리아 운영시간 연장 및 메뉴 다양화 추진',
+//   '분기별 학생-교사 간담회 정례화로 소통 강화',
+//   '동아리실 시설 개선 및 신규 동아리 설립 지원 확대',
+//   '교내 휴게공간 확충 및 현대화 사업 추진',
+// ];
 
 type TabType = 'chat' | 'notice' | 'poster';
 
@@ -51,9 +53,41 @@ export default function TabContainer({
   sessionId,
   voteTeamId,
 }: TabContainerProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [teamInfo, setTeamInfo] = useState<LiveTeamInfoResponse | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>('chat');
+
+  useEffect(() => {
+    const fetchTeamInfo = async () => {
+      if (!voteTeamId) return;
+
+      setIsLoading(true);
+      try {
+        const response = await getVoteTeamInfo(voteTeamId);
+
+        // API 응답 구조에 맞게 데이터 처리
+        setTeamInfo({
+          pledges: response.pledges || [],
+          poster: response.poster || '',
+          // 기타 필요한 데이터 매핑
+        });
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : '팀 정보를 불러오는데 실패했습니다.'
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTeamInfo();
+  }, [voteTeamId]);
+
   // 슬라이드 상태 추가
   // const [isSlideDown, setIsSlideDown] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabType>('chat');
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
@@ -69,6 +103,16 @@ export default function TabContainer({
   // const { session_id, user_id } = useParams();
 
   // const { data, error } = useCandidateInfo(sessionId, userId);
+
+  // 로딩 상태 처리
+  if (isLoading) {
+    return <div className={styles.loading}>로딩 중...</div>;
+  }
+
+  // 에러 상태 처리
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
 
   return (
     <div
@@ -113,8 +157,8 @@ export default function TabContainer({
             voteTeamId={voteTeamId}
           />
         </div>
-        {activeTab === 'notice' && <PledgeTab pledges={MOCK_PLEDGES} />}
-        {activeTab === 'poster' && <PosterTab imageSrc={SAMPLE_POSTER} />}
+        {activeTab === 'notice' && <PledgeTab pledges={teamInfo?.pledges} />}
+        {activeTab === 'poster' && <PosterTab imageSrc={teamInfo?.poster} />}
       </div>
     </div>
   );

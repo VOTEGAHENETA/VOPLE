@@ -1,4 +1,8 @@
-import { VoteTeamInfoResponse, VoteTeamInfoRequest } from '@/types/user';
+import {
+  VoteTeamInfoResponse,
+  VoteTeamInfoRequest,
+  LiveTeamInfoResponse,
+} from '@/types/user';
 import instance from './api';
 
 export const getCandidateInfo = async (
@@ -41,4 +45,10 @@ export const updateCandidateInfo = async ({
     console.error('후보자 정보 업데이트 에러:', error);
     throw error;
   }
+};
+
+export const getVoteTeamInfo = async (
+  teamId: number
+): Promise<LiveTeamInfoResponse> => {
+  return await instance.get(`candidate/${teamId}/detail`);
 };
