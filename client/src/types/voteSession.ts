@@ -49,6 +49,7 @@ export interface VoteResult {
 export interface VoteResultsResponse {
   sessionName: string;
   wholeVoterPercent: number;
+  endDate: Date;
   voteResults: VoteResult[];
 }
 

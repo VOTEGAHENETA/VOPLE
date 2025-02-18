@@ -1,16 +1,14 @@
 import Result from '@/components/organisms/WaitResult';
 import ResultChatContainer from '@/components/organisms/ResultChatContainer';
 import styles from './index.module.scss';
-import { getFinalResult, getResultCurrent } from '@/services/election';
+import { getResultCurrent } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { VoteResultsResponse } from '@/types/voteSession';
-import { ElectionResult } from '@/types/final';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const ResultCurrentTemplate = () => {
   const [currentData, setCurrentData] = useState<VoteResultsResponse | null>();
-  const [finalData, setFinalData] = useState<ElectionResult | null>();
   const navigate = useNavigate();
   const { election_id } = useParams<{ election_id: string }>();
   const sessionId = Number(election_id);
@@ -30,8 +28,6 @@ const ResultCurrentTemplate = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const finalResponse = await getFinalResult(sessionId);
-        setFinalData(finalResponse);
         const currentResponse = await getResultCurrent(sessionId);
         setCurrentData(currentResponse);
       } catch (error) {
@@ -41,18 +37,16 @@ const ResultCurrentTemplate = () => {
     fetchData();
   }, [sessionId]);
 
-  console.log(finalData?.electionSessionDto.voteEndTime);
-
   // // 투표 종료되면 이동
   useEffect(() => {
-    if (finalData?.electionSessionDto.voteEndTime) {
-      const voteEndTime = new Date(finalData.electionSessionDto.voteEndTime);
+    if (currentData?.endDate) {
+      const voteEndTime = new Date(currentData.endDate);
       const now = new Date();
-      if (now >= voteEndTime) {
+      if (now.getTime() >= voteEndTime.getTime()) {
         navigate(`/elections/${sessionId}/final`);
       }
     }
-  }, [finalData, navigate, sessionId]);
+  }, [currentData]);
 
   return (
     <div className={styles.result__container}>
