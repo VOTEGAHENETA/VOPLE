@@ -172,6 +172,16 @@ public class SessionServiceImpl implements SessionService {
     boolean isFull = false;
 
     ElectionSession electionSession = electionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 세션입니다."));
+    int currentElectionPeopleCount = sessionUserInfoRepository.findCountByElectionSessionId(sessionId);
+    int wholeVoter = electionSession.getWholeVoter();
+
+    // 방이 꽉 찼는지 확인, 꽉 차면 그대로 리턴
+    if (wholeVoter == currentElectionPeopleCount) {
+      isFull = true;
+      return new SessionValidateResponse(isCorrect, isFull);
+    }
+
+    // 방이 꽉 안찼는데 사용자가 올바른 답을 입력했으면 세션에 추가
     Users user = usersRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
     if (electionSession.getEntranceAnswer().equals(answer)) {
       SessionUserInfo sessionUserInfo = new SessionUserInfo();
@@ -180,12 +190,6 @@ public class SessionServiceImpl implements SessionService {
       isCorrect = true;
     }
     // 방이 꽉 찼는지 확인
-    int currentElectionPeopleCount = sessionUserInfoRepository.findCountByElectionSessionId(sessionId);
-    int wholeVoter = electionSession.getWholeVoter();
-
-    if (wholeVoter == currentElectionPeopleCount) {
-      isFull = true;
-    }
 
     return new SessionValidateResponse(isCorrect, isFull);
   }

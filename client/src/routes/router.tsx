@@ -13,6 +13,7 @@ import Candidate from '@/pages/UserInfo/Candidate';
 import Voter from '@/pages/UserInfo/Voter';
 import { createBrowserRouter } from 'react-router-dom';
 import Error from '@/pages/Error';
+import AuthError from '@/pages/Error/403';
 
 export const router = createBrowserRouter([
   {
@@ -69,8 +70,12 @@ export const router = createBrowserRouter([
         element: <Voter />,
       },
       {
-        path: 'error',
+        path: 'error/global',
         element: <Error />,
+      },
+      {
+        path: 'error/auth',
+        element: <AuthError />,
       },
       // ... 같은 방식 진행 추후 errorElement 추가 예정
     ],
