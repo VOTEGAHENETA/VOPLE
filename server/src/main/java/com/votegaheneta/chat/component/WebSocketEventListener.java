@@ -66,11 +66,11 @@ public class WebSocketEventListener {
         return;
 
       sessionChatRoomMap.remove(optUser.get());
-      long participantCount = roomParticipantsCount.computeIfAbsent(roomKey, key -> new AtomicLong(0)).decrementAndGet();
-      participantCount = Math.max(participantCount, 0);
+      long participantCount = roomParticipantsCount.computeIfAbsent(roomKey, key -> new AtomicLong(0))
+          .getAndUpdate(value -> Math.max(value - 1, 0));
       JsonObject jsonObject = new JsonObject();
       jsonObject.addProperty("participantCount", participantCount);
-      simpleMessagingTemplate.convertAndSend(DESTINATION_PREFIX + "/" + roomKey, jsonObject.toString());
+      simpleMessagingTemplate.convertAndSend(String.join("/", DESTINATION_PREFIX, roomKey), jsonObject.toString());
     }
   }
 
