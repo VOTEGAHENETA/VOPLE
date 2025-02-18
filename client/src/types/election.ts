@@ -75,3 +75,8 @@ export interface ISessionDetail {
   sessionDto: TSession;
   voteEditInfos: TVoteEdit[];
 }
+
+export interface QuestionResponse {
+  answerCorrect: boolean;
+  electionFull: boolean;
+}
