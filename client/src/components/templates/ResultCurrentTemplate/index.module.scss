@@ -10,3 +10,33 @@
   overflow: hidden;
 }
 
+.title {
+  font-size: 26px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  em {
+   margin-left: 6px;
+   font-size: 16px;
+   border-radius: 6px;
+   background-color:var(--color-main-pink);
+   padding: 4px 8px;
+   color : var(--color-main-pink);
+   color: #fff;
+    animation: shimmer 1s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
