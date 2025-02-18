@@ -1,28 +1,32 @@
 .container {
+  margin-top: 150px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 90px;
+}
+
+.realerror {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .error {
-  position: relative;
-  top: 200px;
-  left: 80px;
-  animation: float 2s ease-in-out infinite; /* 위아래로 움직이는 애니메이션 */
-}
+  left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: float 2s ease-in-out infinite;
+  margin-right: 20px;
 
-.text {
-  position: relative;
-  top: 470px;
-  right: 100px;
 }
 
 /* 그림자 추가 */
 .shadow {
-  position: relative; 
-  top: 250px;
-  left: 150px;
-  width: 100px;
+  width: 200px;
   height: 20px;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
