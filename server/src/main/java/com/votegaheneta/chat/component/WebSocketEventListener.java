@@ -13,8 +13,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class WebSocketEventListener {
   private final String VOTE_PREFIX = "/vote";
 
   @EventListener
-  public void onSubscribe(SessionSubscribeEvent event) throws JsonProcessingException {
+  public void onSubscribe(SessionConnectEvent event) throws JsonProcessingException {
     StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
     String destination = headerAccessor.getDestination();
     OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) headerAccessor.getUser();
@@ -67,7 +67,7 @@ public class WebSocketEventListener {
 
       sessionChatRoomMap.remove(optUser.get());
       long participantCount = roomParticipantsCount.computeIfAbsent(roomKey, key -> new AtomicLong(0)).decrementAndGet();
-      participantCount = Math.min(participantCount, 0);
+      participantCount = Math.max(participantCount, 0);
       JsonObject jsonObject = new JsonObject();
       jsonObject.addProperty("participantCount", participantCount);
       simpleMessagingTemplate.convertAndSend(DESTINATION_PREFIX + "/" + roomKey, jsonObject.toString());
