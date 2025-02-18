@@ -59,13 +59,18 @@ const ElectionListItem = ({
     },
     {
       id: 2,
-      label: '메인화면',
+      label: '메인 화면',
       path: `/elections/${id}`,
     },
     {
       id: 3,
-      label: '투표현황/결과',
+      label: '투표 현황',
       path: `/elections/${id}/result`,
+    },
+    {
+      id: 4,
+      label: '투표 결과',
+      path: `/elections/${id}/final`,
     },
   ];
 

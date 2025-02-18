@@ -4,7 +4,7 @@ const { VITE_PUBLIC_API_URL } = import.meta.env;
 
 const instance = axios.create({
   baseURL: VITE_PUBLIC_API_URL,
-  timeout: 5_000,
+  timeout: 20_000,
   withCredentials: true,
 });
 

@@ -85,9 +85,11 @@ export default function CandidateInfoSection({
         />
         <InputField
           value={prefix}
+          type='text'
           onChange={(e) => onChangeField('prefix', e)}
           id='prefix-input'
           label='칭호'
+          maxLength={10}
           placeholder='후보님(들)의 센스 넘치는 칭호를 지어보세요 😀'
         />
         <TextAreaField
@@ -111,6 +113,7 @@ export default function CandidateInfoSection({
                 <InputField
                   key={index}
                   value={pledge}
+                  maxLength={100}
                   onChange={(e) => handlePledgeChange(index, e)}
                   id={`pledge-input-${index}`}
                   placeholder='매력적인 공약🗒️을 작성해보세요(개당 100자)'

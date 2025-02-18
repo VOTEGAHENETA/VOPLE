@@ -26,7 +26,16 @@ function Main() {
   }, [election_id, navigate]);
 
   useEffect(() => {
-    if (data) setElection(data);
+    if (data) {
+      const now = new Date();
+      if (!data.isHost && now.getTime() > new Date(data.endTime).getTime()) {
+        navigate(`/elections/${election_id}/final`);
+      }
+      if (data.hasVoted) {
+        navigate('/elections/list');
+      }
+      setElection(data);
+    }
   }, [data]);
 
   if (isLoading)

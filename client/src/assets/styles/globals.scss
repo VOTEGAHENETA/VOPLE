@@ -2,6 +2,14 @@
 @use 'reset';
 @use 'fonts';
 
+html,
+body {
+  -webkit-text-size-adjust: none; /* 크롬, 사파리, 오페라 신버전 */
+  -ms-text-size-adjust: none; /* IE */
+  -moz-text-size-adjust: none; /* 파이어폭스 */
+  -o-text-size-adjust: none; /* 오페라 구버전 */
+}
+
 body {
   font-family: 'Pretendard', sans-serif;
   color: var(--color-black);
@@ -13,7 +21,7 @@ body {
 
 #root {
   background-color: #fff;
-  height: 100vh;
+  height: 100dvh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;

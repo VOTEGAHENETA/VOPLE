@@ -13,6 +13,7 @@ export const useUpdateCandidateInfo = () => {
       queryClient.invalidateQueries({
         queryKey: ['candidateInfo', variables.sessionId],
       });
+      queryClient.invalidateQueries({ queryKey: ['session'] });
       alert('수정이 완료되었습니다.');
     },
     onError: (error) => {

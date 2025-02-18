@@ -14,6 +14,7 @@ export interface InputProps {
   value: string | number; // 필수 값
   type?: string; // type 지정
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 필수 값
+  maxLength?: number;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   variant?: 'default' | 'search' | 'error' | 'warning';
   placeholder?: string;
@@ -35,6 +36,7 @@ function Input({
   value,
   type,
   onChange,
+  maxLength,
   onKeyDown,
   variant = 'default',
   disabled = false,
@@ -57,6 +59,7 @@ function Input({
       className={inputClassName}
       disabled={disabled}
       onChange={onChange}
+      maxLength={maxLength}
       {...props}
     />
   );
