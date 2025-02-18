@@ -27,7 +27,7 @@ export const useQuestionPost = (
       if (!data.answerCorrect) {
         setErrMsg('땡! 틀렸어요');
       } else {
-        if (data.electionFull) {
+        if (!data.electionFull) {
           navigate(`/elections/${sessionId}`);
         } else {
           setErrMsg('투표할 수 있는 정원이 꽉 찼어요 ㅠㅠ');
