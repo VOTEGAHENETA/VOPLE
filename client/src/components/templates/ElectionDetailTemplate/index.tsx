@@ -17,6 +17,7 @@ import {
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
 import { combineDateAndTimePut } from '@/utils/date';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -57,11 +58,14 @@ function ElectionDetailTemplate() {
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
 
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
   useEffect(() => {
-    if (isLoading) {
-      console.log('데이터 로딩 중...');
-    }
-
     if (isError) {
       console.log('데이터 로드 에러');
     }

@@ -49,7 +49,7 @@ public class SessionController {
   )
   @GetMapping("/{sessionId}/status")
   public ApiResponse<USER_TYPE> judgeUserType(@PathVariable("sessionId") Long sessionId,
-                                              @AuthenticationPrincipal CustomOauth2User oauth2User) {
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     USER_TYPE userType = sessionService.judgeUserType(sessionId, user.getId());
     return ApiResponse.success(HttpStatus.OK, "사용자 권한 조회 성공", userType);
@@ -91,11 +91,11 @@ public class SessionController {
   })
   @PostMapping("/{sessionId}/question")
   public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId,
-                                               @RequestBody Map<String, String> payload,
-                                               @AuthenticationPrincipal CustomOauth2User oauth2User) {
+      @RequestBody Map<String, String> payload,
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     boolean result = sessionService.validateQuestion(sessionId, user.getId(),
-                                                     payload.get("answer"));
+        payload.get("answer"));
     return result ? ApiResponse.success(HttpStatus.OK, "정답입니다.", true)
         : ApiResponse.fail(HttpStatus.BAD_REQUEST, "틀렸습니다.");
   }
@@ -107,8 +107,11 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isSessionActive(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}")
-  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal CustomOauth2User oauth2User) {
+  public ApiResponse<SessionInitialInfoDto> getSession(@PathVariable("sessionId") Long sessionId,
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     SessionInitialInfoDto result = sessionService.getSession(sessionId, user.getId());
     return ApiResponse.success(HttpStatus.OK, "세션 조회 성공", result);
@@ -121,7 +124,7 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId) && @sessionAuth.isSessionActive(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}/edit")
   public ApiResponse<SessionEditDto> getSessionForEdit(@PathVariable("sessionId") Long sessionId) {
@@ -135,8 +138,9 @@ public class SessionController {
       description = "FIGMA : 관리자 플로우 - [선거 리스트 (관리자 화면)]"
   )
   @GetMapping
-  public ApiResponse<SessionResponse> getSessions(@AuthenticationPrincipal CustomOauth2User oauth2User) {
-     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
+  public ApiResponse<SessionResponse> getSessions(
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
+    Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
 //    Long userId = 1L;
     SessionResponse result = sessionService.getSessions(user.getId());
     if (result.getManagedSessions().isEmpty() && result.getInvolvedSessions().isEmpty()) {
@@ -173,7 +177,7 @@ public class SessionController {
   )
   @PostMapping
   public ApiResponse<Long> createSession(@RequestBody SessionDto sessionDto,
-                                         @AuthenticationPrincipal CustomOauth2User oauth2User) {
+      @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
     Long result = sessionService.saveSession(sessionDto, user.toDto());
     return ApiResponse.success(HttpStatus.CREATED, "세션 생성 성공", result);
@@ -211,7 +215,7 @@ public class SessionController {
   @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   public ApiResponse<SessionDto> updateSession(@PathVariable Long sessionId,
-                                               @RequestBody SessionDto sessionDto) {
+      @RequestBody SessionDto sessionDto) {
     sessionService.updateSession(sessionId, sessionDto);
     return ApiResponse.success(HttpStatus.NO_CONTENT, "세션 수정 성공", null);
   }

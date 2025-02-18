@@ -3,6 +3,8 @@ import { useStreamControl, useStreamData } from '@/services/hooks/live';
 import { useState } from 'react';
 import styles from './index.module.scss';
 import IconButton from '../IconButton';
+import BaseButton from '../BaseButton';
+import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 
 interface Props {
   streamId: number;
@@ -11,9 +13,10 @@ interface Props {
 function StreamSender({ streamId }: Props) {
   const { data: streamData } = useStreamData(streamId);
   const { mutate: updateStreamStatus } = useStreamControl();
-  const { videoRef, startStream, stopStream } = useMediaStream({
-    streamKey: streamData?.streamId,
-  });
+  const { videoRef, isMic, startStream, stopStream, toggleCamera, toggleMic } =
+    useMediaStream({
+      streamKey: streamData?.streamId,
+    });
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   console.log(isStreaming);
 
@@ -43,7 +46,6 @@ function StreamSender({ streamId }: Props) {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>라이브 스트리밍 송신자</h1>
       <video
         ref={videoRef}
         autoPlay
@@ -52,21 +54,44 @@ function StreamSender({ streamId }: Props) {
         style={{ width: '100%', maxHeight: '300px' }}
       />
       <div className={styles.buttons}>
-        <IconButton
-          onClick={handleStart}
-          className={styles.startButton}
-          name='videoCall'
-        />
-        <IconButton
-          onClick={handleStop}
-          className={styles.stopButton}
-          name='rectangle'
-        />
-        <IconButton
-          onClick={handleStop}
-          className={styles.microphone}
-          name='microphone'
-        />
+        {streamData?.isStreaming ? (
+          <div className={styles.stream_ing}>
+            <IconButton
+              onClick={() => toggleCamera()}
+              className={styles.startButton}
+              name='videoCall'
+            />
+            <IconButton
+              onClick={handleStop}
+              className={styles.stopButton}
+              name='rectangle'
+            />
+            {isMic ? (
+              <IconButton
+                onClick={() => toggleMic()}
+                className={styles.microphone}
+                name='microphone'
+              />
+            ) : (
+              <IconButton
+                onClick={() => toggleMic()}
+                className={styles.microphone}
+                name='nonMicrophone'
+              />
+            )}
+          </div>
+        ) : (
+          <div className={styles.stream_start}>
+            <BaseButton
+              type='button'
+              kind='base'
+              status={BASE_BUTTON_STATUS.FILL}
+              onClick={handleStart}
+            >
+              방송하기
+            </BaseButton>
+          </div>
+        )}
       </div>
     </div>
   );

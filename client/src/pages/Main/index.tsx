@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useElectionSession } from '@/services/hooks/useElectionSession';
 import { useElectionStore } from '@/stores/election';
 import { useEffect } from 'react';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 function Main() {
   const navigate = useNavigate();
@@ -28,7 +29,12 @@ function Main() {
     if (data) setElection(data);
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className={styles.loading}>
+        <LoadingSpinner />
+      </div>
+    );
   return (
     <div className={styles['election-main']}>
       <ElectionMainTemplate />
