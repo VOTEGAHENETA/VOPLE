@@ -1,22 +1,21 @@
 .poster {
-  overflow: hidden;
   object-fit: cover;
 
   &.poster-size {
     &-xs {
-      width: auto;
+      width: 150px;
       height: 213px;
     }
     &-s {
-      width: auto;
+      width: 176px;
       height: 250px;
     }
     &-m {
-      width: auto;
+      width: 264px;
       height: 375px;
     }
     &-lg {
-      width: auto;
+      width: 352px;
       height: 500px;
     }
     &-full {
