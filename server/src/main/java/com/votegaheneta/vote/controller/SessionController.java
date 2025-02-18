@@ -7,6 +7,7 @@ import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.vote.controller.response.SessionResponse;
+import com.votegaheneta.vote.controller.response.SessionValidateResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionEditDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
@@ -73,31 +74,20 @@ public class SessionController {
       description = "FIGMA : 투표자 플로우 - [로그인 후 암구호 입력]",
       requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
           description = "답변 텍스트",
-          required = true,
-          content = @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class),
-              examples = {
-                  @ExampleObject(
-                      name = "요청 데이터",
-                      value = """
-                          {
-                          "answer": "Answer 1",
-                          }
-                          """
-                  )
-              }))
+          required = true
+      )
   )
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PostMapping("/{sessionId}/question")
-  public ApiResponse<Boolean> validateQuestion(@PathVariable Long sessionId,
+  public ApiResponse<SessionValidateResponse> validateQuestion(@PathVariable Long sessionId,
       @RequestBody Map<String, String> payload,
       @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
-    boolean result = sessionService.validateQuestion(sessionId, user.getId(),
+    SessionValidateResponse result = sessionService.validateQuestion(sessionId, user.getId(),
         payload.get("answer"));
-    return result ? ApiResponse.success(HttpStatus.OK, "정답입니다.", true)
-        : ApiResponse.fail(HttpStatus.BAD_REQUEST, "틀렸습니다.");
+    return ApiResponse.success(HttpStatus.OK, "질문 검증 데이터", result);
   }
 
   @Operation(

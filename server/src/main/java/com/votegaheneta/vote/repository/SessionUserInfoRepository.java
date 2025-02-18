@@ -29,4 +29,7 @@ public interface SessionUserInfoRepository extends JpaRepository<SessionUserInfo
 
   @Query("select sui.hasVoted from SessionUserInfo sui where sui.electionSession.id = :sessionId and sui.user.id = :userId")
   Boolean findHasvotedBySessionId_userId(@Param("sessionId") Long sessionId,@Param("userId") Long userId);
+
+  @Query("select count(sui) from SessionUserInfo sui where sui.electionSession.id = :sessionId")
+  int findCountByElectionSessionId(Long sessionId);
 }
