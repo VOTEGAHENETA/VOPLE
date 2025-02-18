@@ -67,7 +67,7 @@ public class WebSocketEventListener {
 
       sessionChatRoomMap.remove(optUser.get());
       long participantCount = roomParticipantsCount.computeIfAbsent(roomKey, key -> new AtomicLong(0)).decrementAndGet();
-      if (participantCount < 0) throw new RuntimeException("채팅방 인원 갱신 중 예외 발생");
+      participantCount = Math.min(participantCount, 0);
       JsonObject jsonObject = new JsonObject();
       jsonObject.addProperty("participantCount", participantCount);
       simpleMessagingTemplate.convertAndSend(DESTINATION_PREFIX + "/" + roomKey, jsonObject.toString());
