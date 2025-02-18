@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { usePostVoteTeam } from '@/services/hooks/usePostVoteTeam';
 import { useCandidateStore } from '@/stores/candidateStore';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 interface Props {
   sessionId: number;
@@ -66,7 +67,10 @@ function CandidateRegisterTemplate({ sessionId, voteId, voteName }: Props) {
     setOpenCandidateModal(-1, '');
   }
 
-  if (isLoading) <div>데이터 로드에 실패했습니다. 다시 접속해주세요</div>;
+  if (isLoading)
+    <div>
+      <LoadingSpinner />
+    </div>;
 
   return (
     <div className={styles['modal-register']}>

@@ -8,6 +8,7 @@ import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { useQuestionGet, useQuestionPost } from '@/services/hooks/question';
 import { useNavigate, useParams } from 'react-router-dom';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 function QuestionSection() {
   const navigate = useNavigate();
@@ -42,7 +43,9 @@ function QuestionSection() {
           </Text>
           <div className={styles['qna-question']}>
             {isLoading ? (
-              <div>Loading...</div>
+              <div className={styles.loading}>
+                <LoadingSpinner />
+              </div>
             ) : (
               <Text size='m' color='var(--color-black)'>
                 {questionData}

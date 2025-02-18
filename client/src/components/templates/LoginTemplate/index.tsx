@@ -11,7 +11,7 @@ const Login = () => {
   const { data } = useLoginCheck();
   if (data) {
     // 이미 로그인 상태
-    navigate('/elections/list');
+    if (data) navigate('/elections/list');
   }
 
   return (
