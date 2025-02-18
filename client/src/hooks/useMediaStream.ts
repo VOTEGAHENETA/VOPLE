@@ -11,9 +11,13 @@ export const useMediaStream = ({ streamKey }: Props) => {
   const streamRef = useRef<MediaStream | null>(null);
   const ws = useRef<WebSocket | null>(null);
   const [facingMode, setFacingMode] = useState<FacingMode>('user');
+  const [isMic, setIsMic] = useState<boolean>(true);
+  const { VITE_PUBLIC_SOCKET_URL } = import.meta.env;
 
   useEffect(() => {
-    if (!streamKey) return;
+    if (!streamKey) {
+      return;
+    }
 
     wsConnection();
 
@@ -24,7 +28,7 @@ export const useMediaStream = ({ streamKey }: Props) => {
 
   function wsConnection() {
     ws.current = new WebSocket(
-      `wss://i12b102.p.ssafy.io/stream?streamKey=${streamKey}`
+      `${VITE_PUBLIC_SOCKET_URL}/stream?streamKey=${streamKey}`
     );
 
     ws.current.onopen = () => console.log('WebSocket 연결됨');
@@ -32,6 +36,8 @@ export const useMediaStream = ({ streamKey }: Props) => {
     ws.current.onclose = () => {
       console.log('WebSocket 종료');
       ws.current = null;
+      videoRef.current = null;
+      streamRef.current = null;
     };
   }
 
@@ -50,7 +56,6 @@ export const useMediaStream = ({ streamKey }: Props) => {
       }
 
       if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
-        console.warn('WebSocket이 아직 열려있지 않음.');
         return;
       }
 
@@ -59,17 +64,14 @@ export const useMediaStream = ({ streamKey }: Props) => {
       });
 
       recorder.ondataavailable = (event) => {
-        console.log('녹화된 데이터 크기:', event.data.size);
         if (event.data.size > 0 && ws.current?.readyState === WebSocket.OPEN) {
           ws.current.send(event.data);
-        } else {
-          console.warn('WebSocket이 닫혀 있어 데이터 전송 실패');
         }
       };
 
       recorder.start(1000); // 1초 단위로 데이터 전송
     } catch (err) {
-      console.error('스트리밍 시작 오류:', err);
+      console.log(err);
     }
   }
 
@@ -78,6 +80,11 @@ export const useMediaStream = ({ streamKey }: Props) => {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+
     ws.current?.close();
     ws.current = null;
   }
@@ -88,10 +95,22 @@ export const useMediaStream = ({ streamKey }: Props) => {
     await startStream();
   }
 
+  function toggleMic() {
+    if (streamRef.current) {
+      streamRef.current.getAudioTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+
+      setIsMic((prev) => !prev);
+    }
+  }
+
   return {
     videoRef,
+    isMic,
     startStream,
     stopStream,
     toggleCamera,
+    toggleMic,
   };
 };

@@ -10,10 +10,6 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    roomId: {
-      control: 'number',
-      description: '채팅방 ID',
-    },
     onSendMessage: {
       action: 'sent',
       description: '메시지 전송 핸들러',
@@ -39,7 +35,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    roomId: 1,
     placeholder: '메세지를 입력해주세요.',
     disabled: false,
     theme: 'dark',
@@ -48,7 +43,6 @@ export const Default: Story = {
 
 export const Light: Story = {
   args: {
-    roomId: 1,
     placeholder: '메세지를 입력해주세요.',
     disabled: false,
     theme: 'light',
@@ -57,7 +51,6 @@ export const Light: Story = {
 
 export const Disabled: Story = {
   args: {
-    roomId: 1,
     placeholder: '메세지를 입력해주세요.',
     disabled: true,
     theme: 'dark',
@@ -66,7 +59,6 @@ export const Disabled: Story = {
 
 export const CustomPlaceholder: Story = {
   args: {
-    roomId: 1,
     placeholder: '새로운 메시지를 입력하세요',
     disabled: false,
     theme: 'dark',

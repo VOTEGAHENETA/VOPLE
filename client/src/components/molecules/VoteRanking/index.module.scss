@@ -43,8 +43,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  min-width: 60px;
-  max-width: 60px;
+  min-width: auto;
+  max-width: auto;
 }
 
 .team_info {
@@ -55,4 +55,13 @@
 .text {
   min-width: 80px;
   justify-content: center;
+}
+
+
+.prefix {
+  width: auto;
+}
+
+.name {
+  width: auto;
 }
