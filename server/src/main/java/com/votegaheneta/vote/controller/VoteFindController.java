@@ -59,6 +59,7 @@ public class VoteFindController {
       @Parameter(name = "voteId", description = "투표 id", required = true, in = ParameterIn.PATH)
   })
   @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{voteId}/search")
   public ApiResponse<List<VoteInfoDto>> searchVoteCandidate(
       @PathVariable("sessionId") Long sessionId,
@@ -76,6 +77,7 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping
   public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId") Long sessionId) {
     List<VoteFindDto> result = voteFindService.getVoteList(sessionId);
@@ -89,6 +91,7 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && !@sessionAuth.hasUserVoted(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/detail")
   public ApiResponse<SessionFindDto> findVoteBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
@@ -103,6 +106,7 @@ public class VoteFindController {
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && @sessionAuth.hasUserVoted(#sessionId) || @sessionAuth.isAdminInSession(#sessionId)")
+  @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
