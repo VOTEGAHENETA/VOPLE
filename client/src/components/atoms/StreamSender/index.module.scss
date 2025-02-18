@@ -14,53 +14,62 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
-    padding-bottom: 14px;  
+    padding-bottom: 14px;
     padding-top: 14px;
     // border-radius: 0 0 10px 10px;
 
-    > div{
+    > div {
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 10px;
+        width: 44px;
+        height: 44px;
+        border-radius: 25px;
+        cursor: pointer;
+
+        &.startButton {
+          &:disabled {
+            &::before {
+              width: 2;
+              height: 10;
+              background-color: #fff;
+            }
+            position: relative;
+            background-color: rgba(255, 255, 255, 1);
+          }
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        &.stopButton {
+          &:disabled {
+            background-color: rgba(254, 63, 120, 0.4);
+          }
+          background-color: rgba(254, 63, 120, 0.8);
+        }
+
+        &.microphone {
+          &:disabled {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+      }
+    }
+
+    .stream_ing {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: none;
-      border-radius: 10px;
-      width: 44px;
-      height: 44px;
-      border-radius: 25px;
-      cursor: pointer;
-      
-      &.startButton {
-        &:disabled{
-          &::before{
-            width: 2;
-            height: 10;
-            background-color: #fff;
-          }
-          position: relative;
-          background-color: rgba(255,255,255,1);
-        }
-        background-color: rgba(255,255,255,0.5);
-      }
-  
-      &.stopButton {
-        &:disabled{
-          &:disabled::before{
+      gap: 10px;
+    }
 
-          }
-          background-color: rgba(254, 63, 120, 0.4);
-        }
-        background-color: rgba(254, 63, 120, 0.8);
-      }
-  
-      &.microphone {
-        &:disabled{
-          &:disabled::before{
-            
-          }
-          background-color: rgba(255,255,255,0.1)
-        }
-        background-color:rgba(255,255,255,0.5)
-      }
+    .stream_start {
+      width: auto;
+      display: flex;
     }
   }
 }

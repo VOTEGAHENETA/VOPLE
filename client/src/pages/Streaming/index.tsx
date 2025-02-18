@@ -2,10 +2,11 @@ import TabContainer from '@/components/organisms/TabContainer';
 import styles from './index.module.scss';
 import StreamSender from '@/components/atoms/StreamSender';
 import StreamReceiver from '@/components/atoms/StreamReceiver';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 import { useEffect, useState } from 'react';
 import { getIsMine } from '@/services/stream';
+import IconButton from '@/components/atoms/IconButton';
 
 type StreamingParams = {
   session_id?: string; // optional로 변경
@@ -32,6 +33,12 @@ export default function Streaming() {
   }
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
+  const navigate = useNavigate();
+
+  function handleClickBack() {
+    console.log('back!');
+    navigate(`/elections/${session_id}`);
+  }
 
   useEffect(() => {
     let isSubscribed = true;
@@ -94,6 +101,9 @@ export default function Streaming() {
 
   return (
     <div className={styles.streaming__section}>
+      <div className={styles.streaming__back} onClick={handleClickBack}>
+        <IconButton name='back' />
+      </div>
       <div className={styles.streamingContent}>
         {state.isLoading ? (
           <LoadingSpinner />
