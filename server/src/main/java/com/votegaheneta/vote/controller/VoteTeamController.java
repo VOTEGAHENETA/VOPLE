@@ -76,7 +76,7 @@ public class VoteTeamController {
   })
   @PreAuthorize("@candidateAuth.isCandidateInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
-  @PostMapping(name = "/{sessionId}" ,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(value = "/{sessionId}" ,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ApiResponse<Void> updateVoteTeam(
       @PathVariable("sessionId") Long sessionId,
       @RequestPart(name = "voteTeamInfoRequest") VoteTeamInfoRequest voteTeamInfoRequest,
@@ -92,13 +92,12 @@ public class VoteTeamController {
   @Operation(
       summary = "후보자 정보 조회",
       description = "FIGMA : 후보자 플로우 - [후보자 - 내용변경]")
-
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
   @PreAuthorize("@candidateAuth.isCandidateInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
-  @GetMapping(name = "/{sessionId}")
+  @GetMapping(value = "/{sessionId}")
   public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal
                                                        CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
