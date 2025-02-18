@@ -59,3 +59,8 @@ export interface VoteTeamInfoResponse {
   };
   pledges: Array<{ content: string }>;
 }
+
+export interface LiveTeamInfoResponse {
+  poster: 'string';
+  pledges: Array<{ content: string }>;
+}

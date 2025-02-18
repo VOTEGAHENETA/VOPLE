@@ -2,7 +2,7 @@ import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
 
 interface PledgeTabProps {
-  pledges?: string[];
+  pledges?: Array<{ content: string }>;
 }
 
 const PledgeTab = ({ pledges = [] }: PledgeTabProps) => {
@@ -24,7 +24,7 @@ const PledgeTab = ({ pledges = [] }: PledgeTabProps) => {
           pledges.map((pledge, index) => (
             <li key={index} className={styles.item}>
               <span className={styles.bullet}>•</span>
-              <span>{pledge}</span>
+              <span>{pledge.content}</span>
             </li>
           ))
         ) : (
