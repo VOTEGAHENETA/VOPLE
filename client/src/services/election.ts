@@ -2,6 +2,7 @@ import {
   ElectionSection,
   ISessionDetail,
   ElectionList,
+  QuestionResponse,
 } from '@/types/election';
 import {
   CandidateSessionData,
@@ -12,7 +13,6 @@ import { TCreateElection } from '@/types/election';
 import instance from './api';
 import { VoteRequest } from '@/types/vote';
 import { ElectionResult } from '@/types/final';
-import { TPostResponse } from '@/types/api';
 
 /**
  *
@@ -99,7 +99,7 @@ export const getQuestion = async (sessionId: number): Promise<string> => {
 export const postQuestion = async (
   sessionId: number,
   answer: string
-): Promise<TPostResponse> => {
+): Promise<QuestionResponse> => {
   return await instance.post(`/election/${sessionId}/question`, {
     answer: answer,
   });
