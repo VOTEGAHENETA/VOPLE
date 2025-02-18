@@ -6,7 +6,7 @@ export interface Candidate {
 
 export interface VoteTeam {
   voteTeamId: number;
-  poster: string; //
+  poster: string;
   candidates: Candidate[];
 }
 

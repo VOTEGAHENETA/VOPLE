@@ -7,6 +7,7 @@ import com.votegaheneta.security.oauth2.CustomOauth2User;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
 import com.votegaheneta.vote.controller.response.VoteTeamInfoResponse;
+import com.votegaheneta.vote.dto.VoteTeamPledgeDto;
 import com.votegaheneta.vote.service.VoteTeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/candidate/{sessionId}")
+@RequestMapping("/api/candidate")
 public class VoteTeamController {
 
   private final VoteTeamService voteTeamService;
@@ -75,7 +76,7 @@ public class VoteTeamController {
   })
   @PreAuthorize("@candidateAuth.isCandidateInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
-  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(name = "/{sessionId}" ,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ApiResponse<Void> updateVoteTeam(
       @PathVariable("sessionId") Long sessionId,
       @RequestPart(name = "voteTeamInfoRequest") VoteTeamInfoRequest voteTeamInfoRequest,
@@ -97,7 +98,7 @@ public class VoteTeamController {
   })
   @PreAuthorize("@candidateAuth.isCandidateInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
-  @GetMapping
+  @GetMapping(name = "/{sessionId}")
   public ApiResponse<VoteTeamInfoResponse> getVoteTeam(@PathVariable("sessionId") Long sessionId, @AuthenticationPrincipal
                                                        CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
@@ -105,5 +106,14 @@ public class VoteTeamController {
     return ApiResponse.success(HttpStatus.OK, "투표팀 정보 조회 성공", voteTeamInfo);
   }
 
-
+  @Operation(
+    summary = "팀 포스터, 공약 조회"
+  )
+  @Parameters({
+      @Parameter(name = "teamId", description = "팀id", required = true)
+  })
+  @GetMapping("/{teamId}")
+  public ApiResponse<VoteTeamPledgeDto> getVoteTeamDetail(@PathVariable("teamId") Long teamId) {
+    return ApiResponse.success(HttpStatus.OK, "투표팀 공약, 포스터 조회 성공", voteTeamService.getVoteTeamInfoDetail(teamId));
+  }
 }
