@@ -6,7 +6,6 @@ export function useStreamData(streamId: number) {
     queryKey: ['stream', streamId],
     queryFn: () => getStreamData(streamId),
     select: (res) => {
-      console.log('getStreamData:', res);
       return res;
     }, // 응답 데이터 정리
   });
@@ -34,7 +33,6 @@ export function useIsMine(streamId: number) {
     queryKey: ['mine', streamId],
     queryFn: async () => {
       const response = await getIsMine(streamId);
-      console.log('## useIsMine response:', response);
       return response;
     },
   });
