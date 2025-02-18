@@ -71,7 +71,6 @@ export default function ChatBoard({
     error,
     sendMessage,
     setMessages,
-    setError,
     participantCount,
   } = useWebSocket({
     type: type,
@@ -81,7 +80,8 @@ export default function ChatBoard({
 
   useEffect(() => {
     if (chatError) {
-      setError('채팅 메시지를 불러오는데 실패했습니다.');
+      console.log('채팅 메시지를 불러오는데 실패했습니다.');
+      // setError('채팅 메시지를 불러오는데 실패했습니다.');
       return;
     }
 
@@ -94,7 +94,8 @@ export default function ChatBoard({
       } else if (initialChats.httpStatus === 204) {
         setMessages([enterMessage]);
       } else {
-        setError(initialChats.message);
+        // setError(initialChats.message);
+        console.log(initialChats.message);
       }
     }
   }, [initialChats, chatError]);
@@ -109,6 +110,7 @@ export default function ChatBoard({
       <MessageList messages={messages} />
 
       <ChatBar
+        maxLength={100}
         onSendMessage={handleSendMessage}
         disabled={!connected || !!error}
         theme={theme}

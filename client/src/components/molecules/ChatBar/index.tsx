@@ -11,23 +11,30 @@ interface ChatBarProps {
   placeholder?: string;
   disabled?: boolean;
   theme?: themeType;
+  maxLength?: number;
 }
 export function ChatBar({
   onSendMessage,
   placeholder = '메세지를 입력해주세요.',
   disabled = false,
   theme = 'dark',
+  maxLength = 100, // 기본값 100
 }: ChatBarProps) {
   const [inputValue, setInputValue] = useState<string>('');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    const newValue = e.target.value;
+    // 최대 글자수 체크
+    if (newValue.length <= maxLength) {
+      setInputValue(newValue);
+    } else {
+      alert(`최대 ${maxLength}자까지 입력 가능합니다.`);
+    }
   };
 
   const onSubmit = () => {
     if (inputValue.trim()) {
       const messageData: ChatSendMessage = {
-        userId: 2,
         text: inputValue,
       };
 

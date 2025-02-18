@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import Text from '@/components/atoms/Text';
+// import Text from '@/components/atoms/Text';
 import styles from './index.module.scss';
 import { ChatReceiveMessage } from '@/types/chat';
 
@@ -40,18 +40,17 @@ export default function MessageList({ messages }: MessageListProps) {
           }`}
         >
           {/* 시간 */}
-          <Text className={styles.time} size='s'>
+
+          <span className={styles.time}>
             [{formatTime(message.createdTime)}]
             {/* [{message.createdTime.slice(0, 5)}] */}
-          </Text>
+          </span>
           {/* 닉네임*/}
-          <Text className={styles.username} color={message.color} size='s'>
+          <span className={styles.username} style={{ color: message.color }}>
             {message.nickname || '알 수 없음'}
-          </Text>
+          </span>
           {/* 내용 */}
-          <Text className={styles.content} size='s'>
-            {message.text || ''}
-          </Text>
+          <span className={styles.content}>{message.text || ''}</span>
         </div>
       ))}
     </div>

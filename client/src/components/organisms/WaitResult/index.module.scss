@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 30px;
   min-height: 444px;
+  overflow: auto;
+  width: 90%;
 }
 
 .voteinfo { 
@@ -28,4 +30,13 @@
 
 .right {
   transform: rotate(180deg);
+}
+
+.title {
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 30px;
+  em {
+    color : var(--color-main-pink);
+  }
 }

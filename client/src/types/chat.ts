@@ -12,7 +12,6 @@ export interface NicknameResponse {
 }
 
 export interface ChatSendMessage {
-  userId: number;
   text: string;
 }
 
