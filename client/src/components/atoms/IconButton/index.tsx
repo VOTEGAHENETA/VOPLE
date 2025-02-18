@@ -14,6 +14,7 @@ import left from '@/assets/icons/left.svg';
 import leftLongWhite from '@/assets/icons/leftLongWhite.svg';
 import leftLongBlack from '@/assets/icons/leftLongBlack.svg';
 import microphone from '@/assets/icons/microphone.svg';
+import nonMicrophone from '@/assets/icons/non-mic.svg';
 import videoCall from '@/assets/icons/videoCall.svg';
 import rectangle from '@/assets/icons/rectangle.svg';
 
@@ -30,6 +31,7 @@ type IconName =
   | 'left'
   | 'leftLongWhite'
   | 'microphone'
+  | 'nonMicrophone'
   | 'videoCall'
   | 'rectangle';
 
@@ -47,6 +49,7 @@ const ICON_MAPPING = {
   leftLongWhite,
   leftLongBlack,
   microphone,
+  nonMicrophone,
   videoCall,
   rectangle,
 };
