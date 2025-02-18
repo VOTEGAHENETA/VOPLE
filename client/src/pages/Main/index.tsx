@@ -26,7 +26,12 @@ function Main() {
   }, [election_id, navigate]);
 
   useEffect(() => {
-    if (data) setElection(data);
+    if (data) {
+      if (data.hasVoted) {
+        navigate('/elections/list');
+      }
+      setElection(data);
+    }
   }, [data]);
 
   if (isLoading)

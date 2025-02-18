@@ -16,6 +16,7 @@ export interface InputFieldProps {
   value: string | number; // input의 필수값
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // input의 필수값
   type?: InputType;
+  maxLength?: number;
   variant?: InputVariant;
   label?: string;
   placeholder?: string;
@@ -32,6 +33,7 @@ export default function InputField({
   value,
   onChange,
   type = INPUT_TYPES.TEXT,
+  maxLength,
   variant = INPUT_VARIANTS.DEFAULT,
   label,
   placeholder,
@@ -76,6 +78,7 @@ export default function InputField({
               ? ''
               : value
           }
+          maxLength={maxLength}
           variant={variant}
           placeholder={placeholder}
           disabled={disabled}

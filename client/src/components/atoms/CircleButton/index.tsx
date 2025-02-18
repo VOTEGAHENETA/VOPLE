@@ -18,7 +18,7 @@ interface Props {
 /** 메인화면 footer에 적용될 Router 버튼 입니다. */
 function CircleButton({ type = 'button' }: Props) {
   const { election_id } = useParams() as { election_id: string };
-  const { election, isHost } = useElectionStore();
+  const { election } = useElectionStore();
   const navigate = useNavigate();
 
   const [state, setState] = useState({
@@ -30,7 +30,8 @@ function CircleButton({ type = 'button' }: Props) {
   });
 
   useEffect(() => {
-    if (election && !isHost) {
+    if (election) {
+      if (election.isHost) return;
       const now = new Date();
       const startTime = new Date(election.startTime);
       const endTime = new Date(election.endTime);
@@ -45,13 +46,13 @@ function CircleButton({ type = 'button' }: Props) {
         isLoading: false,
       }));
     }
-  }, [election, isHost]);
+  }, [election]);
 
   function updateButtonState() {
     if (!election) return;
-    if (isHost) return; // 선거 호스트인 경우 로직 작동 불필요
+    if (election.isHost) return; // 선거 호스트인 경우 로직 작동 불필요
 
-    if (election && !isHost) {
+    if (election) {
       const now = new Date();
       const startTime = new Date(election.startTime);
       const endTime = new Date(election.endTime);
@@ -82,7 +83,7 @@ function CircleButton({ type = 'button' }: Props) {
         }));
       }, 1000);
     } else {
-      if (isHost) {
+      if (election?.isHost) {
         navigate(`/elections/${election_id}/manage`);
       } else {
         navigate(`/elections/${election_id}/vote`);
@@ -90,9 +91,9 @@ function CircleButton({ type = 'button' }: Props) {
     }
   }
 
-  const timeLeft = useTimer(isHost ? new Date() : state.deadLine);
+  const timeLeft = useTimer(election?.isHost ? new Date() : state.deadLine);
   useEffect(() => {
-    if (!isHost && !state.status && timeLeft === '00:00:00') {
+    if (election?.isHost && !state.status && timeLeft === '00:00:00') {
       setState((prev) => ({
         ...prev,
         buttonLabel: null,
@@ -103,12 +104,16 @@ function CircleButton({ type = 'button' }: Props) {
 
   return (
     <div className={styles['btn-container']}>
-      <Text
-        size='sm'
-        color={state.status ? 'var(--color-main-orange)' : 'var(--color-black)'}
-      >
-        {state.onlyRefresh ? '새로고침!!' : timeLeft}
-      </Text>
+      {!election?.isHost && (
+        <Text
+          size='sm'
+          color={
+            state.status ? 'var(--color-main-orange)' : 'var(--color-black)'
+          }
+        >
+          {state.onlyRefresh ? '새로고침!!' : timeLeft}
+        </Text>
+      )}
       <button
         type={type}
         className={clsx(styles.btn, styles[`btn-status-${state.status}`])}
