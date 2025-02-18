@@ -7,7 +7,6 @@ import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,6 +41,6 @@ public interface VoteRepository extends JpaRepository<Vote, Long>, CustomVoteRep
   @Query("select v.id from Vote v where v.electionSession.id = :sessionId")
   List<Long> findIdsBySessionId(@Param("sessionId") Long sessionId);
 
-  @Query("select v from Vote v join fetch v.voteTeams vt join fetch vt.stream where v.id = :voteId")
+  @Query("select v from Vote v left join fetch v.voteTeams vt left join fetch vt.stream where v.id = :voteId")
   Optional<Vote> findVoteWithVoteTeamById(Long voteId);
 }
