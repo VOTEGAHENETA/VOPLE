@@ -15,7 +15,9 @@ export const usePostVoteTeam = () => {
       postVoteTeams(sessionId, voteId, data),
     onSuccess: () => {
       alert('투표 업데이트에 성공했습니다.');
-      queryClient.invalidateQueries({ queryKey: ['initialUserList'] });
+      queryClient.invalidateQueries({
+        queryKey: ['initialUserList', 'session'],
+      });
     },
     onError: (error) => {
       alert('투표 업데이트 도중 오류가 발생했습니다.');

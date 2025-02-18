@@ -24,10 +24,14 @@ export const useQuestionPost = (
       postQuestion(sessionId, answer),
     onSuccess: (data) => {
       console.log('정답!', data);
-      if (data) {
-        navigate(`/elections/${sessionId}`);
-      } else {
+      if (!data.answerCorrect) {
         setErrMsg('땡! 틀렸어요');
+      } else {
+        if (data.answerCorrect) {
+          navigate(`/elections/${sessionId}`);
+        } else {
+          setErrMsg('투표할 수 있는 정원이 꽉 찼어요 ㅠㅠ');
+        }
       }
     },
     onError: (error) => {

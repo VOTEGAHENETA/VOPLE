@@ -1,5 +1,6 @@
 .poster {
   overflow: hidden;
+  object-fit: cover;
 
   &.poster-size {
     &-xs {

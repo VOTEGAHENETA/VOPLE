@@ -3,6 +3,7 @@ package com.votegaheneta.vote.service;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.enums.USER_TYPE;
 import com.votegaheneta.vote.controller.response.SessionResponse;
+import com.votegaheneta.vote.controller.response.SessionValidateResponse;
 import com.votegaheneta.vote.dto.SessionDto;
 import com.votegaheneta.vote.dto.SessionEditDto;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
@@ -25,7 +26,7 @@ public interface SessionService {
 
   SessionEditDto getSessionEdit(Long sessionId);
 
-  boolean validateQuestion(Long sessionId, Long userId, String answer);
+  SessionValidateResponse validateQuestion(Long sessionId, Long userId, String answer);
 
   String getQuestion(Long sessionId);
 }
