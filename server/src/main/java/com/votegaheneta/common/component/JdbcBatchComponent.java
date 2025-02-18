@@ -1,9 +1,5 @@
 package com.votegaheneta.common.component;
 
-import com.votegaheneta.vote.dto.CandidateDto;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
