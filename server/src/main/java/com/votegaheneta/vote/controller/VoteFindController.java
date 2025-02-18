@@ -75,6 +75,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @GetMapping
   public ApiResponse<List<VoteFindDto>> getVoteList(@PathVariable("sessionId") Long sessionId) {
     List<VoteFindDto> result = voteFindService.getVoteList(sessionId);
@@ -87,7 +88,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && !@sessionAuth.hasUserVoted(#sessionId)")
   @GetMapping("/detail")
   public ApiResponse<SessionFindDto> findVoteBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
@@ -101,7 +102,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && @sessionAuth.hasUserVoted(#sessionId) || @sessionAuth.isAdminInSession(#sessionId)")
   @GetMapping("/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
@@ -117,7 +118,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && @sessionAuth.hasUserVoted(#sessionId) || @sessionAuth.isAdminInSession(#sessionId)")
   @GetMapping("/result/final")
   public ApiResponse<SessionFinalResultFindDto> findVoteFinalResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {
