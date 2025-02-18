@@ -39,7 +39,7 @@ function StreamReceiver({ streamId }: Props) {
         autoPlay
         playsInline
         muted
-        style={{ width: '100%', maxHeight: '300px' }}
+        style={{ width: '100%' }}
       />
     </div>
   );

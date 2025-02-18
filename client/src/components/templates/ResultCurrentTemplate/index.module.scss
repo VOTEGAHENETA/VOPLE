@@ -1,10 +1,12 @@
 .result__container {
-  padding-top: 20px;
+  padding-bottom: 20px;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
   height: 100%;
+  overflow: hidden;
 }
 

@@ -11,7 +11,8 @@
   gap: 10px;
   background-color: #f5f5f5;
   padding: 20px 10px;
-  min-width: 230px;
+  width: 50%;
+  // min-width: 230px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -23,16 +24,17 @@
   padding: 20px 16px;
   background-color: #f2b705;
   border-radius: 10px;
-  min-width: 311px;
+  width: 80%;
+  // min-width: 311px;
 }
 
 .team {
   display: flex;
   width: 100%;
-  min-width: 270px;
+  // max-width: 270px;
   padding: 14px 16px;
-  gap: 95px;
-  justify-content: center;
+  // gap: 95px;
+  justify-content: space-between;
   align-items: center;
   background-color: white;
   border-radius: 10px;
@@ -43,8 +45,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  min-width: auto;
-  max-width: auto;
+  // min-width: auto;
+  // max-width: auto;
 }
 
 .team_info {
@@ -59,9 +61,9 @@
 
 
 .prefix {
-  min-width: 100px;
+  // min-width: 100px;
 }
 
 .name {
-  min-width: 100px;
+  // min-width: 100px;
 }
