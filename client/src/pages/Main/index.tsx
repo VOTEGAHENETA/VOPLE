@@ -27,6 +27,10 @@ function Main() {
 
   useEffect(() => {
     if (data) {
+      const now = new Date();
+      if (!data.isHost && now.getTime() > new Date(data.endTime).getTime()) {
+        navigate(`/elections/${election_id}/final`);
+      }
       if (data.hasVoted) {
         navigate('/elections/list');
       }
