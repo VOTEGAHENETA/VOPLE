@@ -21,9 +21,7 @@ import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
-  const { data, isLoading, isError } = useElectionDetailGet(
-    Number(election_id)
-  );
+  const { data, isLoading } = useElectionDetailGet(Number(election_id));
   const { openCandidateModal } = useCandidateStore();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -58,18 +56,7 @@ function ElectionDetailTemplate() {
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
 
-  if (isLoading) {
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
-  }
   useEffect(() => {
-    if (isError) {
-      console.log('데이터 로드 에러');
-    }
-
     if (data?.sessionDto) {
       setState((prevState) => ({
         ...prevState,
@@ -115,6 +102,14 @@ function ElectionDetailTemplate() {
       }));
     }
   }, [data]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   function handleChangeLabel(e: React.ChangeEvent<HTMLInputElement>) {
     setState((prev) => ({
