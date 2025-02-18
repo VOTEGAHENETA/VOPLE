@@ -21,8 +21,8 @@ function Turnout({ election }: Props) {
       setTimeout(() => {
         setCurIndex((prev) => (prev + 1) % election.voteResults.length);
         setIsVisible(true);
-      }, 3000);
-    }, 3000);
+      }, 2000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [curIndex]);
