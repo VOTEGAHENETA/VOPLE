@@ -1,18 +1,13 @@
 package com.votegaheneta.chat.service;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
-
 import com.votegaheneta.chat.dto.ChatDto;
 import com.votegaheneta.chat.dto.ChatRoomDto;
 import com.votegaheneta.chat.exception.InvalidChatRoomException;
 import com.votegaheneta.common.repository.RedisRepository;
-import com.votegaheneta.user.dto.UserDto;
-import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.repository.UsersRepository;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +15,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-  private final RedisRepository redisRepository;
-  private final UsersRepository usersRepository;
-
-  private final ElectionRepository electionRepository;
-  private final VoteTeamRepository voteTeamRepository;
-
   private static final int EXPIRATION_TIME = 3;
   private static final int MAX_SIZE = 100;
+  private final RedisRepository redisRepository;
+  private final UsersRepository usersRepository;
+  private final ElectionRepository electionRepository;
+  private final VoteTeamRepository voteTeamRepository;
 
   private String generateChatRoomKey(ChatRoomDto chatRoom) {
     return String.format("CHAT_ROOM:%s", chatRoom.getType().toUpperCase());
@@ -74,22 +67,6 @@ public class ChatServiceImpl implements ChatService {
   public void saveChat(ChatRoomDto chatRoomDto, ChatDto chatDto) throws InvalidChatRoomException {
     validateChatRoomKey(chatRoomDto);
     String key = generateChatKey(chatRoomDto);
-    String userKey = generateUserKey(chatDto.getUserId());
-    Optional<UserDto> optUserDto = redisRepository.get(userKey);
-    UserDto userDto;
-
-    if (optUserDto.isPresent()) {
-      userDto = optUserDto.get();
-      redisRepository.setExpire(userKey, EXPIRATION_TIME, MINUTES);
-    } else {
-      Users user = usersRepository.findById(chatDto.getUserId())
-          .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-      userDto = new UserDto(user);
-      redisRepository.saveInValue(userKey, userDto);
-      redisRepository.setExpire(userKey, EXPIRATION_TIME, MINUTES);
-    }
-
-    chatDto.setUserInfo(userDto);
     redisRepository.saveInList(key, chatDto);
     redisRepository.trim(key, 0, MAX_SIZE);
   }

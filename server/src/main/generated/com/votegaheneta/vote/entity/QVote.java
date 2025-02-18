@@ -26,8 +26,6 @@ public class QVote extends EntityPathBase<Vote> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final ListPath<VoteInfo, QVoteInfo> voteInfos = this.<VoteInfo, QVoteInfo>createList("voteInfos", VoteInfo.class, QVoteInfo.class, PathInits.DIRECT2);
-
     public final StringPath voteName = createString("voteName");
 
     public final ListPath<VoteTeam, QVoteTeam> voteTeams = this.<VoteTeam, QVoteTeam>createList("voteTeams", VoteTeam.class, QVoteTeam.class, PathInits.DIRECT2);

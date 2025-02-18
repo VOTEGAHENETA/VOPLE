@@ -13,9 +13,8 @@ export const usePostVoteTeam = () => {
   return useMutation({
     mutationFn: ({ sessionId, voteId, data }: VoteParams) =>
       postVoteTeams(sessionId, voteId, data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert('투표 업데이트에 성공했습니다.');
-      console.log(data);
       queryClient.invalidateQueries({ queryKey: ['initialUserList'] });
     },
     onError: (error) => {

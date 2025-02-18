@@ -40,18 +40,18 @@ export default function ChatBoard({
   // 탭 변환 시 렌더링 확인용
   // console.log('ChatBoard Rendered');
 
-  const getEnterMessage = () => ({
-    userId: 0,
-    nickname: 'System',
-    text: '[ 채팅방에 입장하셨습니다 ]',
-    color: '#fff',
-    createdTime: new Date().toLocaleTimeString('ko-KR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    }),
-  });
+  // const getEnterMessage = () => ({
+  //   userId: 0,
+  //   nickname: 'System',
+  //   text: '[ 채팅방에 입장하셨습니다 ]',
+  //   color: '#fff',
+  //   createdTime: new Date().toLocaleTimeString('ko-KR', {
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit',
+  //     hour12: false,
+  //   }),
+  // });
 
   // roomId를 계산하기 전에 타입 체크
   if (type === 'team' && typeof voteTeamId === 'undefined') {
@@ -90,10 +90,10 @@ export default function ChatBoard({
     console.log('enterMessage : ', enterMessage);
     if (initialChats) {
       if (initialChats.httpStatus === 200) {
-        const currentEnterMessage = getEnterMessage();
-        setMessages([...initialChats.data.reverse(), currentEnterMessage]);
+        // const currentEnterMessage = getEnterMessage();
+        setMessages([...initialChats.data.reverse(), enterMessage]);
       } else if (initialChats.httpStatus === 204) {
-        setMessages([getEnterMessage()]);
+        setMessages([enterMessage]);
       } else {
         setError(initialChats.message);
       }

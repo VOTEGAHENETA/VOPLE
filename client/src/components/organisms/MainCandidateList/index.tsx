@@ -186,6 +186,7 @@ function MainCandidateList({ index, vote, sessionId }: Props) {
                   key={`${team.teamId}-${index}`}
                   team={team}
                   onClick={() => handleRouteChannel(team.teamId)}
+                  sessionId={sessionId}
                 />
               );
             })

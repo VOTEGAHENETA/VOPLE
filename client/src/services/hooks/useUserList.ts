@@ -10,6 +10,7 @@ export const useUserListGet = (
   return useQuery({
     queryKey: ['initialUserList', pgno, sessionId, voteId],
     queryFn: () => getUserList(sessionId, voteId, pgno),
+    staleTime: 0,
   });
 };
 

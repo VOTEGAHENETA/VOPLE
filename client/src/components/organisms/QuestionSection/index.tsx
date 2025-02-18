@@ -7,9 +7,11 @@ import React, { useState } from 'react';
 import BaseButton from '@/components/atoms/BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
 import { useQuestionGet, useQuestionPost } from '@/services/hooks/question';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 function QuestionSection() {
+  const navigate = useNavigate();
   const { election_id } = useParams() as { election_id: string };
   const { data: questionData, isLoading } = useQuestionGet(Number(election_id));
   const [answer, setAnswer] = useState<string>('');
@@ -23,6 +25,9 @@ function QuestionSection() {
   const mutation = useQuestionPost(Number(election_id), setErrMsg);
   function handleSumbitAnswer() {
     mutation.mutate({ sessionId: Number(election_id), answer: answer });
+  }
+  function handleCancel() {
+    navigate('/elections/list');
   }
 
   return (
@@ -38,7 +43,9 @@ function QuestionSection() {
           </Text>
           <div className={styles['qna-question']}>
             {isLoading ? (
-              <div>Loading...</div>
+              <div className={styles.loading}>
+                <LoadingSpinner />
+              </div>
             ) : (
               <Text size='m' color='var(--color-black)'>
                 {questionData}
@@ -64,6 +71,7 @@ function QuestionSection() {
           type='reset'
           kind='base'
           status={BASE_BUTTON_STATUS.OUTLINE}
+          onClick={handleCancel}
         >
           취소
         </BaseButton>

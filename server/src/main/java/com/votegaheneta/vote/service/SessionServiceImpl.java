@@ -22,8 +22,6 @@ import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
-import com.votegaheneta.vote.repository.VoteRepository;
-import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalDateTime;
@@ -41,14 +39,11 @@ public class SessionServiceImpl implements SessionService {
   @Value("${base_url}")
   private String mediaUrl;
 
-  private final VoteTeamRepository voteTeamRepository;
-  private final VoteRepository voteRepository;
   private final ElectionRepository electionRepository;
   private final SessionUserInfoRepository sessionUserInfoRepository;
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final FileStorageComponent fileStorageComponent;
-  private final VoteCommandService voteCommandService;
 
   @Transactional
   @Override
@@ -116,12 +111,14 @@ public class SessionServiceImpl implements SessionService {
     List<ElectionSession> managedSessions = electionRepository.findByHostUser_Id(userId);
     return new SessionResponse(
         ParticipatingSessions.stream().map(participatingSession -> {
-          Boolean isClosed = LocalDateTime.now().isAfter(participatingSession.getVoteEndTime());
-          return SessionListDto.from(participatingSession, isClosed);
+          Boolean isClosed = !LocalDateTime.now().isBefore(participatingSession.getVoteEndTime());
+          Boolean hasVoted = sessionUserInfoRepository.findHasvotedBySessionId_userId(participatingSession.getId(), userId);
+          return SessionListDto.from(participatingSession, isClosed, hasVoted);
         }).toList(),
         managedSessions.stream().map(managedSession -> {
-          Boolean isClosed = LocalDateTime.now().isAfter(managedSession.getVoteEndTime());
-          return SessionListDto.from(managedSession, isClosed);
+          Boolean hasVoted = sessionUserInfoRepository.findHasvotedBySessionId_userId(managedSession.getId(), userId);
+          Boolean isClosed = !LocalDateTime.now().isBefore(managedSession.getVoteEndTime());
+          return SessionListDto.from(managedSession, isClosed, hasVoted);
         }).toList()
     );
   }

@@ -5,28 +5,29 @@ import { ElectionList } from '@/types/election';
 import { getElectionList } from '@/services/election';
 
 function ElectionListTemplate() {
-  const [electionList, setElectionList] = useState<ElectionList | null>(null);
+  const [electionList, setElectionList] = useState<ElectionList>({
+    involvedSessions: [],
+    managedSessions: [],
+  });
 
   useEffect(() => {
     getElectionList().then((response) => {
-      setElectionList(response);
+      if (response) {
+        setElectionList(response);
+      }
     });
   }, []);
-
-  if (!electionList) {
-    return <div>Loading...</div>;
-  }
-
-  const participatedElections = electionList.involvedSessions;
-  const createdElections = electionList.managedSessions;
 
   return (
     <div className={styles.list}>
       <ElectionListBox
-        elections={participatedElections}
+        elections={electionList?.involvedSessions || []}
         status='participating'
       />
-      <ElectionListBox elections={createdElections} status='created' />
+      <ElectionListBox
+        elections={electionList?.managedSessions || []}
+        status='created'
+      />
     </div>
   );
 }

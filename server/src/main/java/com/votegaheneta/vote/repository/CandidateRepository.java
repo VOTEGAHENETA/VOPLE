@@ -2,6 +2,7 @@ package com.votegaheneta.vote.repository;
 
 import com.votegaheneta.vote.dto.CandidateResultDto;
 import com.votegaheneta.vote.entity.Candidate;
+import com.votegaheneta.vote.entity.VoteTeam;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,4 +26,8 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
   void deleteByVoteId(@Param("voteId") Long voteId);
 
   boolean existsByVoteTeamIdAndUserId(Long streamId, Long userId);
+
+  @Modifying
+  @Query("DELETE FROM Candidate c WHERE c.voteTeam in :voteTeams")
+  void deleteAllCandidateByVoteTeam(List<VoteTeam> voteTeams);
 }

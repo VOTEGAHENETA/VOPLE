@@ -16,7 +16,8 @@ import {
   useElectionDelete,
   useElectionModify,
 } from '@/services/hooks/useElectionSession';
-import { combineDateAndTime, convertUTCToKST } from '@/utils/date';
+import { combineDateAndTimePut } from '@/utils/date';
+import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 
 function ElectionDetailTemplate() {
   const { election_id } = useParams() as { election_id: string };
@@ -57,11 +58,14 @@ function ElectionDetailTemplate() {
   const putMutation = useElectionModify();
   const deleteMutation = useElectionDelete();
 
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
   useEffect(() => {
-    if (isLoading) {
-      console.log('데이터 로딩 중...');
-    }
-
     if (isError) {
       console.log('데이터 로드 에러');
     }
@@ -75,8 +79,8 @@ function ElectionDetailTemplate() {
       }));
       setVoteState(data.voteEditInfos);
 
-      const startTime = convertUTCToKST(data.sessionDto.startTime);
-      const endTime = convertUTCToKST(data.sessionDto.endTime);
+      const startTime = new Date(data.sessionDto.startTime);
+      const endTime = new Date(data.sessionDto.endTime);
       setDateState(() => ({
         startDate: startTime
           .toLocaleDateString('ko-KR', {
@@ -208,11 +212,11 @@ function ElectionDetailTemplate() {
   }
 
   function handleModifyElection() {
-    const startTime = combineDateAndTime(
+    const startTime = combineDateAndTimePut(
       dateState.startDate,
       dateState.startTime
     );
-    const endTime = combineDateAndTime(dateState.endDate, dateState.endTime);
+    const endTime = combineDateAndTimePut(dateState.endDate, dateState.endTime);
     const updateState = {
       ...state,
       startTime,
