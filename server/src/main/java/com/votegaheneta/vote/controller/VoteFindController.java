@@ -45,7 +45,8 @@ public class VoteFindController {
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{voteId}")
   public ApiResponse<VoteDetailDto> getVoteDetail(@PathVariable("sessionId") Long sessionId,
-      @PathVariable("voteId") Long voteId, Pageable pageable) {
+                                                  @PathVariable("voteId") Long voteId,
+                                                  Pageable pageable) {
     VoteDetailDto voteDetail = voteFindService.getVoteDetail(sessionId, voteId, pageable);
     return ApiResponse.success(HttpStatus.OK, "투표 상세 정보 조회 성공", voteDetail);
   }
@@ -105,7 +106,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && @sessionAuth.hasUserVoted(#sessionId) || @sessionAuth.isAdminInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.authorizeCurrentVoteResult(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/result/current")
   public ApiResponse<SessionResultFindDto> findVoteResultBySessionId(
@@ -122,7 +123,7 @@ public class VoteFindController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isUserInSession(#sessionId) && @sessionAuth.hasUserVoted(#sessionId) || @sessionAuth.isAdminInSession(#sessionId)")
+  @PreAuthorize("@sessionAuth.authorizeFinalResult(#sessionId)")
   @GetMapping("/result/final")
   public ApiResponse<SessionFinalResultFindDto> findVoteFinalResultBySessionId(
       @Valid @Positive @PathVariable(name = "sessionId") Long sessionId) {

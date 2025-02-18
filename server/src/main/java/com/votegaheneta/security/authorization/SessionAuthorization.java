@@ -37,4 +37,12 @@ public class SessionAuthorization {
     SessionUserInfo sui = sessionUserInfoRepository.findByElectionSessionIdAndUser(sessionId, user).orElseThrow(() -> new IllegalArgumentException("투표 여부 메서드 보안에서 세션을 못찾음"));
     return sui.isHasVoted();
   }
+
+  public boolean authorizeCurrentVoteResult(Long sessionId) {
+    return isSessionActive(sessionId) && (isUserInSession(sessionId) && hasUserVoted(sessionId));
+  }
+
+  public boolean authorizeFinalResult(Long sessionId) {
+    return !isSessionActive(sessionId) && isUserInSession(sessionId);
+  }
 }
