@@ -12,6 +12,7 @@ import com.votegaheneta.vote.controller.request.VoteTeamInfoRequest;
 import com.votegaheneta.vote.controller.response.VoteTeamInfoResponse;
 import com.votegaheneta.vote.dto.PledgeDto;
 import com.votegaheneta.vote.dto.VoteTeamDto;
+import com.votegaheneta.vote.dto.VoteTeamPledgeDto;
 import com.votegaheneta.vote.entity.Candidate;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
@@ -144,5 +145,14 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     List<PledgeDto> pledgeDtoList = candidate.getVoteTeam().getPledges().stream()
         .map(PledgeDto::fromEntity).toList();
     return new VoteTeamInfoResponse(voteTeamDto, pledgeDtoList);
+  }
+
+  @Transactional
+  @Override
+  public VoteTeamPledgeDto getVoteTeamInfoDetail(Long teamId) {
+    VoteTeam voteTeam = voteTeamRepository.findById(teamId)
+        .orElseThrow(() -> new IllegalArgumentException("투표 팀정보를 찾을 수 없습니다."));
+    List<PledgeDto> pledgeDtoList = voteTeam.getPledges().stream().map(PledgeDto::fromEntity).toList();
+    return new VoteTeamPledgeDto(voteTeam.getPoster(), pledgeDtoList);
   }
 }

@@ -86,8 +86,6 @@ public class VoteResultCalculator {
               ? voteMap.get(voteId).values().stream()
               .map(teamResultProjection -> {
                 VoteResultProjection firstVoteResult = teamResultProjection.get(0);
-                System.out.println("Team ID: " + firstVoteResult.getVoteTeamId() + ", PollCnt: "
-                    + firstVoteResult.getPollCnt());
                 List<CandidateResultDto> candidateResultDtos = teamResultProjection.stream()
                     .filter(candidate -> candidate.getCandidateId() != null)
                     .map(candidate -> new CandidateResultDto(

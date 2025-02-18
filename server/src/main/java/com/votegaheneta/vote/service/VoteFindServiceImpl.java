@@ -104,14 +104,14 @@ public class VoteFindServiceImpl implements VoteFindService {
   @Transactional
   @Override
   public SessionFinalResultFindDto findVoteFinalResultBySessionId(Long sessionId) {
-    String sessionRedisKey = "session:vote:result:"+sessionId;
+    final String VOTE_RESULT_REDIS_KEY = "session:vote:result:"+sessionId;
     List<VoteResult> voteResults = new ArrayList<>();
-    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(sessionRedisKey);
+    List<VoteResult> redisVoteResults = redisRepository.getVoteResults(VOTE_RESULT_REDIS_KEY);
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     if(redisVoteResults.isEmpty()) {
       voteResults = voteResultCalculator.calculateVoteResult(sessionId);
-      redisRepository.saveVoteResults(sessionRedisKey, voteResults);
+      redisRepository.saveVoteResults(VOTE_RESULT_REDIS_KEY, voteResults);
     }else {
       voteResults = redisVoteResults;
     }
