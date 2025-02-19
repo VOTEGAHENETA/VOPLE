@@ -35,7 +35,7 @@ public class ElectionSession {
   @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private List<Vote> votes = new ArrayList<>();
 
-  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.PERSIST, orphanRemoval = true)
+  @OneToMany(mappedBy = "electionSession", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SessionUserInfo> sessionUserInfos = new ArrayList<>();
 
 //  @Builder

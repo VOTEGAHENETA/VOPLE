@@ -156,14 +156,16 @@ public class SessionServiceImpl implements SessionService {
     sessionDto.updateEntity(electionSession);
   }
 
+  @Transactional
   @Override
   public boolean deleteSession(Long sessionId) {
     try {
       List<Long> voteIds = voteRepository.findIdsBySessionId(sessionId);
-      for (Long voteId : voteIds) {
-        voteCommandService.deleteVote(sessionId, voteId);
-      }
+      voteIds.forEach(voteId -> voteCommandService.deleteVote(sessionId, voteId));
+      sessionUserInfoRepository.deleteSessionUserInfoByElectionSessionId(sessionId);
       electionRepository.deleteSessionById(sessionId);
+      // sui 안지웠다
+
     } catch (RuntimeException e) {
       return false;
     }
