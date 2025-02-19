@@ -17,8 +17,7 @@ export const useCreateVote = () => {
       alert('투표 등록 성공!');
       queryClient.invalidateQueries({ queryKey: ['session_detail'] });
     },
-    onError: (error) => {
-      console.log('등록 실패:', error);
+    onError: () => {
       alert('투표 등록 실패!');
     },
   });
