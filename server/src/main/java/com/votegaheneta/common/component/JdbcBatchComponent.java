@@ -21,7 +21,8 @@ public class JdbcBatchComponent {
    * @return
    */
   @Transactional
-  public int candidateBatchInsert(Long voteTeamId, List<Long> userIdList) {
+  public void candidateBatchInsert(Long voteTeamId, List<Long> userIdList) {
+    if(userIdList.isEmpty()) return;
     StringBuilder sql = new StringBuilder("INSERT INTO candidate (vote_team_id, user_id) VALUES ");
     String values = userIdList.stream()
         .map(id -> "(?, ?)")
@@ -32,7 +33,7 @@ public class JdbcBatchComponent {
       params[i * 2] = voteTeamId;
       params[i * 2 + 1] = userIdList.get(i);
     }
-    return jdbcTemplate.update(sql.toString(), params);
+    jdbcTemplate.update(sql.toString(), params);
   }
 
   /**
@@ -42,7 +43,7 @@ public class JdbcBatchComponent {
    * @return
    */
   @Transactional
-  public int pledgeBatchInsert(Long voteTeamId, List<PledgeDto> pledgeDtoList) {
+  public void pledgeBatchInsert(Long voteTeamId, List<PledgeDto> pledgeDtoList) {
     StringBuilder sql = new StringBuilder();
     String values = pledgeDtoList.stream()
         .map(pledgeDto -> "(?, ?)")
@@ -53,7 +54,7 @@ public class JdbcBatchComponent {
       params[i * 2] = voteTeamId;
       params[i * 2 + 1] = pledgeDtoList.get(i).getContent();
     }
-    return jdbcTemplate.update(sql.toString(), params);
+    jdbcTemplate.update(sql.toString(), params);
   }
 
 }
