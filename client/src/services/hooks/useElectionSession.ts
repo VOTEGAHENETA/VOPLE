@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteElection, getElectionSession, putElection } from '../election';
 import { TCreateElection } from '@/types/election';
 
@@ -19,33 +19,35 @@ export const useElectionSession = (sessionId: number, isQuery: string) => {
 };
 
 export const useElectionDelete = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (sessionId: number) => deleteElection(sessionId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert('삭제 성공');
       navigate('/elections/list');
-      console.log(data);
+      queryClient.invalidateQueries({ queryKey: ['session'] });
+      queryClient.invalidateQueries({ queryKey: ['session_detail'] });
     },
-    onError: (error) => {
+    onError: () => {
       alert('삭제 실패...');
-      console.log('삭제 실패', error);
     },
     retry: 3,
   });
 };
 
 export const useElectionModify = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ sessionId, data }: ModifyProps) =>
       putElection(sessionId, data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert('수정 완료!!');
-      console.log(data);
+      queryClient.invalidateQueries({ queryKey: ['session'] });
+      queryClient.invalidateQueries({ queryKey: ['session_detail'] });
     },
-    onError: (error) => {
-      alert('수정 실패...');
-      console.log('수정 실패', error);
+    onError: () => {
+      alert('수정 중 오류...');
     },
   });
 };
