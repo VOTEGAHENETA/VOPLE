@@ -1,11 +1,6 @@
 // import axios from 'axios';
+import { IStream } from '@/types/api';
 import instance from './api';
-
-interface IStream {
-  streamId: number;
-  streamingUrl: string;
-  isStreaming: boolean;
-}
 
 export const sendStreamData = async (
   streamId: number,

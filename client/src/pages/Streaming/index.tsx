@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { getIsMine } from '@/services/stream';
 import IconButton from '@/components/atoms/IconButton';
 import StreamMobileBlock from '@/components/organisms/StreamMobileBlock';
+import { useStreamData } from '@/services/hooks/live';
 
 type StreamingParams = {
   session_id?: string; // optional로 변경
@@ -34,6 +35,7 @@ export default function Streaming() {
   }
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
+  const { data: streamData, isLoading } = useStreamData(teamId);
   const navigate = useNavigate();
 
   function handleClickBack() {
@@ -85,6 +87,14 @@ export default function Streaming() {
     };
   }, [teamId]);
 
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   // 에러 발생 시
   if (state.error) {
     return (
@@ -111,9 +121,9 @@ export default function Streaming() {
         ) : (
           <>
             {state.isCandidate ? (
-              <StreamSender streamId={teamId} />
+              <StreamSender streamId={teamId} streamData={streamData} />
             ) : (
-              <StreamReceiver streamId={teamId} />
+              <StreamReceiver streamData={streamData} />
             )}
           </>
         )}

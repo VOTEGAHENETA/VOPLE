@@ -1,17 +1,18 @@
 import { useMediaStream } from '@/hooks/useMediaStream';
-import { useStreamControl, useStreamData } from '@/services/hooks/live';
+import { useStreamControl } from '@/services/hooks/live';
 import { useState } from 'react';
 import styles from './index.module.scss';
 import IconButton from '../IconButton';
 import BaseButton from '../BaseButton';
 import { BASE_BUTTON_STATUS } from '@/constants/ui.constants';
+import { IStream } from '@/types/api';
 
 interface Props {
   streamId: number;
+  streamData: IStream | undefined;
 }
 
-function StreamSender({ streamId }: Props) {
-  const { data: streamData } = useStreamData(streamId);
+function StreamSender({ streamId, streamData }: Props) {
   const { mutate: updateStreamStatus } = useStreamControl();
   const { videoRef, isMic, startStream, stopStream, toggleCamera, toggleMic } =
     useMediaStream({
