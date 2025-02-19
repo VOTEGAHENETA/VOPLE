@@ -114,8 +114,6 @@ function MainCandidateList({ index, vote, sessionId }: Props) {
   }
 
   function handleRouteChannel(teamId: number) {
-    // navigate(`/live/${vote.voteId}/${cadindateId}`);
-    console.log('sessionId' + sessionId + '/' + 'teamId' + teamId);
     navigate(`/live/${sessionId}/${teamId}`);
   }
 
