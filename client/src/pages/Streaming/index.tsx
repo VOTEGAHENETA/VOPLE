@@ -19,7 +19,12 @@ interface StreamingState {
   isLoading: boolean;
   error: string | null;
   isCandidate: boolean | null;
+  isStreaming: boolean | null;
 }
+
+// interface CandidateData {
+//   isCandidate: boolean;
+// }
 
 export default function Streaming() {
   const { session_id, team_id } = useParams<keyof StreamingParams>();
@@ -27,6 +32,7 @@ export default function Streaming() {
     isLoading: true,
     error: null,
     isCandidate: null,
+    isStreaming: false,
   });
 
   // 파라미터 유효성 검사
@@ -35,61 +41,64 @@ export default function Streaming() {
   }
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
-  const { data: streamData, isLoading } = useStreamData(teamId);
-  const navigate = useNavigate();
+  const { data: streamData, isLoading: isStreaming } = useStreamData(teamId);
 
-  function handleClickBack() {
-    console.log('back!');
-    navigate(`/elections/${session_id}`);
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isSubscribed = true;
 
-    const fetchCandidateStatus = async () => {
+    async function fetchCandidateStatus() {
       try {
-        setState((prev) => ({ ...prev, isLoading: true }));
         const candidateData = await getIsMine(teamId);
-        console.log('Candidate Data:', candidateData);
+
+        if (!isSubscribed) return;
 
         if (
-          isSubscribed &&
           candidateData &&
-          typeof candidateData.isCandidate === 'boolean'
+          typeof candidateData.isCandidate === 'boolean' &&
+          streamData &&
+          typeof streamData.isStreaming === 'boolean'
         ) {
           setState({
             isLoading: false,
             error: null,
             isCandidate: candidateData.isCandidate,
+            isStreaming: streamData.isStreaming,
           });
         } else {
           throw new Error('후보자 데이터가 유효하지 않습니다.');
         }
       } catch (error) {
-        if (isSubscribed) {
-          console.error('Fetch Error:', error);
-          setState({
-            isLoading: false,
-            error:
-              error instanceof Error
-                ? error.message
-                : '후보자 정보를 가져오는데 실패했습니다.',
-            isCandidate: null,
-          });
-        }
+        if (!isSubscribed) return;
+
+        setState({
+          isLoading: false,
+          error:
+            error instanceof Error
+              ? error.message
+              : '후보자 정보를 가져오는데 실패했습니다.',
+          isCandidate: null,
+          isStreaming: null,
+        });
       }
-    };
+    }
 
     fetchCandidateStatus();
 
     return () => {
       isSubscribed = false;
     };
-  }, [teamId]);
+  }, [teamId, streamData]);
 
-  if (isLoading) {
+  function handleClickBack() {
+    console.log('back!');
+    navigate(`/elections/${session_id}`);
+  }
+
+  if (state.isLoading) {
     return (
-      <div>
+      <div className={styles.loading}>
         <LoadingSpinner />
       </div>
     );
@@ -116,16 +125,16 @@ export default function Streaming() {
         <IconButton name='back' />
       </div>
       <div className={styles.streamingContent}>
-        {state.isLoading ? (
-          <LoadingSpinner />
+        {state.isCandidate ? (
+          <StreamSender streamId={teamId} streamData={streamData} />
+        ) : // streamData가 있고 isStreaming이 true일 때만 StreamReceiver 렌더링
+        isStreaming ? (
+          <StreamReceiver streamData={streamData} />
         ) : (
-          <>
-            {state.isCandidate ? (
-              <StreamSender streamId={teamId} streamData={streamData} />
-            ) : (
-              <StreamReceiver streamData={streamData} />
-            )}
-          </>
+          <div className={styles.loadingBox}>
+            <LoadingSpinner />
+            <span>아직 라이브 시작 전이에요😅</span>
+          </div>
         )}
       </div>
       <TabContainer
@@ -134,7 +143,6 @@ export default function Streaming() {
         type='team'
         voteTeamId={teamId}
       />
-      {/* StreamMobileBlock을 조건부 렌더링 */}
       {state.isCandidate && <StreamMobileBlock sessionId={sessionId} />}
     </div>
   );

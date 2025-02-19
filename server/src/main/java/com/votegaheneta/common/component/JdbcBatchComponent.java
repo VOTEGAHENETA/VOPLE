@@ -21,7 +21,8 @@ public class JdbcBatchComponent {
    * @return
    */
   @Transactional
-  public int candidateBatchInsert(Long voteTeamId, List<Long> userIdList) {
+  public void candidateBatchInsert(Long voteTeamId, List<Long> userIdList) {
+    if(userIdList.isEmpty()) return;
     StringBuilder sql = new StringBuilder("INSERT INTO candidate (vote_team_id, user_id) VALUES ");
     String values = userIdList.stream()
         .map(id -> "(?, ?)")
@@ -32,7 +33,7 @@ public class JdbcBatchComponent {
       params[i * 2] = voteTeamId;
       params[i * 2 + 1] = userIdList.get(i);
     }
-    return jdbcTemplate.update(sql.toString(), params);
+    jdbcTemplate.update(sql.toString(), params);
   }
 
   /**
@@ -42,18 +43,19 @@ public class JdbcBatchComponent {
    * @return
    */
   @Transactional
-  public int pledgeBatchInsert(Long voteTeamId, List<PledgeDto> pledgeDtoList) {
-    StringBuilder sql = new StringBuilder();
+  public void pledgeBatchInsert(Long voteTeamId, List<PledgeDto> pledgeDtoList) {
+    if(pledgeDtoList.isEmpty()) return;
+    StringBuilder sql = new StringBuilder("INSERT INTO pledge (vote_team_id, content) VALUES ");
     String values = pledgeDtoList.stream()
         .map(pledgeDto -> "(?, ?)")
         .collect(Collectors.joining(", "));
     sql.append(values);
-    Object[] params = new Object[pledgeDtoList.size()];
+    Object[] params = new Object[pledgeDtoList.size() * 2];
     for(int i = 0; i < pledgeDtoList.size(); i++) {
       params[i * 2] = voteTeamId;
       params[i * 2 + 1] = pledgeDtoList.get(i).getContent();
     }
-    return jdbcTemplate.update(sql.toString(), params);
+    jdbcTemplate.update(sql.toString(), params);
   }
 
 }

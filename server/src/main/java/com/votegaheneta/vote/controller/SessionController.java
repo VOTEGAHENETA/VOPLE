@@ -118,7 +118,7 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId) && @sessionAuth.isSessionActive(#sessionId)")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}/edit")
   public ApiResponse<SessionEditDto> getSessionForEdit(@PathVariable("sessionId") Long sessionId) {
@@ -135,7 +135,6 @@ public class SessionController {
   public ApiResponse<SessionResponse> getSessions(
       @AuthenticationPrincipal CustomOauth2User oauth2User) {
     Users user = oauth2User.getUser().orElseThrow(EmptyOauthUserException::new);
-//    Long userId = 1L;
     SessionResponse result = sessionService.getSessions(user.getId());
     if (result.getManagedSessions().isEmpty() && result.getInvolvedSessions().isEmpty()) {
       return ApiResponse.fail(HttpStatus.NO_CONTENT, "세션 목록이 없습니다.");

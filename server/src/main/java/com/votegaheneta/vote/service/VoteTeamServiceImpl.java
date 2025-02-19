@@ -2,6 +2,7 @@ package com.votegaheneta.vote.service;
 
 import com.votegaheneta.chat.service.ChatService;
 import com.votegaheneta.common.component.FileStorageComponent;
+import com.votegaheneta.common.component.JdbcBatchComponent;
 import com.votegaheneta.stream.entity.Stream;
 import com.votegaheneta.stream.repository.StreamRepository;
 import com.votegaheneta.user.dto.UserDto;
@@ -22,7 +23,6 @@ import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +44,7 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   private final ChatService chatService;
   private final StreamRepository streamRepository;
   private final FileStorageComponent fileStorageComponent;
+  private final JdbcBatchComponent jdbcBatchComponent;
 
   @Value("${spring.data.hls.host-prefix}")
   private String STREAMING_PREFIX;
@@ -86,14 +87,15 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     List<List<UserDto>> voteTeamList = request.getVoteTeamList();
     for (List<UserDto> userDtos : voteTeamList) {
       VoteTeam voteTeam = new VoteTeam();
-      List<Long> userIdList = userDtos.stream().map(UserDto::getUserId).toList();
-      List<Users> users = usersRepository.findAllById(userIdList);
-      users.forEach(user -> voteTeam.addCandidate(new Candidate(user)));
       vote.addVoteTeam(voteTeam);
       voteTeams.add(voteTeam);
     }
     voteTeamRepository.saveAll(voteTeams);
     voteTeamRepository.flush();
+    for (int i = 0; i < voteTeams.size(); i++) {
+      jdbcBatchComponent.candidateBatchInsert(voteTeams.get(i).getId()
+          , voteTeamList.get(i).stream().map(UserDto::getUserId).toList());
+    }
     return voteTeams;
   }
 
@@ -119,7 +121,8 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     request.getVoteTeam().updateVoteTeamInfo(voteTeam);
     // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
     pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
-    Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
+    jdbcBatchComponent.pledgeBatchInsert(voteTeam.getId(), List.of(request.getPledges()));
+//    Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
   }
 
   private Candidate getCandidate(Long sessionId, Long userId) {

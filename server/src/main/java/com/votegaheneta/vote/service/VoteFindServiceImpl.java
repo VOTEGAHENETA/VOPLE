@@ -115,7 +115,6 @@ public class VoteFindServiceImpl implements VoteFindService {
     }else {
       voteResults = redisVoteResults;
     }
-    voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
         ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
     return new SessionFinalResultFindDto(

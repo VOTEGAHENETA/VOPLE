@@ -6,6 +6,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.votegaheneta.common.component.FileStorageComponent;
 import com.votegaheneta.common.component.VoteResultCalculator;
+import com.votegaheneta.stream.entity.Stream;
+import com.votegaheneta.stream.repository.StreamRepository;
 import com.votegaheneta.user.dto.UserDto;
 import com.votegaheneta.user.entity.Users;
 import com.votegaheneta.user.enums.USER_TYPE;
@@ -18,6 +20,7 @@ import com.votegaheneta.vote.dto.SessionEditDto.VoteEditInfo;
 import com.votegaheneta.vote.dto.SessionInitialInfoDto;
 import com.votegaheneta.vote.dto.SessionListDto;
 import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult;
+import com.votegaheneta.vote.dto.SessionResultFindDto.VoteResult.TeamResult;
 import com.votegaheneta.vote.entity.ElectionSession;
 import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
@@ -27,6 +30,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +50,7 @@ public class SessionServiceImpl implements SessionService {
   private final UsersRepository usersRepository;
   private final VoteResultCalculator voteResultCalculator;
   private final FileStorageComponent fileStorageComponent;
+  private final StreamRepository streamRepository;
 
   @Transactional
   @Override
@@ -88,6 +94,18 @@ public class SessionServiceImpl implements SessionService {
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("해당되는 세션 정보가 없습니다."));
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
+    Boolean IS_STREAMING = true;
+    Set<Long> teamIds = voteResults.stream().flatMap(voteResult -> voteResult.getTeamResults().stream().map(
+        TeamResult::getTeamId)).collect(Collectors.toSet());
+    List<Stream> streams = streamRepository.findByTeamIds(teamIds);
+    Set<Long> isStreamingIds = streams.stream().filter(Stream::isStreaming).map(Stream::getId).collect(Collectors.toSet());
+    voteResults.stream()
+        .flatMap(voteResult -> voteResult.getTeamResults().stream())
+        .forEach(teamResult -> {
+          if (isStreamingIds.contains(teamResult.getTeamId())) {
+            teamResult.setIsStreaming(IS_STREAMING);
+          }
+        });
     SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId)
         .orElseThrow(() -> new IllegalArgumentException("투표 회원의 정보를 찾을 수 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0

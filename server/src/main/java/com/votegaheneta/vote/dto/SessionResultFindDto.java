@@ -47,6 +47,7 @@ public class SessionResultFindDto {
       private String poster;
       private String candidate_statement;
       private Float teamVotePercent;
+      private Boolean isStreaming;
 
       public TeamResult() {
         this.voteCandidateDtos = new ArrayList<>();
@@ -67,6 +68,10 @@ public class SessionResultFindDto {
 
       public void adjustVoteTeamPercent(float adjustment) {
         this.teamVotePercent += adjustment;
+      }
+
+      public void setIsStreaming(Boolean isStreaming) {
+        this.isStreaming = isStreaming;
       }
     }
   }
