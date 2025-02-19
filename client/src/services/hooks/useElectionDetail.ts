@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getElectionDetail } from '../election';
 import { deleteVote } from '../vote';
-import { useNavigate } from 'react-router-dom';
 
 interface VoteDeleteParams {
   sessionId: number;
@@ -17,7 +16,6 @@ export const useElectionDetailGet = (electionId: number) => {
 };
 
 export const useElectionDetailDelete = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ sessionId, voteId }: VoteDeleteParams) =>
@@ -26,7 +24,6 @@ export const useElectionDetailDelete = () => {
       alert('해당 투표가 삭제되었습니다.');
       queryClient.invalidateQueries({ queryKey: ['session_detail'] });
       queryClient.invalidateQueries({ queryKey: ['session'] });
-      navigate('/elections/list');
     },
     onError: () => {
       alert('삭제 도중 오류가 발생했습니다.');
