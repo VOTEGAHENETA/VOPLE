@@ -19,8 +19,8 @@
 
 .leftContent {
   min-width: 0;
-  max-width: 250px;
-  width: inherit;
+  max-width: 100%;
+  // width: inherit;
   display: flex;
   flex: 1;
   flex-direction: column;

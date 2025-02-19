@@ -50,6 +50,9 @@ const ResultCurrentTemplate = () => {
 
   return (
     <div className={styles.result__container}>
+      <h3 className={styles.title}>
+        실시간 투표 현황 <em>LIVE</em>
+      </h3>
       {currentData && (
         <Result currentData={currentData} sessionId={sessionId} />
       )}

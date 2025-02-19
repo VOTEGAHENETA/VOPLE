@@ -30,6 +30,7 @@ type IconName =
   | 'dots'
   | 'left'
   | 'leftLongWhite'
+  | 'leftLongBlack'
   | 'microphone'
   | 'nonMicrophone'
   | 'videoCall'
