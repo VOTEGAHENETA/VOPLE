@@ -32,4 +32,8 @@ public interface SessionUserInfoRepository extends JpaRepository<SessionUserInfo
 
   @Query("select count(sui) from SessionUserInfo sui where sui.electionSession.id = :sessionId")
   int findCountByElectionSessionId(Long sessionId);
+
+  @Modifying
+  @Query("update SessionUserInfo sui SET sui.userType = 'VOTER' WHERE sui.electionSession.id = :sessionId AND sui.user.id IN :userIds")
+  void updateUserTypeToVoter(@Param("sessionId") Long sessionId,@Param("candidateUserIds") List<Long> candidateUserIds);
 }
