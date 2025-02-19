@@ -1,14 +1,13 @@
 import { useEffect, useRef } from 'react';
 import Hls from 'hls.js';
-import { useStreamData } from '@/services/hooks/live';
+import { IStream } from '@/types/api';
 
 interface Props {
-  streamId: number;
+  streamData: IStream | undefined;
 }
 
-function StreamReceiver({ streamId }: Props) {
+function StreamReceiver({ streamData }: Props) {
   const hlsPlayerRef = useRef<HTMLVideoElement | null>(null);
-  const { data: streamData } = useStreamData(streamId);
   useEffect(() => {
     if (!streamData || !hlsPlayerRef.current) return;
     const hls = new Hls({ debug: true });
