@@ -36,4 +36,7 @@ public interface ElectionRepository extends JpaRepository<ElectionSession, Long>
   Long findSessionIdByVoteTeamId(Long voteTeamId);
 
   boolean existsByIdAndHostUser(Long sessionId, Users hostUser);
+
+  @Query("delete from ElectionSession es where es.id = :sessionId")
+  void deleteSessionById(@Param("sessionId") Long sessionId);
 }
