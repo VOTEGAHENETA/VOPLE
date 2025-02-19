@@ -43,11 +43,11 @@ public class VoteCommandServiceImpl implements VoteCommandService {
   @Override
   @Transactional
   public void deleteVote(Long sessionId, Long voteId) {
-    voteTeamServiceImpl.deleteAllVoteTeam(voteId);
-    voteRepository.deleteById(voteId);
     List<Long> candidateUserIds = candidateRepository.findCandidateUserIdByVoteId(voteId)
         .stream().map(candidate -> candidate.getUser().getId()).collect(Collectors.toList());
     sessionUserInfoRepository.updateUserTypeToVoter(sessionId, candidateUserIds);
+    voteTeamServiceImpl.deleteAllVoteTeam(voteId);
+    voteRepository.deleteById(voteId);
   }
 
   @Transactional
