@@ -65,6 +65,7 @@ public class VoteResultCalculator {
    * @return List<VoteResult>
    */
   public List<VoteResult> calculateVoteResult(Long sessionId) {
+    Boolean IS_STREAMING = false;
     List<VoteResultProjection> voteResultProjections = customVoteRepository.findVoteResultBySessionId(
         sessionId);
     // 1. null이 아닌 voteTeamId를 가진 항목만 그룹화
@@ -100,7 +101,8 @@ public class VoteResultCalculator {
                     candidateResultDtos,
                     firstVoteResult.getPoster(),
                     firstVoteResult.getCandidateStatement(),
-                    firstVoteResult.getTeamVotePercent()
+                    firstVoteResult.getTeamVotePercent(),
+                    IS_STREAMING
                 );
               })
               .sorted((a, b) -> b.getPollCnt().compareTo(a.getPollCnt()))

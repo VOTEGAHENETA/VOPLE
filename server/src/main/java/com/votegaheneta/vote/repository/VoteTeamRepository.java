@@ -40,6 +40,4 @@ public interface VoteTeamRepository extends JpaRepository<VoteTeam, Long> {
 
   @Query("select vt from VoteTeam vt join fetch vt.vote v join fetch v.electionSession es where vt.id = :voteTeamId")
   Optional<VoteTeam> findVoteTeamWithVoteAndElection(Long voteTeamId);
-
-
 }
