@@ -111,7 +111,7 @@ public class VoteTeamController {
   @Parameters({
       @Parameter(name = "teamId", description = "팀id", required = true)
   })
-  @GetMapping("/{teamId}")
+  @GetMapping("/{teamId}/detail")
   public ApiResponse<VoteTeamPledgeDto> getVoteTeamDetail(@PathVariable("teamId") Long teamId) {
     return ApiResponse.success(HttpStatus.OK, "투표팀 공약, 포스터 조회 성공", voteTeamService.getVoteTeamInfoDetail(teamId));
   }
