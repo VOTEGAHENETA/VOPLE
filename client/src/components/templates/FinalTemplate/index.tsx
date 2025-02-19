@@ -4,28 +4,23 @@ import FinalResult from '@/components/organisms/FinalResult';
 import people from '@/assets/icons/people.svg';
 import crown from '@/assets/icons/3dcrown.svg';
 import Text from '@/components/atoms/Text';
-import { getResultCurrent } from '@/services/election';
 import { getFinalResult } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { ElectionResult } from '@/types/final';
-import { VoteResultsResponse } from '@/types/voteSession';
 import { useParams } from 'react-router-dom';
+import { VoteResultsResponse } from '@/types/voteSession';
+import { convertUTCToKST } from '@/utils/date';
 
 function FinalTemplate() {
   const { election_id } = useParams<{ election_id: string }>();
   const sessionId = Number(election_id);
   const [finalData, setFinalData] = useState<ElectionResult | null>(null);
-  const [currentData, setCurrentData] = useState<VoteResultsResponse | null>(
-    null
-  );
 
   useEffect(() => {
     async function fetchData() {
       try {
         const finalResponse = await getFinalResult(sessionId);
         setFinalData(finalResponse);
-        const currentResponse = await getResultCurrent(sessionId);
-        setCurrentData(currentResponse);
       } catch (error) {
         console.log(error);
       }
@@ -45,9 +40,36 @@ function FinalTemplate() {
     return `${year}.${month}.${day} ${hours}:${minutes}`;
   };
 
-  if (!finalData || !currentData) {
+  if (!finalData) {
     return null;
   }
+
+  const transformToCurrentData = (
+    finalData: ElectionResult
+  ): VoteResultsResponse => {
+    return {
+      sessionName: finalData.electionSessionDto.sessionName,
+      wholeVoterPercent: finalData.wholeVoterPercent,
+      endDate: convertUTCToKST(
+        new Date(finalData.electionSessionDto.voteEndTime)
+      ),
+      voteResults: finalData.voteFinalResults.map((voteFinalResult) => ({
+        voteId: voteFinalResult.voteId,
+        voteName: voteFinalResult.voteName,
+        teamResults: voteFinalResult.teamResults.map((teamResult) => ({
+          teamId: teamResult.teamId,
+          prefix: teamResult.prefix,
+          pollCnt: teamResult.pollCnt,
+          voteCandidateDtos: teamResult.voteCandidateDtos,
+          poster: teamResult.poster,
+          candidate_statement: teamResult.candidate_statement,
+          teamVotePercent: teamResult.teamVotePercent,
+        })),
+      })),
+    };
+  };
+
+  const currentData = transformToCurrentData(finalData);
 
   return (
     <div className={styles.container}>
