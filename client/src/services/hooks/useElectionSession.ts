@@ -25,9 +25,8 @@ export const useElectionDelete = () => {
     mutationFn: (sessionId: number) => deleteElection(sessionId),
     onSuccess: () => {
       alert('삭제 성공');
-      navigate('/elections/list');
       queryClient.invalidateQueries({ queryKey: ['session'] });
-      queryClient.invalidateQueries({ queryKey: ['session_detail'] });
+      navigate('/elections/list');
     },
     onError: () => {
       alert('삭제 실패...');
