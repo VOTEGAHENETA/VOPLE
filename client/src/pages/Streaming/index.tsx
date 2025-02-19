@@ -19,7 +19,7 @@ interface StreamingState {
   isLoading: boolean;
   error: string | null;
   isCandidate: boolean | null;
-  isStreaming: boolean | null;
+  // isStreaming: boolean | null;
 }
 
 // interface CandidateData {
@@ -32,7 +32,7 @@ export default function Streaming() {
     isLoading: true,
     error: null,
     isCandidate: null,
-    isStreaming: false,
+    // isStreaming: false,
   });
 
   // 파라미터 유효성 검사
@@ -41,8 +41,7 @@ export default function Streaming() {
   }
   const teamId = Number(team_id);
   const sessionId = Number(session_id);
-  const { data: streamData, isLoading: isStreaming } = useStreamData(teamId);
-
+  const { data: streamData, isLoading } = useStreamData(teamId);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,14 +56,13 @@ export default function Streaming() {
         if (
           candidateData &&
           typeof candidateData.isCandidate === 'boolean' &&
-          streamData &&
-          typeof streamData.isStreaming === 'boolean'
+          streamData
         ) {
           setState({
             isLoading: false,
             error: null,
             isCandidate: candidateData.isCandidate,
-            isStreaming: streamData.isStreaming,
+            // isStreaming: streamData.isStreaming, // 여기서 설정된 값이 갱신되지 않음
           });
         } else {
           throw new Error('후보자 데이터가 유효하지 않습니다.');
@@ -79,7 +77,7 @@ export default function Streaming() {
               ? error.message
               : '후보자 정보를 가져오는데 실패했습니다.',
           isCandidate: null,
-          isStreaming: null,
+          // isStreaming: null,
         });
       }
     }
@@ -89,14 +87,14 @@ export default function Streaming() {
     return () => {
       isSubscribed = false;
     };
-  }, [teamId, streamData]);
+  }, [teamId]);
 
   function handleClickBack() {
     console.log('back!');
     navigate(`/elections/${session_id}`);
   }
 
-  if (state.isLoading) {
+  if (isLoading || state.isLoading) {
     return (
       <div className={styles.loading}>
         <LoadingSpinner />
@@ -119,6 +117,7 @@ export default function Streaming() {
     );
   }
 
+  console.log('streamData?.isStreaming ::: ', streamData?.isStreaming);
   return (
     <div className={styles.streaming__section}>
       <div className={styles.streaming__back} onClick={handleClickBack}>
@@ -128,7 +127,7 @@ export default function Streaming() {
         {state.isCandidate ? (
           <StreamSender streamId={teamId} streamData={streamData} />
         ) : // streamData가 있고 isStreaming이 true일 때만 StreamReceiver 렌더링
-        isStreaming ? (
+        streamData?.isStreaming ? (
           <StreamReceiver streamData={streamData} />
         ) : (
           <div className={styles.loadingBox}>
