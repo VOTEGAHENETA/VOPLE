@@ -36,4 +36,8 @@ public interface SessionUserInfoRepository extends JpaRepository<SessionUserInfo
   @Modifying
   @Query("update SessionUserInfo sui SET sui.userType = 'VOTER' WHERE sui.electionSession.id = :sessionId AND sui.user.id IN :candidateUserIds")
   void updateUserTypeToVoter(@Param("sessionId") Long sessionId,@Param("candidateUserIds") List<Long> candidateUserIds);
+
+  @Modifying
+  @Query("delete from SessionUserInfo sui where sui.electionSession.id = :sessionId")
+  void deleteSessionUserInfoByElectionSessionId(Long sessionId);
 }

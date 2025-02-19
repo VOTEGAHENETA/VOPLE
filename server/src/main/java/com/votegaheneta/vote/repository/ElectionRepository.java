@@ -6,6 +6,7 @@ import com.votegaheneta.vote.entity.Vote;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -37,6 +38,7 @@ public interface ElectionRepository extends JpaRepository<ElectionSession, Long>
 
   boolean existsByIdAndHostUser(Long sessionId, Users hostUser);
 
+  @Modifying
   @Query("delete from ElectionSession es where es.id = :sessionId")
   void deleteSessionById(@Param("sessionId") Long sessionId);
 }
