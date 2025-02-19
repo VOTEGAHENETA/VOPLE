@@ -13,8 +13,6 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
       - ./media/uploads:/app/uploads
-    depends_on:
-      - server
 
   server:
     image: openjdk:17-alpine
