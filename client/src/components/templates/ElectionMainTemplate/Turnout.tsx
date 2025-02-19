@@ -34,7 +34,7 @@ function Turnout({ election }: Props) {
           현재 투표율
         </Text>
         <Text size='xl' color='var(--color-black)' weight='bold'>
-          Who The Next !
+          Who&#39;s The Next !
         </Text>
         <Text size='xl' color='var(--color-black)' weight='bold'>
           다음 [&nbsp;

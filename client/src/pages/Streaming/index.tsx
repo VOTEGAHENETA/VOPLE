@@ -7,6 +7,7 @@ import LoadingSpinner from '@/components/atoms/LoadingSpinner';
 import { useEffect, useState } from 'react';
 import { getIsMine } from '@/services/stream';
 import IconButton from '@/components/atoms/IconButton';
+import StreamMobileBlock from '@/components/organisms/StreamMobileBlock';
 
 type StreamingParams = {
   session_id?: string; // optional로 변경
@@ -123,6 +124,8 @@ export default function Streaming() {
         type='team'
         voteTeamId={teamId}
       />
+      {/* StreamMobileBlock을 조건부 렌더링 */}
+      {state.isCandidate && <StreamMobileBlock sessionId={sessionId} />}
     </div>
   );
 }
