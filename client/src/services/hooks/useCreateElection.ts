@@ -9,7 +9,6 @@ export const useCreateElection = () => {
   return useMutation({
     mutationFn: (createData: TCreateElection) => postElection(createData),
     onSuccess: (data) => {
-      console.log('등록 성공:', data);
       queryClient.invalidateQueries({ queryKey: ['session_detail'] });
       alert('선거 등록 성공!');
       setTimeout(() => {
@@ -17,8 +16,7 @@ export const useCreateElection = () => {
       }, 100);
       return data;
     },
-    onError: (error) => {
-      console.log('등록 실패:', error);
+    onError: () => {
       alert('선거 등록 실패!');
     },
   });
