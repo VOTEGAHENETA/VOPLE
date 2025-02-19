@@ -118,7 +118,7 @@ public class SessionController {
   @Parameters({
       @Parameter(name = "sessionId", description = "세션id", required = true, in = ParameterIn.PATH)
   })
-  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId) && @sessionAuth.isSessionActive(#sessionId)")
+  @PreAuthorize("@sessionAuth.isAdminInSession(#sessionId)")
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @GetMapping("/{sessionId}/edit")
   public ApiResponse<SessionEditDto> getSessionForEdit(@PathVariable("sessionId") Long sessionId) {
