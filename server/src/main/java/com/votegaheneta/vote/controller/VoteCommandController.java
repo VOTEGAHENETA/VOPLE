@@ -132,7 +132,7 @@ public class VoteCommandController {
   @HandleAuthorizationDenied(handlerClass = AuthorizationExceptionHandler.class)
   @DeleteMapping("/{voteId}")
   public ApiResponse<Void> deleteVote(@PathVariable("sessionId") Long sessionId, @PathVariable("voteId") Long voteId) {
-    voteCommandService.deleteVote(voteId);
+    voteCommandService.deleteVote(sessionId, voteId);
     return ApiResponse.success(HttpStatus.NO_CONTENT, "투표 삭제 성공", null);
   }
 

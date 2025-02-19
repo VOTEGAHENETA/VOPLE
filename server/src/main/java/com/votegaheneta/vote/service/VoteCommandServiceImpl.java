@@ -13,6 +13,8 @@ import com.votegaheneta.vote.repository.SessionUserInfoRepository;
 import com.votegaheneta.vote.repository.VoteRepository;
 import com.votegaheneta.vote.repository.VoteTeamRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +42,12 @@ public class VoteCommandServiceImpl implements VoteCommandService {
 
   @Override
   @Transactional
-  public void deleteVote(Long voteId) {
+  public void deleteVote(Long sessionId, Long voteId) {
     voteTeamServiceImpl.deleteAllVoteTeam(voteId);
     voteRepository.deleteById(voteId);
+    List<Long> candidateUserIds = candidateRepository.findCandidateUserIdByVoteId(voteId)
+        .stream().map(candidate -> candidate.getUser().getId()).collect(Collectors.toList());
+    sessionUserInfoRepository.updateUserTypeToVoter(sessionId, candidateUserIds);
   }
 
   @Transactional

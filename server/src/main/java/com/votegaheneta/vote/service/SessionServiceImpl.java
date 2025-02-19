@@ -26,6 +26,7 @@ import com.votegaheneta.vote.entity.SessionUserInfo;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.repository.ElectionRepository;
 import com.votegaheneta.vote.repository.SessionUserInfoRepository;
+import com.votegaheneta.vote.repository.VoteRepository;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalDateTime;
@@ -51,6 +52,8 @@ public class SessionServiceImpl implements SessionService {
   private final VoteResultCalculator voteResultCalculator;
   private final FileStorageComponent fileStorageComponent;
   private final StreamRepository streamRepository;
+  private final VoteRepository voteRepository;
+  private final VoteCommandService voteCommandService;
 
   @Transactional
   @Override
@@ -156,7 +159,11 @@ public class SessionServiceImpl implements SessionService {
   @Override
   public boolean deleteSession(Long sessionId) {
     try {
-      electionRepository.deleteById(sessionId);
+      List<Long> voteIds = voteRepository.findIdsBySessionId(sessionId);
+      for (Long voteId : voteIds) {
+        voteCommandService.deleteVote(sessionId, voteId);
+      }
+      electionRepository.deleteSessionById(sessionId);
     } catch (RuntimeException e) {
       return false;
     }
