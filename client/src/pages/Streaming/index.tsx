@@ -19,7 +19,12 @@ interface StreamingState {
   isLoading: boolean;
   error: string | null;
   isCandidate: boolean | null;
+  // isStreaming: boolean | null;
 }
+
+// interface CandidateData {
+//   isCandidate: boolean;
+// }
 
 export default function Streaming() {
   const { session_id, team_id } = useParams<keyof StreamingParams>();
@@ -27,6 +32,7 @@ export default function Streaming() {
     isLoading: true,
     error: null,
     isCandidate: null,
+    // isStreaming: false,
   });
 
   // 파라미터 유효성 검사
@@ -38,47 +44,41 @@ export default function Streaming() {
   const { data: streamData, isLoading } = useStreamData(teamId);
   const navigate = useNavigate();
 
-  function handleClickBack() {
-    console.log('back!');
-    navigate(`/elections/${session_id}`);
-  }
-
   useEffect(() => {
     let isSubscribed = true;
 
-    const fetchCandidateStatus = async () => {
+    async function fetchCandidateStatus() {
       try {
-        setState((prev) => ({ ...prev, isLoading: true }));
         const candidateData = await getIsMine(teamId);
-        console.log('Candidate Data:', candidateData);
+
+        if (!isSubscribed) return;
 
         if (
-          isSubscribed &&
           candidateData &&
-          typeof candidateData.isCandidate === 'boolean'
+          typeof candidateData.isCandidate === 'boolean' &&
+          streamData
         ) {
           setState({
             isLoading: false,
             error: null,
             isCandidate: candidateData.isCandidate,
+            // isStreaming: streamData.isStreaming, // 여기서 설정된 값이 갱신되지 않음
           });
-        } else {
-          throw new Error('후보자 데이터가 유효하지 않습니다.');
         }
       } catch (error) {
-        if (isSubscribed) {
-          console.error('Fetch Error:', error);
-          setState({
-            isLoading: false,
-            error:
-              error instanceof Error
-                ? error.message
-                : '후보자 정보를 가져오는데 실패했습니다.',
-            isCandidate: null,
-          });
-        }
+        if (!isSubscribed) return;
+
+        setState({
+          isLoading: false,
+          error:
+            error instanceof Error
+              ? error.message
+              : '후보자 정보를 가져오는데 실패했습니다.',
+          isCandidate: null,
+          // isStreaming: null,
+        });
       }
-    };
+    }
 
     fetchCandidateStatus();
 
@@ -87,9 +87,13 @@ export default function Streaming() {
     };
   }, [teamId]);
 
+  function handleClickBack() {
+    navigate(`/elections/${session_id}`);
+  }
+
   if (isLoading) {
     return (
-      <div>
+      <div className={styles.loading}>
         <LoadingSpinner />
       </div>
     );
@@ -110,22 +114,25 @@ export default function Streaming() {
     );
   }
 
+  console.log('streamData@@@@@@@@@@@@@@@:', streamData);
+  console.log('state@@@@@@@@@@@@@@@:', state);
+
   return (
     <div className={styles.streaming__section}>
       <div className={styles.streaming__back} onClick={handleClickBack}>
         <IconButton name='back' />
       </div>
       <div className={styles.streamingContent}>
-        {state.isLoading ? (
-          <LoadingSpinner />
+        {state.isCandidate ? (
+          <StreamSender streamId={teamId} streamData={streamData} />
+        ) : // streamData가 있고 isStreaming이 true일 때만 StreamReceiver 렌더링
+        streamData?.isStreaming ? (
+          <StreamReceiver streamData={streamData} />
         ) : (
-          <>
-            {state.isCandidate ? (
-              <StreamSender streamId={teamId} streamData={streamData} />
-            ) : (
-              <StreamReceiver streamData={streamData} />
-            )}
-          </>
+          <div className={styles.loadingBox}>
+            <LoadingSpinner />
+            <span>아직 라이브 시작 전이에요😅</span>
+          </div>
         )}
       </div>
       <TabContainer
@@ -134,7 +141,6 @@ export default function Streaming() {
         type='team'
         voteTeamId={teamId}
       />
-      {/* StreamMobileBlock을 조건부 렌더링 */}
       {state.isCandidate && <StreamMobileBlock sessionId={sessionId} />}
     </div>
   );
