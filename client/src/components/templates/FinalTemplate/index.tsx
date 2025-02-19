@@ -8,8 +8,8 @@ import { getFinalResult } from '@/services/election';
 import { useEffect, useState } from 'react';
 import { ElectionResult } from '@/types/final';
 import { useParams } from 'react-router-dom';
-import { VoteResultsResponse } from '@/types/voteSession';
 import { convertUTCToKST } from '@/utils/date';
+import { VoteResultsResponse } from '@/types/voteSession';
 
 function FinalTemplate() {
   const { election_id } = useParams<{ election_id: string }>();
@@ -64,6 +64,7 @@ function FinalTemplate() {
           poster: teamResult.poster,
           candidate_statement: teamResult.candidate_statement,
           teamVotePercent: teamResult.teamVotePercent,
+          isStreaming: false,
         })),
       })),
     };
