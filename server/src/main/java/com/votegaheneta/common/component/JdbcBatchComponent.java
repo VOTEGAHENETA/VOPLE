@@ -44,12 +44,13 @@ public class JdbcBatchComponent {
    */
   @Transactional
   public void pledgeBatchInsert(Long voteTeamId, List<PledgeDto> pledgeDtoList) {
+    if(pledgeDtoList.isEmpty()) return;
     StringBuilder sql = new StringBuilder("INSERT INTO pledge (vote_team_id, content) VALUES ");
     String values = pledgeDtoList.stream()
         .map(pledgeDto -> "(?, ?)")
         .collect(Collectors.joining(", "));
     sql.append(values);
-    Object[] params = new Object[pledgeDtoList.size()];
+    Object[] params = new Object[pledgeDtoList.size() * 2];
     for(int i = 0; i < pledgeDtoList.size(); i++) {
       params[i * 2] = voteTeamId;
       params[i * 2 + 1] = pledgeDtoList.get(i).getContent();
