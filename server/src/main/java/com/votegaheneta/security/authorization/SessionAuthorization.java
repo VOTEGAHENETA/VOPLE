@@ -43,6 +43,6 @@ public class SessionAuthorization {
   }
 
   public boolean authorizeFinalResult(Long sessionId) {
-    return !isSessionActive(sessionId) && isUserInSession(sessionId);
+    return isAdminInSession(sessionId) ||  (!isSessionActive(sessionId) && isUserInSession(sessionId));
   }
 }
