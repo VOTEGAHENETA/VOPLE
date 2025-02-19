@@ -44,7 +44,7 @@ public class JdbcBatchComponent {
    */
   @Transactional
   public void pledgeBatchInsert(Long voteTeamId, List<PledgeDto> pledgeDtoList) {
-    StringBuilder sql = new StringBuilder();
+    StringBuilder sql = new StringBuilder("INSERT INTO pledge (vote_team_id, content) VALUES ");
     String values = pledgeDtoList.stream()
         .map(pledgeDto -> "(?, ?)")
         .collect(Collectors.joining(", "));
