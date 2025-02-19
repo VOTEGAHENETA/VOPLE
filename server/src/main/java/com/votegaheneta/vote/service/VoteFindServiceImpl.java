@@ -56,13 +56,13 @@ public class VoteFindServiceImpl implements VoteFindService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<VoteInfoDto> findSearchCandidates(Long sessionId, String keyword, Pageable pageable) {
+  public List<VoteInfoDto> findSearchCandidates(Long sessionId, Long voteId, String keyword, Pageable pageable) {
     StringBuilder sb = new StringBuilder();
     keyword = keyword.trim();
     for (String word : keyword.split("")) {
       sb.append(searchComponent.searchWordReSetting(word));
     }
-    return customCandidateRepository.findSearchCandidatesBySessionId(sessionId, sb.toString(), pageable);
+    return customCandidateRepository.findSearchCandidatesBySessionId(sessionId, voteId, sb.toString(), pageable);
   }
 
   @Override
@@ -91,7 +91,7 @@ public class VoteFindServiceImpl implements VoteFindService {
     ElectionSession electionSession = electionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션정보가 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
-        ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
+        ? Math.round(((float) electionSession.getVotedVoter() / (electionSession.getWholeVoter()) - 1) * 1000) / 10.0f : 0.0f;
     List<VoteResult> voteResults = voteResultCalculator.calculateVoteResult(sessionId);
     return new SessionResultFindDto(
         electionSession.getSessionName(),
@@ -116,7 +116,7 @@ public class VoteFindServiceImpl implements VoteFindService {
       voteResults = redisVoteResults;
     }
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
-        ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
+        ? Math.round(((float) electionSession.getVotedVoter() / (electionSession.getWholeVoter()) - 1) * 1000) / 10.0f : 0.0f;
     return new SessionFinalResultFindDto(
         ElectionSessionDto.from(electionSession),
         wholeVoterPercent,

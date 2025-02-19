@@ -5,5 +5,5 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface CustomCandidateRepository {
-  List<VoteInfoDto> findSearchCandidatesBySessionId(Long voteId, String regex, Pageable pageable);
+  List<VoteInfoDto> findSearchCandidatesBySessionId(Long sessionId, Long voteId, String regex, Pageable pageable);
 }
