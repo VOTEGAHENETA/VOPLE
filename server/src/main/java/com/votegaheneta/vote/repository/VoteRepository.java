@@ -1,7 +1,5 @@
 package com.votegaheneta.vote.repository;
 
-//import com.votegaheneta.vote.dto.VoteResultProjection;
-
 import com.votegaheneta.vote.dto.VoteResultProjection;
 import com.votegaheneta.vote.entity.Vote;
 import com.votegaheneta.vote.entity.VoteTeam;
@@ -43,4 +41,8 @@ public interface VoteRepository extends JpaRepository<Vote, Long>, CustomVoteRep
 
   @Query("select v from Vote v left join fetch v.voteTeams vt left join fetch vt.stream where v.id = :voteId")
   Optional<Vote> findVoteWithVoteTeamById(Long voteId);
+
+  @Modifying
+  @Query("delete from Vote v where v.id = :voteId")
+  void deleteById(@Param("voteId") Long voteId);
 }

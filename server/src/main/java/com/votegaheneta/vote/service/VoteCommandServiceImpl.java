@@ -45,7 +45,6 @@ public class VoteCommandServiceImpl implements VoteCommandService {
     voteRepository.deleteById(voteId);
   }
 
-
   @Transactional
   public void castVote(VoteCastRequest voteCastRequest, Long sessionId, Long userId) {
      ElectionSession electionSession = electionRepository.findById(sessionId)

@@ -17,3 +17,24 @@
   left: 10px;
   z-index: 10;
 }
+
+.loadingBox{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  gap: 14px;
+
+  > div {
+    min-height: auto;
+  }
+  span {
+    color: #fff;
+    // position: absolute;
+    // left: 50%;
+    // top: 50%;
+    // transform: translate(-50%,-50%);
+  }
+}

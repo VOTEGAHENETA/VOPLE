@@ -31,7 +31,7 @@ public class Vote {
   @JoinColumn(name = "session_id")
   private ElectionSession electionSession;
 
-  @OneToMany(mappedBy = "vote", cascade = CascadeType.PERSIST, orphanRemoval = true)
+  @OneToMany(mappedBy = "vote", cascade = CascadeType.PERSIST)
   @BatchSize(size = 100)
   private List<VoteTeam> voteTeams = new ArrayList<>();
 

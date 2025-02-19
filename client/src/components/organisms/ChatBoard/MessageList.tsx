@@ -39,16 +39,20 @@ export default function MessageList({ messages }: MessageListProps) {
             message.userId === 0 ? styles.systemMessage : ''
           }`}
         >
-          {/* 시간 */}
-
-          <span className={styles.time}>
-            [{formatTime(message.createdTime)}]
-            {/* [{message.createdTime.slice(0, 5)}] */}
-          </span>
-          {/* 닉네임*/}
-          <span className={styles.username} style={{ color: message.color }}>
-            {message.nickname || '알 수 없음'}
-          </span>
+          {/* 시스템 메시지가 아닐 때만 시간과 닉네임 표시 */}
+          {message.nickname.toLowerCase() !== 'system' && (
+            <>
+              <span className={styles.time}>
+                [{formatTime(message.createdTime)}]
+              </span>
+              <span
+                className={styles.username}
+                style={{ color: message.color }}
+              >
+                {message.nickname || '알 수 없음'}
+              </span>
+            </>
+          )}
           {/* 내용 */}
           <span className={styles.content}>{message.text || ''}</span>
         </div>
