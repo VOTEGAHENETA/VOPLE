@@ -64,8 +64,6 @@ export default function Streaming() {
             isCandidate: candidateData.isCandidate,
             // isStreaming: streamData.isStreaming, // 여기서 설정된 값이 갱신되지 않음
           });
-        } else {
-          throw new Error('후보자 데이터가 유효하지 않습니다.');
         }
       } catch (error) {
         if (!isSubscribed) return;
@@ -90,11 +88,10 @@ export default function Streaming() {
   }, [teamId]);
 
   function handleClickBack() {
-    console.log('back!');
     navigate(`/elections/${session_id}`);
   }
 
-  if (isLoading || state.isLoading) {
+  if (isLoading) {
     return (
       <div className={styles.loading}>
         <LoadingSpinner />
@@ -117,7 +114,9 @@ export default function Streaming() {
     );
   }
 
-  console.log('streamData?.isStreaming ::: ', streamData?.isStreaming);
+  console.log('streamData@@@@@@@@@@@@@@@:', streamData);
+  console.log('state@@@@@@@@@@@@@@@:', state);
+
   return (
     <div className={styles.streaming__section}>
       <div className={styles.streaming__back} onClick={handleClickBack}>
