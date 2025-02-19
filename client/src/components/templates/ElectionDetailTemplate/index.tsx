@@ -41,13 +41,7 @@ function ElectionDetailTemplate() {
     endDate: '',
     endTime: '',
   });
-  const [voteState, setVoteState] = useState<TVoteEdit[]>([
-    {
-      voteId: 0,
-      sessionName: '',
-      voteName: '',
-    },
-  ]);
+  const [voteState, setVoteState] = useState<TVoteEdit[]>([]);
   const [isModify, setIsModify] = useState<boolean>(true);
   const originalState = useRef<{
     session: TSession;

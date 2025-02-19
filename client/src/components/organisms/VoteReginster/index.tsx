@@ -22,8 +22,10 @@ function VoteReginster({ sessionId, sessionName, votes }: Props) {
   let lastId = 0;
 
   useEffect(() => {
+    if (votes.length == 0) return;
+    console.log(votes);
     setVoteList(votes);
-    lastId = voteList[voteList.length - 1].voteId + 1;
+    lastId = votes[votes.length - 1].voteId + 1;
   }, [votes]);
 
   function handleChangeVoteName(e: React.ChangeEvent<HTMLInputElement>) {
