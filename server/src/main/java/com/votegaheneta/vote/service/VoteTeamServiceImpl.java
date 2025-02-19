@@ -108,7 +108,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
   @Transactional
   @Override
   public void updateVoteTeamInfo(VoteTeamInfoRequest request, MultipartFile file) {
-    // voteTeamId 받기
     VoteTeam voteTeam = voteTeamRepository.findById(request.getVoteTeam().getVoteTeamId())
         .orElseThrow(() -> new IllegalArgumentException("후보를 찾을 수 없습니다."));
     if (file != null && !file.isEmpty()) {
@@ -122,7 +121,6 @@ public class VoteTeamServiceImpl implements VoteTeamService {
     // 이미 존재하는 공약들 다 지우고 새롭게 다시 넣음
     pledgeRepository.deleteAllByVoteTeamId(voteTeam.getId());
     jdbcBatchComponent.pledgeBatchInsert(voteTeam.getId(), List.of(request.getPledges()));
-//    Arrays.stream(request.getPledges()).map(PledgeDto::toEntity).forEach(voteTeam::addPledge);
   }
 
   private Candidate getCandidate(Long sessionId, Long userId) {

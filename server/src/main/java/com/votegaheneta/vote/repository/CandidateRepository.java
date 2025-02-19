@@ -30,4 +30,9 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
   @Modifying
   @Query("DELETE FROM Candidate c WHERE c.voteTeam in :voteTeams")
   void deleteAllCandidateByVoteTeam(List<VoteTeam> voteTeams);
+
+  @Query("select c from Candidate c join fetch c.user u join fetch c.voteTeam vt join fetch vt.vote v where v.id = :voteId")
+  List<Candidate> findCandidateAndUserAndVoteTeamByVoteId(@Param("voteId") Long voteId);
+
 }
+

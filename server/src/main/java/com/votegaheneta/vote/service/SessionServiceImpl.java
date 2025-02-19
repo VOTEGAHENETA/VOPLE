@@ -82,6 +82,7 @@ public class SessionServiceImpl implements SessionService {
       ImageIO.write(qrCodeImage, "png", qrCodeFile);
       String relativePath = mediaUrl + "/uploads" + "/qrcode/" + fileName;
       electionSession.setQrCode(fileStorageComponent.convertToRelativePath(relativePath));
+      electionSession.setWholeVoter(electionSession.getWholeVoter() + 1);
       electionRepository.save(electionSession);
     } catch (Exception e) {
       throw new IllegalArgumentException("QR코드 생성에 실패했습니다.", e);
@@ -109,7 +110,7 @@ public class SessionServiceImpl implements SessionService {
     SessionUserInfo sessionUserInfo = sessionUserInfoRepository.findBySessionIdAndUserId(sessionId, userId)
         .orElseThrow(() -> new IllegalArgumentException("투표 회원의 정보를 찾을 수 없습니다."));
     float wholeVoterPercent = electionSession.getVotedVoter() > 0
-        ? Math.round(((float) electionSession.getVotedVoter() / electionSession.getWholeVoter()) * 1000) / 10.0f : 0.0f;
+        ? Math.round(((float) electionSession.getVotedVoter() / (electionSession.getWholeVoter() - 1)) * 1000) / 10.0f : 0.0f;
     return new SessionInitialInfoDto(
         electionSession.getId(),
         electionSession.getSessionName(),
