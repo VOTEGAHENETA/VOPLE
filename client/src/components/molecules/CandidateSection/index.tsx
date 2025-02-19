@@ -21,6 +21,7 @@ function CandidateSection({ team, onClick, sessionId }: Props) {
 
   return (
     <div className={styles.candidate} onClick={onClick}>
+      <em className={styles[`live-${team.isStreaming}`]}>LIVE</em>
       <div className={styles['candidate-poster']}>
         <Poster size='xs' src={team.poster} />
       </div>

@@ -38,6 +38,7 @@ export interface TeamResult {
   poster: string;
   candidate_statement: string; // 언더스코어 표기 유지
   teamVotePercent: number;
+  isStreaming: boolean;
 }
 
 export interface VoteResult {
