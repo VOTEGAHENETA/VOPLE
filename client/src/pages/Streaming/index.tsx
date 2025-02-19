@@ -19,12 +19,7 @@ interface StreamingState {
   isLoading: boolean;
   error: string | null;
   isCandidate: boolean | null;
-  // isStreaming: boolean | null;
 }
-
-// interface CandidateData {
-//   isCandidate: boolean;
-// }
 
 export default function Streaming() {
   const { session_id, team_id } = useParams<keyof StreamingParams>();
@@ -32,7 +27,6 @@ export default function Streaming() {
     isLoading: true,
     error: null,
     isCandidate: null,
-    // isStreaming: false,
   });
 
   // 파라미터 유효성 검사
@@ -52,18 +46,14 @@ export default function Streaming() {
         const candidateData = await getIsMine(teamId);
 
         if (!isSubscribed) return;
-
-        if (
-          candidateData &&
-          typeof candidateData.isCandidate === 'boolean' &&
-          streamData
-        ) {
-          setState({
-            isLoading: false,
-            error: null,
-            isCandidate: candidateData.isCandidate,
-            // isStreaming: streamData.isStreaming, // 여기서 설정된 값이 갱신되지 않음
-          });
+        if (candidateData) {
+          if (candidateData.isCandidate)
+            setState((prev) => ({ ...prev, isCandidate: true }));
+        }
+        if (streamData) {
+          if (streamData.isStreaming) {
+            setState((prev) => ({ ...prev, isLoading: false }));
+          }
         }
       } catch (error) {
         if (!isSubscribed) return;
@@ -75,7 +65,6 @@ export default function Streaming() {
               ? error.message
               : '후보자 정보를 가져오는데 실패했습니다.',
           isCandidate: null,
-          // isStreaming: null,
         });
       }
     }
@@ -113,9 +102,6 @@ export default function Streaming() {
       </div>
     );
   }
-
-  console.log('streamData@@@@@@@@@@@@@@@:', streamData);
-  console.log('state@@@@@@@@@@@@@@@:', state);
 
   return (
     <div className={styles.streaming__section}>

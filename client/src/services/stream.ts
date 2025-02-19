@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import { IStream } from '@/types/api';
 import instance from './api';
 
@@ -14,10 +13,6 @@ export const sendStreamData = async (
 export const getStreamData = async (streamId: number): Promise<IStream> => {
   return await instance.get(`/live/${streamId}`);
 };
-
-// export const getIsMine = async (streamId: number): Promise<IsCandidate> => {
-//   return await instance.get(`/live/${streamId}/status`);
-// };
 
 export interface IsCandidate {
   isCandidate: boolean;
