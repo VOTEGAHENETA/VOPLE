@@ -5,7 +5,7 @@
 ### 📋 서비스 개요
 
 - 중고등학생 실시간 선거 플랫폼
-- RTMP, HLS, WebSocket을 사용하여 **선거를 온라인으로 진행행**할 수 있도록 돕는
+- RTMP, HLS, WebSocket을 사용하여 **선거를 온라인으로 진행**할 수 있도록 돕는
   서비스입니다.
 - **프로젝트 기간:** 2025/1/06 ~ 2025/2/21 (35일간)
 
@@ -75,13 +75,13 @@
 
 ### 🖼️아키텍쳐 설계
 
-![아키텍쳐 설계](/images/아키텍쳐.png)
+![아키텍쳐 설계](/uploads/74610721fc49b01d44153d3f6c6db0a0/image.png)
 
 <br>
 
 ### 💾데이터베이스 모델링(ERD)
 
-![ERD](/images/ERD.png)
+![ERD](/uploads/967fde4d739fa84721702003d7870c3e/B102_ERD.png)
 
 <br>
 
@@ -292,7 +292,7 @@ server
 
 ### 2️⃣ 후보자 지정 기능
 
-- **상태 관리리**
+- **상태 관리**
 
   - `useState`를 활용하여 후보자 목록(`candidateList`)과 유저 목록(`userList`)을
     상태로 관리.
@@ -314,27 +314,71 @@ server
 
 <br>
 
-## ✅ 선거 메인 화면 - 후보자 및 투표 정보 표시 (담당: 강성엽)
 
-### 1️⃣ 후보자 목록
+**Back-End**
+- 개발환경: Spring Boot + JPA + Spring Security
+- 데이터: MySQL, Redis
+- RTMP 변환: FFmpeg
 
-- **상태 관리**
+## ✅ 로그인 OAuth (담당: 최효재)
 
-  - `useElectionStore`(Zustand)를 활용하여 선거 정보를 전역 상태로 관리.
-  - `useState`를 활용하여 후보 리스트 슬라이드 및 투표율 애니메이션을 제어.
+## ✅ 선거 및 투표 (담당: 이동영, 최효재)
 
-- **후보자 리스트**
+## ✅ 채팅 (담당: 최효재)
 
-  - `MainCandidateList` 컴포넌트를 활용하여 선거별 후보자 목록을 표시.
-  - 후보 순서를 랜덤으로 섞어 시각적 다양성을 제공.
-  - 무한 슬라이드 형태로 후보를 표시하며, 터치 이벤트를 통해 이동 가능.
+## ✅ 라이브 스트리밍 (담당: 황규현)
+### 1️⃣ 스트림 송신자 (방송 하는 사람)
+- **WebSocket**
+  - Spring boot의 `WebSocketConfigurer`를 implement하여 웹소켓 수신.
+  - `WebSocket`을 통해 일정 주기(1초)로 녹화된 데이터를 수신.
 
-### 2️⃣ 투표 진행 상황
+- **FFmpeg**
+  - Spring boot의 `BinaryWebSocketHandler`를 implement하여 소켓 수신 및 handling.
+  - `FFmpegSession`을 별도로 정의하고 `ConcurrentHashMap`을 사용하여 여러 방송 세션을 스트림 키 기준으로 관리.
+  - `FFmpeg`를 이용하여 스트림을 RTMP로 변환.
 
-- **투표율 섹션**
+- **RTMP**
+  - `Process`와 `OutputStream`을 통해 RTMP 프로토콜을 사용하여 `nginx-rtmp` 서버에 전송.
 
-  - `Turnout` 컴포넌트를 활용하여 현재 투표율과 진행 중인 선거를 표시.
-  - 2초마다 선거 정보를 변경하는 애니메이션 효과 적용.
+### 2️⃣ 스트림 수신자 (방송 보는 사람)
+
+- **NGINX-RTMP**
+  - Spring Boot로부터 전송받은 RTMP를 HLS로 변환.
+
+- **Hls**
+  - `/opt/data/hls` 폴더에 각 라이브 스트리밍별로 `{streamkey}.m3u8` 파일과 `{streamkey}-{stream}.ts` 파일들을 저장.
+  - 브라우저에서 `https://{host}/hls/{streamkey}.m3u8`로 요청했을 때 스트리밍 영상 제공.
+
+<br>
+
+**Infra**
+- 웹서버: NginX
+- 스트리밍: Nginx-rtmp
+- 실행환경: Docker, Docker-compose
+- CI/CD: Jenkins
+- 배포: AWS EC2
+
+## ✅ 배포 인프라 구축 (담당: 황규현)
+### 1️⃣ 웹서버
+- **NGINX**
+  - `HTTPS`를 적용하고 여 사이트의 보안 향상.
+  - `Reverse Proxy`을 통해 브라우저에서 오는 모든 HTTPS와 WSS요청을 server와 nginx-rtmp 컨테이너로 프록시.
+
+- **NGINX-RTMP**
+  - Spring Boot로부터 전송받은 RTMP를 HLS로 변환.
+
+### 2️⃣ 배포 환경 구축과 CI/CD
+
+- **Docker, Docker-compose**
+  - `docker`를 이용하여 실행환경을 컨테이너화.
+  - 배포에 사용되는 컨테이너 6개를 `docker-compose`로 묶어서 배포.
+
+- **Jenkins**
+  - Docker에서 Jenkins image를 pull 받아서 실행
+  - 파이프라인 스크립트를 작성하여 배포
+
+- **AWS EC2**
+  - 제공받은 AWS EC2 사용
 
 <br>
 
