@@ -32,7 +32,7 @@ public class SessionDto {
     electionSession.setEntranceAnswer(entranceAnswer);
     electionSession.setVoteStartTime(startTime);
     electionSession.setVoteEndTime(endTime);
-    electionSession.setWholeVoter(wholeVoter);
+    electionSession.setWholeVoter(wholeVoter + 1);
   }
 
   public static SessionDto fromEntity(ElectionSession electionSession) {
