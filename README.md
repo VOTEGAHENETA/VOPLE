@@ -29,7 +29,7 @@
 | 🟥강성엽(팀원) | **Frontend**<br>- figma 디자인<br>- client 프로젝트 구조 설정<br>- WebSocket과 hls.js를 활용한 라이브 스트리밍 구현<br>- 선거 및 투표 만들기 구현 <br>- 선거 메인 화면 구현 <br>- 유틸 기능 구현 (글자수 처리, 날짜 데이터 처리 등)<br> |
 | 🟨김선명(팀원) | **Frontend**<br>- figma 디자인<br>- 페이지 마크업 및 스타일링<br>- axios, zustand, react-qeury를 활용한 데이터 바인딩 <br> - 투표하기 Session 구현 <br> - Web Socket을 활용한 실시간 투표 정보 제공<br>                                 |
 | 🟩이동영(팀원) | **Backend**<br>- figma 디자인<br>                                                                                                                                                                                                       |
-| 🟦황규현(팀원) | **Backend**<br>- figma 디자인 <br>**Infra**<br>                                                                                                                                                                                         |
+| 🟦황규현(팀원) | **Backend**<br>- 스트리밍 API 개발<br>- WebSocket으로 스트림 수신<br>- 스트림을 FFmpeg로 RTMP 변환<br> <br>**Infra**<br>- 프로젝트 전체 구조 설정<br>- Docker, Docker-compose로 프로젝트 실행과 배포 환경 구축<br>- Jenkins로 CI/CD 구축<br>- RTMP-HLS 스트리밍 환경 구축 |
 | 🟪황연주(팀원) | **Frontend**<br>- figma 디자인 <br>                                                                                                                                                                                                     |
 
 <br>
