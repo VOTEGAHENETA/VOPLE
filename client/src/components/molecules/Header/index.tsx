@@ -9,7 +9,11 @@ function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [isHidden, setIsHidden] = useState(false);
-  const onlyLabel = [/^\/elections\/\d+$/, /^\/elections\/\d+\/result$/];
+  const onlyLabel = [
+    /^\/elections\/\d+$/,
+    /^\/elections\/\d+\/result$/,
+    /^\/elections\/\d+\/final$/,
+  ];
 
   useEffect(() => {
     setIsHidden(onlyLabel.some((label) => label.test(pathname)));
