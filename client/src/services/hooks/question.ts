@@ -23,7 +23,7 @@ export const useQuestionPost = (
     mutationFn: ({ sessionId, answer }: QuestionProps) =>
       postQuestion(sessionId, answer),
     onSuccess: (data) => {
-      if (!data.electionFull) {
+      if (data.electionFull) {
         setErrMsg('투표할 수 있는 정원이 꽉 찼어요 ㅠㅠ');
       } else {
         if (!data.answerCorrect) {
