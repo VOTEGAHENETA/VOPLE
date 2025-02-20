@@ -61,28 +61,28 @@
 | Jenkins | 9000:8080 |
 
 ## 📌환경 변수 - 설정 및 커스터마이징
-### 카카오 OAuth 설정
+### 1. 카카오 OAuth 설정하기
 - kakao developers에서 API 키 받아오고, client id와 secret을 추가
 - redirect url 허용 ip에 본인의 컴퓨터 ip 추가
 
-### ./exec/config에 존재하는 설정 파일을 프로젝트에 override - 모든 설정은 http://localhost 기준입니다.
+### 2. ./exec/config에 존재하는 설정 파일을 프로젝트 루트 폴더에 덮어쓰기 (기존 도메인은 i12b102.p.ssafy.io) - exec의 설정은 http://localhost 기준입니다.
 
-#### `./server/src/resources/application-prod.yml` 생성
+#### `./server/src/resources/application-prod.yml` Spring Boot 설정 파일
 - config 폴더 아래에 존재함
 - 36, 38, 48, 67, 68번째 줄의 URL을 도메인에 맞게 수정
 - 46, 47번째줄의 kakao client id와 secret을 kakao developers에서 받아온 것들로 변경
 - Jenkins를 사용할 경우 이 파일은 Jenkins가 생성합니다
 
-#### `./.env` docker-compose.yml에 적용할 환경 변수 파일 생성
+#### `./.env` docker-compose.yml에 적용할 환경 변수 파일
 - config 폴더 아래에 존재함
 - 추가 수정 필요 X
 - Jenkins를 사용할 경우 이 파일은 Jenkins가 생성합니다
 
-#### `./client/Dockerfile` client의 Dockerfile을 override: 도메인 변경
+#### `./client/Dockerfile` React에 적용하는 환경 변수 파일
 - config 폴더 아래에 존재함
 - 7번째 줄 env의 URL을 도메인에 맞게 수정
 
-#### `./nginx/default.conf`
+#### `./nginx/default.conf` NginX 설정 파일
 - config 폴더 아래에 존재함
 - http를 사용할 경우 exec 폴더 아래의 default.conf를 그대로 사용
 - https를 사용할 경우 30번째, 37번째 줄의 server_name과 39, 40번째 줄의 certificate key 정보를 해당 서비스 도메인으로 변경 및 파일명을 `default-https.conf`에서 `default.conf`로 변경
@@ -90,7 +90,7 @@
 ## 4️⃣설치 및 배포 절차
 
 ### AWS EC2 설정
-- Docker 및 Docker-compose 설치 (Docker desktop 설치해도 무방)
+#### 1. Docker 및 Docker-compose 설치 (Docker desktop 설치해도 무방)
 ```
 # Docker 설치
 # Add Docker's official GPG key:
@@ -116,7 +116,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker compose --version
 ``` 
 
-### Git pull 및 서비스 실행 (Jenkins 제외)
+#### 2. Git pull 및 서비스 실행 (Jenkins 제외)
 ```        
 git clone https://lab.ssafy.com/s12-webmobile1-sub1/S12P11B102.git
         
