@@ -28,7 +28,7 @@
 | 🟧최효재(팀장) | **Backend**<br>- ERD, 데이터베이스 관리<br>                                                                                                                                                                                             |
 | 🟥강성엽(팀원) | **Frontend**<br>- figma 디자인<br>- client 프로젝트 구조 설정<br>- WebSocket과 hls.js를 활용한 라이브 스트리밍 구현<br>- 선거 및 투표 만들기 구현 <br>- 선거 메인 화면 구현 <br>- 유틸 기능 구현 (글자수 처리, 날짜 데이터 처리 등)<br> |
 | 🟨김선명(팀원) | **Frontend**<br>- figma 디자인<br>- 페이지 마크업 및 스타일링<br>- axios, zustand, react-qeury를 활용한 데이터 바인딩 <br> - 투표하기 Session 구현 <br> - Web Socket을 활용한 실시간 투표 정보 제공<br>                                 |
-| 🟩이동영(팀원) | **Backend**<br>- figma 디자인<br>                                                                                                                                                                                                       |
+| 🟩이동영(팀원) | **Backend**<br>- 투표 API 개발<br>- 선거 API 개발<br>- 조회 로직 redis 캐싱<br> - 후보자 초성 검색 구현<br>- JPA 쿼리 최적화                                                                                                                                                                                                           |
 | 🟦황규현(팀원) | **Backend**<br>- 스트리밍 API 개발<br>- WebSocket으로 스트림 수신<br>- 스트림을 FFmpeg로 RTMP 변환<br> <br>**Infra**<br>- 프로젝트 전체 구조 설정<br>- Docker, Docker-compose로 프로젝트 실행과 배포 환경 구축<br>- Jenkins로 CI/CD 구축<br>- RTMP-HLS 스트리밍 환경 구축 |
 | 🟪황연주(팀원) | **Frontend**<br>- figma 디자인 <br>                                                                                                                                                                                                     |
 
@@ -323,7 +323,23 @@ server
 ## ✅ 로그인 OAuth (담당: 최효재)
 
 ## ✅ 선거 및 투표 (담당: 이동영, 최효재)
-
+- **투표 WebSocket**
+  - 투표를 진행하는 POST 요청에서 투표 데이터가 DB에 저장된 후, `SimpMessagingTemplate`을 통해 `WebSocket`을 구독 중인 클라이언트트들에게 실시간으로 투표 결과를 전달
+  
+- **redis 캐싱**
+  - 최종 투표 결과는 redis에 `session:vote:result:"+sessionId` 이 keyname으로 저장되고 결과 요청시 redis에서 먼저 조회 후 결과를 반환 
+  
+- **후보자 초성 검색**
+  - 후보자 검색 api 요청시 초성을 정규표현식으로 변환 ex) ㄱ->[가-깋] QueryDSL을 사용해서 현재 투표의 사용자를 검색 후 `Pattern` 객체를 통해 정규식 패턴을 생성 후 `stream`을 통해 pattern 필터링과 페이징 처리 후 불변 리스트로 결과를 반환
+  
+- **선거 세션 QR코드 생성**
+  - zxing라이브러리를 사용해 `MultiFormatWriter`로 QR코드를 생성 `MatrixToImageWriter`를 통해 QR코드를 이미지로 변환 
+  
+- **batch insert**
+  - 후보자, 공약 데이터의 대량 삽입 시 JdbcTemplate의 batchUpdate를 활용하여 쿼리 성능 최적화
+  
+- **poster file 저장**
+  - `@RequestPart`로 `MultipartFile`과 `VoteTeamInfoRequest`를 따로 받아서 "/app/uploads" 이 경로로 ec2 클라우드에 저장 db에는 https://{host}/uploads/type/uuid_파일명으로 저장
 ## ✅ 채팅 (담당: 최효재)
 
 ## ✅ 라이브 스트리밍 (담당: 황규현)
@@ -426,8 +442,14 @@ server
 
 
 **🟩 이동영**
-
-- 
+- 이번 프로젝트에서는 Spring, JPA를 적용해서 REST API를 구현했습니다. JPA가
+  기존의 MyBatis와 다른점이 많아 배우고 적용하는게 새롭고 재밌었습니다. 
+- JPA에서 N + 1 문제가 많이 발생해서 이걸 최적화 하는데 시간을 많이 투자했습니다.
+- 더욱 빠른 요청 처리를 위해 redis 캐싱, insert batch 쿼리를 최적화 작업을 많이 고민했던것 같습니다.
+- 다양한 전공의 사람들과 함께해서 많은 인사이트를 얻을 수 있었습니다.
+- 문제가 발생했을 때 팀원들과 함께 해결방안을 찾아가는것이 특히 값진 경험이었습니다.
+- 우리팀 모두 열심히 참여했고, 잘 해주어서 너무 좋은 결과를 만들어낸것 같아서 만족하는 프로젝트였습니다. 
+- 우리팀원 모두들 고생 많으셨습니다.
 
 
 **🟦 황규현**
