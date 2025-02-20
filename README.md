@@ -339,7 +339,7 @@ server
   - 후보자, 공약 데이터의 대량 삽입 시 JdbcTemplate의 batchUpdate를 활용하여 쿼리 성능 최적화
   
 - **poster file 저장**
-  - `@RequestPart`로 `MultipartFile`과 `VoteTeamInfoRequest`를 따로 받아서 "/app/uploads" 이 경로로 ec2 클라우드에 저장 db에는 https://{host}/uploads/type/uuid_파일명으로 저장
+  - `@RequestPart`로 `MultipartFile`과 `VoteTeamInfoRequest`를 따로 받아서 "/app/uploads" 이 경로로 ec2 클라우드에 저장 db에는 `https://{host}/uploads/type/uuid_파일명`으로 저장
 ## ✅ 채팅 (담당: 최효재)
 
 ## ✅ 라이브 스트리밍 (담당: 황규현)
