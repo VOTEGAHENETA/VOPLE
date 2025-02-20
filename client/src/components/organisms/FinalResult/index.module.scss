@@ -1,41 +1,42 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    // max-width: 362px;
-    // min-height: 372px;
-    width: 76%;
-    padding: 50px 20px 30px 20px;
-    gap: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // max-width: 362px;
+  // min-height: 372px;
+  width: 76%;
+  padding: 50px 20px 30px 20px;
+  gap: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 .celebrate {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .userInfo {
-    display: flex;
-    flex-wrap: nowrap; // 1. 항목 줄바꿈 방지
-    overflow-x: auto;  // 2. 가로 스크롤 활성화
-    width: 100%;       // 3. 컨테이너 전체 너비 사용
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap; // 1. 항목 줄바꿈 방지
+  overflow-x: auto; // 2. 가로 스크롤 활성화
+  width: 100%; // 3. 컨테이너 전체 너비 사용
+  gap: 20px;
 }
 
-.candidate { 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+.candidate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 .poster > .poster {
-    border-radius: 10px;
+  border-radius: 10px;
 }
