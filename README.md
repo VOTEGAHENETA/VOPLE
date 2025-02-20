@@ -324,7 +324,7 @@ server
 
 ## ✅ 선거 및 투표 (담당: 이동영, 최효재)
 - **투표 WebSocket**
-  - 투표를 진행하는 POST 요청에서 투표 데이터가 DB에 저장된 후, `SimpMessagingTemplate`을 통해 `WebSocket`을 구독 중인 클라이언트트들에게 실시간으로 투표 결과를 전달
+  - 투표를 진행하는 POST 요청에서 투표 데이터가 DB에 저장된 후, `SimpMessagingTemplate`을 통해 `WebSocket`을 구독 중인 클라이언트들에게 실시간으로 투표 결과를 전달
   
 - **redis 캐싱**
   - 최종 투표 결과는 redis에 `session:vote:result:"+sessionId` 이 keyname으로 저장되고 결과 요청시 redis에서 먼저 조회 후 결과를 반환 
