@@ -65,111 +65,27 @@
 - kakao developers에서 API 키 받아오고, client id와 secret을 추가
 - redirect url 허용 ip에 본인의 컴퓨터 ip 추가
 
-### `./server/src/resources/application-prod.yml` 생성
-- EC2 프로덕션에서는 Jenkins credential 사용 중
-```
-spring:
-  config:
-    activate:
-      on-profile: prod
-      
-  datasource:
-    url: jdbc:mysql://db:3306/vople?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+### ./exec/config에 존재하는 설정 파일을 프로젝트에 override - 모든 설정은 http://localhost 기준입니다.
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
-    defer-datasource-initialization: true
+#### `./server/src/resources/application-prod.yml` 생성
+- config 폴더 아래에 존재함
+- 36, 38, 48, 67, 68번째 줄의 URL을 도메인에 맞게 수정
+- 46, 47번째줄의 kakao client id와 secret을 kakao developers에서 받아온 것들로 변경
+- Jenkins를 사용할 경우 이 파일은 Jenkins가 생성합니다
 
-  sql:
-    init:
-      mode: never
+#### `./.env` docker-compose.yml에 적용할 환경 변수 파일 생성
+- config 폴더 아래에 존재함
+- 추가 수정 필요 X
+- Jenkins를 사용할 경우 이 파일은 Jenkins가 생성합니다
 
-  data:
-    redis:
-      host: redis
-      port: 6379
-    rtmp:
-      host: rtmp://localhost:1935/live/
-    hls:
-      host-prefix: http://localhost:8050/hls/
-      host-postfix: .m3u8
-      
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            client-id: {your_client_id}
-            client-secret: {your-client-secret}
-            redirect-uri: http://localhost/login/oauth2/code/kakao
-            authorization-grant-type: authorization_code
-            client-authentication-method: client_secret_post
-            scope:
-              - profile_nickname
-            client-name: kakao
+#### `./client/Dockerfile` client의 Dockerfile을 override: 도메인 변경
+- config 폴더 아래에 존재함
+- 7번째 줄 env의 URL을 도메인에 맞게 수정
 
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
-springdoc:
-  swagger-ui:
-    path: /index.html
-  api-docs:
-    path: /v3/api-docs
-
-base_url: http://localhost
-kakao_login_url: http://localhost
-```
-### `./.env` docker-compose.yml에 적용할 환경 변수 파일 생성
-```
-DB_HOST=db
-DB_PORT=3306
-DB_NAME=vople
-DB_USER=root
-DB_PASSWORD=1234
-SPRING_PROFILES_ACTIVE=prod
-SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/vople?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-```
-
-### `./client/Dockerfile` client의 Dockerfile을 override: 도메인 변경
-```
-FROM node:20.18.1-alpine AS build
-WORKDIR /app
-
-# 소스 복사 및 빌드
-COPY . .
-
-RUN printf "VITE_PUBLIC_API_URL=http://localhost/api\nVITE_PUBLIC_OAUTH_URL=http://localhost/oauth2\nVITE_PUBLIC_URL=http://localhost\nVITE_PUBLIC_SOCKET_URL=ws://localhost\n" > .env
-
-RUN yarn install
-RUN yarn build
-
-FROM nginx:alpine
-COPY --from=build /app/dist /opt/app
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### `./nginx/default.conf`
-- http를 사용할 경우 `./nginx/default.conf`의 31번째 ~ 43번째 줄 삭제
-- https를 사용할 경우 30번째, 37번째 줄의 server_name과 39, 40번째 줄의 certificate key 정보를 해당 서비스 도메인으로 변경
+#### `./nginx/default.conf`
+- config 폴더 아래에 존재함
+- http를 사용할 경우 exec 폴더 아래의 default.conf를 그대로 사용
+- https를 사용할 경우 30번째, 37번째 줄의 server_name과 39, 40번째 줄의 certificate key 정보를 해당 서비스 도메인으로 변경 및 파일명을 `default-https.conf`에서 `default.conf`로 변경
 
 ## 4️⃣설치 및 배포 절차
 

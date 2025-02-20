@@ -39,7 +39,7 @@ public class SessionAuthorization {
   }
 
   public boolean authorizeCurrentVoteResult(Long sessionId) {
-    return isSessionActive(sessionId) && (isAdminInSession(sessionId) || (isUserInSession(sessionId) && hasUserVoted(sessionId)));
+    return isAdminInSession(sessionId) || (isSessionActive(sessionId) && isUserInSession(sessionId) && hasUserVoted(sessionId));
   }
 
   public boolean authorizeFinalResult(Long sessionId) {
