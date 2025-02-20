@@ -38,6 +38,6 @@ public class SessionDto {
   public static SessionDto fromEntity(ElectionSession electionSession) {
     return new SessionDto(electionSession.getId(), electionSession.getHostUser().getId(), electionSession.getSessionName(),
         electionSession.getEntranceQuestion(), electionSession.getEntranceAnswer(), electionSession.getVoteStartTime(),
-        electionSession.getVoteEndTime(), electionSession.getWholeVoter());
+        electionSession.getVoteEndTime(), electionSession.getWholeVoter() - 1);
   }
 }
