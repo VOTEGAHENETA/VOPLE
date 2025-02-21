@@ -1,4 +1,4 @@
-![logo](/images/Oink-logo.png) // 나중에 수정
+![logo](/uploads/f77501166f64cf98f13f9a16ee70e144/image.png)
 
 # 1. 프로젝트 개요
 
@@ -51,6 +51,9 @@
 ![Spring](https://img.shields.io/badge/spring_boot-6DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white)
 ![Spring Security](https://img.shields.io/badge/spring_security-6DB33F.svg?style=for-the-badge&logo=springsecurity&logoColor=white)
 ![Spring Data JPA](https://img.shields.io/badge/spring_data_jpa-6DB33F.svg?style=for-the-badge&logo=springdatajpa&logoColor=white)
+![Spring Session](https://img.shields.io/badge/spring_session-6DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![OAuth2](https://img.shields.io/badge/oauth2-000000.svg?style=for-the-badge&logo=oauth2&logoColor=white)
+![QueryDSL](https://img.shields.io/badge/QueryDSL-0089CF?style=for-the-badge&logo=querydsl&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Redis](https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white)
 ![FFmpeg](https://img.shields.io/badge/ffmpeg-007808?style=for-the-badge&logo=ffmpeg&logoColor=white)
@@ -86,19 +89,19 @@
 
 ### 🎨화면 정의서(Figma)
 
-![Figma_화면정의서](https://www.figma.com/design/vjvnTeJaKQ8GiHWMzViQQP/B102-%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9C?node-id=0-1&p=f&t=NiuQAB3cPmeqwIld-0)
+[Figma_화면정의서](https://www.figma.com/design/vjvnTeJaKQ8GiHWMzViQQP/B102-%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9C?node-id=0-1&p=f&t=NiuQAB3cPmeqwIld-0)
 
 <br>
 
 ### 📝기능명세서
 
-![노션_기능명세서](https://www.notion.so/46b7bdd2acd247c8b35a52599ee7cb6c?v=17ef92b0a86881e1a7a3000ca9079ee2&pvs=4)
+[Notion_기능명세서](https://www.notion.so/46b7bdd2acd247c8b35a52599ee7cb6c?v=17ef92b0a86881e1a7a3000ca9079ee2&pvs=4)
 
 <br>
 
 ### 📄API명세서
 
-![노션_API명세서](https://www.notion.so/c2fde4bab51e451385f94d83005db51a?v=182f92b0a86881388936000cb5a76f34&pvs=4)
+[Notion_API명세서](https://www.notion.so/c2fde4bab51e451385f94d83005db51a?v=182f92b0a86881388936000cb5a76f34&pvs=4)
 
 <br>
 
@@ -480,7 +483,7 @@ server
 - CI/CD: Jenkins
 - 배포: AWS EC2
 
-## ✅ 배포 인프라 구축 (담당: 황규현)
+## ✅ 배포 환경 구축 (담당: 황규현)
 ### 1️⃣ 웹서버
 - **NGINX**
   - `HTTPS`를 적용하고 여 사이트의 보안 향상.
