@@ -24,7 +24,7 @@
 ### 👭팀원 정보 및 업무 분담 내역
 | 이름           | 역할 및 구현 기능                                                                                                                                                                                                                       |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🟧최효재(팀장) | **Backend**<br>- ERD 설계<br><br>- 선거 API 개발<br><br>- 채팅 기능 개발<br><br>- 사용자 인증 관리<br><br>- API 메서드 보안 적용<br>                                                                                                                                                                                             |
+| 🟧최효재(팀장) | **Backend**<br>- ERD 설계<br>- 선거 API 개발<br>- 채팅 기능 개발<br>- 사용자 인증 관리<br>- API 메서드 보안 적용<br>                                                                                                                                                                                             |
 | 🟩이동영(팀원) | **Backend**<br>- 투표 API 개발<br>- 선거 API 개발<br>- 조회 로직 redis 캐싱<br> - 후보자 초성 검색 구현<br>- JPA 쿼리 최적화                                                                                                                                                                                                           |
 | 🟦황규현(팀원) | **Backend**<br>- 스트리밍 API 개발<br>- WebSocket으로 스트림 수신<br>- 스트림을 FFmpeg로 RTMP 변환<br> <br>**Infra**<br>- 프로젝트 전체 구조 설정<br>- Docker, Docker-compose로 프로젝트 실행과 배포 환경 구축<br>- Jenkins로 CI/CD 구축<br>- RTMP-HLS 스트리밍 환경 구축 |
 | 🟥강성엽(팀원) | **Frontend**<br>- figma 디자인<br>- client 프로젝트 구조 설정<br>- WebSocket과 hls.js를 활용한 라이브 스트리밍 구현<br>- 선거 및 투표 만들기 구현 <br>- 선거 메인 화면 구현 <br>- 유틸 기능 구현 (글자수 처리, 날짜 데이터 처리 등)<br> |
@@ -86,19 +86,19 @@
 
 ### 🎨화면 정의서(Figma)
 
-![Figma](/images/화면정의서.png)
+![Figma_화면정의서](https://www.figma.com/design/vjvnTeJaKQ8GiHWMzViQQP/B102-%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9C?node-id=0-1&p=f&t=NiuQAB3cPmeqwIld-0)
 
 <br>
 
 ### 📝기능명세서
 
-![Figma](/images/기능명세서.png)
+![노션_기능명세서](https://www.notion.so/46b7bdd2acd247c8b35a52599ee7cb6c?v=17ef92b0a86881e1a7a3000ca9079ee2&pvs=4)
 
 <br>
 
 ### 📄API명세서
 
-![Figma](/images/API명세서.png)
+![노션_API명세서](https://www.notion.so/c2fde4bab51e451385f94d83005db51a?v=182f92b0a86881388936000cb5a76f34&pvs=4)
 
 <br>
 
