@@ -191,7 +191,7 @@ server
 
 <br>
 
-<img src='투표자_메인페이지탐방.gif' alt='투표자 메인 페이지 탐방' width='200' /> <img src='투표자_스트리밍,채팅.gif' alt='투표자 스트리밍 채팅 기능능' width='200' /> <img src='투표진행.gif' alt='투표진행' width='200' />
+<img src='./images/투표자_메인페이지탐방.gif' alt='투표자 메인 페이지 탐방' width='200' /> <img src='./images/투표자_스트리밍,채팅.gif' alt='투표자 스트리밍 채팅 기능능' width='200' /> <img src='./images/투표진행.gif' alt='투표진행' width='200' />
 
 # 3. 기능 상세 설명
 
