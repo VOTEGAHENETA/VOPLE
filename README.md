@@ -1,4 +1,4 @@
-![logo](/uploads/f77501166f64cf98f13f9a16ee70e144/image.png)
+![image](https://github.com/user-attachments/assets/802ccdfe-c1f6-462d-9ad6-44c4fa2a2b90)<img src="https://github.com/user-attachments/assets/48844617-a603-4303-9ed6-a1d5925a60d8" />
 
 # 1. 프로젝트 개요
 
@@ -77,13 +77,13 @@
 
 ### 🖼️아키텍쳐 설계
 
-![아키텍쳐 설계](/uploads/74610721fc49b01d44153d3f6c6db0a0/image.png)
+<img src="https://github.com/user-attachments/assets/0f82d06b-e9c1-4bf2-80a0-09eb63285206" alt="아키텍쳐 설" />
 
 <br>
 
 ### 💾데이터베이스 모델링(ERD)
 
-![ERD](/uploads/967fde4d739fa84721702003d7870c3e/B102_ERD.png)
+<img src="https://github.com/user-attachments/assets/d4705450-9db8-481d-aec5-8f5360484012" alt="ERD" />
 
 <br>
 
