@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/802ccdfe-c1f6-462d-9ad6-44c4fa2a2b90)<img src="https://github.com/user-attachments/assets/48844617-a603-4303-9ed6-a1d5925a60d8" />
+<img src="https://github.com/user-attachments/assets/48844617-a603-4303-9ed6-a1d5925a60d8" />
 
 # 1. 프로젝트 개요
 
