@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        EC2_URL = credentials('ec2-url')
         DB_HOST = credentials('db-host')
         DB_PORT = credentials('db-port')
         REDIS_HOST = credentials('redis-host')
@@ -71,9 +72,9 @@ spring:
       host: ${REDIS_HOST}
       port: 6379
     rtmp:
-      host: rtmp://i12b102.p.ssafy.io:1935/live/
+      host: rtmp://${EC2_URL}:1935/live/
     hls:
-      host-prefix: https://i12b102.p.ssafy.io/hls/
+      host-prefix: https://${EC2_URL}/hls/
       host-postfix: .m3u8
       
   security:
@@ -83,7 +84,7 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: https://i12b102.p.ssafy.io/login/oauth2/code/kakao
+            redirect-uri: https://${EC2_URL}/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
@@ -102,8 +103,8 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
-base_url: https://i12b102.p.ssafy.io
-media_url: https://i12b102.p.ssafy.io
+base_url: https://${EC2_URL}
+media_url: https://${EC2_URL}
 kakao_login_url: http://localhost:5173
 """
                     }

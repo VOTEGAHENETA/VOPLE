@@ -66,7 +66,7 @@
 - kakao developers에서 API 키 받아오고, client id와 secret을 추가
 - redirect url 허용 ip에 본인의 컴퓨터 ip 추가
 
-### 2. ./exec/config에 존재하는 설정 파일을 프로젝트 루트 폴더에 덮어쓰기 (기존 도메인은 i12b102.p.ssafy.io) - exec의 설정은 http://localhost 기준입니다.
+### 2. ./exec/config에 존재하는 설정 파일을 프로젝트 루트 폴더에 덮어쓰기, exec의 설정은 http://localhost 기준입니다.
 
 #### `./server/src/resources/application-prod.yml` Spring Boot 설정 파일
 - config 폴더 아래에 존재함

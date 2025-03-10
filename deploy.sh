@@ -10,7 +10,7 @@ docker compose up -d server
 echo "서비스 시작 대기 중..."
 sleep 90
 for i in {1..3}; do
-    if curl -f https://i12b102.p.ssafy.io; then
+    if curl -f https://${EC2_URL}; then
         break
     fi
     if [ $i -eq 3 ]; then
@@ -23,7 +23,7 @@ for i in {1..3}; do
 done
 
 for i in {1..3}; do
-    if curl -f https://i12b102.p.ssafy.io/api/test; then
+    if curl -f https://${EC2_URL}/api/test; then
         break
     fi
     if [ $i -eq 3 ]; then

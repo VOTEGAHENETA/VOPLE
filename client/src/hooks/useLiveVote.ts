@@ -13,13 +13,14 @@ const useLiveVote = ({ sessionId }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const stompClient = useRef<Client | null>(null);
   const isMounted = useRef(false);
+  const { VITE_PUBLIC_SOCKET_URL } = import.meta.env;
 
   useEffect(() => {
     isMounted.current = true;
     if (stompClient.current?.connected) {
       return;
     }
-    const socket = new SockJS('https://i12b102.p.ssafy.io/ws', null, {});
+    const socket = new SockJS(`${VITE_PUBLIC_SOCKET_URL}/ws`, null, {});
     stompClient.current = Stomp.over(socket);
     stompClient.current?.connect(
       { sessionId },

@@ -18,6 +18,7 @@ export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
   const subscription = useRef<StompSubscription | null>(null); // 구독 추적용
   const [participantCount, setParticipantCount] = useState<number>(0); // 참여자 수
   const isMounted = useRef(false);
+  const { VITE_PUBLIC_SOCKET_URL } = import.meta.env;
 
   // messages 업데이트 시 유효성 검사 추가
   const updateMessages = (newMessage: ChatReceiveMessage) => {
@@ -30,7 +31,7 @@ export const useWebSocket = ({ type, roomId, sessionId }: WebSocketProps) => {
     // 이미 연결되어 있으면 리턴
     if (stompClient.current?.connected) return;
 
-    const socket = new SockJS('https://i12b102.p.ssafy.io/ws', null, {});
+    const socket = new SockJS(`${VITE_PUBLIC_SOCKET_URL}/ws`, null, {});
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect(
